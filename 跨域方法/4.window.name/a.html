@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <iframe src="http://localhost:4000/c.html" frameborder="0" id="frame" onload="load()"></iframe>
+  <script>
+
+    /* 
+    a.html和b.html是同一个域名下的两个页面，c.html在另一个域名下
+    目的：要在a页面下拿到c页面中c页面给自己的window.name设置的内容
+    方法：先在a页面中用iframe标签将c页面引入，并绑定id和onload事件，在事件处理函数中，先获取c页面的iframe,再马上修改iframe的src为b页面的域名路径。同域了，name就不会消失。
+    */
+    let flag =true
+    function load() {
+      if(flag){
+        let frame =document.getElementById('frame');
+        console.dir(frame);
+        frame.src ='http://localhost:3000/b.html';
+        flag =false
+        console.dir(frame);
+
+      }else{
+        console.log(frame.contentWindow.name);
+      }    
+    }
+  </script>
+</body>
+</html>

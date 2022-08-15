@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <!-- 
+    两个页面的关系必须是一级域名和二级域名之间的关系。
+  -->
+  <h1>hello aaa</h1>
+  <iframe src="http://b.wuyibo.cn:3000/b.html" frameborder="0" onload="load()" id="frame"></iframe>
+  <script>
+    document.domain='wuyibo.cn'  //该行代码说明他的域名是wuyibo.cn
+    function load() {
+      console.log(frame.contentWindow.a);
+    }
+  </script>
+</body>
+</html>
