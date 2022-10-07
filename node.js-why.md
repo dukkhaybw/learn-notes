@@ -43,7 +43,7 @@ Node.js是JavaScript代码运行的环境，它底层基于V8引擎。
 
 - JavaScript引擎，解析执行JavaScript代码
 
-![image-20211005133347734](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20211005133347734.png)
+![image-20211005133347734](.\typora-user-images\image-20211005133347734.png)
 
 
 
@@ -55,7 +55,7 @@ SpiderMonkey：FireFox，Chakra：IE，JavaScriptCore：Safari，V8：Chorme
 
 
 
-![image-20211005133818414](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20211005133818414.png)
+![image-20211005133818414](.\typora-user-images\image-20211005133818414.png)
 
 注意点：
 
@@ -70,7 +70,7 @@ SpiderMonkey：FireFox，Chakra：IE，JavaScriptCore：Safari，V8：Chorme
 
 node.js架构图
 
-![image-20210717160612337](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210717160612337.png)
+![image-20210717160612337](.\typora-user-images\image-20210717160612337.png)
 
 
 
@@ -352,13 +352,13 @@ set path=%path%;C:\web;C:\Tools
 set NODE_ENV=
 ```
 
-![image-20210421104110090](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210421104110090.png)
+![image-20210421104110090](.\typora-user-images\image-20210421104110090.png)
 
 实际开发应用：
 
 1. 解决环境导致后端接口变换问题，NODE_ENV 这个字段也可以自己定义为其它的名字。修改代码里的后端地址配置
 
-   ![image-20210421104348310](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210421104348310.png)
+   ![image-20210421104348310](.\typora-user-images\image-20210421104348310.png)
 
    
 
@@ -421,7 +421,7 @@ node index.js coderwhy age=18
 
  
 
-![image-20210717172400635](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210717172400635.png)
+![image-20210717172400635](.\typora-user-images\image-20210717172400635.png)
 
 通过node去执行某个js脚本文件时，想在命令行中增加额外的信息，然后在js脚本内部获取到后进行判断使用。
 
@@ -489,7 +489,7 @@ argv[3]:  age=18
   // process全局对象也是global顶级对象的一个属性。在源码的内部先在一个文件模块中定义process对象后，再通过Object.DefineProperty挂载到global对象上的。
   ```
 
-  ![image-20220217093624567](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20220217093624567.png)
+  ![image-20220217093624567](.\typora-user-images\image-20220217093624567.png)
 
 
 
@@ -608,7 +608,7 @@ npm全局安装的包，如果该包有cmd文件的话，那么可以直接通�
 
 - npm view 包名 versions：查看包的所有版本列表
 
-  ![image-20210507174629562](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210507174629562.png)
+  ![image-20210507174629562](.\typora-user-images\image-20210507174629562.png)
 
 - npm search 包名 ：搜索包
 
@@ -626,7 +626,7 @@ npm全局安装的包，如果该包有cmd文件的话，那么可以直接通�
 
 - npm list | grep 包名：单独查看第三方包依赖的其他第三方包
 
-  ![image-20210507195054708](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210507195054708.png)
+  ![image-20210507195054708](.\typora-user-images\image-20210507195054708.png)
 
 - npm list：查看当前项目引用了哪些包 
 
@@ -781,7 +781,7 @@ npm install git+ssh://git@github.com:lurongtao/gp-project.git（git仓库地址�
 
 通过npm安装git上的包的话，在package.json中的项目或者开发依赖字段中，包名对应的版本号是git仓库的地址。
 
-![image-20210507222845021](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210507222845021.png)
+![image-20210507222845021](.\typora-user-images\image-20210507222845021.png)
 
 
 
@@ -799,9 +799,9 @@ npm install git+ssh://git@github.com:lurongtao/gp-project.git（git仓库地址�
 
 
 
-![image-20210718140842660](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210718140842660.png)
+![image-20210718140842660](.\typora-user-images\image-20210718140842660.png)
 
-![image-20210718141319999](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210718141319999.png)
+![image-20210718141319999](.\typora-user-images\image-20210718141319999.png)
 
 
 
@@ -811,7 +811,7 @@ npm install git+ssh://git@github.com:lurongtao/gp-project.git（git仓库地址�
 
 
 
-![image-20210718151422785](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210718151422785.png)
+![image-20210718151422785](.\typora-user-images\image-20210718151422785.png)
 
 
 
@@ -958,7 +958,7 @@ npx --ignore-existing 包名：忽略本地的同名模块，强制安装使用�
   yarn add [package] --peer：安装并添加到peerDependencies 
   yarn add [package] --optional：安装并添加到optionalDependencies 
 
-![image-20210718170217000](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210718170217000.png)
+![image-20210718170217000](.\typora-user-images\image-20210718170217000.png)
 
 npm 目前支持以下几类依赖包管理：
 
@@ -1130,31 +1130,31 @@ const pathName = path.resolve(path1,path2 [,path3] ...) :拼接路径
 上面两者的区别：
 ```
 
-![image-20210718110906853](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210718110906853.png)
+![image-20210718110906853](.\typora-user-images\image-20210718110906853.png)
 
-![image-20210718110917190](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210718110917190.png)
+![image-20210718110917190](.\typora-user-images\image-20210718110917190.png)
 
-![image-20210718110931006](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210718110931006.png) 
-
-
+![image-20210718110931006](.\typora-user-images\image-20210718110931006.png) 
 
 
 
-![image-20210718171737849](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210718171737849.png)
+
+
+![image-20210718171737849](.\typora-user-images\image-20210718171737849.png)
 
 上图的输出结果：
 
-![image-20210718171812744](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210718171812744.png)
+![image-20210718171812744](.\typora-user-images\image-20210718171812744.png)
 
 在上图中的filaname2中以 / 开头，会被resolve方法认为是绝对路径。
 
 
 
-![image-20210718171831775](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210718171831775.png)
+![image-20210718171831775](.\typora-user-images\image-20210718171831775.png)
 
 上图的输出结果：
 
-![image-20210718171845112](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210718171845112.png)
+![image-20210718171845112](.\typora-user-images\image-20210718171845112.png)
 
 
 
@@ -1167,22 +1167,22 @@ const pathName = path.resolve(path1,path2 [,path3] ...) :拼接路径
   const myURL =url.parse('https://user:pass@sub.host.com:8080/p/a/t/h?query=string#hash'); 
   ```
 
-  ![image-20210715233719893](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210715233719893.png)
+  ![image-20210715233719893](.\typora-user-images\image-20210715233719893.png)
 
-  ![image-20210715233732380](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210715233732380.png)
+  ![image-20210715233732380](.\typora-user-images\image-20210715233732380.png)
 
 - url.format(urlObject)
 
 - url.resolve(from, to)
-  ![image-20210715235145920](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210715235145920.png) 
+  ![image-20210715235145920](.\typora-user-images\image-20210715235145920.png) 
 
-  ![image-20210715235205981](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210715235205981.png)
+  ![image-20210715235205981](.\typora-user-images\image-20210715235205981.png)
   
 - URLSearchParams 
 
-![image-20210715235630632](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210715235630632.png)
+![image-20210715235630632](.\typora-user-images\image-20210715235630632.png)
 
-![image-20210715235651536](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210715235651536.png)
+![image-20210715235651536](.\typora-user-images\image-20210715235651536.png)
 
 
 
@@ -1235,9 +1235,9 @@ const pathName = path.resolve(path1,path2 [,path3] ...) :拼接路径
   console.log(unescaped)
   ```
 
-![image-20210716000353680](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210716000353680.png)
+![image-20210716000353680](.\typora-user-images\image-20210716000353680.png)
 
-![image-20210716002332917](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210716002332917.png)
+![image-20210716002332917](.\typora-user-images\image-20210716002332917.png)
 
 
 
@@ -1493,11 +1493,11 @@ function getFiles(dirname){
 
 
 
-![image-20210718131330795](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210718131330795.png)
+![image-20210718131330795](.\typora-user-images\image-20210718131330795.png)
 
 
 
-![image-20210718131346434](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210718131346434.png)
+![image-20210718131346434](.\typora-user-images\image-20210718131346434.png)
 
 
 
@@ -1589,13 +1589,13 @@ fs.watch('path/fileName',(error)=>{
 })
 ```
 
-![image-20210717120522182](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210717120522182.png)
+![image-20210717120522182](.\typora-user-images\image-20210717120522182.png)
 
 
 
 #### 文件描述符
 
-![image-20210718130700642](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210718130700642.png)
+![image-20210718130700642](.\typora-user-images\image-20210718130700642.png)
 
 获取某个文件的文件描述符：
 
@@ -1956,7 +1956,7 @@ function load (){
 
 下图是，路径分析和文件定位步骤： 
 
-![image-20210418105915555](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210418105915555.png)
+![image-20210418105915555](.\typora-user-images\image-20210418105915555.png)
 
 
 
@@ -1974,7 +1974,7 @@ function load (){
 
 
 
-![image-20220612100424099](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20220612100424099.png)
+![image-20220612100424099](.\typora-user-images\image-20220612100424099.png)
 
 
 
@@ -2134,7 +2134,7 @@ console.log(addFn.add(3))
 
 下图是，路径分析和文件定位步骤：
 
-![image-20210418105915555](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210418105915555.png)
+![image-20210418105915555](.\typora-user-images\image-20210418105915555.png)
 
 编译执行：
 
@@ -2476,7 +2476,7 @@ export {name, age, fun } from './foo.js'
 
 
 
-![image-20210718000912979](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210718000912979.png)
+![image-20210718000912979](.\typora-user-images\image-20210718000912979.png)
 
 JS引擎在解析阶段（parsing）是不执行代码的，只进行词法，语法分析，**import关键字导入的模块必须是能在解析阶段就能确定的。**不能再运行阶段有增加新的依赖关系。
 
@@ -2492,7 +2492,7 @@ import既有关键字 又有import函数。可以使用import的函数实现在�
 
 ### ES Module加载过程
 
-![image-20210718005204005](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210718005204005.png)
+![image-20210718005204005](.\typora-user-images\image-20210718005204005.png)
 
 
 
@@ -2500,7 +2500,7 @@ import既有关键字 又有import函数。可以使用import的函数实现在�
 
 问题：
 
-![image-20210718102342842](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210718102342842.png)
+![image-20210718102342842](.\typora-user-images\image-20210718102342842.png)
 
 在index.js中打印的name是why还是aaaaaa？
 
@@ -2508,7 +2508,7 @@ import既有关键字 又有import函数。可以使用import的函数实现在�
 
 解析：在ES6的语法中，export导出的看似是对象方式，其实并不是，它导出的就是类似于变量本身（变量的引用）。
 
-![image-20210718103217851](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210718103217851.png)
+![image-20210718103217851](.\typora-user-images\image-20210718103217851.png)
 
 
 
@@ -2522,7 +2522,7 @@ import既有关键字 又有import函数。可以使用import的函数实现在�
 
 - 将js文件使用.mjs扩展名
 
-![image-20210718104011949](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210718104011949.png)
+![image-20210718104011949](.\typora-user-images\image-20210718104011949.png)
 
 
 
@@ -2559,7 +2559,7 @@ CommonJS 加载的是一个对象（即`module.exports`属性），该对象只�
 
 #### CommonJS和ES6的模块化语法的相互套用情况
 
-![image-20210718105151885](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210718105151885.png)
+![image-20210718105151885](.\typora-user-images\image-20210718105151885.png)
 
 
 
@@ -2602,13 +2602,13 @@ module.exports ={
 
 
 
-![image-20210726092247480](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210726092247480.png)
+![image-20210726092247480](.\typora-user-images\image-20210726092247480.png)
 
 
 
 在router的入口文件中：
 
-![image-20210726092903166](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210726092903166.png)
+![image-20210726092903166](.\typora-user-images\image-20210726092903166.png)
 
 
 
@@ -2831,7 +2831,7 @@ fs.readFile('./bar.png',(error,content)=>{
 
 Node.js开发服务器。
 
-![image-20211005165319192](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20211005165319192.png)
+![image-20211005165319192](.\typora-user-images\image-20211005165319192.png)
 
 
 
@@ -2855,7 +2855,7 @@ serve.listen(3000,'localhost',(error)=>{
 })
 ```
 
-![image-20211005171341936](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20211005171341936.png)
+![image-20211005171341936](.\typora-user-images\image-20211005171341936.png)
 
 
 
@@ -2881,7 +2881,7 @@ server.listen(PORT,'localhost',(error)=>{
 
 ### 端口号和主机名
 
-![image-20211005171533721](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20211005171533721.png)
+![image-20211005171533721](.\typora-user-images\image-20211005171533721.png)
 
 
 
@@ -2974,13 +2974,13 @@ serve.listen(3000,'localhost',(error)=>{
 
 
 
-![image-20211005191751215](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20211005191751215.png)
+![image-20211005191751215](.\typora-user-images\image-20211005191751215.png)
 
 
 
 
 
-![image-20211005214210823](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20211005214210823.png)
+![image-20211005214210823](.\typora-user-images\image-20211005214210823.png)
 
 
 
@@ -2999,7 +2999,7 @@ content-length:表示本次请求携带的数据的长度。 数据很小时，�
 
 状态码
 
-![image-20211005214826074](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20211005214826074.png)
+![image-20211005214826074](.\typora-user-images\image-20211005214826074.png)
 
 
 
@@ -3100,7 +3100,7 @@ http.createServer((resquest,response)=>{
 
 ## express框架
 
-![image-20211005232108375](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20211005232108375.png)
+![image-20211005232108375](.\typora-user-images\image-20211005232108375.png)
 
 
 
@@ -3151,11 +3151,11 @@ express是一个路由和中间件的Web框架，它本身的功能很少。expr
 
 
 
-![image-20211005233940700](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20211005233940700.png)
+![image-20211005233940700](.\typora-user-images\image-20211005233940700.png)
 
 
 
-![image-20211006095738842](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20211006095738842.png)
+![image-20211006095738842](.\typora-user-images\image-20211006095738842.png)
 
 
 
@@ -3284,7 +3284,7 @@ app.listen(3000,()=>{
 
 中间件的应用：
 
-![image-20211006105009423](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20211006105009423.png)
+![image-20211006105009423](.\typora-user-images\image-20211006105009423.png)
 
 ```js
 const express = require('express')
@@ -3348,7 +3348,7 @@ app.listen(3000,()=>{
 
 
 
-![image-20211006105115936](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20211006105115936.png) 
+![image-20211006105115936](.\typora-user-images\image-20211006105115936.png) 
 
 
 

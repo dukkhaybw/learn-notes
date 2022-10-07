@@ -165,15 +165,15 @@ media feature:
 
 class="container-fluid"的容器，就相当于width为auto的容器。
 
-![image-20210516225224967](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210516225224967.png)
+![image-20210516225224967](.\typora-user-images\image-20210516225224967.png)
 
 ### 固定容器（常用）
 
 class = "container"的容器，多出了媒体查询。
 
-![image-20210516225422378](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210516225422378.png)
+![image-20210516225422378](.\typora-user-images\image-20210516225422378.png)
 
-![image-20210516231143812](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210516231143812.png)
+![image-20210516231143812](.\typora-user-images\image-20210516231143812.png)
 
 ### 栅格系统
 
@@ -211,11 +211,11 @@ class = "container"的容器，多出了媒体查询。
 
 pc端页面：
 
-![image-20210531225133695](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210531225133695.png)
+![image-20210531225133695](.\typora-user-images\image-20210531225133695.png)
 
 pc端未作适配的页面在手机上显示：
 
-![image-20210531225219215](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210531225219215.png)
+![image-20210531225219215](.\typora-user-images\image-20210531225219215.png)
 
 
 

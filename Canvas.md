@@ -4,9 +4,7 @@
 
 `<canvas width='num1' height='num2'>文本区域写的内容在不支持canvas的浏览器中会被展示<canvas>`
 
-注意点：canvas标签的宽高不能用过CSS来设置（因为通过css设置有拉伸变形）。 在通过js获取到canvas标签后设置宽高的方式是canvas.width = 'num',而不是canvas.style.width ='num'的方式
-
-
+注意点：canvas 标签的宽高不能用过 CSS 来设置（因为通过 css 设置有拉伸变形）。 在通过 js 获取到 canvas 标签后设置宽高的方式是 canvas.width = 'num',而不是 canvas.style.width ='num'的方式
 
 ```
 <canvas id='canvas' width='800' height='500'></canvas>
@@ -15,8 +13,6 @@
 	let ctx = canvas.getContext('2d')   //获取上下文（画笔）
 </script>
 ```
-
-
 
 ```
 ctx.beginPath()
@@ -33,7 +29,7 @@ ctx.closePath() //将开始点到结束点的路径连接闭合
 
 先描边再闭合路径如下图：
 
-![image-20210810210641575](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210810210641575.png)
+![image-20210810210641575](.\typora-user-images\image-20210810210641575.png)
 
 ```
 ctx.beginPath()
@@ -50,7 +46,7 @@ ctx.stroke()
 
 先闭合再描边如下图：
 
-![image-20210810210823568](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210810210823568.png)
+![image-20210810210823568](.\typora-user-images\image-20210810210823568.png)
 
 ```
 ctx.lineWidth ='num'
@@ -66,22 +62,18 @@ path.lineTo(200,200)
 ctx.stroke(path)
 ```
 
-
-
 矩形：
 
 ```
 ctx.beginPath()
 ctx.rect(x,y,width,height)
 ctx.stroke()
-ctx.closePath() 
+ctx.closePath()
 
 上面等价于下面一句：
 
 ctx.fillRect(x,y,width,height)
 ```
-
-
 
 弧形：
 
@@ -89,34 +81,30 @@ ctx.fillRect(x,y,width,height)
 ctx.beginPath()
 ctx.arc(x,y,r，startAngle,endAngle,clockDirection)
 ctx.stroke()
-ctx.closePath() 
+ctx.closePath()
 ```
 
 ```
 for(leti=50;i<300;i+=20){
 	ctx.beginPath()
 	ctx.arc(200,200,i,2*Math.PI,true)
-	ctx.closePath() 
+	ctx.closePath()
 	ctx.stroke()
 }
 ```
 
-![image-20210810214315993](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210810214315993.png)
-
-
-
-
+![image-20210810214315993](.\typora-user-images\image-20210810214315993.png)
 
 图片：
 
-`drawImage` 方法的第三个也是最后一个变种有8个新参数，用于控制做切片显示的
+`drawImage` 方法的第三个也是最后一个变种有 8 个新参数，用于控制做切片显示的
 
 ```
 drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight)
 drawImage(image, dx,dy)  //图片对象上只放两个数字参数时，表示图片左上角开始于画布的什么位置，而不进行切片。
 ```
 
-![image-20210810214630687](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210810214630687.png)
+![image-20210810214630687](.\typora-user-images\image-20210810214630687.png)
 
 ```
 创建一个图片对象
@@ -127,17 +115,15 @@ image.onload = function(){
 }
 ```
 
-
-
 ## 基本的面向对象制作动画
 
-所有绘制到canvas上的图形会立即别栅格化，无法通过js获取到。所以要移动图像，需要重新清除画布，再画一个新的图画。
+所有绘制到 canvas 上的图形会立即别栅格化，无法通过 js 获取到。所以要移动图像，需要重新清除画布，再画一个新的图画。
 
 ```
 <canvas id='canvas' width='800' height='500'></canvas>
 <script>
-	let canvas = document.getElementById('canvas')  
-	let ctx = canvas.getContext('2d')   
+	let canvas = document.getElementById('canvas')
+	let ctx = canvas.getContext('2d')
 	let x = 100
 	setInterval(()=>{
 		x+=5
@@ -155,8 +141,8 @@ image.onload = function(){
 ```
 <canvas id='canvas' width='800' height='500'></canvas>
 <script>
-	let canvas = document.getElementById('canvas')  
-	let ctx = canvas.getContext('2d')   
+	let canvas = document.getElementById('canvas')
+	let ctx = canvas.getContext('2d')
 	function Ball(x,y,r,color,speed){
 		this.x = x;
 		this.y = y;
@@ -177,7 +163,7 @@ image.onload = function(){
 	}
 	let b1 = new Ball(100,100,50,'pink',1)
 	let b2 = new Ball(100,300,100,'skyblue',2)
-	
+
 	setInterval(()=>{
 		ctx.clearRect(0,0,canvas.width,canvas.height)
 		b1.update()
@@ -188,33 +174,25 @@ image.onload = function(){
 </script>
 ```
 
-在canvas动画中最常见的就是一个对象上有更新自己和渲染自己的原型方法。
-
-
-
-
+在 canvas 动画中最常见的就是一个对象上有更新自己和渲染自己的原型方法。
 
 ## 图片裁剪
 
+基于 react，canvas 做一个类似于微信头像的裁切和上传功能。
 
+这个项目中图片的裁切是基于前端的 canvas 实现
 
-基于react，canvas做一个类似于微信头像的裁切和上传功能。
-
-这个项目中图片的裁切是基于前端的canvas实现
-
-- react创建组件
-- 组件中使用jsx语法构建页面
+- react 创建组件
+- 组件中使用 jsx 语法构建页面
 - 属性和状态的管理
-- canvas实现图片裁切
-- html5拖拽
+- canvas 实现图片裁切
+- html5 拖拽
 
-项目基于create-react-app创建项目框架
-基于REM构建响应式页面，现在真实项目中响应式常用的方案有：
+项目基于 create-react-app 创建项目框架基于 REM 构建响应式页面，现在真实项目中响应式常用的方案有：
 
 - @media
 - rem
 - flex
-
 
 ```
 <script>
@@ -225,7 +203,7 @@ image.onload = function(){
             let HTML = document.documentElement,
                 deviceW = HTML.clientWidth,
                 designW = 750,
-                ratios = deviceW/designW 
+                ratios = deviceW/designW
             if(deviceW >=designW) ratio =100
             HTML.style.fontSize = ratios +'px'
             window.ratio = ratios
@@ -242,7 +220,7 @@ image.onload = function(){
 
 - 点击头像区域实现头像裁剪组件的显示，当点击返回或者保存图片时，实现头像裁剪组件的隐藏，总结就是两个区域的分别显示与隐藏
 - 在头像裁剪组件中，首先要在点击选择图片后实现图片的读取与预览在绘制区域（canvas）
-- 实现图片在canvas中的放大和缩小和移动
+- 实现图片在 canvas 中的放大和缩小和移动
 - 保存图片是把选中部分的图片进行裁剪
 - 保存后将裁剪的图像回显到头像区域，在真实项目中可能需要先把裁剪好的图片传给服务器，服务器存好后，再返回头像页面去获取存在服务器中的头像信息
 
@@ -252,10 +230,10 @@ render(){
     return (
         <div className='clipBox'>
             <div className='canvasBoxDiv'>
-                <canvas className='canvas'></canvas>		
+                <canvas className='canvas'></canvas>
                 <div className='mask'></div>
-            </div> 
-            
+            </div>
+
 			<div className='btnBox'>
                 <input type='file' accept='image/*' className='file'></input>
                 <button className='choose'>选择图片</button>
@@ -272,7 +250,7 @@ render(){
 
 注意点：
 
-在react的jsx语法模块，定义在组件实例的原型上的非箭头函数形式的方法，被直接用在jsx中的DOM元素作为事件处理函数的时候，函数内部的this指向的并不是组件实例而是绑定该事件的DOM元素。例如：
+在 react 的 jsx 语法模块，定义在组件实例的原型上的非箭头函数形式的方法，被直接用在 jsx 中的 DOM 元素作为事件处理函数的时候，函数内部的 this 指向的并不是组件实例而是绑定该事件的 DOM 元素。例如：
 
 ```jsx
 fun(){
@@ -285,9 +263,7 @@ render(){
 <button onClick={this.fun.bind(this)}></button>   //手动绑定this为组件实例
 ```
 
-
-
-初始化确定canvas画布的大小和内部裁剪层的大小和定位。
+初始化确定 canvas 画布的大小和内部裁剪层的大小和定位。
 
 ```jsx
 class imageClip extends Component{
@@ -304,14 +280,14 @@ class imageClip extends Component{
         this.state = {
             w,h,maskW,maskH,maskLeft,maskTop,
             maskShow:false
-        }        
+        }
     }
-    
+
     inputFileChange=()=>{
         this.setState({maskShow:true})
         //获取文件对象
         let file = this._file.files[0]
-        if(!file)return 
+        if(!file)return
         //使用内置对象读取文件对象以转为base64的格式，读取的结果存放在reader的result属性上。
         let reader = new FileReader()
         reader.readAsDateURL(file)
@@ -340,27 +316,27 @@ class imageClip extends Component{
                 this.imageLeft = (w - this.imageWidth)/2
                 this.imageTop = (h -this.imageHeight)/2
                 this.drawImage()
-            } 
+            }
         }
     }
-	
+
     drawImage = ()=>{
         let {w,h} =this.state
         this.ctx = this._canvas.getContext('2d')
         this.ctx.clearReact(0,0,w,h)  //清除画布内容
         this.ctx.drawImage(this.img,this.imageLeft,this.imageTop, this.imageWidth ,this.imageHeight)
     }
-    
+
     render(){
         let { w,h,maskW,maskH,maskLeft,maskTop,maskShow} = this.state
         return (
             <div className='clipBox'>
                 <div className='canvasBoxDiv'>
-                    <canvas className='canvas' 
+                    <canvas className='canvas'
                     	width = {w}
                         height = {h}
                         ref={t=>this._canvas=t}
-                    ></canvas>		
+                    ></canvas>
                     <div className='mask' style={{
                             display:maskShow?'black':'none',
                             width:maskW + 'px',
@@ -368,7 +344,7 @@ class imageClip extends Component{
                             top:maskTop +'px',
                             left:maskLeft+'px'
                         }}></div>
-                </div> 
+                </div>
 
                 <div className='btnBox'>
                     <input type='file' accept='image/*' className='file' ref={
@@ -405,33 +381,25 @@ class imageClip extends Component{
 }
 ```
 
-input type='file' 的表单控件的在change事件被触发时，上传的文件对象在该元素对象的files中，图片文件对象的格式如下：
+input type='file' 的表单控件的在 change 事件被触发时，上传的文件对象在该元素对象的 files 中，图片文件对象的格式如下：
 
-![image-20210818214219101](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210818214219101.png) 
+![image-20210818214219101](.\typora-user-images\image-20210818214219101.png)
 
+在通过 FileReader 将读出的图片通过 canvas.drawImage(image,x,y,width,height)绘制到 canvas 画布上后，可能出现的情况是：图片的原始尺寸大于整个 canvas 画布的宽高，导致图片超出部分无法显示。
 
-
-
-
-在通过FileReader将读出的图片通过canvas.drawImage(image,x,y,width,height)绘制到canvas画布上后，可能出现的情况是：图片的原始尺寸大于整个canvas画布的宽高，导致图片超出部分无法显示。
-
-![image-20210818000850368](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210818000850368.png)
+![image-20210818000850368](.\typora-user-images\image-20210818000850368.png)
 
 需要开发者做的处理：
 
-根据当前图片的宽高和当前canvas元素的宽高大小，让图片在canvas中完全显示。如果当前图片的width / height 大于1，则保证图片的宽要和canvas的宽一样大。所以宽缩小的比例是： canvas.width / image.width 。 为了保证图片的高也等比缩放，所以图片的高等于： image.height *  canvas.width / image.width。如果width / height 小于1 ，则用高度。
+根据当前图片的宽高和当前 canvas 元素的宽高大小，让图片在 canvas 中完全显示。如果当前图片的 width / height 大于 1，则保证图片的宽要和 canvas 的宽一样大。所以宽缩小的比例是： canvas.width / image.width 。 为了保证图片的高也等比缩放，所以图片的高等于： image.height \* canvas.width / image.width。如果 width / height 小于 1 ，则用高度。
 
 处理过后的图片情况：
 
-![image-20210818221631779](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210818221631779.png)
+![image-20210818221631779](.\typora-user-images\image-20210818221631779.png)
 
-在处理的图片在canvas中的位置后的表现情况：
+在处理的图片在 canvas 中的位置后的表现情况：
 
-![image-20210818222012698](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210818222012698.png)
-
-
-
-
+![image-20210818222012698](.\typora-user-images\image-20210818222012698.png)
 
 图片拖动：
 
@@ -442,60 +410,56 @@ input type='file' 的表单控件的在change事件被触发时，上传的文�
 然后再重新根据最新图标绘制图形。
 
 ```jsx
-<canvas className='canvas' 
-    width = {w}
-    height = {h}
-    ref={t=>this._canvas=t}
-    onTouchStart = {
-        ev=>{ //手指事件对象中可能记录多个手指的位置信息，在这里只取第一个
-            let point = ev.changeTouches[0]
-            this.startX = point.clientX
-            this.startY = point.clientY
-        }
+<canvas
+  className='canvas'
+  width={w}
+  height={h}
+  ref={(t) => (this._canvas = t)}
+  onTouchStart={(ev) => {
+    //手指事件对象中可能记录多个手指的位置信息，在这里只取第一个
+    let point = ev.changeTouches[0];
+    this.startX = point.clientX;
+    this.startY = point.clientY;
+  }}
+  onTouchMove={(ev) => {
+    let point = ev.changeTouches[0];
+    let moveX = point.clientX - this.startX;
+    moveY = point.clientY - this.startY;
+    //在实际项目中的时候还需要判断用户是否是真的需要移动图片，而不是因为误触导致的行为
+    if (Math.abs(moveX) > 10 || Math.abs(moveY) > 10) {
+      this.imageTop += moveY;
+      this.imageLeft += moveX;
+      this.drawImage();
     }
-    onTouchMove = {
-        ev=>{
-            let point = ev.changeTouches[0]
-            let moveX = point.clientX - this.startX
-            	moveY = point.clientY - this.startY
-            //在实际项目中的时候还需要判断用户是否是真的需要移动图片，而不是因为误触导致的行为
-            if(Math.abs(moveX)>10||Math.abs(moveY)>10){
-                this.imageTop += moveY
-                this.imageLeft += moveX
-                this.drawImage()  
-            }
-            //如果只处理到上面的情况的话，移动图片会导致图片快速的移动并离开视野范围，这是因为moveX/Y在每次移动时都是以onTouchStart事件中确定的startX/Y为初始位置，这就导致moveY/X不断变大，导致图片每次的偏移量就越来越大。所以要更新一下每次移动后的新坐标
-            this.startX = point.clientX
-            this.startY = point.clientY
-        }
-    }
-></canvas>	
+    //如果只处理到上面的情况的话，移动图片会导致图片快速的移动并离开视野范围，这是因为moveX/Y在每次移动时都是以onTouchStart事件中确定的startX/Y为初始位置，这就导致moveY/X不断变大，导致图片每次的偏移量就越来越大。所以要更新一下每次移动后的新坐标
+    this.startX = point.clientX;
+    this.startY = point.clientY;
+  }}
+></canvas>
 ```
 
-![image-20210818225230686](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210818225230686.png)
-
-
-
-
+![image-20210818225230686](.\typora-user-images\image-20210818225230686.png)
 
 保存图片的操作：
 
-裁剪图片，先将mask框部分选中的数据读取出来，使用canvas中getImageDate(x,y,width,height)
+裁剪图片，先将 mask 框部分选中的数据读取出来，使用 canvas 中 getImageDate(x,y,width,height)
 
 ```jsx
- <button className='submit' onClick={
- 	ev=>{
-        if(!this.img) return 
-        let iamgesData = this.ctx.getImageDate(maskLeft,maskTop,maskWidth,maskHeight)
-        //上面的图片数据不能直接就交给img的src属性，而要变为图片
-        let temCanvas = document.createElement('canvas'),
-            temCtx = temCanvas.getContext('2d')
-        temCanvas.width = maskWidth
-        temCanvas.height = maskHeight
-        temCtx.putImageData(iamgesData,0,0,0,0,maskWidth,maskHeight)
-        //某个需要展示切后图片的img元素
-        img.src = temCanvas.toDataURL('image/png')
-    }
- }>保存图片</button>
+<button
+  className='submit'
+  onClick={(ev) => {
+    if (!this.img) return;
+    let iamgesData = this.ctx.getImageDate(maskLeft, maskTop, maskWidth, maskHeight);
+    //上面的图片数据不能直接就交给img的src属性，而要变为图片
+    let temCanvas = document.createElement('canvas'),
+      temCtx = temCanvas.getContext('2d');
+    temCanvas.width = maskWidth;
+    temCanvas.height = maskHeight;
+    temCtx.putImageData(iamgesData, 0, 0, 0, 0, maskWidth, maskHeight);
+    //某个需要展示切后图片的img元素
+    img.src = temCanvas.toDataURL('image/png');
+  }}
+>
+  保存图片
+</button>
 ```
-

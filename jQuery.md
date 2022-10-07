@@ -370,9 +370,9 @@ context用选择器获取元素时指定的上下文，默认是document
 
 jQuery对象本质是一个类数组结构，内部元素是获取到的真实dom元素。
 
-![image-20210521205926360](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210521205926360.png)
+![image-20210521205926360](.\typora-user-images\image-20210521205926360.png)
 
-![image-20210521210208563](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210521210208563.png)
+![image-20210521210208563](.\typora-user-images\image-20210521210208563.png)
 
 
 
@@ -393,7 +393,7 @@ jQuery对象本质是一个类数组结构，内部元素是获取到的真实do
 
      面试点：问get和eq方法的区别
 
-     ![image-20210521212428828](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210521212428828.png)
+     ![image-20210521212428828](.\typora-user-images\image-20210521212428828.png)
 
 - 原生js dom对象转为jQuery对象
 
@@ -407,9 +407,9 @@ jQuery对象本质是一个类数组结构，内部元素是获取到的真实do
 
 $(), $(null), $(undefined), $(false)返回的都是空的jQuery实例对象。
 
-![image-20210521215123531](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210521215123531.png)
+![image-20210521215123531](.\typora-user-images\image-20210521215123531.png)
 
-![image-20210521214947838](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210521214947838.png)
+![image-20210521214947838](.\typora-user-images\image-20210521214947838.png)
 
 
 
@@ -602,7 +602,7 @@ $('<div id="app"></div>')
 $('<div id="app"></div>').appendTo(document.body)
 ```
 
-![image-20210521224857375](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210521224857375.png)
+![image-20210521224857375](.\typora-user-images\image-20210521224857375.png)
 
 #### each()
 
@@ -640,17 +640,17 @@ $('li').css({
 
 jQuery函数对象上的each方法：
 
-![image-20210521231840161](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210521231840161.png)
+![image-20210521231840161](.\typora-user-images\image-20210521231840161.png)
 
 jQuery实例对象上的each方法：
 
-![image-20210521232050664](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210521232050664.png)
+![image-20210521232050664](.\typora-user-images\image-20210521232050664.png)
 
 真正的each方法：
 
-![image-20210521232200897](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210521232200897.png)
+![image-20210521232200897](.\typora-user-images\image-20210521232200897.png)
 
-![image-20210521232457719](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210521232457719.png)
+![image-20210521232457719](.\typora-user-images\image-20210521232457719.png)
 
 #### extend()
 
@@ -664,7 +664,7 @@ jQuery.noConflict ( true ):多库共存，深度转让jQuery和$。这时window.
 
 let myjqueryName = jQuery.noConflict ( true )  ,返回值就是新的jQuery的代言变量
 
-![image-20210521234613803](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210521234613803.png)
+![image-20210521234613803](.\typora-user-images\image-20210521234613803.png)
 
 
 

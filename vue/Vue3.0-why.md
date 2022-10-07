@@ -1,36 +1,29 @@
-
-
-
-
 ```js
 Vue.createApp({
-    template:`<div>hello world</div>`
-}).mount('#app')
-
+  template: `<div>hello world</div>`
+}).mount('#app');
 
 Vue.createApp({
-    template:`<div>
+  template: `<div>
     	<p>{{count}}</p>
     	<button @click='add'>+1</button>
     	<button @click='sub'>11</button>
     </div>`,
-    data(){
-        return {
-            count:0
-        }
+  data() {
+    return {
+      count: 0
+    };
+  },
+  methods: {
+    add() {
+      this.count++;
     },
-    methods:{
-        add(){
-            this.count++
-        },
-        sub(){
-            this.count--
-        }
+    sub() {
+      this.count--;
     }
-}).mount('#app')
+  }
+}).mount('#app');
 ```
-
-
 
 ```js
 <script type='x-template' id='tem'>
@@ -60,8 +53,6 @@ Vue.createApp({
 }).mount('#app')
 ```
 
-
-
 ```js
 <template  id='tem'>
     <div>
@@ -90,19 +81,13 @@ Vue.createApp({
 }).mount('#app')
 ```
 
+**Vue 源码调试**
 
-
-**Vue源码调试**
-
-- github下载Vue项目
+- github 下载 Vue 项目
 
 - 下载项目依赖
-- npm run dev :将Vue源码项目打包生成Vue的最终文件（packages/vue/dist/vue.global.js）
-- 在npm run dev 对应的脚本后面，开启 --sourcemap：然后就能实现对源文件的debugger了
-
-
-
-
+- npm run dev :将 Vue 源码项目打包生成 Vue 的最终文件（packages/vue/dist/vue.global.js）
+- 在 npm run dev 对应的脚本后面，开启 --sourcemap：然后就能实现对源文件的 debugger 了
 
 **基本指令**
 
@@ -116,12 +101,11 @@ Vue.createApp({
 
 - v-on（@）
 
-  可以绑定一个对象，对象的key是不同的事件， 值是对应的处理函数。
+  可以绑定一个对象，对象的 key 是不同的事件， 值是对应的处理函数。
 
   事件对象用$event。
 
-- v-bind（:）
-  可以动态绑定标签的属性。也可以直接将一个对象进行展开后作为· 标签属性。
+- v-bind（:）可以动态绑定标签的属性。也可以直接将一个对象进行展开后作为· 标签属性。
 
 - v-pre
 
@@ -135,25 +119,13 @@ Vue.createApp({
 
 - v-for
 
-
-
-
-
 vite
 
 vite build
 
 vite preview
 
-
-
-
-
-
-
-标签的静态class和:calss可以结合使用，也可以和方法结合使用。
-
-
+标签的静态 class 和:calss 可以结合使用，也可以和方法结合使用。
 
 ## 项目搭建
 
@@ -167,19 +139,11 @@ vite preview
 
 - 角色管理：不同角色可以分配不同的菜单权限
 
-  
-
-
-
- 
-
 vue create projectName
 
-![image-20220210153619196](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20220210153619196.png)
+![image-20220210153619196](.\typora-user-images\image-20220210153619196.png)
 
-
-
-使用babel处理ts语法，对ts的编译有两种方式，一种通过typescript工具的tsc命令； 用babel编译ts同时还会使用polyfill对代码打补丁。
+使用 babel 处理 ts 语法，对 ts 的编译有两种方式，一种通过 typescript 工具的 tsc 命令； 用 babel 编译 ts 同时还会使用 polyfill 对代码打补丁。
 
 ### 代码规范
 
@@ -189,7 +153,7 @@ Commitizen+Commitlint+husky
 
 #### 编辑器格式化
 
-不同编辑器的编码风格——.editorconfig配置（应对不同操作系统，不同编辑器）
+不同编辑器的编码风格——.editorconfig 配置（应对不同操作系统，不同编辑器）
 
 在项目的根目录下创建闻文件：.editorconfig
 
@@ -213,15 +177,13 @@ max_line_length = off
 trim_trailing_whitespace = false
 ```
 
-在webstorm中，编辑环境会自动检测并使用项目根目录下的.editorconfig文件，但是在vscode中需要借助插件——EditorConfig for VS Code，该插件会自动读取并使用项目根目录下的.editorconfig文件。
-
-
+在 webstorm 中，编辑环境会自动检测并使用项目根目录下的.editorconfig 文件，但是在 vscode 中需要借助插件——EditorConfig for VS Code，该插件会自动读取并使用项目根目录下的.editorconfig 文件。
 
 #### 代码自动格式化
 
-支持对js，ts，css，less，scss，vue，react，json，md，jsx进行格式化。
+支持对 js，ts，css，less，scss，vue，react，json，md，jsx 进行格式化。
 
-在项目中安装prettier
+在项目中安装 prettier
 
 ```shell
 npm install prettier -D
@@ -239,7 +201,7 @@ npm install prettier -D
 	"singleQuote": true,
 	"endOfLine": "lf",
 	"printWidth": 100,
-	"bracketSpacing": true, //在对象字面量声明所使用的的花括号后（{）和前（}）输出空格 
+	"bracketSpacing": true, //在对象字面量声明所使用的的花括号后（{）和前（}）输出空格
 	"arrowParens": "always",
 	"useTabs": false
 }
@@ -247,18 +209,16 @@ npm install prettier -D
 
 配置项说明：
 
-* useTabs：使用tab缩进还是空格缩进；false表示使用空格作为缩进
-* tabWidth：tab是空格的情况下是几个空格；
-* printWidth：当行字符的长度；
-* singleQuote：使用单引号还是双引号；
-* trailingComma：在多行输入的尾逗号是否添加；
-* semi：语句末尾是否要加分号，默认值true，选择false表示不加；
+- useTabs：使用 tab 缩进还是空格缩进；false 表示使用空格作为缩进
+- tabWidth：tab 是空格的情况下是几个空格；
+- printWidth：当行字符的长度；
+- singleQuote：使用单引号还是双引号；
+- trailingComma：在多行输入的尾逗号是否添加；
+- semi：语句末尾是否要加分号，默认值 true，选择 false 表示不加；
 
+.prettierignore 的格式化忽略文件：
 
-
-.prettierignore的格式化忽略文件：
-
-````
+```
 /dist/*
 /build/*
 .local
@@ -269,30 +229,26 @@ npm install prettier -D
 **/*.sh
 
 /public/*
-````
-
-
-
-在vscode中还需要安装prettier插件，在vscode编辑器开启自动保存并格式化功能的时候，保存单个文件时prettier就会自动化堆该个文件进行格式化。
-
-![image-20220406233014566](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20220406233014566.png)
-
-如果想对整个项目的文件进行自动格式化，则可以在npm脚本中配置：
-
-```json
-"prettier": "prettier --write ."  
 ```
 
+在 vscode 中还需要安装 prettier 插件，在 vscode 编辑器开启自动保存并格式化功能的时候，保存单个文件时 prettier 就会自动化堆该个文件进行格式化。
 
+![image-20220406233014566](.\typora-user-images\image-20220406233014566.png)
+
+如果想对整个项目的文件进行自动格式化，则可以在 npm 脚本中配置：
+
+```json
+"prettier": "prettier --write ."
+```
 
 #### 代码编码规范
 
-vscode安装eslint插件
+vscode 安装 eslint 插件
 
-在prettier和eslint并存时，存在两者的代码规范冲突的情况，需要安装第三方包解决冲突：
+在 prettier 和 eslint 并存时，存在两者的代码规范冲突的情况，需要安装第三方包解决冲突：
 
 ```shell
-npm i eslint-plugin-prettier eslint-config-prettier -D  
+npm i eslint-plugin-prettier eslint-config-prettier -D
 ```
 
 修改在项目的根目录下文件——.eslintrc.js
@@ -303,33 +259,33 @@ module.exports = {
   env: {
     node: true
   },
-  extends: [   // 规范集
+  extends: [
+    // 规范集
     'plugin:vue/vue3-essential',
     'eslint:recommended',
     '@vue/typescript/recommended',
     '@vue/prettier',
     '@vue/prettier/@typescript-eslint',
-    'plugin:prettier/recommended'  // +++++++++++++++++++++++++++++++++++++
+    'plugin:prettier/recommended' // +++++++++++++++++++++++++++++++++++++
   ],
   parserOptions: {
     ecmaVersion: 2020
   },
-  rules: {   // 对特定规则进行开关
+  rules: {
+    // 对特定规则进行开关
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off'
   }
 };
 ```
 
-
-
-#### 代码git管理规范
+#### 代码 git 管理规范
 
 git Husky 和 eslint。
 
-在执行 `git commit ` 命令的时候对项目进行校验和自动格式化（每次提交前我们都要对代码进行格式化以及 `eslint` 和 `stylelint` 的规则校验），如果不符合eslint规范，那么自动通过规范进行修复，通过Husky工具，修复后进行提交。
+在执行 `git commit ` 命令的时候对项目进行校验和自动格式化（每次提交前我们都要对代码进行格式化以及 `eslint` 和 `stylelint` 的规则校验），如果不符合 eslint 规范，那么自动通过规范进行修复，通过 Husky 工具，修复后进行提交。
 
-husky是一个git hook工具，可以帮助我们触发git提交的各个阶段：pre-commit、commit-msg、pre-push
+husky 是一个 git hook 工具，可以帮助我们触发 git 提交的各个阶段：pre-commit、commit-msg、pre-push
 
 自动配置命令：
 
@@ -339,22 +295,19 @@ npx husky-init "&&" npm install   // windows下&&用引号包裹才生效
 
 上面命令行执行的任务有：
 
-- 安装husky 为项目开发依赖
+- 安装 husky 为项目开发依赖
 
+![image-20220201214123038](.\typora-user-images\image-20220201214123038.png)
 
-![image-20220201214123038](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20220201214123038.png)
+- 在项目目录下创建 `.husky` 文件夹，在提交（git commit -m 'xxxx'）之前会执行 npm run lint 脚本
 
-- 在项目目录下创建 `.husky` 文件夹，在提交（git commit -m 'xxxx'）之前会执行npm run lint脚本
+  ![image-20220201214155109](.\typora-user-images\image-20220201214155109.png)
 
-  ![image-20220201214155109](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20220201214155109.png)
+- 在 package.json 中添加一个脚本，husky 包自行使用的，开发者不用管
 
-- 在package.json中添加一个脚本，husky包自行使用的，开发者不用管
+  ![image-20220201214220796](.\typora-user-images\image-20220201214220796.png)
 
-  ![image-20220201214220796](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20220201214220796.png)
-
-在之后的项目提交commit时，git会先读取pre-commit文件内容，并执行文件中指定的script脚本命令 ——npm run lint。修复代码规范问题后才能提交成功。
-
-
+在之后的项目提交 commit 时，git 会先读取 pre-commit 文件内容，并执行文件中指定的 script 脚本命令 ——npm run lint。修复代码规范问题后才能提交成功。
 
 对 git 缓存区最新改动过的文件进行以上的格式化和 lint 规则校验。执行 `git commit` 之前的钩子 `pre-commit` ，借助这个钩子我们就能执行 `lint-staged` 所提供的代码文件格式化及 lint 规则校验。
 
@@ -379,17 +332,13 @@ package.json:
 
 ```
 
-![image-20220503183541310](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20220503183541310.png)
-
-
-
-
+![image-20220503183541310](.\typora-user-images\image-20220503183541310.png)
 
 > Starting with v3.1 you can now use different ways of configuring lint-staged:
 >
 > - `lint-staged` object in your `package.json`
 >
-> - .lintstagedrc 
+> - .lintstagedrc
 >
 >   file in JSON or YML format, or you can be explicit with the file extension:
 >
@@ -401,29 +350,19 @@ package.json:
 >
 >   - the default export value should be a configuration: `export default { ... }`
 >
-> - .lintstagedrc.cjs  or  lint-staged.config.cjs file in CommonJS format
+> - .lintstagedrc.cjs or lint-staged.config.cjs file in CommonJS format
 >
 >   - the exports value should be a configuration: `module.exports = { ... }`
 >
-> - `lint-staged.config.js` or `.lintstagedrc.js` in either ESM or CommonJS format, depending on whether your project's *package.json* contains the `"type": "module"` option or not.
+> - `lint-staged.config.js` or `.lintstagedrc.js` in either ESM or CommonJS format, depending on whether your project's _package.json_ contains the `"type": "module"` option or not.
 >
 > - Pass a configuration file using the `--config` or `-c` flag
 
+#### 项目 git 提交备注规范
 
+vue 开源项目的提交备注规范，这样可以快速定位每次提交的内容，方便之后对版本进行控制。
 
-
-
-
-
-
-
-#### 项目git提交备注规范
-
-vue开源项目的提交备注规范，这样可以快速定位每次提交的内容，方便之后对版本进行控制。
-
-![image-20220201215036807](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20220201215036807.png)
-
-
+![image-20220201215036807](.\typora-user-images\image-20220201215036807.png)
 
 在开发项目时，并不建议通过命令行的方式来编写提交备注
 
@@ -437,7 +376,7 @@ git commit -m 'xxx:xxxxxxxxxxxxxxxxx'
 npm install commitizen -D
 ```
 
-安装cz-conventional-changelog，初始化cz-conventional-changelog:
+安装 cz-conventional-changelog，初始化 cz-conventional-changelog:
 
 ```shell
 npx commitizen init cz-conventional-changelog --save-dev --save-exact
@@ -445,89 +384,98 @@ npx commitizen init cz-conventional-changelog --save-dev --save-exact
 
 上面的命令行所做的事：
 
-![image-20220202093025999](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20220202093025999.png)
+![image-20220202093025999](.\typora-user-images\image-20220202093025999.png)
 
-并且在package.json中进行配置，之后在执行工具命令的时候，会读取该path路径下的工具：
+并且在 package.json 中进行配置，之后在执行工具命令的时候，会读取该 path 路径下的工具：
 
-![image-20220202093108387](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20220202093108387.png)
+![image-20220202093108387](.\typora-user-images\image-20220202093108387.png)
 
+使用 commitizen 进行代码的规范提交——npx cz
 
+- 第一步是选择 type，本次更新的类型
 
-使用commitizen进行代码的规范提交——npx cz
-
-* 第一步是选择type，本次更新的类型
-
-| Type     | 作用                                                         |
-| -------- | ------------------------------------------------------------ |
-| feat     | 新增特性 (feature)                                           |
-| fix      | 修复 Bug(bug fix)                                            |
-| docs     | 修改文档 (documentation)                                     |
-| style    | 代码格式修改(white-space, formatting, missing semi colons, etc) |
-| refactor | 代码重构(refactor)                                           |
-| perf     | 改善性能(A code change that improves performance)            |
-| test     | 测试(when adding missing tests)                              |
-| build    | 变更项目构建或外部依赖（例如 scopes: webpack、gulp、npm 等） |
-| ci       | 更改持续集成软件的配置文件和 package 中的 scripts 命令，例如 scopes: Travis, Circle 等 |
-| chore    | 变更构建流程或辅助工具(比如更改测试环境)                     |
-| revert   | 代码回退                                                     |
+| Type | 作用 |
+| --- | --- |
+| feat | 新增特性 (feature) |
+| fix | 修复 Bug(bug fix) |
+| docs | 修改文档 (documentation) |
+| style | 代码格式修改(white-space, formatting, missing semi colons, etc) |
+| refactor | 代码重构(refactor) |
+| perf | 改善性能(A code change that improves performance) |
+| test | 测试(when adding missing tests) |
+| build | 变更项目构建或外部依赖（例如 scopes: webpack、gulp、npm 等） |
+| ci | 更改持续集成软件的配置文件和 package 中的 scripts 命令，例如 scopes: Travis, Circle 等 |
+| chore | 变更构建流程或辅助工具(比如更改测试环境) |
+| revert | 代码回退 |
 
 - 本体提交编辑项目的类型
 
-![image-20220202093531681](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20220202093531681.png)
+![image-20220202093531681](.\typora-user-images\image-20220202093531681.png)
 
+- 第二步选择本次修改的范围（作用域，提示本次编辑修改的是项目的哪个模块）
 
+![image-20220202093625650](.\typora-user-images\image-20220202093625650.png)
 
-* 第二步选择本次修改的范围（作用域，提示本次编辑修改的是项目的哪个模块）
+- 第三步选择提交的信息
 
-![image-20220202093625650](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20220202093625650.png)
+![image-20220202093643162](.\typora-user-images\image-20220202093643162.png)
 
-* 第三步选择提交的信息
+- 第四步提交详细的描述信息
 
-![image-20220202093643162](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20220202093643162.png)
+![image-20220202093704386](.\typora-user-images\image-20220202093704386.png)
 
-* 第四步提交详细的描述信息
+- 第五步是否是一次重大的更改
 
-![image-20220202093704386](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20220202093704386.png)
+![image-20220202093718425](.\typora-user-images\image-20220202093718425.png)
 
-* 第五步是否是一次重大的更改
+- 第六步是否影响某个 open issue
 
-![image-20220202093718425](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20220202093718425.png)
+![image-20220202093734087](.\typora-user-images\image-20220202093734087.png)
 
-* 第六步是否影响某个open issue
+我们也可以在 scripts 中构建一个命令来执行 cz：
 
-![image-20220202093734087](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20220202093734087.png)
+![image-20220202093843737](.\typora-user-images\image-20220202093843737.png)
 
-我们也可以在scripts中构建一个命令来执行 cz：
-
-![image-20220202093843737](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20220202093843737.png)
-
-####   强制git命令行规范
+#### 强制 git 命令行规范
 
 [commitlint](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fconventional-changelog%2Fcommitlint) 可以帮助我们进行 git commit 时的 message 格式是否符合规范，
 
-按照cz来规范了提交风格，但是依然可以通过 `git commit` 命令行方式按照不规范的格式提交，为此的强制解决方案：
+按照 cz 来规范了提交风格，但是依然可以通过 `git commit` 命令行方式按照不规范的格式提交，为此的强制解决方案：
 
-* 通过commitlint来限制提交；
+- 通过 commitlint 来限制提交；
 
-1.安装 @commitlint/config-conventional 和 @commitlint/cli
+  1.安装 @commitlint/config-conventional 和 @commitlint/cli
 
 ```shell
 npm i @commitlint/config-conventional @commitlint/cli -D
 ```
 
-2.在根目录创建commitlint.config.js文件，配置commitlint
+2.在根目录创建 commitlint.config.js 文件，配置 commitlint
 
 ```js
 module.exports = {
-    extends: ['@commitlint/config-conventional'],
-    rules: {
-        'type-enum': [
-            2,
-            'always',
-            ['build', 'ci', 'chore', 'docs', 'feat', 'fix', 'perf', 'refactor', 'revert', 'style', 'test', 'anno']
-        ]
-    }
-}
+  extends: ['@commitlint/config-conventional'],
+  rules: {
+    'type-enum': [
+      2,
+      'always',
+      [
+        'build',
+        'ci',
+        'chore',
+        'docs',
+        'feat',
+        'fix',
+        'perf',
+        'refactor',
+        'revert',
+        'style',
+        'test',
+        'anno'
+      ]
+    ]
+  }
+};
 
 /**
  * build : 改变了build工具 如 webpack
@@ -543,18 +491,17 @@ module.exports = {
  * test : 增加测试
  * anno: 增加注释
  */
-
 ```
 
-3.使用husky生成commit-msg文件，验证提交信息：
+3.使用 husky 生成 commit-msg 文件，验证提交信息：
 
 ```shell
 npx husky add .husky/commit-msg "npx --no-install commitlint --edit $1"
 ```
 
-![image-20220503183951754](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20220503183951754.png)
+![image-20220503183951754](.\typora-user-images\image-20220503183951754.png)
 
-配置上面的git提交信息强制规范后，在命令行中通过git commit -m 'xxxxxxxxx'方式提交时，不满足使用commitizen进行代码的规范提交，将无法提交。
+配置上面的 git 提交信息强制规范后，在命令行中通过 git commit -m 'xxxxxxxxx'方式提交时，不满足使用 commitizen 进行代码的规范提交，将无法提交。
 
 配置提交脚本命令：
 
@@ -581,55 +528,45 @@ package.json:
 {
   "scripts": {
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
-  },
+  }
 }
 ```
 
+### 项目 webpack 配置
 
+vue.config.js 有三种配置方式：
 
-
-
-
-
-
-
-
-
-### 项目webpack配置
-
-vue.config.js有三种配置方式：
-
-* 方式一：直接通过CLI提供给我们的选项来配置：
-  * 比如publicPath：配置应用程序部署的子目录（默认是 `/`，相当于部署在 `https://www.my-app.com/`）；
-  * 比如outputDir：修改输出的文件夹；
-* 方式二：通过configureWebpack修改webpack的配置：
-  * 可以是一个对象，直接会被合并；
-  * 可以是一个函数，会接收一个config，可以通过config来修改配置；
-* 方式三：通过chainWebpack修改webpack的配置：
-  * 是一个函数，会接收一个基于  [webpack-chain](https://github.com/mozilla-neutrino/webpack-chain) 的config对象，可以对配置进行修改；
+- 方式一：直接通过 CLI 提供给我们的选项来配置：
+  - 比如 publicPath：配置应用程序部署的子目录（默认是 `/`，相当于部署在 `https://www.my-app.com/`）；
+  - 比如 outputDir：修改输出的文件夹；
+- 方式二：通过 configureWebpack 修改 webpack 的配置：
+  - 可以是一个对象，直接会被合并；
+  - 可以是一个函数，会接收一个 config，可以通过 config 来修改配置；
+- 方式三：通过 chainWebpack 修改 webpack 的配置：
+  - 是一个函数，会接收一个基于 [webpack-chain](https://github.com/mozilla-neutrino/webpack-chain) 的 config 对象，可以对配置进行修改；
 
 ```js
 module.exports = {
     // outputDir:'',  //配置方式一，由vue cli自身提供的代表webpack配置文件中的某项
-    
-    
+
+
     // configreWebpack:{   //配置方式二：和webpack中的配置属性一样，之后进行合并
     //   resolve:{
 	// 		alias:{
     //		  component:'@/component'
-	//		}    
+	//		}
 	//	}
 	//}
-    
-    
+
+
     // 配置方式三,将基础的webpack配置对象传给该函数，在函数内部进行覆盖式修改
     configureWebpack:(config)=>{
         consfig.reslove.alias ={
             //.....
         }
     }
-    
-    
+
+
     //配置方式四
     chainWebpack:(config)=>{
         config.resolve.alias.set('x',url).set('xxx',url)
@@ -663,21 +600,18 @@ module.exports = {
 }
 ```
 
-
-
-### vue-router配置
+### vue-router 配置
 
 ```shell
-npm install vue-router 
+npm install vue-router
 ```
-
-
 
 ```ts
 import { createRouter, createWebHashHistory } from 'vue-router';
-import type { RouteRecordRaw } from 'vue-router';  //type 表示引入的是TS的类型，而不是别的什么函数，type可以省略
+import type { RouteRecordRaw } from 'vue-router'; //type 表示引入的是TS的类型，而不是别的什么函数，type可以省略
 
-const routes: RouteRecordRaw[] = [   // 使用一个接口，限制routes的属性和配置
+const routes: RouteRecordRaw[] = [
+  // 使用一个接口，限制routes的属性和配置
   {
     path: '/',
     redirect: 'login'
@@ -694,19 +628,16 @@ const routes: RouteRecordRaw[] = [   // 使用一个接口，限制routes的属�
 
 const router = createRouter({
   routes,
-  history: createWebHashHistory()   //hashHistory模式
+  history: createWebHashHistory() //hashHistory模式
 });
 
 export default router;
-
 ```
 
-
-
-### vuex配置
+### vuex 配置
 
 ```shell
-npm install vuex 
+npm install vuex
 ```
 
 ```ts
@@ -721,24 +652,18 @@ const store = createStore({
 });
 
 export default store;
-
 ```
-
-
 
 main.ts:
 
 ```ts
 import { createApp } from 'vue';
 import App from './App.vue';
-import router from './router';  // vue-router
-import store from './store';   //vuex
+import router from './router'; // vue-router
+import store from './store'; //vuex
 
 createApp(App).use(router).use(store).mount('#app');
-
 ```
-
-
 
 ### element-plus
 
@@ -755,25 +680,19 @@ import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
 import store from './store';
-import ElementPlus from 'element-plus';   // +++++++++++++++++++++++++++
-import 'element-plus/dist/index.css';   // +++++++++++++++++++++++++++
+import ElementPlus from 'element-plus'; // +++++++++++++++++++++++++++
+import 'element-plus/dist/index.css'; // +++++++++++++++++++++++++++
 
 createApp(App)
-    .use(router)
-    .use(store)
-    .use(ElementPlus) //+++++++++++++++
-    .mount('#app');
+  .use(router)
+  .use(store)
+  .use(ElementPlus) //+++++++++++++++
+  .mount('#app');
 ```
-
-
-
-
-
-
 
 自动导入:
 
-- 自动引入element-plus2
+- 自动引入 element-plus2
 
 ```shell
 npm install -D unplugin-vue-components unplugin-auto-import @element-plus/icons-vue
@@ -782,10 +701,10 @@ npm install -D unplugin-vue-components unplugin-auto-import @element-plus/icons-
 - vue.config.js
 
   ```js
-  const AutoImport = require('unplugin-auto-import/webpack')
-  const Components = require('unplugin-vue-components/webpack')
-  const { ElementPlusResolver } = require('unplugin-vue-components/resolvers')
-  
+  const AutoImport = require('unplugin-auto-import/webpack');
+  const Components = require('unplugin-vue-components/webpack');
+  const { ElementPlusResolver } = require('unplugin-vue-components/resolvers');
+
   module.exports = {
     configureWebpack: {
       plugins: [
@@ -797,21 +716,19 @@ npm install -D unplugin-vue-components unplugin-auto-import @element-plus/icons-
         })
       ]
     }
-  }
+  };
   ```
 
 按需引入缺少样式，引入样式的方式：
 
 - 全部样式
 
-  ````ts
+  ```ts
   // 项目入口main.ts
   import 'element-plus/dist/index.css';
-  ````
+  ```
 
-
-
-运行时，会自动生成auto-imports.d.ts和components.d.ts文件导入组件
+运行时，会自动生成 auto-imports.d.ts 和 components.d.ts 文件导入组件
 
 使用：
 
@@ -826,7 +743,7 @@ npm install -D unplugin-vue-components unplugin-auto-import @element-plus/icons-
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-// 直接使用，无需引入后注册 	
+// 直接使用，无需引入后注册
 
 export default defineComponent({
   setup() {
@@ -838,9 +755,7 @@ export default defineComponent({
 <style scoped></style>
 ```
 
-
-
-element-plus中字体图标的引用使用需要在使用字体图标的组件中引入对应的字体图标组件并注册，然后具体的使用是：
+element-plus 中字体图标的引用使用需要在使用字体图标的组件中引入对应的字体图标组件并注册，然后具体的使用是：
 
 ```vue
 <template>
@@ -850,7 +765,7 @@ element-plus中字体图标的引用使用需要在使用字体图标的组件�
       <el-tab-pane>
         <template #label>
           <span>
-              <-- 使用字体图标篇-->
+            <-- 使用字体图标篇-->
             <el-icon><Avatar /></el-icon>账号登录
           </span>
         </template>
@@ -859,8 +774,8 @@ element-plus中字体图标的引用使用需要在使用字体图标的组件�
       <el-tab-pane>
         <template #label>
           <span>
-              <-- 使用字体图标篇-->
-            <el-icon><iphone /></el-icon>手机登录    
+            <-- 使用字体图标篇-->
+            <el-icon><iphone /></el-icon>手机登录
           </span>
         </template>
         <login-phone></login-phone>
@@ -871,15 +786,15 @@ element-plus中字体图标的引用使用需要在使用字体图标的组件�
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { Avatar, Iphone } from '@element-plus/icons-vue';  //引入字体图标
+import { Avatar, Iphone } from '@element-plus/icons-vue'; //引入字体图标
 import loginAccount from './components/login-account.vue';
 import loginPhone from './components/login-phone.vue';
 
 export default defineComponent({
   name: 'Login',
   components: {
-    Avatar,  // +++++++++++++++
-    Iphone,  // +++++++++++++++
+    Avatar, // +++++++++++++++
+    Iphone, // +++++++++++++++
     loginAccount,
     loginPhone
   },
@@ -892,15 +807,13 @@ export default defineComponent({
 <style scoped lang="scss"></style>
 ```
 
-
-
 ### axios
 
 ```shell
 npm install axios
 ```
 
-项目由多个功能模块，可以为每个模块都创建一个axios实例。
+项目由多个功能模块，可以为每个模块都创建一个 axios 实例。
 
 axios.ts
 
@@ -970,7 +883,7 @@ class IRequest {
           } else if (serveCode == 3) {
             console.log('服务器内部错误：3');
           } else {
-            return result.data;   //   其中的result的数据格式是AxiosResponse，而result.data不是了。
+            return result.data; //   其中的result的数据格式是AxiosResponse，而result.data不是了。
           }
         }
       },
@@ -1071,15 +984,12 @@ const ItemRequest = new IRequest({
   // 针对该实例的拦截器
   interceptors: {
     requestInterceptor(config) {
-        
-        
       // 可以在这里携带token，token可以存放在vuex或者localstorage中
       // const token = '';
       // if (token) {
       //   config.headers.Authorization = `Bearer ${token}`;
       // }
-        
-        
+
       console.log('请求成功拦截器');
       return config;
     },
@@ -1100,7 +1010,7 @@ const ItemRequest = new IRequest({
 export { ItemRequest };
 ```
 
-接口声明文件type.ts
+接口声明文件 type.ts
 
 ```ts
 import type { AxiosRequestConfig, AxiosResponse } from 'axios';
@@ -1141,19 +1051,13 @@ export interface ILoading {
 }
 ```
 
-
-
-
-
-
-
 ### 环境变量
 
 方式一：手动修改不同变量的值
 
 方式二：根据进程的环境变量，process.env.NODE_ENV
 
-方式三：vue.cli脚手架搭建的项目中的写法：
+方式三：vue.cli 脚手架搭建的项目中的写法：
 
 - .env.development
 
@@ -1163,95 +1067,73 @@ export interface ILoading {
 
 - .env
 
-  在上述文件中书写key = value的方式
+  在上述文件中书写 key = value 的方式
 
   在项目的文件中使用：process.env.key
 
-  
-
-
-
-### tsconfig.json说明
+### tsconfig.json 说明
 
 ```json
 {
   "compilerOptions": {
-    "target": "esnext",  // 转为那个版本的es语法，但是如果借助babel转化ts，则不用关注这项，因为babel会更具browerslistrc进行浏览器语法转化
-    "module": "esnext",  // 目标代码使用的模块化方案
-    "strict": true,  // 开启ts的严格检查
-    "jsx": "preserve",  // 对jsx的处理
-    "importHelpers": true,  
-    "moduleResolution": "node",   // 按照node方式解析模块的规则
-    "skipLibCheck": true,   // 跳过对第三方库的类型检测  
-    "esModuleInterop": true,  // 是否混合commonjs和es模块的导入与导出，和下一项搭配使用
+    "target": "esnext", // 转为那个版本的es语法，但是如果借助babel转化ts，则不用关注这项，因为babel会更具browerslistrc进行浏览器语法转化
+    "module": "esnext", // 目标代码使用的模块化方案
+    "strict": true, // 开启ts的严格检查
+    "jsx": "preserve", // 对jsx的处理
+    "importHelpers": true,
+    "moduleResolution": "node", // 按照node方式解析模块的规则
+    "skipLibCheck": true, // 跳过对第三方库的类型检测
+    "esModuleInterop": true, // 是否混合commonjs和es模块的导入与导出，和下一项搭配使用
     "allowSyntheticDefaultImports": true,
-      
-    "sourceMap": true,  // 生成映射文件
-    "baseUrl": ".",   // 文件路径解析时的基本路径
-    "types": ["webpack-env"],   // 对应具体解析使用的类型
-    "paths": {   // 编译阶段的路径解析，类似webpack 中的 alias
+
+    "sourceMap": true, // 生成映射文件
+    "baseUrl": ".", // 文件路径解析时的基本路径
+    "types": ["webpack-env"], // 对应具体解析使用的类型
+    "paths": {
+      // 编译阶段的路径解析，类似webpack 中的 alias
       "@/*": ["src/*"]
     },
-    "lib": ["esnext", "dom", "dom.iterable", "scripthost"]   // 可以在项目中使用哪些环境中的类型
+    "lib": ["esnext", "dom", "dom.iterable", "scripthost"] // 可以在项目中使用哪些环境中的类型
   },
-    
-  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "tests/**/*.ts", "tests/**/*.tsx"], // 当前哪些ts代码需要被解析
-  "exclude": ["node_modules"]   // 排除哪些目录中的ts文件的解析
-}
 
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "tests/**/*.ts", "tests/**/*.tsx"], // 当前哪些ts代码需要被解析
+  "exclude": ["node_modules"] // 排除哪些目录中的ts文件的解析
+}
 ```
 
+### ts 类型定义
 
-
-
-
-### ts类型定义
-
-在项目中加载一些比较特殊的文件，比如.vue，.jpg，.png等，加载这些文件的时候默认ts是不认识这些文件的，也就会认为这些文件不是一个模块而报错。
+在项目中加载一些比较特殊的文件，比如.vue，.jpg，.png 等，加载这些文件的时候默认 ts 是不认识这些文件的，也就会认为这些文件不是一个模块而报错。
 
 对于文件的类型声明：
 
 ```ts
 /* eslint-disable */
 // 声明 .vue文件时模块类型，并且模块中导出什么样的类型
-declare module '*.vue' {   
+declare module '*.vue' {
   import type { DefineComponent } from 'vue';
   const component: DefineComponent<{}, {}, any>;
-  export default component;  
+  export default component;
 }
 ```
 
-
-
-
-
-### css样式初始化
+### css 样式初始化
 
 npm install normalize.css
 
-再设定一些整个项目常用的css样式。
+再设定一些整个项目常用的 css 样式。
 
 ### 登录页面逻辑
 
-在登录页面正确输入后，点击登录按钮触发在login的store模块中的登录action函数，该函数触发封装的login模块的网络请求，网络请求成功后返回token（保存到本地，之后在请求拦截体重添加token）和用户id，将token commit到motations中，再到login模块的store中。同时在action中根据id和token发出请求用户数据的请求，请求成功后保存到本地和vuex中。
+在登录页面正确输入后，点击登录按钮触发在 login 的 store 模块中的登录 action 函数，该函数触发封装的 login 模块的网络请求，网络请求成功后返回 token（保存到本地，之后在请求拦截体重添加 token）和用户 id，将 token commit 到 motations 中，再到 login 模块的 store 中。同时在 action 中根据 id 和 token 发出请求用户数据的请求，请求成功后保存到本地和 vuex 中。
 
 1. 登录逻辑
-2. 数据保存（vuex和localstorage）
+2. 数据保存（vuex 和 localstorage）
 3. 发送其他请求
 4. 获取用户数据
 5. 跳转首页
 
-
-
-
-
-
-
-
-
 ### 项目文件命名规范
-
-
 
 文件夹：全部小写，多个单词之间用 - 分割
 
@@ -1259,36 +1141,34 @@ npm install normalize.css
 
 组件名：全部小写，多个单词之间用 - 分割
 
-css类名：全部小写，多个单词之间用 - 分割
-
-
+css 类名：全部小写，多个单词之间用 - 分割
 
 ### 扩展
 
-在ts中Promimse构造函数是支持泛型的。
+在 ts 中 Promimse 构造函数是支持泛型的。
 
-从下面的源码可以看出：泛型 T  将作为then函数的onfulfilled函数的参数的数据格式。
+从下面的源码可以看出：泛型 T 将作为 then 函数的 onfulfilled 函数的参数的数据格式。
 
 ```ts
 interface Promise<T> {
-  
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
+  then<TResult1 = T, TResult2 = never>(
+    onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null,
+    onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null
+  ): Promise<TResult1 | TResult2>;
 
-   
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
+  catch<TResult = never>(
+    onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null
+  ): Promise<T | TResult>;
 }
 
-
-new Promise<sting>((resolve,reject)=>{
-    resolve('asd')
-}).then((res)=>{
-    console.log(res)  //res的数据格式是传入的泛型 string
-})
+new Promise<sting>((resolve, reject) => {
+  resolve('asd');
+}).then((res) => {
+  console.log(res); //res的数据格式是传入的泛型 string
+});
 ```
 
-
-
-vue3.0项目中的defineComponent说明：
+vue3.0 项目中的 defineComponent 说明：
 
 ```ts
 <template>
@@ -1309,15 +1189,13 @@ export default defineComponent({
 <style lang="scss"></style>
 ```
 
-
-
-在TS中获取某个组件的实例的数据类型：
+在 TS 中获取某个组件的实例的数据类型：
 
 构造一种类型，由类型的构造函数的实例类型组成。
 
 ```ts
 InstanceType<typeof 组件名>  // InstanceType 是TS内置的类型，表示取类实例对象的类型
-    
+
 
 例子：
 type FormInstance = InstanceType<typeof ElForm>;
@@ -1329,26 +1207,23 @@ class C {
   x = 0;
   y = 0;
 }
- 
+
 type T0 = InstanceType<typeof C>;
 type T0 = C
-                       
+
 type T1 = InstanceType<any>;
 type T1 = any
-                       
+
 type T2 = InstanceType<never>;
 type T2 = never
-                       
+
 type T3 = InstanceType<string>;
 Type 'string' does not satisfy the constraint 'abstract new (...args: any) => any'.
 type T3 = any
-                       
+
 type T4 = InstanceType<Function>;
 Type 'Function' does not satisfy the constraint 'abstract new (...args: any) => any'.
 Type 'Function' provides no match for the signature 'new (...args: any): any'.
 type T4 = any
 
 ```
-
-
-

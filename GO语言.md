@@ -46,7 +46,7 @@ GO语言的特点：
 
 环境变量配置：
 
-![image-20210806220852528](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210806220852528.png)
+![image-20210806220852528](.\typora-user-images\image-20210806220852528.png)
 
 
 
@@ -62,5 +62,5 @@ go语言的入门：
 
 go项目的目录结构的组织：
 
-![image-20210806222608555](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210806222608555.png)
+![image-20210806222608555](.\typora-user-images\image-20210806222608555.png)
 

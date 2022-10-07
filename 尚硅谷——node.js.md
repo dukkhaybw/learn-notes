@@ -33,7 +33,7 @@ bable转换语法的命令：
 
 ## Node.js是一个基于Chrome V8引擎的JavaScript运行环境。
 
-![image-20210510103539986](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210510103539986.png)
+![image-20210510103539986](.\typora-user-images\image-20210510103539986.png)
 
 特点：
 
@@ -57,7 +57,7 @@ bable转换语法的命令：
 
   
 
-![image-20210510103824747](C:\Users\dukkha\AppData\Roaming\Typora\typora-user-images\image-20210510103824747.png)
+![image-20210510103824747](.\typora-user-images\image-20210510103824747.png)
 
 
 
