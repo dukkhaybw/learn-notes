@@ -210,13 +210,13 @@ source-map 文件说明：
 
 在 webpack.config.js 文件中有一个和 mode,entry,output 平级的字段——devtool，通过它进行 source-map 配置。
 
-![image-20210920202101069](.\typora-user-images\image-20210920202101069.png)
+![image-20210920202101069](..\typora-user-images\image-20210920202101069.png)
 
-![image-20210920193508765](.\typora-user-images\image-20210920193508765.png)
+![image-20210920193508765](..\typora-user-images\image-20210920193508765.png)
 
 在 eval 模式下，可以在模块的源代码的最后增加一个特殊的注释（这种注释只在 eval 函数中才有效）， /# soureURL =webpack://xxxxxx/xxxx。
 
-![image-20210920090042609](.\typora-user-images\image-20210920090042609.png)
+![image-20210920090042609](..\typora-user-images\image-20210920090042609.png)
 
 devtool 的不同取值：
 
@@ -226,11 +226,11 @@ devtool 的不同取值：
 
 - source-map：包括项目源码和 webpack 中的代码都做了还原
 
-![image-20210920195734080](.\typora-user-images\image-20210920195734080.png)
+![image-20210920195734080](..\typora-user-images\image-20210920195734080.png)
 
 - eval-source-map
 
-![image-20210920195847810](.\typora-user-images\image-20210920195847810.png)
+![image-20210920195847810](..\typora-user-images\image-20210920195847810.png)
 
 eval 和 source-map 字段的组合，会让 source-map 内容在打包后的每个源码的 eval 字符串的最后面加上 sourceURl 的 base64 内容。 source-map 都是生成到 eval 函数最后面。
 
@@ -238,43 +238,43 @@ eval 和 source-map 字段的组合，会让 source-map 内容在打包后的每
 
 所有的 source-map 依然是进行了 base64 编码的，因为打包后的 js 文件中不再使用 eval 函数包裹每个模块，所以它不是放在每个模块对应的 eval 的后面了，而是直接放在打包生成的文件的最后面了。
 
-![image-20210920200839940](.\typora-user-images\image-20210920200839940.png)
+![image-20210920200839940](..\typora-user-images\image-20210920200839940.png)
 
 该 source-map 是当前项目中所有模块都生成的内容，所以在打包执行时，即使某个模块的文件有报错的代码出现，由于 source-map 不受 eval 的限制，所以每个项目模块的映射都能完整体现。
 
-![image-20210920201614585](.\typora-user-images\image-20210920201614585.png)
+![image-20210920201614585](..\typora-user-images\image-20210920201614585.png)
 
 - cheap-source-map
 
-![image-20210920204538909](.\typora-user-images\image-20210920204538909.png)
+![image-20210920204538909](..\typora-user-images\image-20210920204538909.png)
 
 - cheap-module-source-map
 
-![image-20210920205808312](.\typora-user-images\image-20210920205808312.png)
+![image-20210920205808312](..\typora-user-images\image-20210920205808312.png)
 
-![image-20210920205936692](.\typora-user-images\image-20210920205936692.png)
+![image-20210920205936692](..\typora-user-images\image-20210920205936692.png)
 
 - hidden-source-map
 
-![image-20210920210236616](.\typora-user-images\image-20210920210236616.png)
+![image-20210920210236616](..\typora-user-images\image-20210920210236616.png)
 
-![image-20210920210346524](.\typora-user-images\image-20210920210346524.png)
+![image-20210920210346524](..\typora-user-images\image-20210920210346524.png)
 
 自己手动加上后有会生效 source-map。
 
 - nosources-source-map
 
-![image-20210920210521077](.\typora-user-images\image-20210920210521077.png)
+![image-20210920210521077](..\typora-user-images\image-20210920210521077.png)
 
-![image-20210920212238227](.\typora-user-images\image-20210920212238227.png)
+![image-20210920212238227](..\typora-user-images\image-20210920212238227.png)
 
 相对的最佳实践
 
-![image-20210920212501056](.\typora-user-images\image-20210920212501056.png)
+![image-20210920212501056](..\typora-user-images\image-20210920212501056.png)
 
 ## Babel
 
-![image-20220307074738357](.\typora-user-images\image-20220307074738357.png)
+![image-20220307074738357](..\typora-user-images\image-20220307074738357.png)
 
 babel 本身是可以单独使用的一个工具，可以不和 webpack 配置使用。
 
@@ -289,11 +289,11 @@ npx babel src --out-dir result            //只写文件的话，会将文件下
 
 源码：
 
-![image-20210920214434926](.\typora-user-images\image-20210920214434926.png)
+![image-20210920214434926](..\typora-user-images\image-20210920214434926.png)
 
 转换后代码：
 
-![image-20210920214503314](.\typora-user-images\image-20210920214503314.png)
+![image-20210920214503314](..\typora-user-images\image-20210920214503314.png)
 
 这里可以发现源码并没有被 babel 进行更多的转换，因为只是使用了 babel 的内核，对于代码要如何转换，还需要使用其他插件转换对应语法，比如对箭头函数进行转换的插件。
 
@@ -303,7 +303,7 @@ npx babel src --out-dir result            //只写文件的话，会将文件下
 npx babel src --out-dir result  --plugins=@babel/plugin-transform-arrow-functions
 ```
 
-![image-20210920215102557](.\typora-user-images\image-20210920215102557.png)
+![image-20210920215102557](..\typora-user-images\image-20210920215102557.png)
 
 const 字符转为 var 的插件：@babel/pulgin-transform-block-scoping
 
@@ -311,7 +311,7 @@ const 字符转为 var 的插件：@babel/pulgin-transform-block-scoping
 npx babel src --out-dir result  --plugins=@babel/plugin-transform-arrow-functions,@babel/plugin-transform-block-scoping
 ```
 
-![image-20210920215240261](.\typora-user-images\image-20210920215240261.png)
+![image-20210920215240261](..\typora-user-images\image-20210920215240261.png)
 
 这样一个一个语法特性去转的话，需要安装非常多的插件。但是其实不需要，如果想要一次性配置很多语法插件，这时可以选择预设-------@babel/preset-env
 
@@ -319,17 +319,17 @@ npx babel src --out-dir result  --plugins=@babel/plugin-transform-arrow-function
 npx babel src --out-dir result  --presets=@babel/preset-env
 ```
 
-![image-20210920215643389](.\typora-user-images\image-20210920215643389.png)
+![image-20210920215643389](..\typora-user-images\image-20210920215643389.png)
 
-![image-20210920215901150](.\typora-user-images\image-20210920215901150.png)
+![image-20210920215901150](..\typora-user-images\image-20210920215901150.png)
 
 Babel 的底层代码转换的逻辑：
 
 babel 将 ES6 语法的源码生成 ES6 对应的 AST 语法树，在将 ES6 对应的语法树转为另一个可以转为 ES5 代码的新的 AST 语法树，再将新的 AST 语法树生成 ES5 的代码（babel 本质就是 JavaScript 的一个编译器）。
 
-![image-20210920230600288](.\typora-user-images\image-20210920230600288.png)
+![image-20210920230600288](..\typora-user-images\image-20210920230600288.png)
 
-![image-20210920230615950](.\typora-user-images\image-20210920230615950.png)
+![image-20210920230615950](..\typora-user-images\image-20210920230615950.png)
 
 ## babel 结合 webpack 的使用
 
@@ -428,15 +428,15 @@ module: {
 }
 ```
 
-![image-20211004222808041](.\typora-user-images\image-20211004222808041.png)
+![image-20211004222808041](..\typora-user-images\image-20211004222808041.png)
 
 早期 babel/preset 中会见到下面的情况：
 
-![image-20220311220855764](.\typora-user-images\image-20220311220855764.png)
+![image-20220311220855764](..\typora-user-images\image-20220311220855764.png)
 
-![image-20211004222916792](.\typora-user-images\image-20211004222916792.png)
+![image-20211004222916792](..\typora-user-images\image-20211004222916792.png)
 
-![image-20210921000205776](.\typora-user-images\image-20210921000205776.png)
+![image-20210921000205776](..\typora-user-images\image-20210921000205776.png)
 
 babel.config.js:
 
@@ -449,9 +449,9 @@ module.export = {
 
 ## polyfill
 
-![image-20210921000756977](.\typora-user-images\image-20210921000756977.png)
+![image-20210921000756977](..\typora-user-images\image-20210921000756977.png)
 
-![image-20210921003250741](.\typora-user-images\image-20210921003250741.png)
+![image-20210921003250741](..\typora-user-images\image-20210921003250741.png)
 
 ```
 PS C:\Users\dukkha\Desktop\webpac\02> npm install @babel/polyfill -S
@@ -468,7 +468,7 @@ import 'regenerator-runtime/runtime';
 
 使用：
 
-![image-20210921003318054](.\typora-user-images\image-20210921003318054.png)
+![image-20210921003318054](..\typora-user-images\image-20210921003318054.png)
 
 ```js
 module.exports = {
@@ -495,9 +495,9 @@ You should also be sure that the version you pass to the `corejs` option matches
   yarn add core-js@2              yarn add core-js@3
 ```
 
-![image-20210921003338380](.\typora-user-images\image-20210921003338380.png)
+![image-20210921003338380](..\typora-user-images\image-20210921003338380.png)
 
-![image-20210921003509849](.\typora-user-images\image-20210921003509849.png)
+![image-20210921003509849](..\typora-user-images\image-20210921003509849.png)
 
 core-js regenerator-runtime -S
 
@@ -557,17 +557,17 @@ import 'regenereator-runtime/runtime';
 
 其他更细致的引入 pylfill 的方式：在 github 中的 core-js 库中可以查看
 
-![image-20210921003126190](.\typora-user-images\image-20210921003126190.png)
+![image-20210921003126190](..\typora-user-images\image-20210921003126190.png)
 
 ## Plugin-transform-runtime
 
-![image-20210921003814818](.\typora-user-images\image-20210921003814818.png)
+![image-20210921003814818](..\typora-user-images\image-20210921003814818.png)
 
 使用：
 
-![image-20210921004353401](.\typora-user-images\image-20210921004353401.png)
+![image-20210921004353401](..\typora-user-images\image-20210921004353401.png)
 
-![image-20220311223628784](.\typora-user-images\image-20220311223628784.png)
+![image-20220311223628784](..\typora-user-images\image-20220311223628784.png)
 
 ```js
 module.export = {
@@ -590,7 +590,7 @@ module.export = {
 
 ## 对 React 中 jsx 的支持
 
-![image-20210921175427009](.\typora-user-images\image-20210921175427009.png)
+![image-20210921175427009](..\typora-user-images\image-20210921175427009.png)
 
 ```shell
 npm install --save-dev @babel/preset-react
@@ -668,7 +668,7 @@ module: {
 
 在 ts 文件中使用了 promise 等新语法特性时，通过 ts-loader 编译后的代码时不会处理这些新的语法特性的（没有做 poyfill）。
 
-![image-20210921210223415](.\typora-user-images\image-20210921210223415.png)
+![image-20210921210223415](..\typora-user-images\image-20210921210223415.png)
 
 ```js
 module: {
@@ -688,11 +688,11 @@ module: {
 
 ts-loader 和 babel-loader 都编译 ts 代码。
 
-![image-20210921221920422](.\typora-user-images\image-20210921221920422.png)
+![image-20210921221920422](..\typora-user-images\image-20210921221920422.png)
 
 babel-loader 的不足是：不会对代码进行非常强的类型校验。源码类型有错误的时候。在打包时任然可以打包成功。但是使用 ts-loader，则有类型错误时使用 ts-loader 则直接打包失败。
 
-![image-20210921222111551](.\typora-user-images\image-20210921222111551.png)
+![image-20210921222111551](..\typora-user-images\image-20210921222111551.png)
 
 第一点的意思是：如果自己的项目中使用到的新的 es6 以后的语法特性较少的话，可以考虑只使用 tsc 来编译和转换 js 源码
 
@@ -734,11 +734,11 @@ tec --noEmit 指令只检测变量类型而不直接输出任何文件。其他�
 
 ## ESLint
 
-![image-20210921224411806](.\typora-user-images\image-20210921224411806.png)
+![image-20210921224411806](..\typora-user-images\image-20210921224411806.png)
 
 使用：
 
-![image-20210921230453153](.\typora-user-images\image-20210921230453153.png)
+![image-20210921230453153](..\typora-user-images\image-20210921230453153.png)
 
 npm install eslint -D
 
@@ -780,39 +780,39 @@ ESLint 的基本原理：
 3. 深度遍历 AST 的同时访问每一个节点，并为每一个节点应用插件
 4. 插件在工作的时候对不符合规则的语法报告错误并进行修复
 
-![image-20210921230602081](.\typora-user-images\image-20210921230602081.png)
+![image-20210921230602081](..\typora-user-images\image-20210921230602081.png)
 
-![image-20210921224931615](.\typora-user-images\image-20210921224931615.png)
+![image-20210921224931615](..\typora-user-images\image-20210921224931615.png)
 
-![image-20210921224951663](.\typora-user-images\image-20210921224951663.png)
+![image-20210921224951663](..\typora-user-images\image-20210921224951663.png)
 
 es2021:表示 es2021 前的那些语法特性都可以编写。
 
 es2016 表示 es2016 后的语法特性不建议编写。
 
-![image-20210921225101314](.\typora-user-images\image-20210921225101314.png)
+![image-20210921225101314](..\typora-user-images\image-20210921225101314.png)
 
-![image-20210921225929175](.\typora-user-images\image-20210921225929175.png)
+![image-20210921225929175](..\typora-user-images\image-20210921225929175.png)
 
 extends 表示继承，继承其他插件的 ESLint 规则。
 
 parser 解析器
 
-![image-20210921225232047](.\typora-user-images\image-20210921225232047.png)
+![image-20210921225232047](..\typora-user-images\image-20210921225232047.png)
 
-![image-20210921230002920](.\typora-user-images\image-20210921230002920.png)
+![image-20210921230002920](..\typora-user-images\image-20210921230002920.png)
 
 在选择 commonjs 规范后引入 es6 模块化规范：
 
-![image-20210921230221865](.\typora-user-images\image-20210921230221865.png)
+![image-20210921230221865](..\typora-user-images\image-20210921230221865.png)
 
 手动取消特定的代码格式检测能力：
 
-![image-20210921230929498](.\typora-user-images\image-20210921230929498.png)
+![image-20210921230929498](..\typora-user-images\image-20210921230929498.png)
 
-![image-20210921230844940](.\typora-user-images\image-20210921230844940.png)
+![image-20210921230844940](..\typora-user-images\image-20210921230844940.png)
 
-![image-20210921231324930](.\typora-user-images\image-20210921231324930.png)
+![image-20210921231324930](..\typora-user-images\image-20210921231324930.png)
 
 规则的值有三种取法：
 
@@ -839,7 +839,7 @@ module: {
 
 prettier 插件
 
-![image-20210922085943584](.\typora-user-images\image-20210922085943584.png)
+![image-20210922085943584](..\typora-user-images\image-20210922085943584.png)
 
 ## 加载 vue 文件
 
@@ -893,7 +893,7 @@ plugins: [new VueLoaderPlugin()];
 
 webpack 中开启本地服务，将打包后的文件放在该服务中进行访问。
 
-![image-20210922232425355](.\typora-user-images\image-20210922232425355.png)
+![image-20210922232425355](..\typora-user-images\image-20210922232425355.png)
 
 watch 加上 live-server 插件：
 
@@ -902,11 +902,11 @@ watch 加上 live-server 插件：
 - live-server 无法脱离 vscode 软件的依赖
 - live-server 每次都完全重新刷新整个页面
 
-![image-20210922232526656](.\typora-user-images\image-20210922232526656.png)
+![image-20210922232526656](..\typora-user-images\image-20210922232526656.png)
 
 方式一：
 
-![image-20210922232837806](.\typora-user-images\image-20210922232837806.png)
+![image-20210922232837806](..\typora-user-images\image-20210922232837806.png)
 
 ```js
 {
@@ -932,55 +932,55 @@ package.json:
 }
 ```
 
-![image-20210922234304870](.\typora-user-images\image-20210922234304870.png)
+![image-20210922234304870](..\typora-user-images\image-20210922234304870.png)
 
 ## webpack-dev-middleware
 
-![image-20210922235400145](.\typora-user-images\image-20210922235400145.png)
+![image-20210922235400145](..\typora-user-images\image-20210922235400145.png)
 
-![image-20210922235254411](.\typora-user-images\image-20210922235254411.png)
+![image-20210922235254411](..\typora-user-images\image-20210922235254411.png)
 
 ## HMR
 
-![image-20210923085509208](.\typora-user-images\image-20210923085509208.png)
+![image-20210923085509208](..\typora-user-images\image-20210923085509208.png)
 
-![image-20210923085921170](.\typora-user-images\image-20210923085921170.png)
+![image-20210923085921170](..\typora-user-images\image-20210923085921170.png)
 
-![image-20211007115446381](.\typora-user-images\image-20211007115446381.png)
+![image-20211007115446381](..\typora-user-images\image-20211007115446381.png)
 
 ## 框架中的 HMR
 
-![image-20210923090002045](.\typora-user-images\image-20210923090002045.png)
+![image-20210923090002045](..\typora-user-images\image-20210923090002045.png)
 
-![image-20211007115646190](.\typora-user-images\image-20211007115646190.png)
+![image-20211007115646190](..\typora-user-images\image-20211007115646190.png)
 
 **React 中的 HMR**
 
-![image-20210923224219869](.\typora-user-images\image-20210923224219869.png)
+![image-20210923224219869](..\typora-user-images\image-20210923224219869.png)
 
 注意：该 React 热更新插件只能在开发环境下使用，而不能在生产环境下使用的。
 
 **Vue 中的 HMR**
 
-![image-20210923225305158](.\typora-user-images\image-20210923225305158.png)
+![image-20210923225305158](..\typora-user-images\image-20210923225305158.png)
 
 **HMR 的原理**
 
-![image-20210923225935598](.\typora-user-images\image-20210923225935598.png)
+![image-20210923225935598](..\typora-user-images\image-20210923225935598.png)
 
-![image-20210923225840210](.\typora-user-images\image-20210923225840210.png)
+![image-20210923225840210](..\typora-user-images\image-20210923225840210.png)
 
-![image-20210923232041086](.\typora-user-images\image-20210923232041086.png)
+![image-20210923232041086](..\typora-user-images\image-20210923232041086.png)
 
 ## webpack 中的路径配置项
 
 **output**中的 publicPath
 
-![image-20210924191925842](.\typora-user-images\image-20210924191925842.png)
+![image-20210924191925842](..\typora-user-images\image-20210924191925842.png)
 
 publicPath 在打包后生成的 html 文件中，在该 html 文件中引入其他资源文件（js,css,img 等）的路径前面拼接上 publicPath 属性对应的值。
 
-![image-20210924232842567](.\typora-user-images\image-20210924232842567.png)
+![image-20210924232842567](..\typora-user-images\image-20210924232842567.png)
 
 该字段的作用是：对于打包后的 html 中，对应经过 webpack 打包的其他资源文件。在打包后的 html 中 何如引入这些经过 webpack 打包后在输出目录中生成的对应资源的。比如 webpack 打包后生成的 js，css 和 img 在打包的 html 文件中是通过相应的标签的 src，href，url 等属性来引入的。而 publicPath 就是决定这些标签是以什么路径开头的。
 
@@ -988,9 +988,9 @@ publicPath 在打包后生成的 html 文件中，在该 html 文件中引入其
 
 **devServer**中的 publicPath
 
-![image-20210924192014580](.\typora-user-images\image-20210924192014580.png)
+![image-20210924192014580](..\typora-user-images\image-20210924192014580.png)
 
-![image-20210924233534255](.\typora-user-images\image-20210924233534255.png)
+![image-20210924233534255](..\typora-user-images\image-20210924233534255.png)
 
 webpack-dev-serve 中本地运行项目时，默认是将项目的根目录作为对应域名端口号下的根路径的。打包后的 html 文件和 js 文件在内存中是和项目根目录在同一个目录下。这就是 publicPath 的能力。
 
@@ -1000,25 +1000,25 @@ webpack-dev-serve 中本地运行项目时，默认是将项目的根目录作�
 
 该值一般时绝对路径。
 
-![image-20210924192435488](.\typora-user-images\image-20210924192435488.png)
+![image-20210924192435488](..\typora-user-images\image-20210924192435488.png)
 
 contentBase 该属性的理解是，它指明的是对于打包前的 html 模板中，相对于该模板 html 的位置出发的路径。例如：自己在项目的根目录下准备了一个 html 模板文件，同时也在该目录下的 myasset 文件中放置了一些不能被 webpack 打包的资源文件，我直接在该未打包的模板 html 文件中通过比如 script 标签，link 标签，以该 html 相对这些资源文件的路径在 html 模板中引入。 在 webpack-de-serve 打包后会将该模板 html 一并打包到设置好的输出文件目录中，这时其实运行的 html 相对于这些资源文件的位置是发生了变化，但是仍然能生效，就是 contentBase 能设置的。
 
-![image-20210925213114132](.\typora-user-images\image-20210925213114132.png)
+![image-20210925213114132](..\typora-user-images\image-20210925213114132.png)
 
 watchContentBase：表示开启对 contentBase 目录下文件的监测，一旦有变化，重新刷新浏览器。
 
 在 webpack-dev-derve 启动好本地项目后，在开发过程中，一旦某段代码写错后，webpack-dev-derve 就会编译失败，编译失败后浏览器中也会显示错误信息，当之后修复好对应的错误后，webpack-dev-serve 则又会编译成功并且会重新刷新浏览器，之前的错误信息都会消失。如果不希望完全重新刷新浏览，而是只重新编译出错模块的内容，则只需要在 devServer 字段中增加 hotOnly 属性并设置为 true 即可。
 
-![image-20210925213702295](.\typora-user-images\image-20210925213702295.png)
+![image-20210925213702295](..\typora-user-images\image-20210925213702295.png)
 
-![image-20210925213909861](.\typora-user-images\image-20210925213909861.png)
+![image-20210925213909861](..\typora-user-images\image-20210925213909861.png)
 
 localhost 域名默认情况下是无法在同一网段下面被其他电脑所访问的，除非自己在自己的本机上设置 loaclhost 对应的是另一个电脑的 IP 地址。
 
-![image-20210925214215744](.\typora-user-images\image-20210925214215744.png)
+![image-20210925214215744](..\typora-user-images\image-20210925214215744.png)
 
-![image-20210925215613897](.\typora-user-images\image-20210925215613897.png)
+![image-20210925215613897](..\typora-user-images\image-20210925215613897.png)
 
 ```js
 devServer:{
@@ -1041,15 +1041,15 @@ devServer:{
 
 默认情况下，代理是不能支持 https 协议的代理的，如果还是要代理到 https 的服务器，则需要配置 secure 为 false 值。
 
-![image-20210925220053852](.\typora-user-images\image-20210925220053852.png)
+![image-20210925220053852](..\typora-user-images\image-20210925220053852.png)
 
 包中的源码：，从下图可以看出，设置 changeOrigin 字段后，源码内部会修改请求头中的 host 属性。
 
-![image-20210925220043402](.\typora-user-images\image-20210925220043402.png)
+![image-20210925220043402](..\typora-user-images\image-20210925220043402.png)
 
 解决**开发环境**下，**SPA 单页面应用**和**history 模式**下的页面刷新显示 404 的问题（hash 模式下没有该问题）。
 
-![image-20210925221338744](.\typora-user-images\image-20210925221338744.png)
+![image-20210925221338744](..\typora-user-images\image-20210925221338744.png)
 
 ```js
 devServer:{
@@ -1241,7 +1241,7 @@ const prodConfig = {
 module.exports = merge(commonConfig, prodConfig);
 ```
 
-![image-20210926210315458](.\typora-user-images\image-20210926210315458.png)
+![image-20210926210315458](..\typora-user-images\image-20210926210315458.png)
 
 ```js
 module.exports = {
@@ -1289,9 +1289,9 @@ module.exports = function(env){   // env中的参数来自webpack命令行中传
 
 上面的 env 打印的情况：
 
-![image-20210925230549697](.\typora-user-images\image-20210925230549697.png)
+![image-20210925230549697](..\typora-user-images\image-20210925230549697.png)
 
-![image-20210925230621281](.\typora-user-images\image-20210925230621281.png)
+![image-20210925230621281](..\typora-user-images\image-20210925230621281.png)
 
 **正式介绍配置分离**
 
@@ -1472,7 +1472,7 @@ console.log(`Current directory: ${cwd()}`);
 
 之前将所有的代码都打包到一个 bundle.js 文件中，意味着这个 js 文件的体积会非常大。其中包括业务代码，webpack 相关的代码和框架和第三方包的代码都打包到一个 js 文件中了。当浏览器首次加载该 js 文件时就会导致速度较慢。在开发中，常常选择将大的 js 文件拆分为许多小的 js 文件，之后就可以按需加载。
 
-![image-20210926223820186](.\typora-user-images\image-20210926223820186.png)
+![image-20210926223820186](..\typora-user-images\image-20210926223820186.png)
 
 webpack.common.js 文件中：
 
@@ -1545,23 +1545,23 @@ module.exports = function (env){
 
 entry dependencise(入口依赖)
 
-![image-20210926230934747](.\typora-user-images\image-20210926230934747.png)
+![image-20210926230934747](..\typora-user-images\image-20210926230934747.png)
 
-![image-20210926231003585](.\typora-user-images\image-20210926231003585.png)
+![image-20210926231003585](..\typora-user-images\image-20210926231003585.png)
 
 打包结果：
 
-![image-20211007153218173](.\typora-user-images\image-20211007153218173.png)
+![image-20211007153218173](..\typora-user-images\image-20211007153218173.png)
 
 ### 方式三：
 
 SplitChunks
 
-![image-20210927085132251](.\typora-user-images\image-20210927085132251.png)
+![image-20210927085132251](..\typora-user-images\image-20210927085132251.png)
 
-![image-20220307223059758](.\typora-user-images\image-20220307223059758.png)
+![image-20220307223059758](..\typora-user-images\image-20220307223059758.png)
 
-![image-20210927182244689](.\typora-user-images\image-20210927182244689.png)
+![image-20210927182244689](..\typora-user-images\image-20210927182244689.png)
 
 async：对异步导入的模块进行分包
 
@@ -1569,9 +1569,9 @@ initial：对同步导入的模块进行分包
 
 all：对同步和异步导入的模块都进行分包（常用）
 
-![image-20210927182313513](.\typora-user-images\image-20210927182313513.png)
+![image-20210927182313513](..\typora-user-images\image-20210927182313513.png)
 
-![image-20210927182327321](.\typora-user-images\image-20210927182327321.png)
+![image-20210927182327321](..\typora-user-images\image-20210927182327321.png)
 
 ```js
 const path  = require('path')
@@ -1679,15 +1679,15 @@ module.exports = function (env){
 }
 ```
 
-![image-20210927085306746](.\typora-user-images\image-20210927085306746.png)
+![image-20210927085306746](..\typora-user-images\image-20210927085306746.png)
 
 vue 脚手架中的 splitChunks：
 
-![image-20210927091739763](.\typora-user-images\image-20210927091739763.png)
+![image-20210927091739763](..\typora-user-images\image-20210927091739763.png)
 
 React 脚手架中的 splitChunks：
 
-![image-20210927091822756](.\typora-user-images\image-20210927091822756.png)
+![image-20210927091822756](..\typora-user-images\image-20210927091822756.png)
 
 一般项目中的同步引入的代码，一般框架中都可能拆包出来 4 个 js 文件：
 
@@ -1698,7 +1698,7 @@ React 脚手架中的 splitChunks：
 
 ### import 动态导入的拆包
 
-![image-20210927183013405](.\typora-user-images\image-20210927183013405.png)
+![image-20210927183013405](..\typora-user-images\image-20210927183013405.png)
 
 在项目中通过 import 函数动态导入其他模块，这是一个异步的操作。在 webpack 项目中，只要是异步导入的代码，webpack 都会进行代码分离并生成一个单独的文件，不论 splitChunks 中 chunks 的值是什么，并且不论动态导入的 js 模块的代码的大小。
 
@@ -1738,15 +1738,15 @@ output:{
 
   - natural (使用自然数作为拆包文件名名称一部分，一个导入的文件被去除后，下次打包后面的模块会重新依次变更文件名重新命名，这样不利于缓存)
 
-    ![image-20210927222032877](.\typora-user-images\image-20210927222032877.png)
+    ![image-20210927222032877](..\typora-user-images\image-20210927222032877.png)
 
   - named（使用包所在的目录作为拆包后 js 文件的名称，开发环境推荐使用）
 
-    ![image-20210927222329169](.\typora-user-images\image-20210927222329169.png)
+    ![image-20210927222329169](..\typora-user-images\image-20210927222329169.png)
 
   - deterministic（使用算法生成的 id 作为文件名，对于相同的文件生成的 id 是不变的，生产环境推荐使用）
 
-    ![image-20210927223419528](.\typora-user-images\image-20210927223419528.png)
+    ![image-20210927223419528](..\typora-user-images\image-20210927223419528.png)
 
 在 output 配置项中 chunkFilename 字段是专门用来设置项目中 import 语法异步加载的包的打包后生产的包的包名的。
 
@@ -1757,7 +1757,7 @@ output: {
 }
 ```
 
-![image-20210927223925530](.\typora-user-images\image-20210927223925530.png)
+![image-20210927223925530](..\typora-user-images\image-20210927223925530.png)
 
 如果想要设置拆包文件的文件名是通过——magic comments (魔法注释)，webpack 在解析到异步加载的模块时，也会解析到异步模块对应的魔法注释，将魔法注释中设置的文件名作为打包后文件的文件名。
 
@@ -1783,7 +1783,7 @@ const Bar = () => import(/* webpackChunkName: "group-foo" */ './Bar.vue');
 const Baz = () => import(/* webpackChunkName: "group-foo" */ './Baz.vue');
 ```
 
-![image-20210927231217568](.\typora-user-images\image-20210927231217568.png)
+![image-20210927231217568](..\typora-user-images\image-20210927231217568.png)
 
 **import 动态导入某一个文件模块最常用在代码懒加载**
 
@@ -1791,7 +1791,7 @@ const Baz = () => import(/* webpackChunkName: "group-foo" */ './Baz.vue');
 
 提前设置一些元素，单击某个元素会展示特定的页面部分，同时刚开始会有一个默认的页面部分被展示。默认非初始页面部分的内容不需要加载。等点击相应的按钮后再加载对应的页面内容。
 
-![image-20210927183516972](.\typora-user-images\image-20210927183516972.png)
+![image-20210927183516972](..\typora-user-images\image-20210927183516972.png)
 
 上面这种懒加载的不足：在对应元素的相应事件被触发后，才会动态的去导入某个文件并解析执行。但是这个过程有主要的两大步：1. 先去服务器下载对应的模块代码； 2.对下载回来的代码进行解析执行。 所以由于会请求服务器资源，所以过程可能较为缓慢。
 
@@ -1831,9 +1831,9 @@ import xxx from './xxxx/xx.js'; //这种方式是同步导入的，如果要拆�
 import('./xxx/xx.js'); //异步动态导入模块，这时即使自己不做任何配置，webpack也会自动拆包分包这些异步导入模块，通过魔法注释和在output中设置chunkFilename 来指定拆包后的文件的名字。
 ```
 
-![image-20210928092543927](.\typora-user-images\image-20210928092543927.png)
+![image-20210928092543927](..\typora-user-images\image-20210928092543927.png)
 
-![image-20210928092525959](.\typora-user-images\image-20210928092525959.png)
+![image-20210928092525959](..\typora-user-images\image-20210928092525959.png)
 
 optimization.runtimeChunk 配置：
 
@@ -1841,7 +1841,7 @@ optimization.runtimeChunk 配置：
 
 如果想将这一系列的代码进行抽离，可以配置 runtimeChunk。
 
-![image-20210928095251597](.\typora-user-images\image-20210928095251597.png)
+![image-20210928095251597](..\typora-user-images\image-20210928095251597.png)
 
 ```js
 runtimeChunk:true     //true等价于设置multiple
@@ -1862,9 +1862,9 @@ runtimeChunk:{
 
 ## CDN
 
-![image-20210928110633501](.\typora-user-images\image-20210928110633501.png)
+![image-20210928110633501](..\typora-user-images\image-20210928110633501.png)
 
-![image-20210928113025243](.\typora-user-images\image-20210928113025243.png)
+![image-20210928113025243](..\typora-user-images\image-20210928113025243.png)
 
 将第三方的库配置到 CDN 中，将自己项目的源码打包的文件放在自己的服务器中。接下来要做的就是第三方库的路径修改为 cdn 路径。找到项目中使用到的第三方库，配置它的 extenals 属性，用来排除打包的模块。在打包生成的项目代码中就没有了排除模块的代码了，用户拿到打包后代码并不能直接运行，为此需要在 html 模板中引入排除模块包的 cdn 地址。
 
@@ -1880,11 +1880,11 @@ externals:{    //该配置项放在生成环境打包的配置文件中
 
 在模板 html 文件中手动添加对应包的 cdn 地址。
 
-![image-20210928130702203](.\typora-user-images\image-20210928130702203.png)
+![image-20210928130702203](..\typora-user-images\image-20210928130702203.png)
 
 webpack 在打包完项目后，会将打包后生成的 js 资源通过 script 标签的形式放在 head 标签的内部的最后面的。
 
-![image-20210928131220918](.\typora-user-images\image-20210928131220918.png)
+![image-20210928131220918](..\typora-user-images\image-20210928131220918.png)
 
 注意在开发环境下不需要对第三方库使用 cdn 连接的形式引入，这样的效率低。**在将 externals 移动到生产环境下后**，**如何避免模板 html 中引用的 cdn 文件的 script 标签无效。**
 
@@ -1905,11 +1905,11 @@ ejs语法中的判断语句 <% if(process.env.NODE_ENV ==="production"){%>
 
 ## shimming 预支全局变量
 
-![image-20210928133529454](.\typora-user-images\image-20210928133529454.png)
+![image-20210928133529454](..\typora-user-images\image-20210928133529454.png)
 
-![image-20210928133540466](.\typora-user-images\image-20210928133540466.png)
+![image-20210928133540466](..\typora-user-images\image-20210928133540466.png)
 
-![image-20210928133610940](.\typora-user-images\image-20210928133610940.png)
+![image-20210928133610940](..\typora-user-images\image-20210928133610940.png)
 
 ## 抽取 CSS
 
@@ -2044,7 +2044,7 @@ module.exports = {
 
 - 使用 chunkhash 存在一个问题，就是当在一个 JS 文件中引入 CSS 文件，编译后它们的 hash 是相同的，而且只要 js 文件发生改变 ，关联的 css 文件 hash 也会改变,这个时候可以使用`mini-css-extract-plugin`里的`contenthash`值，保证即使 css 文件所处的模块里就算其他文件内容改变，只要 css 文件内容不变，那么不会重复构建
 
-![image-20220702132035199](.\typora-user-images\image-20220702132035199.png)
+![image-20220702132035199](..\typora-user-images\image-20220702132035199.png)
 
 模拟 hash 值得生成：
 
@@ -2131,7 +2131,7 @@ DLL:动态链接库（Dynamic Link Library）,指的是可以将共享的且不�
 
 **配置生成 DLL 库：**
 
-![image-20210929092757296](.\typora-user-images\image-20210929092757296.png)
+![image-20210929092757296](..\typora-user-images\image-20210929092757296.png)
 
 在升级到 webpack4 之后，React 和 Vuejs 脚手架都移除了 DLL 库。
 
@@ -2157,13 +2157,13 @@ module.exports = {
 };
 ```
 
-![image-20210929085554060](.\typora-user-images\image-20210929085554060.png)
+![image-20210929085554060](..\typora-user-images\image-20210929085554060.png)
 
 webpack --config 上面的配置文件名： 打包生成 DLL 库。
 
 **使用：**
 
-![image-20210929092833890](.\typora-user-images\image-20210929092833890.png)
+![image-20210929092833890](..\typora-user-images\image-20210929092833890.png)
 
 在要使用 DLL 库的项目中将上面打包生成的 dll 目录复制粘贴到当前项目的根目录下。
 
@@ -2181,11 +2181,11 @@ plugins: [
 ];
 ```
 
-![image-20210929091026001](.\typora-user-images\image-20210929091026001.png)
+![image-20210929091026001](..\typora-user-images\image-20210929091026001.png)
 
 在配置完上面的代码进行项目打包后，打包后的项目中将不再有对应的 dll 库中存在的模块。但是这时如果直接去运行项目的话，仍然是无法直接运行的。
 
-![image-20210929091553327](.\typora-user-images\image-20210929091553327.png)
+![image-20210929091553327](..\typora-user-images\image-20210929091553327.png)
 
 现在已经告知项目通过查找 dll 库中的 mainfest.json 文件，但是具体的 dll 库的引入依然是需要插入到 index.html 模板中的，如果没有插入，则在现有的项目打包的源码中仍然是缺少对应的 dll 中的库文件的。
 
@@ -2203,7 +2203,7 @@ plugins: [
 ];
 ```
 
-![image-20210929093440320](.\typora-user-images\image-20210929093440320.png)
+![image-20210929093440320](..\typora-user-images\image-20210929093440320.png)
 
 ## Terser
 
@@ -2217,7 +2217,7 @@ npm install terser :这样安装后会安装一个他对应的 cli 工具。
 
 npx terser inputfilename -o outputfilename -x(其他参数)
 
-![image-20210929144717288](.\typora-user-images\image-20210929144717288.png)
+![image-20210929144717288](..\typora-user-images\image-20210929144717288.png)
 
 ```js
 const TerserPlugin = require('terser-webpack-plugin')
@@ -2236,9 +2236,9 @@ optimization:{
 }
 ```
 
-![image-20210929152837773](.\typora-user-images\image-20210929152837773.png)
+![image-20210929152837773](..\typora-user-images\image-20210929152837773.png)
 
-![image-20210929152626267](.\typora-user-images\image-20210929152626267.png)
+![image-20210929152626267](..\typora-user-images\image-20210929152626267.png)
 
 ## 对 CSS 的压缩(常在生成环境使用)
 
@@ -2278,7 +2278,7 @@ plugins: [
 
 ## Scope Hosting
 
-![image-20210929155505451](.\typora-user-images\image-20210929155505451.png)
+![image-20210929155505451](..\typora-user-images\image-20210929155505451.png)
 
 ```
 const webpack = require('webpack');
@@ -2318,19 +2318,19 @@ module.exports = {
 
 webpack 中实现 tree shaking 的两种不同的方案：(主要针对 JavaScript 代码)
 
-![image-20210929160730738](.\typora-user-images\image-20210929160730738.png)
+![image-20210929160730738](..\typora-user-images\image-20210929160730738.png)
 
 - 方案一：usedExports
 
-  ![image-20210929161449178](.\typora-user-images\image-20210929161449178.png)
+  ![image-20210929161449178](..\typora-user-images\image-20210929161449178.png)
 
-  ![image-20210929161549195](.\typora-user-images\image-20210929161549195.png)
+  ![image-20210929161549195](..\typora-user-images\image-20210929161549195.png)
 
 - 方案二：sideEffects
 
-  ![image-20210929162641713](.\typora-user-images\image-20210929162641713.png)
+  ![image-20210929162641713](..\typora-user-images\image-20210929162641713.png)
 
-![image-20220324192851014](.\typora-user-images\image-20220324192851014.png)
+![image-20220324192851014](..\typora-user-images\image-20220324192851014.png)
 
 **css 的 tree shaking**(常在生产环境下使用)
 
@@ -2338,7 +2338,7 @@ npm install purgecss-webpack-plugin -D ：在安装该插件的时，会顺带�
 
 对 css 的 tree shaking 本质是使用 PurgeCSS 这个工具库来实现的。
 
-![image-20210929171310040](.\typora-user-images\image-20210929171310040.png)
+![image-20210929171310040](..\typora-user-images\image-20210929171310040.png)
 
 ```js
 const PurgeCssWebpackPlugin = require('purgecss-webpack-plugin');
@@ -2359,7 +2359,7 @@ plugins: [
 
 ## HTTP 压缩
 
-![image-20210929181413091](.\typora-user-images\image-20210929181413091.png)
+![image-20210929181413091](..\typora-user-images\image-20210929181413091.png)
 
 npm install compression-webpack-plugin -D
 
@@ -2392,7 +2392,7 @@ plugins:[
 ]
 ```
 
-![image-20210929195654337](.\typora-user-images\image-20210929195654337.png)
+![image-20210929195654337](..\typora-user-images\image-20210929195654337.png)
 
 将打包的资源注入到 html 中(生产环境使用)：inlinechunkhtmlplugin
 
@@ -2444,11 +2444,11 @@ module.exports={
 
 默认情况下 webpack 会给开发者一个总的打包时间，并没有说明加载每个模块的耗时或者在用某个插件时该插件的耗时。
 
-![image-20210929212250763](.\typora-user-images\image-20210929212250763.png)
+![image-20210929212250763](..\typora-user-images\image-20210929212250763.png)
 
 控制台输出的时间：
 
-![image-20210929212303795](.\typora-user-images\image-20210929212303795.png)
+![image-20210929212303795](..\typora-user-images\image-20210929212303795.png)
 
 ## 费时分析
 
@@ -2475,23 +2475,23 @@ module.export = smw({
   }
 ```
 
-![image-20220324234019680](.\typora-user-images\image-20220324234019680.png)
+![image-20220324234019680](..\typora-user-images\image-20220324234019680.png)
 
-![image-20220324234045319](.\typora-user-images\image-20220324234045319.png)
+![image-20220324234045319](..\typora-user-images\image-20220324234045319.png)
 
-![image-20220324234111764](.\typora-user-images\image-20220324234111764.png)
+![image-20220324234111764](..\typora-user-images\image-20220324234111764.png)
 
-![image-20220324234149593](.\typora-user-images\image-20220324234149593.png)
+![image-20220324234149593](..\typora-user-images\image-20220324234149593.png)
 
-![image-20220324234207210](.\typora-user-images\image-20220324234207210.png)
+![image-20220324234207210](..\typora-user-images\image-20220324234207210.png)
 
-![image-20220324234617896](.\typora-user-images\image-20220324234617896.png)
+![image-20220324234617896](..\typora-user-images\image-20220324234617896.png)
 
 [网址](https://webpack.js.org/guides/code-splitting/#bundle-analysis)
 
 [webpack-bundle-analyzer](https://github.com/webpack-contrib/webpack-bundle-analyzer)
 
-![image-20220324235113412](.\typora-user-images\image-20220324235113412.png)
+![image-20220324235113412](..\typora-user-images\image-20220324235113412.png)
 
 webpack-bundle-analyzer -D
 
@@ -2503,7 +2503,7 @@ plugins: [new BundleAnalyzerPlugin()];
 
 结果图：
 
-![image-20220324235024265](.\typora-user-images\image-20220324235024265.png)
+![image-20220324235024265](..\typora-user-images\image-20220324235024265.png)
 
 webpack 的打包过程
 
@@ -2517,7 +2517,7 @@ React 脚手架的运行机制。脚手架的运行使用 react-scripts
 
 ## webpack 的启动流程
 
-![image-20210929215117195](.\typora-user-images\image-20210929215117195.png)
+![image-20210929215117195](..\typora-user-images\image-20210929215117195.png)
 
 ## webpack 源码
 
@@ -2549,7 +2549,7 @@ const {
 // tapable中一共九个钩子
 ```
 
-![image-20210930091350586](.\typora-user-images\image-20210930091350586.png)
+![image-20210930091350586](..\typora-user-images\image-20210930091350586.png)
 
 ## 自定义 Loader
 
