@@ -42,7 +42,7 @@ js 中不存在方法重载，子类可以重写父类方法。 多态：js 中�
 
 JavaScript 包含以下三部分：
 
-<img src="/Users/wuyi/Desktop/study-notes/js/images/image-20221021194420744.png" alt="image-20221021194420744" style="zoom:50%;" />
+<img src="./images/image-20221021194420744.png" alt="image-20221021194420744" style="zoom:50%;" />
 
 > 1. ECMAScript( ECMA-262 定义的语言，并不局限于 Web 浏览器，ECMA-262 将这门语言作为一个基准来定义，以便在它之上再构建更稳健的脚本语言。)
 >
@@ -351,7 +351,7 @@ VO 是在函数入栈开始执行后被激活为 AO 的.
 
    ![js_003.gif](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/ad310ce9d16f41dea92186d788703feb~tplv-k3u1fbpfcp-zoom-1.image)
 
-```
+   ```
 fn(x)
 fn(x) 相当于 AAAFFF111(AAAFFF000)
 在执行函数体代码之前，我们需要知道的是：
@@ -461,7 +461,7 @@ js 变量的特点：松散类型的变量。
     	let i='abc'
     	console.log(i)
     }
-
+  
     输出结果：
     abc
     abc
@@ -545,7 +545,7 @@ Boolean(' ') //true
   - 对于非数字类型的参数，isNaN( ) 先通过调用 Number( ) 函数将数据进行转换，再用 isNaN 方法进行判断。
 
         + Number( )函数的转换规则：
-
+      
           + 参数是布尔值，true转为1，false转为0
           + **参数是null，返回 0**
           + **参数是undefined，返回 NaN**
@@ -655,9 +655,9 @@ parseInt('') // NaN
       }
       return str0 + personExp + str1 + ageStr;
     }
-
+    
     console.log(output);  //输出字符串that Mike is a youngster
-
+    
     console.log `aaa${1}bbb`
     //['aaa','bbb'] 1
     console.log `aaa${1}b${2}bb`
@@ -921,13 +921,13 @@ parseInt('') // NaN
    ```js
    let result = 25 | 3;
    console.log(result); // 27
-
+   
    可见 25 和 3 的按位或操作的结果是 27：
     25 = 0000 0000 0000 0000 0000 0000 0001 1001
     3 = 0000 0000 0000 0000 0000 0000 0000 0011
    ---------------------------------------------
     OR = 0000 0000 0000 0000 0000 0000 0001 1011
-
+   
    ```
 
    4. 按位异 ( ^ )
@@ -1793,16 +1793,16 @@ console.log(encodeURIComponent(uri));
   ```
   let msg = "hello world";
   eval("console.log(msg)"); // "hello world"
-
+  
   eval("function sayHi() { console.log('hi'); }");
   sayHi();
-
+  
   eval("let msg = 'hello world';");
   console.log(msg); // Reference Error: msg is not defined
-
+  
   通过 eval()定义的任何变量和函数都不会被提升，这是因为在解析代码的时候，它们是被包含在
   一个字符串中的。它们只是在 eval()执行的时候才会被创建。
-
+  
   在严格模式下，在 eval()内部创建的变量和函数无法被外部访问。换句话说，最后两个例子会报
   错。同样，在严格模式下，赋值给 eval 也会导致错误.
   这个方法会对 XSS 利用暴露出很大的攻击面。
@@ -2932,36 +2932,36 @@ function Animal(name,type){
      this.x = 0;
      this.y = 0;
    }
-
+   
    // 父类的方法
    Shape.prototype.move = function (x, y) {
      this.x += x;
      this.y += y;
      console.info("Shape moved.");
    };
-
+   
    // Rectangle - 子类(subclass)
    function Rectangle() {
      Shape.call(this); // call super constructor.
    }
-
+   
    // 子类续承父类
    Rectangle.prototype = Object.create(Shape.prototype);
    Rectangle.prototype.constructor = Rectangle;
-
+   
    //继承到多个对象
    function MyClass() {
      SuperClass.call(this);
      OtherSuperClass.call(this);
    }
-
+   
    // 继承一个类
    MyClass.prototype = Object.create(SuperClass.prototype);
    // 混合其它
    Object.assign(MyClass.prototype, OtherSuperClass.prototype);
    // 重新指定constructor
    MyClass.prototype.constructor = MyClass;
-
+   
    MyClass.prototype.myMethod = function () {
      // do a thing
    };
@@ -3054,7 +3054,7 @@ Object.defineProperty(Person.prototype, "constructor", {
                ......
            }
        }
-
+    
        方式二:
        for(let key in obi){
            if(obj.hasOwnProperty (key)){
@@ -4772,10 +4772,10 @@ p.then(
     - 先改变状态并存放异步任务的结果给实例对象，再指定回调函数并立即执行回调函数
 
            - 如何做到改变状态再指定回调函数
-
+          
              - 在 executor 函数中直接调用 resolve（）或者 reject（）或者 抛出错误。
              - 让实例的 then 方法延迟到 executor 内部的的异步任务执行完成之后再执行
-
+          
              ```javascript
              let p = new Promise(function (resolve, reject) {
                resolve(1);

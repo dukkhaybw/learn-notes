@@ -45,7 +45,7 @@ SEO（Search Engine Optimization）：搜索引擎优化。利用搜索引擎的
 
 - 语义化的`HTML`代码，符合 W3C 规范：语义化代码让搜索引擎容易理解网页。
 
-  ![image-20220215102513624](.\typora-user-images\image-20220215102513624.png)
+  ![image-20220215102513624](..\typora-user-images\image-20220215102513624.png)
 
 - 少用`iframe`：搜索引擎不会抓取`iframe`中的内容
 - 重要内容`HTML`代码放在最前：搜索引擎抓取`HTML`顺序是从上到下，有的搜索引擎对抓取长度有限制，保证重要内容一定会被抓取
@@ -294,7 +294,7 @@ user-scalable    是否允许手动缩放
 
 ### html 文档中 meta charset="UTF-8"的作用
 
-​ 它并不是说该 html 页面是采用 utf-8 来编码的，而是告诉浏览器以 UTF-8 规则来解码 html 页面。页面正真的编码规则采用的是对应编辑器中确定的。如果编辑器中 GBK 对编码页面，但<meta>标签内告诉浏览器用 utf-8 解码也会导致乱码。
+ 它并不是说该 html 页面是采用 utf-8 来编码的，而是告诉浏览器以 UTF-8 规则来解码 html 页面。页面正真的编码规则采用的是对应编辑器中确定的。如果编辑器中 GBK 对编码页面，但<meta>标签内告诉浏览器用 utf-8 解码也会导致乱码。
 
 ### 都有哪些标签？有什么意思？
 
@@ -348,11 +348,11 @@ user-scalable    是否允许手动缩放
   <div>qweretry</div>
   ```
 
-  ![image-20210316121322921](.\typora-user-images\image-20210316121322921.png)
+  ![image-20210316121322921](..\typora-user-images\image-20210316121322921.png)
 
 - 给行内元素设置 margin 在水平方向可以挤开其他行内元素，但是在垂直方向上直接无效，不会挤开其他元素。
 
-  ![image-20210316121523899](.\typora-user-images\image-20210316121523899.png)
+  ![image-20210316121523899](..\typora-user-images\image-20210316121523899.png)
 
 行内块元素：
 
@@ -361,7 +361,7 @@ user-scalable    是否允许手动缩放
 
 #### 三类标签如何相互转换
 
-![image-20210313234047812](.\typora-user-images\image-20210313234047812.png)
+![image-20210313234047812](..\typora-user-images\image-20210313234047812.png)
 
 #### display 的值有哪些值
 
@@ -435,18 +435,18 @@ CSS 1
     <span>222222</span>
     <span>333333</span>
   </div>
-
+  
   div{
     padding-left:30px;
   }
-
+  
   span{
     display:list-item;
     list-style:disc outside none;
   }
   ```
 
-  ![image-20210313235628416](.\typora-user-images\image-20210313235628416.png)
+  ![image-20210313235628416](..\typora-user-images\image-20210313235628416.png)
 
 CSS 2.1
 
@@ -473,7 +473,7 @@ CSS 2.1
     </div>
   </div>
   </body>
-
+  
   .main{
     display: table;
     width:100%;
@@ -526,13 +526,13 @@ CSS 3
   ```
   display: grid;
   display: inline-grid;
-
+  
   display: ruby;
   display: ruby-base;
   display: ruby-text;
   display: ruby-base-container;
   display: ruby-text-container;
-
+  
   /* Global values */
   display: inherit;
   display: initial;
@@ -605,15 +605,15 @@ CSS 3
 
 ### DOCTYPE（Document Type Declaration）文档类型声明（DTD）作用
 
-​ 文档类型声明是必须的。如果没有声明文档类型,**大部分浏览器会启用“怪异模式”来处理页面**，DTD 声明还关系 CSS 会以什么模式解析甚至会影响 js 脚本的解析，浏览器解析 CSS 有两种模式：**标准模式（strict mode）和怪异模式（quirks mode）**
+ 文档类型声明是必须的。如果没有声明文档类型,**大部分浏览器会启用“怪异模式”来处理页面**，DTD 声明还关系 CSS 会以什么模式解析甚至会影响 js 脚本的解析，浏览器解析 CSS 有两种模式：**标准模式（strict mode）和怪异模式（quirks mode）**
 
-​ DOCTYPE 声明文档类型，以便验证文档是否符合文档类型定义（DTD），同时指定了浏览器关于页面使用哪个 HTML 版本进行编写的指令，约束 html 文档的书写（如结束标签能不能少，定义了多少可以使用的标签。）
+ DOCTYPE 声明文档类型，以便验证文档是否符合文档类型定义（DTD），同时指定了浏览器关于页面使用哪个 HTML 版本进行编写的指令，约束 html 文档的书写（如结束标签能不能少，定义了多少可以使用的标签。）
 
-​ DOCTYPE 声明不是 html 标签，必须放在 html 文档的第一行，而且绝不能在它之前添加 xml 声明语句，否则在 IE6 会触发怪异模式。在 HTML 4.0.1 中，DOCTYPE 引用了 DTD，因为 HTML 4.0.1 基于 SGML,这个版本是 IE6 开始兼容的。DTD 规定了标记语言的规则，这样浏览器才能正确的呈现内容。HTML5 不是基于 SGML，所以不需要引用 DTD，HTML5 是 IE9 开始兼容的。
+ DOCTYPE 声明不是 html 标签，必须放在 html 文档的第一行，而且绝不能在它之前添加 xml 声明语句，否则在 IE6 会触发怪异模式。在 HTML 4.0.1 中，DOCTYPE 引用了 DTD，因为 HTML 4.0.1 基于 SGML,这个版本是 IE6 开始兼容的。DTD 规定了标记语言的规则，这样浏览器才能正确的呈现内容。HTML5 不是基于 SGML，所以不需要引用 DTD，HTML5 是 IE9 开始兼容的。
 
-​ 通过 document.compatMode 的返回值可以得出当前 html 文件的渲染模式。返回值有：css1Compat（标准模式和几乎标准模式） 或者 BackCompat（怪异模式） 。
+ 通过 document.compatMode 的返回值可以得出当前 html 文件的渲染模式。返回值有：css1Compat（标准模式和几乎标准模式） 或者 BackCompat（怪异模式） 。
 
-​ ie9 以上的浏览器中，三种模式的渲染几乎没有差别；在 ie7、8、9 中理论上有怪异模式，实际只有标准模式；在 IE6 中，标准模式和怪异模式差异最大；在 ie6 以下只有怪异模式。
+ ie9 以上的浏览器中，三种模式的渲染几乎没有差别；在 ie7、8、9 中理论上有怪异模式，实际只有标准模式；在 IE6 中，标准模式和怪异模式差异最大；在 ie6 以下只有怪异模式。
 
 ### HTML 元素的嵌套关系如何确定
 
@@ -630,9 +630,9 @@ CSS 3
 
 用于自定义属性，通过这种方法设置的属性被存放在了用 js 获取的 DOM 对象的 dataset 属性中。不支持该属性的浏览器可以通过 getAttribute 方法获取。
 
-![image-20210313211207900](.\typora-user-images\image-20210313211207900.png)
+![image-20210313211207900](..\typora-user-images\image-20210313211207900.png)
 
-![image-20210313211146255](.\typora-user-images\image-20210313211146255.png)
+![image-20210313211146255](..\typora-user-images\image-20210313211146255.png)
 
 data 设定为 HTML 属性，他们同样能被 CSS 访问，使用函数 attr()获取。如上面的：.article-tit { width:attr(data-index)px } 或者 .article-tit[data-index='20'] { width:100px }.
 
@@ -706,7 +706,7 @@ FALLBACK:
 
 - border：设置表单的单元格粗细（会生成 table 标签的边框和 td，th 标签的边框）
 
-  ![image-20210803191615585](.\typora-user-images\image-20210803191615585.png)
+  ![image-20210803191615585](..\typora-user-images\image-20210803191615585.png)
 
 - cellpadding：设置每个单元格中内容部分和该单元格的边框的距离
 
@@ -717,14 +717,14 @@ FALLBACK:
 - rowspan='合并个数'：跨行合并
 - colsoan='合并个数'：跨列合并
 
-![image-20210803191646550](.\typora-user-images\image-20210803191646550.png)
+![image-20210803191646550](..\typora-user-images\image-20210803191646550.png)
 
 表单控件
 
 - 表单域 form
 - 表单元素（放置在表单域中）
 
-![image-20210803191708240](.\typora-user-images\image-20210803191708240.png)
+![image-20210803191708240](..\typora-user-images\image-20210803191708240.png)
 
 CSS3 动画
 
