@@ -67,7 +67,7 @@ var 声明的所有全局变量和函 数都会变成 window 对象的属性和�
 
   如：// 正常滚动 window.scrollTo({ left: 100, top: 100, behavior: 'auto' });
 
-  ​ // 平滑滚动 window.scrollTo({ left: 100, top: 100, behavior: 'smooth' });
+   // 平滑滚动 window.scrollTo({ left: 100, top: 100, behavior: 'smooth' });
 
 #### 窗口对象的方法：
 
@@ -89,9 +89,9 @@ var 声明的所有全局变量和函 数都会变成 window 对象的属性和�
 
   参数： 4 个参数，要加载的 URL、目标窗口名字或者内联框架的名字、特性字符串、表示新窗口在浏览器历史记录中是否替代当前加载页 面的布尔值（只有在不打开新窗口时才会使用）。如果 window.open()的第二个参数是一个已经存在的窗口或窗格（frame）的名字，则会在对应的 窗口或窗格中打开 URL。第二个参数也可以是一个特殊的窗口名，比如\_self、 \_parent、\_top 或\_blank。
 
-  ​ // 与相同 window.open("`http://www.wrox.com/`", "topFrame");
+   // 与相同 window.open("`http://www.wrox.com/`", "topFrame");
 
-  ​ window.open("`http://www.wrox.com/`", "topFrame");
+   window.open("`http://www.wrox.com/`", "topFrame");
 
   返回值：返回一个对新建窗口的引用。
 
@@ -115,9 +115,9 @@ clearTimeout(timer);
 console.log(timer); //输出的timer值并不为null，或者undefined，而是某个数字。
 ```
 
-​ JavaScript 是单线程的，所以每次 只能执行一段代码。为了调度不同代码的执行，JavaScript 维护了一个任务队列。其中的任务会按照添 加到队列的先后顺序执行。setTimeout()的第二个参数只是告诉 JavaScript 引擎在指定的毫秒数过后 把任务添加到这个队列。如果队列是空的，则会立即执行该代码。如果队列不是空的，则代码必须等待 前面的任务执行完才能执行。
+ JavaScript 是单线程的，所以每次 只能执行一段代码。为了调度不同代码的执行，JavaScript 维护了一个任务队列。其中的任务会按照添 加到队列的先后顺序执行。setTimeout()的第二个参数只是告诉 JavaScript 引擎在指定的毫秒数过后 把任务添加到这个队列。如果队列是空的，则会立即执行该代码。如果队列不是空的，则代码必须等待 前面的任务执行完才能执行。
 
-​ 注意定时函数本身的 this 指向，this 值在非严格模式下始终指向 window，而在严格模式下是 undefined。传给定时器函数的回调函数的 this 一般也指向 window。如果 给 setTimeout()提供了一个箭头函数，那么 this 会保留为定义它时所在的词汇作用域。
+ 注意定时函数本身的 this 指向，this 值在非严格模式下始终指向 window，而在严格模式下是 undefined。传给定时器函数的回调函数的 this 一般也指向 window。如果 给 setTimeout()提供了一个箭头函数，那么 this 会保留为定义它时所在的词汇作用域。
 
 #### 物理像素比
 
@@ -194,7 +194,7 @@ for (let param of searchParams) {
 
 #### 基于 loaction 实现页面跳转
 
-​ location.assign("URL 地址") ：立即启动导航到新 URL 的操作，同时在浏览器历史记录中增加一条记录。如果给 location.href 或 window.location 设置一个 URL，也会以同一个 URL 值调用 assign()方法。
+ location.assign("URL 地址") ：立即启动导航到新 URL 的操作，同时在浏览器历史记录中增加一条记录。如果给 location.href 或 window.location 设置一个 URL，也会以同一个 URL 值调用 assign()方法。
 
 window.location =‘URL’
 
@@ -202,9 +202,9 @@ location.href = 'URL'
 
 修改 location 对象的属性也会修改当前加载的页面。其中，hash、search、hostname、pathname 和 port 属性被设置为新值之后都会修改当前 URL，除了 hash 之外，只要修改 location 的一个属性，就会导致页面重新加载新 URL。
 
-​ loaction.replace():接收一个 URL 参数，但重新加载后不会增加历史记录。
+ loaction.replace():接收一个 URL 参数，但重新加载后不会增加历史记录。
 
-​ location.reload()：重新加载当前显示的页面。调用 reload()而不传参 数，页面会以最有效的方式重新加载。如果页面自上次请求以来没有修改过，浏览器可能会 从缓存中加载页面。如果想强制从服务器重新加载，可以像下面这样给 reload()传个 true。
+ location.reload()：重新加载当前显示的页面。调用 reload()而不传参 数，页面会以最有效的方式重新加载。如果页面自上次请求以来没有修改过，浏览器可能会 从缓存中加载页面。如果想强制从服务器重新加载，可以像下面这样给 reload()传个 true。
 
 ### navigator 对象
 
@@ -299,7 +299,7 @@ navigator.geolocation 属性暴露了 Geolocation API，可以让浏览器脚本
 
 文档对象模型是操作 html 页面的入口。
 
-​ DOM 文档对象模型是浏览器对 html 源码在浏览器内部的一种表示形式，JavaScript 可以通过 DOM 对 HTML 进行交互。HTML 首先经过 Tokeniser**标记化**，通过**词法分析**，将输入 html 内容解析成多个标记，根据识别后的标记进行**DOM 树构造**, 在 DOM 树构造过程中会创建 Document 对象，然后以 Document 为根节点的 DOM 树不断进行修改，向其中添加各种元素。
+ DOM 文档对象模型是浏览器对 html 源码在浏览器内部的一种表示形式，JavaScript 可以通过 DOM 对 HTML 进行交互。HTML 首先经过 Tokeniser**标记化**，通过**词法分析**，将输入 html 内容解析成多个标记，根据识别后的标记进行**DOM 树构造**, 在 DOM 树构造过程中会创建 Document 对象，然后以 Document 为根节点的 DOM 树不断进行修改，向其中添加各种元素。
 
 **DOM 是由多层节点构成的树结构文档**。其中，节点分为很多类型，节点对象上有不同的属性，数据和方法，同时节点对象之间可能存在某种关系。
 
@@ -412,11 +412,11 @@ document.domain：页面的域名,可以用于实现跨域传递数据。
 
 domain 属性是可以设置的。出于安全考虑，给 domain 属性设置的值是有限制的。如果 URL 包含子域名如 p2p.wrox.com，则可以将 domain 设置为"wrox.com"（URL 包含“www” 时也一样，比如` www.wrox.com`）。不能给这个属性设置 URL 中不包含的值，比如：
 
-​ // 页面来自 p2p.wrox.com
+ // 页面来自 p2p.wrox.com
 
-​ document.domain = "wrox.com"; // 成功
+ document.domain = "wrox.com"; // 成功
 
-​ document.domain = "nczonline.net"; // 出错！
+ document.domain = "nczonline.net"; // 出错！
 
 当页面中包含来自某个不同子域的窗格（frame）或内嵌窗格（iframe）时，设置 document.domain 是有用的。因为跨源通信存在安全隐患，所以不同子域的页面间无法通过 JavaScript 通信。此时，在每个页面上把 document.domain 设置为相同的值，这些页面就可以访问对方的 JavaScript 对象了。比如，一个加载自 www.wrox.com 的页面中包含一个内嵌窗格，其中的页面加载自 p2p.wrox.com。这两个页面的 document.domain 包含不同的字符串，内部和外部页面相互之间不能访问对方的 JavaScript 对象。如果每个页面都把 document.domain 设置为 wrox.com，那这两个页面之间就可以通信了。
 
@@ -1117,7 +1117,7 @@ document.style Sheets：表示文档中可用的样式表的集合，其中有 l
 
 - offsetParent，元素的包含元素。包含元素并不一定就是最近的一级的父级元素。
 
-![image-20210812225607457](.\typora-user-images\image-20210812225607457.png)
+![image-20210812225607457](..\typora-user-images\image-20210812225607457.png)
 
 要确定一个元素在页面中的偏移量，可以把它的 offsetLeft 和 offsetTop 属性分别与 offsetParent 的相同属性相加，一直加到根元素。下面是一个例子：
 
@@ -1151,7 +1151,7 @@ function getElementTop(element) {
 
 客户端尺寸指的是元素内容及其内边距所占用的空间。
 
-![image-20210812225623696](.\typora-user-images\image-20210812225623696.png)
+![image-20210812225623696](..\typora-user-images\image-20210812225623696.png)
 
 clientWidth 是内容区宽度加左、右内边距宽度
 
@@ -1167,7 +1167,7 @@ clientHeight 是内容区高度加上、下内边距高度
 
 #### 滚动尺寸
 
-![image-20210812225726107](.\typora-user-images\image-20210812225726107.png)
+![image-20210812225726107](..\typora-user-images\image-20210812225726107.png)
 
 document.documentElement.scrollHeight 就是整个页面垂直方 向的总高度，可读可写。
 
@@ -1179,7 +1179,7 @@ scrollLeft 和 scrollTop 的值是可以设置的。
 
 element.getBoundingClientRect():该方法返回一个对象，包含 6 个属性：left、top、right、bottom、height 和 width。这些属性给出了元素在页面中相对于视 口的位置。
 
-![image-20210812232548731](.\typora-user-images\image-20210812232548731.png)
+![image-20210812232548731](..\typora-user-images\image-20210812232548731.png)
 
 #### 节点遍历
 
@@ -1244,11 +1244,11 @@ IE 事件流被称为事件冒泡。
 
 #### 事件冒泡
 
-​ 事件被定义为从最具体的元素（文档树中最深的节点）开始触 发，然后向上传播至没有那么具体的元素（文档）。现代浏览器中的事件会一直冒泡到 window 对象。
+ 事件被定义为从最具体的元素（文档树中最深的节点）开始触 发，然后向上传播至没有那么具体的元素（文档）。现代浏览器中的事件会一直冒泡到 window 对象。
 
 #### 事件捕获
 
-​ 事件捕获的意思是最不具体的节点应该最先收到事件，而最具体的节点应该最后收到事件。实际上，所有浏览器都是从 window 对象开始捕获事件，而 DOM2 Events 规范规定的是从 document 开始。
+ 事件捕获的意思是最不具体的节点应该最先收到事件，而最具体的节点应该最后收到事件。实际上，所有浏览器都是从 window 对象开始捕获事件，而 DOM2 Events 规范规定的是从 document 开始。
 
 在 DOM 事件流中，实际的目标（元素）在捕获阶段不会接收到事件。这是因为捕获阶段从 document 到再到就结束了。下一阶段，即会在元素上触发事件的“到达目标” 阶段，通常在事件处理时被认为是冒泡阶段的一部分（稍后讨论）。然后，冒泡阶段开始，事件反向传 播至文档。
 
@@ -1285,7 +1285,7 @@ IE 事件流被称为事件冒泡。
           }
       }
   }
-
+  
   <input type="button" value="Click Me" onclick="console.log(value)">
   ```
 
@@ -1323,7 +1323,7 @@ IE 事件流被称为事件冒泡。
    console.log("Hello world!");
    }
   </script>
-
+  
    <input type="button" value="Click Me" onclick="showMessage(event)"/>
    这个函数有一个局部变量 event，其中保存的就是 event 对象
    在这个函数中，this 值相当于事件的目标元素
@@ -1468,9 +1468,9 @@ var EventUtil = {
 
 ### 事件对象（event）
 
-​ 在 dom 的事件处理函数中，有一个对象 event，它内部的属性与方法代表的事件的所有相关信息。（如：事件源元素、事件类型等等），要在事件处理函数内部使用 event 对象上的属性或者方法，都需要在事件处理函数的参数中传入。
+ 在 dom 的事件处理函数中，有一个对象 event，它内部的属性与方法代表的事件的所有相关信息。（如：事件源元素、事件类型等等），要在事件处理函数内部使用 event 对象上的属性或者方法，都需要在事件处理函数的参数中传入。
 
-​ 不同的事件类型的事件对象有不同的属性和方法，但是也有一些公共属性和方法：
+ 不同的事件类型的事件对象有不同的属性和方法，但是也有一些公共属性和方法：
 
 | 属性/方法 | 类型 | 读/写 | 说明 |
 | --- | --- | --- | --- |
@@ -1839,7 +1839,7 @@ link.onclick = function(event) {
      window.addEventListener("contextmenu", (event) => {
       event.preventDefault();
      })
-
+  
      其他实例：
      html部分：
      <!DOCTYPE html>
@@ -1858,7 +1858,7 @@ link.onclick = function(event) {
       </ul>
      </body>
      </html>
-
+  
      js部分：
      window.addEventListener("load", (event) => {
       let div = document.getElementById("myDiv");
@@ -1906,7 +1906,7 @@ window.addEventListener('beforeunload', (event) => {
 
 #### 移动端事件
 
-​ 触摸事件：
+ 触摸事件：
 
 1. touchstart：手指放到屏幕上时触发（即使有一个手指已经放在了屏幕上）。
 
@@ -1996,7 +1996,7 @@ window.addEventListener('beforeunload', (event) => {
 
 - 删除事件处理程序
 
-  ​ 及时删除不用的事件处理程序。很多 Web 应用性能不佳都是由于无用的事件处理程序长驻内存导致的。
+   及时删除不用的事件处理程序。很多 Web 应用性能不佳都是由于无用的事件处理程序长驻内存导致的。
 
   无用的事件处理程序长驻内存的原因：
 
@@ -2269,7 +2269,7 @@ if (drawing.getContext) {
 }
 ```
 
-​
+
 
 #### 2D 绘图上下文
 
