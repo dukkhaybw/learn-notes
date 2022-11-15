@@ -5,11 +5,13 @@ index.js
 ```jsx
 // React18
 import React form 'react'
-import ReactDOM from 'react-dom/client'
+import ReactDOM from 'react-dom/client'   
 
-const root = ReactDOM.createRoot(document.getElementById('root'))
+const root = ReactDOM.createRoot(document.getElementById('root'))  // 创建一个并发版本的root
 root.render(<App></App>)
 ```
+
+
 
 ## React 项目源码的情况
 
@@ -19,11 +21,15 @@ root.render(<App></App>)
 - 通过`ReactDOM.render` debug，流程里有很多**异步调用**，难以保证逻辑链路不中断
 - 只想关注某个功能点（比如`ReactDOM.render`如何渲染页面），但大量功能实现的代码也是耦合在这个流程中的，难以理解
 
+
+
 学习建议：
 
 - 思考某一段代码背后的实现意义和作用
 - 站在**框架开发者**角度看看`React`的设计理念
 - 一次只关注一个功能点逻辑代码
+
+
 
 yrm 对标的是 nrm，用于切换 yarn 的下载源。
 
@@ -32,18 +38,60 @@ yrm 对标的是 nrm，用于切换 yarn 的下载源。
 最新版本的 create-react-app 脚手架创建的项目中可以**不用再主动引入 React 而直接而使用在文件中 jsx 语法**。因为新版项目中将 jsx 不再转为 React.createElement，但是转换的结果是一样的。
 
 ```jsx
-import React from 'react';
-let element = <h1>hello</h1>;
+//在React17以前，babel转换是老的写法
+const babel = require('@babel/core');
+const sourceCode = `
+<h1>
+  hello<span style={{ color: 'red' }}>world</span>
+</h1>
+`;
+const result = babel.transform(sourceCode, {
+  plugins: [
+    ["@babel/plugin-transform-react-jsx", { runtime: 'classic' }]
+  ]
+});
+console.log(result.code);
 
-//旧版的bable编译结果
-React.createElement('h1', null, 'hello');
-
-let element = <h1>hello</h1>;
-// React17中加入的特性
-// 新版的bable编译结果
-import jsx from 'jsx';
-jsx('h1', null, 'hello');
+// 打印代码如下
+React.createElement("h1", null, "hello", React.createElement("span", {
+  style: {
+    color: 'red'
+  }
+}, "world"));
 ```
+
+
+
+
+
+```jsx
+const babel = require('@babel/core');
+const sourceCode = `
+<h1>
+  hello<span style={{ color: 'red' }}>world</span>
+</h1>
+`;
+const result = babel.transform(sourceCode, {
+  plugins: [
+    ["@babel/plugin-transform-react-jsx", { runtime: 'automatic' }]
+  ]
+});
+console.log(result.code);
+
+// 打印代码如下
+import { jsx } from "react/jsx-runtime";
+jsx("h1", {
+  children: ["hello", jsx("span", {
+    style: {
+      color: 'red'
+    },
+    children: "world"
+  })]
+});
+//React.createElement=jsx
+```
+
+
 
 之前项目的情况：
 
@@ -59,6 +107,8 @@ export default App;
 // 上面的代码不引入React的话，在之前的项目中无法编译。因为jsx最后被转为React.createElement形式，所以看似没有依赖React，实则是有依赖的。  eslint中提示React引入而未使用的尴尬。
 ```
 
+
+
 新版的情况：
 
 ```jsx
@@ -70,6 +120,8 @@ export default App;
 
 // 可以直接这么写，编译时会自动引入一个包   import jsx from 'jsx'  最后将jsx转为 jsx()函数调用的方式。
 ```
+
+
 
 使用旧版的 jsx 转 React.createElement 逻辑的设置。
 
@@ -86,6 +138,8 @@ export default App;
 }
 ```
 
+
+
 ## JSX
 
 jsx 是一种 JavaScript 的语法扩展，**它充分具备 JavaScript 的能力**。将组件的**数据，结构和样式**写在一起。
@@ -95,7 +149,7 @@ jsx 是一种 JavaScript 的语法扩展，**它充分具备 JavaScript 的能�
 - **React 元素**事实上是普通的 JS 对象，用来描述在屏幕上看到的内容
 - `ReactDOM`中的 render 方法用于将 React.createElement()方法创建的虚拟 DOM（JS 对象）转化为真实的 DOM 并渲染到页面指定的 DOM 中
 
-j sx 代码：
+jsx 代码：
 
 ```jsx
 <h1 className='title' style={{ color: 'red' }}>
@@ -146,25 +200,27 @@ React.createElement() 函数接受三个参数
 
 关于虚拟 DOM：
 
-​ 1.本质是 Object 类型的对象（普通对象）
+ 1.本质是 Object 类型的对象（普通对象）
 
-​ 2.虚拟 DOM 比较“轻”，真实 DOM 比较“重”，因为虚拟 DOM 是 React 内部在用，无需真实 DOM 上那么多的属性。
+ 2.虚拟 DOM 比较“轻”，真实 DOM 比较“重”，因为虚拟 DOM 是 React 内部在用，无需真实 DOM 上那么多的属性。
 
-​ 3.虚拟 DOM 最终会被 React 转化为真实 DOM，呈现在页面上。
+ 3.虚拟 DOM 最终会被 React 转化为真实 DOM，呈现在页面上。
 
-![image-20210505125501427](.\typora-user-images\image-20210505125501427.png)
+![image-20210505125501427](..\typora-user-images\image-20210505125501427.png)
 
 虚拟 DOM，又被称为 React 元素。
 
-![image-20210614141924075](.\typora-user-images\image-20210614141924075.png)
+![image-20210614141924075](..\typora-user-images\image-20210614141924075.png)
 
 真实 DOM
 
-![image-20210614141827504](.\typora-user-images\image-20210614141827504.png)
+![image-20210614141827504](..\typora-user-images\image-20210614141827504.png)
 
-![image-20220425230654081](.\typora-user-images\image-20220425230654081.png)
+![image-20220425230654081](..\typora-user-images\image-20220425230654081.png)
 
 React.createElement 函数是一个工厂方法，用来创建 React 元素（虚拟 DOM ）
+
+
 
 ## React.createElement 实现原理
 
@@ -241,7 +297,7 @@ export defautl = React
 
 其中 element 就是文本。
 
-![image-20220727192927468](.\typora-user-images\image-20220727192927468.png)
+![image-20220727192927468](..\typora-user-images\image-20220727192927468.png)
 
 **html 标签对应的 React 对象结构**
 
