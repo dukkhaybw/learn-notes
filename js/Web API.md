@@ -705,9 +705,9 @@ observer 实例默认并不会关联任何 DOM 部分。要把这个实例和某
 
 **MutationObserverInit**:控制观察范围，该配置对象的具体取值和含义：
 
-![image-20210810235508390](.\typora-user-images\image-20210810235508390.png)
+![image-20210810235508390](..\typora-user-images\image-20210810235508390.png)
 
-![image-20210810235524355](.\typora-user-images\image-20210810235524355.png)
+![image-20210810235524355](..\typora-user-images\image-20210810235524355.png)
 
 ```
 observer.observe(document.body, { attributes: true });
@@ -1117,7 +1117,7 @@ document.style Sheets：表示文档中可用的样式表的集合，其中有 l
 
 - offsetParent，元素的包含元素。包含元素并不一定就是最近的一级的父级元素。
 
-![image-20210812225607457](..\typora-user-images\image-20210812225607457.png)
+![image-20210812225607457](...\typora-user-images\image-20210812225607457.png)
 
 要确定一个元素在页面中的偏移量，可以把它的 offsetLeft 和 offsetTop 属性分别与 offsetParent 的相同属性相加，一直加到根元素。下面是一个例子：
 
@@ -1151,7 +1151,7 @@ function getElementTop(element) {
 
 客户端尺寸指的是元素内容及其内边距所占用的空间。
 
-![image-20210812225623696](..\typora-user-images\image-20210812225623696.png)
+![image-20210812225623696](...\typora-user-images\image-20210812225623696.png)
 
 clientWidth 是内容区宽度加左、右内边距宽度
 
@@ -1167,7 +1167,7 @@ clientHeight 是内容区高度加上、下内边距高度
 
 #### 滚动尺寸
 
-![image-20210812225726107](..\typora-user-images\image-20210812225726107.png)
+![image-20210812225726107](...\typora-user-images\image-20210812225726107.png)
 
 document.documentElement.scrollHeight 就是整个页面垂直方 向的总高度，可读可写。
 
@@ -1179,7 +1179,7 @@ scrollLeft 和 scrollTop 的值是可以设置的。
 
 element.getBoundingClientRect():该方法返回一个对象，包含 6 个属性：left、top、right、bottom、height 和 width。这些属性给出了元素在页面中相对于视 口的位置。
 
-![image-20210812232548731](..\typora-user-images\image-20210812232548731.png)
+![image-20210812232548731](...\typora-user-images\image-20210812232548731.png)
 
 #### 节点遍历
 
@@ -1240,7 +1240,7 @@ IE 事件流被称为事件冒泡。
 
 事件流分为 3 个阶段：事件捕获、到达目标和事件冒泡。
 
-![image-20201228201106496](.\typora-user-images\image-20201228201106496.png)
+![image-20201228201106496](..\typora-user-images\image-20201228201106496.png)
 
 #### 事件冒泡
 
@@ -1253,6 +1253,8 @@ IE 事件流被称为事件冒泡。
 在 DOM 事件流中，实际的目标（元素）在捕获阶段不会接收到事件。这是因为捕获阶段从 document 到再到就结束了。下一阶段，即会在元素上触发事件的“到达目标” 阶段，通常在事件处理时被认为是冒泡阶段的一部分（稍后讨论）。然后，冒泡阶段开始，事件反向传 播至文档。
 
 大多数支持 DOM 事件流的浏览器实现了一个小小的拓展。虽然 DOM2 Events 规范明确捕获阶段不 命中事件目标，但现代浏览器都会在捕获阶段在事件目标上触发事件。最终结果是在事件目标上有两个 机会来处理事件。
+
+
 
 ### 事件处理程序（事件处理函数）
 
@@ -1466,6 +1468,8 @@ var EventUtil = {
 这两个方法并没有解决所有跨浏览器一致性问题，比如 IE的作用域问题、多个事件处理程序执行顺序问题等。
 ```
 
+
+
 ### 事件对象（event）
 
  在 dom 的事件处理函数中，有一个对象 event，它内部的属性与方法代表的事件的所有相关信息。（如：事件源元素、事件类型等等），要在事件处理函数内部使用 event 对象上的属性或者方法，都需要在事件处理函数的参数中传入。
@@ -1594,6 +1598,8 @@ link.onclick = function(event) {
 };
 ```
 
+
+
 #### 鼠标事件对象
 
 | event.clientX | 返回鼠标事件触发时，鼠标相对于浏览器窗口可视区左上角的 X 距离 |
@@ -1604,6 +1610,8 @@ link.onclick = function(event) {
 | event.pageY   | 返回鼠标事件触发时，鼠标相对于文档页面的左上角的 Y 距离       |
 | event.screenX | 返回鼠标事件触发时，鼠标相对于电脑屏幕左上角的 X 距离         |
 | event.screenY | 返回鼠标事件触发时，鼠标相对于电脑屏幕左上角的 Y 距离         |
+
+
 
 ### 事件类型
 
@@ -1808,7 +1816,7 @@ link.onclick = function(event) {
 
 滚轮事件的事件对象上的一个属性 —— wheelDelta，鼠标向前滚动时，该值为正数，向后滚动时该值为负数。
 
-![image-20210813201753734](.\typora-user-images\image-20210813201753734.png)
+![image-20210813201753734](..\typora-user-images\image-20210813201753734.png)
 
  输入事件（InputEvent）：向文档中输入文本时触发。
 
@@ -1839,7 +1847,7 @@ link.onclick = function(event) {
      window.addEventListener("contextmenu", (event) => {
       event.preventDefault();
      })
-  
+    
      其他实例：
      html部分：
      <!DOCTYPE html>
@@ -1858,7 +1866,7 @@ link.onclick = function(event) {
       </ul>
      </body>
      </html>
-  
+    
      js部分：
      window.addEventListener("load", (event) => {
       let div = document.getElementById("myDiv");
