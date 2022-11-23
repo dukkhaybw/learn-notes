@@ -891,7 +891,7 @@ props 是单向的。子组件并不能直接将自己的数据传给父组件�
 
 ### 发布订阅模式通信
 
-![image-20211130202013494](.\typora-user-images\image-20211130202013494.png)
+![image-20211130202013494](..\typora-user-images\image-20211130202013494.png)
 
 使用发布-订阅模式的优点在于，监听事件的位置和触发事件的位置是不受限的，只要它们在同一个上下文里，就能够彼此感知。
 
@@ -1057,7 +1057,7 @@ Redux 主要由三部分组成：store、reducer 和 action:
 - action 是对变化的描述
 - reducer 是一个函数，它负责对变化进行分发和处理， 最终将新的数据返回给 store
 
-![image-20211130213010337](.\typora-user-images\image-20211130213010337.png)
+![image-20211130213010337](..\typora-user-images\image-20211130213010337.png)
 
 在 Redux 的整个工作过程中，数据流是严格单向的。
 
@@ -1280,7 +1280,7 @@ function ProfilePage(props) {
 export default ProfilePage;
 ```
 
-![image-20211206185341621](.\typora-user-images\image-20211206185341621.png)
+![image-20211206185341621](..\typora-user-images\image-20211206185341621.png)
 
 这个组件返回的是一个按钮，交互内容也很简单：点击按钮后，过 3s，界面上会弹出“Followed xxx”的文案。类似于我们在微博上点击“关注某人”之后弹出的“已关注”这样的提醒。
 
@@ -1392,7 +1392,7 @@ useEffect(callBack, []);
   ```js
   useEffect(() => {
     // 这是回调函数的业务逻辑
-
+  
     // 若 xxx 是一个函数，则 xxx 会在组件每次因 num1、num2、num3 的改变而重新渲染时被触发
     return xxx;
   }, [num1, num2, num3]);
@@ -1570,15 +1570,15 @@ export default PersonalInfoComponent;
 
 二次渲染时 isMounted 为 true，导致 if 语句直接跳过，按照代码中的设计意图，希望在二次渲染时只获取并展示 career。实际效果直接报错。 因为组件渲染的 Hooks 比期望的要少。 **按照不合理代码的逻辑，初次挂载时调用了三次 useState 函数，而二次渲染时只调用了一次 useState。**
 
-![image-20211201111307509](.\typora-user-images\image-20211201111307509.png)
+![image-20211201111307509](..\typora-user-images\image-20211201111307509.png)
 
 初次挂载时，不合理代码的控制台输出：
 
-![image-20211201111542420](.\typora-user-images\image-20211201111542420.png)
+![image-20211201111542420](..\typora-user-images\image-20211201111542420.png)
 
 单击修改姓名按钮，二次渲染时：
 
-![image-20211201111629417](.\typora-user-images\image-20211201111629417.png)
+![image-20211201111629417](..\typora-user-images\image-20211201111629417.png)
 
 可以从输出结果看出一下情况：
 
@@ -1596,7 +1596,7 @@ React Hooks 在源码层面和 Fiber 关系密切。所以针对关键方法做�
 
 在这个流程中 useState 触发的一系列操作，最后会落到 mountState 函数中，重点就是 mountState。
 
-![image-20211201112742487](.\typora-user-images\image-20211201112742487.png)
+![image-20211201112742487](..\typora-user-images\image-20211201112742487.png)
 
 在这个流程中，useState 触发的一系列操作最后会落到 mountState 里面去，所以重点需要关注的就是 mountState 做了什么事情，**mountState 的源码**：
 
@@ -1683,7 +1683,7 @@ updateState 之后的操作链路，虽然涉及的代码有很多，但其实�
 
 由首次渲染生成的链表结构：
 
-![image-20211201120036568](.\typora-user-images\image-20211201120036568.png)
+![image-20211201120036568](..\typora-user-images\image-20211201120036568.png)
 
 当首次渲染结束，进行二次渲染的时候，实际发生的 useState 调用只有一个：
 
@@ -1691,11 +1691,11 @@ updateState 之后的操作链路，虽然涉及的代码有很多，但其实�
 useState('我是一个前端，爱吃小熊饼干');
 ```
 
-![image-20211201120127111](.\typora-user-images\image-20211201120127111.png)
+![image-20211201120127111](..\typora-user-images\image-20211201120127111.png)
 
 但是链表的结构是由首次渲染就确定了的，如下图：
 
-![image-20211201120159572](.\typora-user-images\image-20211201120159572.png)
+![image-20211201120159572](..\typora-user-images\image-20211201120159572.png)
 
 再复习一遍更新（二次渲染）的时候会发生什么事情：updateState 会依次遍历链表、读取数据并渲染。注意这个过程就像从数组中依次取值一样，是完全按照顺序（或者说索引）来的。因此 React 不会看你命名的变量名是 career 还是别的什么，它只认你这一次 useState 调用，于是它难免会认为：原来你想要的是第一个位置的 hook 啊。
 
@@ -1722,7 +1722,7 @@ react 选择虚拟 DOM 真的是为了性能考虑吗？
 
 **虚拟 DOM（Virtual DOM）本质上是 JS 和 DOM 之间的一个映射缓存，它在表现形态上是 js 中的对象类型，一个能够描述 DOM 结构（树结构）及其属性信息。**
 
-![image-20211201121815904](.\typora-user-images\image-20211201121815904.png)
+![image-20211201121815904](..\typora-user-images\image-20211201121815904.png)
 
 #### 虚拟 DOM 参与的工作流
 
@@ -1781,11 +1781,11 @@ with 加上 new Function。
 
 早期模板引擎：
 
-![image-20211201134124667](.\typora-user-images\image-20211201134124667.png)
+![image-20211201134124667](..\typora-user-images\image-20211201134124667.png)
 
 虚拟 DOM：
 
-![image-20211201134145629](.\typora-user-images\image-20211201134145629.png)
+![image-20211201134145629](..\typora-user-images\image-20211201134145629.png)
 
 模板：虚拟 DOM 在实现上并不总是借助模板，比如 React 就是使用 JSX 这种使用体验看上去像模板，但本质是 JS 语法糖。
 
@@ -1793,7 +1793,7 @@ with 加上 new Function。
 
 **差量更新可以确保虚拟 DOM 既能够提供高效的开发体验（开发者只需要关心数据），又能够保持过得去的性能（只更新发生了变化的那部分 DOM）。**
 
-![image-20211201134705489](.\typora-user-images\image-20211201134705489.png)
+![image-20211201134705489](..\typora-user-images\image-20211201134705489.png)
 
 > 图中的 diff 和 patch 其实都是函数名，这些函数取材于一个独立的[虚拟 DOM 库](https://github.com/Matt-Esch/virtual-dom)。之所以写明了具体流程对应的函数名,很多面试官习惯于用函数名指代过程，但不少人不清楚这个对应关系（尤其是 patch），会非常影响作答。
 
@@ -1807,7 +1807,7 @@ with 加上 new Function。
 
 早期模板渲染和虚拟 DOM 渲染性能比较：
 
-![image-20211201140623341](.\typora-user-images\image-20211201140623341.png)
+![image-20211201140623341](..\typora-user-images\image-20211201140623341.png)
 
 从图中可以看出，模板渲染的步骤 1，和虚拟 DOM 渲染的步骤 1、2 都属于 JS 范畴的行为，这两者是具备可比性的，我们放在一起来看：动态生成 HTML 字符串的过程本质是对字符串的拼接，对性能的消耗是有限的；而虚拟 DOM 的构建和 diff 过程逻辑则相对复杂，它不可避免地涉及递归、遍历等耗时操作。因此在 JS 行为这个层面，模板渲染胜出。
 
@@ -1828,7 +1828,7 @@ with 加上 new Function。
 - 研发体验/研发效率的问题：DOM 操作模式的每一次革新，背后都是前端对效率和体验的进一步追求。虚拟 DOM 的出现，为数据驱动视图这一思想提供了高度可用的载体，使得前端开发能够基于函数式 UI 的编程方式实现高效的声明式编程。
 - 跨平台的问题：虚拟 DOM 是对真实渲染内容的一层抽象。若没有这一层抽象，那么视图层将和渲染平台紧密耦合在一起，为了描述同样的视图内容，你可能要分别在 Web 端和 Native 端写完全不同的两套甚至多套代码。但现在中间多了一层描述性的虚拟 DOM，它描述的东西可以是真实 DOM，也可以是 iOS 界面、安卓界面、小程序......同一套虚拟 DOM，可以对接不同平台的渲染逻辑，从而实现“一次编码，多端运行”，如下图所示。其实说到底，跨平台也是研发提效的一种手段，它在思想上和 1 是高度呼应的。
 
-![image-20211201143134344](.\typora-user-images\image-20211201143134344.png)
+![image-20211201143134344](..\typora-user-images\image-20211201143134344.png)
 
 虚拟 DOM 的其他亮点：
 

@@ -1,5 +1,23 @@
 # CSS 权威指南(Cascading Style Sheet)
 
+
+
+熟记各种属性值及其对应的特性就能快速上手CSS。
+
+CSS属性、CSS概念、属性的深入分析和CSS规则。并且基于这些CSS规则创造一些全新的CSS实现。
+
+**在CSS的世界里，页面上的任何看似简单的呈现都是由许多CSS属性共同作用的结果。**手册中罗列的CSS属性及其值只是表层的、独立的一些特性，每个CSS属性在CSS中，都和其他多个CSS属性发生着千丝万缕的关系。
+
+对CSS这门语言特性的描述就有助于对CSS的整体认知。编程语言看重逻辑思维和抽象能力，但CSS本身并无逻辑可言，看重的是特性间的相互联系和具象能力。
+
+
+
+历史
+
+
+
+
+
 ## 第一章
 
 ### 背景
@@ -284,9 +302,9 @@ B（客户端）/S（服务器）架构
 
    :last-child 用于选择作为其他元素的最后一个子元素的元素。
 
-   ​ 选择器名:nth-child(n)：该类型的选择器如果冒号的前面没有空格而是直接跟着选择器，那么等价于：先找出所有有子元素的父元素，然后在这些父元素的内部找出第 n 个子元素，再判断这个子元素是不是冒号前面指定的那类标签元素，不是就无法匹配到。是，就对选中的子元素使用对应 css 样式。
+    选择器名:nth-child(n)：该类型的选择器如果冒号的前面没有空格而是直接跟着选择器，那么等价于：先找出所有有子元素的父元素，然后在这些父元素的内部找出第 n 个子元素，再判断这个子元素是不是冒号前面指定的那类标签元素，不是就无法匹配到。是，就对选中的子元素使用对应 css 样式。
 
-   ​ 等价于：先找出第几个子元素，如果该子元素是冒号前面指定的那类元素，则应用 css 样式。
+    等价于：先找出第几个子元素，如果该子元素是冒号前面指定的那类元素，则应用 css 样式。
 
    ```css
    <ul
@@ -305,19 +323,19 @@ B（客户端）/S（服务器）架构
      :first-child {
      background-color: #afc;
    } //选中ul下面的第一个子元素，不论该子元素是什么标签
-
+   
    ul li:first-child {
      background-color: #afc;
    } //这种情况无法选中任何元素，因为ul的第一个子元素不是li，而是p
-
+   
    ul li:nth-child(1) {
      background-color: #afc;
    } //这种情况无法选中任何元素，因为ul的第一个子元素不是li，而是p
-
+   
    ul :nth-child(1) {
      background-color: #afc;
    } //选中ul下面的第一个子元素，不论该子元素是什么标签
-
+   
    li: nth-child(
      1
    ); //选中所有元素的子元素中的第一个，且第一个必须是li标签才可以。而不管li标签是div或者ul等下面的子元素。
@@ -410,7 +428,7 @@ B（客户端）/S（服务器）架构
 
 ### “特异性”
 
-​ 对于每个规则，用户代理评估选择器的特异性，并将其附加到规则中的每个声明，特异性值将被赋给它的所有相关声明。当一个元素有两个或多个相互冲突的属性声明时，具有最高特异性的属性声明将胜出。
+ 对于每个规则，用户代理评估选择器的特异性，并将其附加到规则中的每个声明，特异性值将被赋给它的所有相关声明。当一个元素有两个或多个相互冲突的属性声明时，具有最高特异性的属性声明将胜出。
 
 > 选择器的特异性由选择器本身的组件决定。特异性值可以表达为四个部分，像这样:' 0,0,0,0 '。
 >
@@ -629,15 +647,15 @@ align-content：属性定义了多根轴线的对齐方式。如果项目只有�
 >
 > - repeat(n,宽度或者高度)：表示将宽度或高度重复 n 次
 
-​ 下图中给父级元素开启了网格布局，同时设置了 padding 和 border，可以看出，grid-template-columns 和 grid-template-rows 都是从父级元素的 content-box 开始计算的。
+ 下图中给父级元素开启了网格布局，同时设置了 padding 和 border，可以看出，grid-template-columns 和 grid-template-rows 都是从父级元素的 content-box 开始计算的。
 
 ![image-20210323184327466](.\typora-user-images\image-20210323184327466.png)
 
-​
 
-​ grid-template-columns 和 grid-template-rows 只要他们的宽度或者高度总和超过了父元素的宽度或者高度，那么多出部分会在父元素的外部显示。可以给父元素设置 overflow: hidden;以隐藏超出部分。
 
-​ grid-template-columns 和 grid-template-rows 两者必须一起使用，否则无法生效，即使只有一行或者一列都需要设置 grid-template-columns：100%或者 grid-template-rows: 100%;。
+ grid-template-columns 和 grid-template-rows 只要他们的宽度或者高度总和超过了父元素的宽度或者高度，那么多出部分会在父元素的外部显示。可以给父元素设置 overflow: hidden;以隐藏超出部分。
+
+ grid-template-columns 和 grid-template-rows 两者必须一起使用，否则无法生效，即使只有一行或者一列都需要设置 grid-template-columns：100%或者 grid-template-rows: 100%;。
 
 display: grid; grid-template-columns: 100px auto; grid-template-rows: 100%;表示一行两列，左边 100px，右边自适应。
 
