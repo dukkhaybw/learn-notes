@@ -32,6 +32,8 @@
 
 一款面向前端中后台复杂场景的 **数据 + 协议** 驱动的表单框架。 完成各种复杂的页面表单需求，他也提供了一个表单设计器，可以快速搭建表单。
 
+Formily 解决方案在 MVVM 中应该是什么样的定位是：Formily 它提供了 View 和 ViewModel 两层能力，View 则是@formily/react @formily/vue，专门用来与@formily/core 做桥接通讯的。
+
 
 
 核心特点：
@@ -291,6 +293,274 @@ JSON Schema 独立存在，给 UI 桥接层消费，保证了协议驱动在不�
 
 
 Formily是一个抽象了表单领域模型的 MVVM 表单解决方案
+
+
+
+## @formily/core
+
+这个包的目的：将领域模型从 UI 框架中抽离出来
+
+- 方便 formily 开发者从 UI 与逻辑的耦合
+- 让 formily 拥有跨终端，跨框架的能力
+
+
+
+**表单问题分解：**
+
+- 数据管理问题
+- 字段管理问题
+- 校验管理问题
+- 联动管理问题
+
+
+
+### 架构图
+
+![img](https://img.alicdn.com/imgextra/i4/O1CN01HlrsLS1hQAJnihhh1_!!6000000004271-55-tps-2431-2037.svg)
+
+可以在响应器(Reactions)中消费 Form/Field/ArrayField/ObjectField/VoidField 模型中的任意属性，当依赖的属性发生变化，响应器就会重复执行。
+
+Formily 它提供了 View 和 ViewModel 两层能力，View 则是@formily/react @formily/vue，专门用来与@formily/core 做桥接通讯的，所以，@formily/core 的定位就是 ViewModel 层。
+
+
+
+### 表单模型的具体领域逻辑
+
+表单模型核心子模型：
+
+- 字段管理模型
+- 字段模型
+- 数据模型
+- 联动模型
+- 路径系统
+
+
+
+#### 字段管理模型
+
+主要包含：
+
+- 字段添加
+
+  > 通过 createField/createArrayField/createObjectField/createVoidField 方法来创建字段，如果字段已经存在，则不会重复创建。
+
+- 字段查询
+
+  > 通过 query 方法来查询字段，query 方法可以传入字段的路径或者正则表达式来匹配字段。调用 query 方法会返回一个 Query 对象。该对象上的方法：
+  >
+  > 1. 批量遍历所有字段的 forEach/map/reduce 方法
+  > 2. 只取查询到的第一个字段的 take 方法
+  > 3. 直接读取字段属性的 get 方法
+  > 4. 可以深层读取字段属性的 getIn 方法
+
+- 导入字段集
+
+  > 通过 setFormGraph 来导入字段集，入参格式是一个扁平对象格式，key 是字段的绝对路径，value 是字段的状态，使用该 API 主要在一些需要做时间旅行的场景，将 Immutable 字段状态导入至表单模型中。
+
+- 导出字段集
+
+  > 通过 getFormGraph 来导出字段集，导出格式是一个扁平对象格式，key 是字段的绝对路径，value 是字段的状态，与导入字段集入参一致，因为返回的数据是一个 Immutable 的数据，所以是可以完全做持久化存储的，方便时间旅行。
+
+- 清空字段集
+
+  > 通过 clearFormGraph 来清空字段集。
+
+
+
+#### 字段模型
+
+主要包含了：
+
+数据型字段（核心是负责维护表单数据(表单提交时候的值)）
+
+- Field 模型，主要负责管理**非自增型字段**状态，比如 Input/Select/NumberPicker/DatePicker 这些组件
+- ArrayField 模型，主要负责管理**自增列表字段**状态，可以对列表项进行增删移动的。
+- ObjectField 模型，主要负责管理**自增对象字段**状态，可以对对象的 key 做增删操作。
+
+
+
+ArrayField 和 ObjectField 都继承自 Field，Field 的定位就是维护**非自增型数据字段**，并不是说 Field 就不能存数组类型或者对象类型的数据，Field 其实可以存任意数据类型的数据，只是，如果用户期望实现数组的添加删除移动这样的交互，则需要使用 ArrayField，对象属性的添加删除交互，则需要使用 ObjectField，如果没有这样的需求，所有数据类型统一用 Field 即可。
+
+
+
+##### Field 领域规则
+
+- 路径规则
+
+  > 表单结构本身就是一个树结构，所以在 Formily 中，每个字段在表单模型中都会有一个绝对路径，大致描述了字段在表单数据中的位置。通过绝对路径可以找到任意一个字段，同时还能表达字段间的父子关系。
+  >
+  > 字段模型中，定义了 address 属性来表达字段的绝对路径，主要用点语法来描述，比如 a.b.c 这样的路径代表了字段 c 的父亲是字段 b，字段 b 的父亲是 a。
+  >
+  > VoidField 作为虚数据字段，它同样也有自己的绝对路径，因为它可以作为数据字段的父亲，如果我们只有绝对路径， 就无法让一个数据字段正确的往表单数据里写入字段数据。读取数据也会读错位置。
+  >
+  > 其实还需要一个数据路径作为专门用于数据字段写入数据和读取数据的，用 path 来描述字段的数据路径。
+  >
+  > Address 永远是代表节点的绝对路径，Path 是会跳过 VoidField 的节点路径，但是如果是 VoidField 的 Path，是会保留它自身的路径位置。
+  >
+  > 不管是 Field 还是 VoidField，都会有它的 Address 和 Path，所以我们在用 query 方法查询字段的时候，既可以用 Address 规则查询，也可以用 Path 规则查询。
+
+- 显隐规则
+
+  > 字段的显示隐藏，主要用 display 属性来表达：
+  >
+  > - display 为 none 代表字段 UI 隐藏，同时不保留字段数据
+  > - display 为 hidden 代表字段 UI 隐藏，保留字段数据
+  > - display 为 visible 代表字段 UI 显示，同时恢复字段数据
+  >
+  > 还提供了两个便捷属性
+  >
+  > 1. visible，如果为 true 代表 display 等于 visible，如果为 false 代表 display 等于 none
+  > 2. hidden，如果为 true 代表 display 等于 hidden，如果为 false 代表 display 等于 visible
+
+- 数据读写规则
+  >一般通过path 属性来寻址，读取的方式是直接读取 value/initialValue 。
+  >
+  >写入的方式主要有：
+  >
+  >- 直接修改 value/initialValue 属性
+  >- 调用 onInput 会写入数据，同时设置字段的 inputValue 为入参数据，inputValues 为多参数据，然后设置 modified 属性为 true，代表该字段被手动修改过，最后触发 triggerType 为 onInput 的校验规则
+  >- 调用 setValue 方法
+
+- 数据源规则
+
+  > 字段的值来源不是只有通过 Input 输入框输入的，还有会从一个数据源中选取的，比如下拉框之类的，所以字段模型加了一个数据源的属性 dataSource，专门用于读取数据源。
+
+- 字段组件规则
+
+  > 如果没有代理 UI 组件信息，那就没法实现更加精细化的联动控制了，比如 A 字段的值变化要控制 B 字段的 placeholder，那就必须将字段的属性给代理起来，所以 formily 提供了 component 属性，专门用于代理 UI 组件信息，component 是一个数组`[Component,ComponentProps]`，第一个元素代表是哪个组件，第二个代表组件的属性有哪些。
+  >
+  > 写入组件信息的方式主要有：
+  >
+  > - 直接修改 component 属性，传入数组
+  > - 调用 setComponent 方法，第一个参数是组件，第二个是组件属性
+  > - 调用 setComponentProps 方法，直接会设置组件属性
+
+- 字段装饰器规则
+
+  > 字段装饰器主要用来维护字段的包裹容器，比如 FormItem，更偏 UI 布局的控制，用 decorator 属性来描述字段装饰器。
+  >
+  > 读取装饰器信息的方式直接读取 decorator 属性即可。
+  >
+  > 写入装饰器信息的方式主要有：
+  >
+  > - 直接修改 decorator 属性，传入数组
+  > - 调用 setDecorator 方法，第一个参数是组件，第二个是组件属性
+  > - 调用 setDecoratorProps 方法，直接会设置组件属性
+
+- 校验规则
+
+  > 主要包含：
+  >
+  > - 校验器
+  >
+  >   校验器主要用 validator 属性描述，在字段初始化的时候可以给字段传入 validator，初始化之后也可以再次修改 validator。
+  >
+  >   validator 的几种传值方式：
+  >
+  >   1. 纯字符串格式校验，比如`"phone" | validator = "url" | validator= "email"` ，这样的格式校验是正则规则的简写形式，formily 内部提供了一些标准的正则规则，当然用户也能通过 **registerValidateFormats** 来手动创建规则，方便复用
+  >
+  > - 校验时机
+  >
+  > - 校验策略
+  >
+  > - 校验结果
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+虚数据型字段（更多的是作为容器**维护一批字段的 UI 形式**）
+
+- VoidField 模型，主要负责管理**虚字段**状态，虚字段是一种不会污染表单数据的节点存在，但是**它可以控制它的子节点显示隐藏，交互模式**。
+
+
+
+#### 数据模型
+
+主要包含：
+
+- 表单值(values)管理
+
+  > 表单值管理，其实就是一个对象结构的 values 属性，同时借助了 @formily/reactive 的深度 observer 能力，监听了它任意属性变化，如果发生变化，便会触发 onFormValuesChange 的生命周期钩子。
+
+- 表单默认值(initialValues)管理
+
+  > 默认值管理也是一个对象结构的 initialValues 属性，同样会深度监听属性变化，触发 onFormInitialValues 的生命周期钩子。
+
+- 字段值(value)管理
+
+  > 字段值管理，是在每个数据型字段的 value 属性上体现的，formily 会给每个字段维护一个叫 path 的数据路径属性，然后 value 的读写，都是对顶层表单的 values 进行读写，这样保证了字段的值与表单的值是绝对幂等的，同理字段默认值也一样。
+
+- 字段默认值(initialValue)管理
+
+- 值与默认值的选择合并策略
+
+  
+
+**值的管理，都是在顶层表单上管理的，字段的值与表单的值是通过 path 来实现的绝对幂等。**
+
+
+
+#### 校验模型
+
+核心是对数据的合法性校验，然后将校验结果管理起来，主要包含了：
+
+- 校验规则管理
+- 校验结果管理
+
+
+
+#### 联动模型
+
+在 formily2.x 中，在主动联动模型上新增了被动联动模型，同样是一句表达式表达：
+
+```ts
+subscribe(Dependencies, Reactions)
+```
+
+核心就是针对依赖数据变化做响应，依赖的数据可以是表单模型属性，也可以是任意字段模型的属性，响应的动作可以是改任意字段模型的属性，也可以是做其他异步动作。
+
+
+
+#### 路径系统
+
+给表单模型提供了几个能力：
+
+- 它可以用来从字段集中查找任意一个字段，同时支持按照规则批量查找
+- 它可以用来表达字段间关系的模型，**借助路径系统，可以实现查找某个字段父亲，能查找父亲，也就能实现树级别的数据继承能力，同样，也能查找某个字段的相邻节点**
+- 它可以用来实现字段数据的读写，带解构的数据读写
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## @formily/reactive
+
+这个库的核心思想是借鉴的Mobx。
 
 
 
