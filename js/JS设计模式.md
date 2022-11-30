@@ -111,3 +111,262 @@ Anim.method('start',function(){  //调用隐式原型上的method方法以在函
 ## 第三章封装与隐藏
 
 对对象的属性或者方法进行封装能降低对象之间的耦合程度。在JavaScript中使用闭包来实现封装。
+
+
+
+
+
+### 策略模式
+
+提升良好的编码习惯和重构意识。
+
+#### 实列代码
+
+针对不同条件，使用if进行不同逻辑判断。
+
+```js
+// 询价方法，接受价格标签和原价为入参
+function askPrice(tag, originPrice) {
+
+  // 处理预热价
+  if(tag === 'pre') {
+    if(originPrice >= 100) {
+      return originPrice - 20
+    } 
+    return originPrice * 0.9
+  }
+  
+  // 处理大促价
+  if(tag === 'onSale') {
+    if(originPrice >= 100) {
+      return originPrice - 30
+    } 
+    return originPrice * 0.8
+  }
+  
+  // 处理返场价
+  if(tag === 'back') {
+    if(originPrice >= 200) {
+      return originPrice - 50
+    }
+    return originPrice
+  }
+  
+  // 处理尝鲜价
+  if(tag === 'fresh') {
+     return originPrice * 0.5
+  }
+}
+```
+
+这种代码的不足：
+
+1. 违背了“单一功能”原则，一个 function 里面，处理了四部分逻辑，导致这个函数过重。
+2. 难排查问题，万一其中一行代码出了 Bug，那么整个询价逻辑都会崩坏；与此同时出了 Bug 你很难定位到底是哪个代码块坏了事。
+3. 单个能力很难被抽离复用。
+4. 违背“开放封闭”原则，当有一个新的条件出现时
+
+
+
+上面的代码整体上来看只有两个关键动作：
+
+```
+逻辑的分发 ——> 逻辑的执行
+```
+
+
+
+#### 代码重构
+
+**单一功能改造**——抽离逻辑的执行部分
+
+```js
+// 处理预热价
+function prePrice(originPrice) {
+  if(originPrice >= 100) {
+    return originPrice - 20
+  } 
+  return originPrice * 0.9
+}
+
+// 处理大促价
+function onSalePrice(originPrice) {
+  if(originPrice >= 100) {
+    return originPrice - 30
+  } 
+  return originPrice * 0.8
+}
+
+// 处理返场价
+function backPrice(originPrice) {
+  if(originPrice >= 200) {
+    return originPrice - 50
+  }
+  return originPrice
+}
+
+// 处理尝鲜价
+function freshPrice(originPrice) {
+  return originPrice * 0.5
+}
+
+function askPrice(tag, originPrice) {
+  // 处理预热价
+  if(tag === 'pre') {
+    return prePrice(originPrice)
+  }
+  // 处理大促价
+  if(tag === 'onSale') {
+    return onSalePrice(originPrice)
+  }
+
+  // 处理返场价
+  if(tag === 'back') {
+    return backPrice(originPrice)
+  }
+
+  // 处理尝鲜价
+  if(tag === 'fresh') {
+     return freshPrice(originPrice)
+  }
+}
+```
+
+优化了以下内容：
+
+1. 一个函数只做一件事。现在每个函数都有了自己明确的、单一的分工。 
+2. 方便快速定位bug
+3. 方便导出逻辑以进行代码复用
+4. 一旦条件内部的具体内容有变，只需要修改一个地方即可
+
+
+
+**开放封闭改造**——逻辑的分发
+
+针对需要新增的条件的情况，根据上面拆分单一功能原则的写法如下。
+
+```diff
+// 处理预热价
+function prePrice(originPrice) {
+  if(originPrice >= 100) {
+    return originPrice - 20
+  } 
+  return originPrice * 0.9
+}
+
+// 处理大促价
+function onSalePrice(originPrice) {
+  if(originPrice >= 100) {
+    return originPrice - 30
+  } 
+  return originPrice * 0.8
+}
+
+// 处理返场价
+function backPrice(originPrice) {
+  if(originPrice >= 200) {
+    return originPrice - 50
+  }
+  return originPrice
+}
+
+// 处理尝鲜价
+function freshPrice(originPrice) {
+  return originPrice * 0.5
+}
+
++ // 处理新人价
++ function newUserPrice(originPrice) {
++   if(originPrice >= 100) {
++     return originPrice - 50
++   }
++   return originPrice
++ }
+
+function askPrice(tag, originPrice) {
+  // 处理预热价
+  if(tag === 'pre') {
+    return prePrice(originPrice)
+  }
+  // 处理大促价
+  if(tag === 'onSale') {
+    return onSalePrice(originPrice)
+  }
+
+  // 处理返场价
+  if(tag === 'back') {
+    return backPrice(originPrice)
+  }
+
+  // 处理尝鲜价
+  if(tag === 'fresh') {
+     return freshPrice(originPrice)
+  }
+  
++  // 处理新人价
++  if(tag === 'newUser') {
++     return newUserPrice(originPrice)
++  }
+}
+```
+
+在外层，我们编写一个 newUser 函数用于处理新人价逻辑；在 askPrice 里面，我们新增了一个 if-else 判断。可以看出，这样其实还是在修改 askPrice 的函数体，没有实现**“对扩展开放，对修改封闭”**的效果。
+
+这么多 if-else，就是为了把 询价标签-询价函数 这个映射关系给明确下来。那么在 JS 中，**对象映射**既能够既帮明确映射关系，同时不破坏代码的灵活性的方法。
+
+可以把询价算法全都收敛到一个对象里去：
+
+```js
+// 定义一个询价处理器对象
+const priceProcessor = {
+  pre(originPrice) {
+    if (originPrice >= 100) {
+      return originPrice - 20;
+    }
+    return originPrice * 0.9;
+  },
+  onSale(originPrice) {
+    if (originPrice >= 100) {
+      return originPrice - 30;
+    }
+    return originPrice * 0.8;
+  },
+  back(originPrice) {
+    if (originPrice >= 200) {
+      return originPrice - 50;
+    }
+    return originPrice;
+  },
+  fresh(originPrice) {
+    return originPrice * 0.5;
+  },
+};
+```
+
+当想使用其中某个询价算法的时候，通过标签名去定位就好了：
+
+```js
+// 询价函数
+function askPrice(tag, originPrice) {
+  return priceProcessor[tag](originPrice)
+}
+```
+
+这样，askPrice 函数里的 if-else 彻底没有了。这时候如果需要一个新人价，只需要给 priceProcessor 新增一个映射关系：
+
+```js
+priceProcessor.newUser = function (originPrice) {
+  if (originPrice >= 100) {
+    return originPrice - 50;
+  }
+  return originPrice;
+}
+```
+
+
+
+#### 定义
+
+策略模式：定义一系列的算法,把它们一个个封装起来, 并且使它们可相互替换。
+
+涉及算法提取、算法封装、分发优化的整个操作流。
