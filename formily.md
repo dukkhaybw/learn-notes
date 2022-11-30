@@ -374,8 +374,8 @@ Formily 它提供了 View 和 ViewModel 两层能力，View 则是@formily/react
 数据型字段（核心是负责维护表单数据(表单提交时候的值)）
 
 - Field 模型，主要负责管理**非自增型字段**状态，比如 Input/Select/NumberPicker/DatePicker 这些组件
-- ArrayField 模型，主要负责管理**自增列表字段**状态，可以对列表项进行增删移动的。
-- ObjectField 模型，主要负责管理**自增对象字段**状态，可以对对象的 key 做增删操作。
+- ArrayField 模型，主要负责管理**自增列表字段**状态，可以对列表项进行增删移动的。在继承 Field 的基础上扩展了数组相关的方法，比如 push/pop/insert/move，不只是对字段的数据做处理，它内部还提供了对 ArrayField 子节点的状态转置处理主要为了保证字段的顺序与数据的顺序是一致。
+- ObjectField 模型，主要负责管理**自增对象字段**状态，可以对对象的 key 做增删操作。ObjectField 就提供了 addProperty/removeProperty/existProperty 3 个 API 。
 
 
 
@@ -458,24 +458,51 @@ ArrayField 和 ObjectField 都继承自 Field，Field 的定位就是维护**非
   >   validator 的几种传值方式：
   >
   >   1. 纯字符串格式校验，比如`"phone" | validator = "url" | validator= "email"` ，这样的格式校验是正则规则的简写形式，formily 内部提供了一些标准的正则规则，当然用户也能通过 **registerValidateFormats** 来手动创建规则，方便复用
+  >   2. 自定义函数校验，有 3 种返回值模式：
+  >      - `(value)=>"message"`，返回字符串代表有错误，不返回字符串代表无错误
+  >      - `(value)=>({type:"error",message:"message"})`，返回对象形式，可以指定 type 是 error 或 warning 或 success
+  >      - `{validator:()=>false,message:"message"}`，返回布尔形式，错误消息会复用对象结构的 message 字段
+  >   3. 对象结构校验，是一种更完备的表达，比如：
+  >      - `{format:"url"}` 这样可以指定正则格式
+  >      - `{required:true}`这样可以指定必填
+  >      - 还有更多的规则属性可以参考 API 文档，同时我们还能通过 registerValidateRules 来注册类似的校验规则
+  >   4. 对象数组结构校验，是前面三种的组合表达，其实前 3 种，都会转换成对象数组结构，比如：
+  >      - `["url",{required:true},(value)=>"message"]`其实相当于 `[{format:"url"},{required:true},{validator:(value)=>"message"}]`
   >
   > - 校验时机
   >
+  >   希望某些校验规则只在聚焦或者失焦的时候触发，可以在每个校验规则对象中加一个 triggerType，比如`{validator:(value)=>"message",triggerType:"onBlur"}` 这样就可以精确的控制某个校验规则只在某个事件中执行校验，这里的 triggerType 主要有`"onInput" | "onBlur" | "onFocus"` ，如果调用`form.validate`，是会一次性校验所有 triggerType 的规则，如果手动调用`field.validate`，则可以在入参中指定 triggerType，不传参就会校验所有。
+  >
   > - 校验策略
   >
+  >   希望某个字段的校验策略是，执行所有校验规则的时候，如果某个校验规则校验失败则立即返回结果，只需要在 field 初始化的时候传入参数 validateFirst 为 true 即可，默认是 false，也就是校验失败也会继续校验，拿到的校验结果是一个数组。
+  >
   > - 校验结果
-
-
-
-
-
-
-
-
-
-
-
-
+  >
+  >   对于校验结果，在字段模型中主要是存放在 feedbacks 属性中的，feedbacks 是由 Feedback 对象组成的数组，每个 Feedback 的结构是：
+  >
+  >   ```ts
+  >   interface Feedback {
+  >     path: string //字段数据路径
+  >     address: string //字段绝对路径
+  >     type: 'error' | 'success' | 'warning' //校验结果类型
+  >     code: //校验结果编码
+  >     | 'ValidateError'
+  >       | 'ValidateSuccess'
+  >       | 'ValidateWarning'
+  >       | 'EffectError'
+  >       | 'EffectSuccess'
+  >       | 'EffectWarning'
+  >     messages: string[] //校验消息
+  >   }
+  >   ```
+  >
+  >   读取方式主要有 4 种：
+  >
+  >   - 直接读取 feedbacks 属性
+  >   - 读取 errors 属性，相当于是从 feedbacks 中过滤出 type 为 error 的所有校验结果
+  >   - 读取 warnings 属性，相当于是从 feedbacks 中过滤出 type 为 warning 的所有校验结果
+  >   - 读取 successes 属性，相当于是从 feedbacks 中过滤出 type 为 success 的所有校验结果
 
 
 
@@ -485,7 +512,7 @@ ArrayField 和 ObjectField 都继承自 Field，Field 的定位就是维护**非
 
 虚数据型字段（更多的是作为容器**维护一批字段的 UI 形式**）
 
-- VoidField 模型，主要负责管理**虚字段**状态，虚字段是一种不会污染表单数据的节点存在，但是**它可以控制它的子节点显示隐藏，交互模式**。
+- VoidField 模型，主要负责管理**虚字段**状态，虚字段是一种不会污染表单数据的节点存在，但是**它可以控制它的子节点显示隐藏，交互模式**。相比于 Field，主要是阉割了数据读写规则、数据源规则和校验规则，用户使用的时候，主要还是使用显隐规则和组件，装饰器规则。
 
 
 
@@ -550,11 +577,9 @@ subscribe(Dependencies, Reactions)
 
 
 
+### API
 
-
-
-
-
+1. createForm：创建一个 Form 实例，作为 VM 给 UI 框架层消费
 
 
 
