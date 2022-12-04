@@ -219,7 +219,7 @@ class App extends React.Component{
 ReactDOM.render(<App/>, document.getElementById('app'))
 ```
 
-![image-20211123184940628](.\typora-user-images\image-20211123184940628.png)
+![image-20211123184940628](..\typora-user-images\image-20211123184940628.png)
 
 jsx=>createElement 函数=>reactElement 对象（原生 js 对象,树结构，虚拟 DOM）=>ReactDom.render =>真实 DOM
 
@@ -227,11 +227,11 @@ jsx=>createElement 函数=>reactElement 对象（原生 js 对象,树结构，�
 
 ## React 脚手架
 
-![image-20211123185844535](.\typora-user-images\image-20211123185844535.png)
+![image-20211123185844535](..\typora-user-images\image-20211123185844535.png)
 
-![image-20211123190120185](.\typora-user-images\image-20211123190120185.png)
+![image-20211123190120185](..\typora-user-images\image-20211123190120185.png)
 
-![image-20211123190629704](.\typora-user-images\image-20211123190629704.png)
+![image-20211123190629704](..\typora-user-images\image-20211123190629704.png)
 
 ## PWA
 
@@ -274,48 +274,48 @@ render 函数的返回值：
 
 React16 以后的生命周期函数：
 
-![image-20211008123109507](.\typora-user-images\image-20211008123109507.png)
+![image-20211008123109507](..\typora-user-images\image-20211008123109507.png)
 
 ## 组件通信
 
 - props(父传子，子传父)
-- context ![image-20211008213053789](.\typora-user-images\image-20211008213053789.png)
+- context ![image-20211008213053789](..\typora-user-images\image-20211008213053789.png)
 
-  ![image-20211008220112838](.\typora-user-images\image-20211008220112838.png)
+  ![image-20211008220112838](..\typora-user-images\image-20211008220112838.png)
 
-  ![image-20211008215540079](.\typora-user-images\image-20211008215540079.png)
+  ![image-20211008215540079](..\typora-user-images\image-20211008215540079.png)
 
-  ![image-20211008215557378](.\typora-user-images\image-20211008215557378.png)
+  ![image-20211008215557378](..\typora-user-images\image-20211008215557378.png)
 
 类组件中使用 context：
 
-![image-20211008215649033](.\typora-user-images\image-20211008215649033.png)
+![image-20211008215649033](..\typora-user-images\image-20211008215649033.png)
 
-![image-20211008215640502](.\typora-user-images\image-20211008215640502.png)
+![image-20211008215640502](..\typora-user-images\image-20211008215640502.png)
 
 函数组件中使用 context：
 
 - 方式一：consumer 组件
 
-![3432132](.\typora-user-images\image-20211008220154117.png)
+![3432132](..\typora-user-images\image-20211008220154117.png)
 
 多个 context 的使用：
 
-![image-20211008220429645](.\typora-user-images\image-20211008220429645.png)
+![image-20211008220429645](..\typora-user-images\image-20211008220429645.png)
 
-![image-20211008220403013](.\typora-user-images\image-20211008220403013.png)
+![image-20211008220403013](..\typora-user-images\image-20211008220403013.png)
 
 - 方式二：useContext ( ) 这是在函数组件中获取上下文对象的一个 hook
 
-  ![image-20211115222121232](.\typora-user-images\image-20211115222121232.png)
+  ![image-20211115222121232](..\typora-user-images\image-20211115222121232.png)
 
-​ ![image-20211115222147907](.\typora-user-images\image-20211115222147907.png)
+ ![image-20211115222147907](..\typora-user-images\image-20211115222147907.png)
 
-![image-20211115222434740](.\typora-user-images\image-20211115222434740.png)
+![image-20211115222434740](..\typora-user-images\image-20211115222434740.png)
 
 - 事件总线
 
-  ![image-20211009121314654](.\typora-user-images\image-20211009121314654.png)
+  ![image-20211009121314654](..\typora-user-images\image-20211009121314654.png)
 
 yarn add events
 
@@ -518,11 +518,11 @@ class Greeting extends React.Component {
 
 ## React 中模拟插槽
 
-![image-20211008212125543](.\typora-user-images\image-20211008212125543.png)
+![image-20211008212125543](..\typora-user-images\image-20211008212125543.png)
 
-![image-20211123233016309](.\typora-user-images\image-20211123233016309.png)
+![image-20211123233016309](..\typora-user-images\image-20211123233016309.png)
 
-![image-20211018192350128](.\typora-user-images\image-20211018192350128.png)
+![image-20211018192350128](..\typora-user-images\image-20211018192350128.png)
 
 ## 属性展开 props
 
@@ -563,49 +563,49 @@ const App = () => {
 
 源码
 
-![image-20220227114842861](.\typora-user-images\image-20220227114842861.png)
+![image-20220227114842861](..\typora-user-images\image-20220227114842861.png)
 
 **setState 异步的情况：**
 
-![image-20211008221729233](.\typora-user-images\image-20211008221729233.png)
+![image-20211008221729233](..\typora-user-images\image-20211008221729233.png)
 
 方式一：调用 setState 后如何获取更新后的数据
 
-![image-20211008222546915](.\typora-user-images\image-20211008222546915.png)
+![image-20211008222546915](..\typora-user-images\image-20211008222546915.png)
 
 方式二：在 componentDidUpdate 中获取，并且执行顺序先于方式一
 
-![image-20211008222736572](.\typora-user-images\image-20211008222736572.png)
+![image-20211008222736572](..\typora-user-images\image-20211008222736572.png)
 
 **setState 同步的情况：**
 
-![image-20211008223213631](.\typora-user-images\image-20211008223213631.png)
+![image-20211008223213631](..\typora-user-images\image-20211008223213631.png)
 
-![image-20211008223225213](.\typora-user-images\image-20211008223225213.png)
+![image-20211008223225213](..\typora-user-images\image-20211008223225213.png)
 
 setState 传入对象时是原对象和新对象进行合并而非替换。
 
-![image-20211008224451235](.\typora-user-images\image-20211008224451235.png)
+![image-20211008224451235](..\typora-user-images\image-20211008224451235.png)
 
 ## 多个 setState 函数的合并与不合并
 
-![image-20211008225012001](.\typora-user-images\image-20211008225012001.png)
+![image-20211008225012001](..\typora-user-images\image-20211008225012001.png)
 
-![image-20211008225157866](.\typora-user-images\image-20211008225157866.png)
+![image-20211008225157866](..\typora-user-images\image-20211008225157866.png)
 
 ## React 渲染流程
 
-![image-20211008230820130](.\typora-user-images\image-20211008230820130.png)
+![image-20211008230820130](..\typora-user-images\image-20211008230820130.png)
 
-![image-20211008231016099](.\typora-user-images\image-20211008231016099.png)
+![image-20211008231016099](..\typora-user-images\image-20211008231016099.png)
 
-![image-20211008231417658](.\typora-user-images\image-20211008231417658.png)
+![image-20211008231417658](..\typora-user-images\image-20211008231417658.png)
 
-![image-20211008231458042](.\typora-user-images\image-20211008231458042.png)
+![image-20211008231458042](..\typora-user-images\image-20211008231458042.png)
 
-![image-20211008231657540](.\typora-user-images\image-20211008231657540.png)
+![image-20211008231657540](..\typora-user-images\image-20211008231657540.png)
 
-![image-20211008231947820](.\typora-user-images\image-20211008231947820.png)
+![image-20211008231947820](..\typora-user-images\image-20211008231947820.png)
 
 ## render 函数的调用
 
@@ -620,9 +620,9 @@ shopuldComponentUpdate(nextProps, nextState, nextContext){
 }
 ```
 
-![image-20211009091135649](.\typora-user-images\image-20211009091135649.png)
+![image-20211009091135649](..\typora-user-images\image-20211009091135649.png)
 
-![image-20211018210642784](.\typora-user-images\image-20211018210642784.png)
+![image-20211018210642784](..\typora-user-images\image-20211018210642784.png)
 
 使用 shopuldComponentUpdate 来判断是否组件重新渲染的不足：
 
@@ -632,7 +632,7 @@ shopuldComponentUpdate(nextProps, nextState, nextContext){
 
 方案二：类组件继承自 PureComponent 而不是 Component
 
-![image-20211009092536213](.\typora-user-images\image-20211009092536213.png)
+![image-20211009092536213](..\typora-user-images\image-20211009092536213.png)
 
 不足：
 
@@ -654,7 +654,7 @@ const HomeHeader = fucntion (props){
 const MemoHomeHeader =  memo(HomeHeader)
 ```
 
-![image-20211009093429788](.\typora-user-images\image-20211009093429788.png)
+![image-20211009093429788](..\typora-user-images\image-20211009093429788.png)
 
 注意：通过 setState 修改 state 时，即使该 state 并没有被任何组件渲染到页面中，同样会导致组件重新渲染。
 
@@ -671,45 +671,45 @@ const MemoHomeHeader =  memo(HomeHeader)
 
 案例：
 
-![image-20211009094427218](.\typora-user-images\image-20211009094427218.png)
+![image-20211009094427218](..\typora-user-images\image-20211009094427218.png)
 
-![image-20211009094450738](.\typora-user-images\image-20211009094450738.png)
+![image-20211009094450738](..\typora-user-images\image-20211009094450738.png)
 
 下图中做法并不建议：
 
-![image-20211009094646773](.\typora-user-images\image-20211009094646773.png)
+![image-20211009094646773](..\typora-user-images\image-20211009094646773.png)
 
 因为如果组件有 shouldComponentUpdate 生命周期函数时，可能因为判断引用类型是否相等导致走错误的判断逻辑而使得组件不再因为数据的更新而重新调用 render 函数进行渲染。
 
-![image-20211009095147468](.\typora-user-images\image-20211009095147468.png)
+![image-20211009095147468](..\typora-user-images\image-20211009095147468.png)
 
 推荐做法：
 
-![image-20211009095353546](.\typora-user-images\image-20211009095353546.png)
+![image-20211009095353546](..\typora-user-images\image-20211009095353546.png)
 
 ## ref
 
-![image-20211009121518981](.\typora-user-images\image-20211009121518981.png)
+![image-20211009121518981](..\typora-user-images\image-20211009121518981.png)
 
-![image-20211009122134383](.\typora-user-images\image-20211009122134383.png)
+![image-20211009122134383](..\typora-user-images\image-20211009122134383.png)
 
-![image-20211009122143453](.\typora-user-images\image-20211009122143453.png)
+![image-20211009122143453](..\typora-user-images\image-20211009122143453.png)
 
 ## 受控组件和非受控组件
 
 和表单元素有关。
 
-![image-20211009122311242](.\typora-user-images\image-20211009122311242.png)
+![image-20211009122311242](..\typora-user-images\image-20211009122311242.png)
 
-![image-20211009122919976](.\typora-user-images\image-20211009122919976.png)
+![image-20211009122919976](..\typora-user-images\image-20211009122919976.png)
 
-![image-20211009123327410](.\typora-user-images\image-20211009123327410.png)
+![image-20211009123327410](..\typora-user-images\image-20211009123327410.png)
 
-![image-20211009123505212](.\typora-user-images\image-20211009123505212.png)
+![image-20211009123505212](..\typora-user-images\image-20211009123505212.png)
 
-![image-20211009123815826](.\typora-user-images\image-20211009123815826.png)
+![image-20211009123815826](..\typora-user-images\image-20211009123815826.png)
 
-![image-20211009124327789](.\typora-user-images\image-20211009124327789.png)
+![image-20211009124327789](..\typora-user-images\image-20211009124327789.png)
 
 ## 高阶组件（函数）
 
@@ -724,15 +724,15 @@ const MemoHomeHeader =  memo(HomeHeader)
 - 高阶组件本身不是一个组件而是一个函数
 - 该函数的参数是一个组件，且返回一个组件
 
-![image-20211009133655372](.\typora-user-images\image-20211009133655372.png)
+![image-20211009133655372](..\typora-user-images\image-20211009133655372.png)
 
 高阶组件的应用场景：
 
 - 对组件进行劫持
 
-- 增强 props ![image-20211009135122073](.\typora-user-images\image-20211009135122073.png)
+- 增强 props ![image-20211009135122073](..\typora-user-images\image-20211009135122073.png)
 
-- 渲染判断鉴权吧 ![image-20211009143044300](.\typora-user-images\image-20211009143044300.png)
+- 渲染判断鉴权吧 ![image-20211009143044300](..\typora-user-images\image-20211009143044300.png)
 
   ```jsx
   function enhanceAuth(component) {
@@ -760,7 +760,7 @@ const MemoHomeHeader =  memo(HomeHeader)
         const cost = this.endTime - this.beginTime;
         console.log(`${WrappedComponent.name}的渲染时间是：${cost}`);
       }
-
+  
       render() {
         return <WrappedComponent {...this.props}></WrappedComponent>;
       }
@@ -770,7 +770,7 @@ const MemoHomeHeader =  memo(HomeHeader)
   }
   ```
 
-  ![image-20211009143102534](.\typora-user-images\image-20211009143102534.png)
+  ![image-20211009143102534](..\typora-user-images\image-20211009143102534.png)
 
 类表达式：
 
@@ -780,19 +780,19 @@ const App = class {
 }
 ```
 
-![image-20220227140100422](.\typora-user-images\image-20220227140100422.png)
+![image-20220227140100422](..\typora-user-images\image-20220227140100422.png)
 
 ## ref 转发
 
-![image-20211009144123620](.\typora-user-images\image-20211009144123620.png)
+![image-20211009144123620](..\typora-user-images\image-20211009144123620.png)
 
 ## Portals
 
-![image-20211126212159297](.\typora-user-images\image-20211126212159297.png)
+![image-20211126212159297](..\typora-user-images\image-20211126212159297.png)
 
-![image-20211126212230398](.\typora-user-images\image-20211126212230398.png)
+![image-20211126212230398](..\typora-user-images\image-20211126212230398.png)
 
-![image-20211126212237506](.\typora-user-images\image-20211126212237506.png)
+![image-20211126212237506](..\typora-user-images\image-20211126212237506.png)
 
 ```jsx
 import React from 'react';
@@ -809,19 +809,19 @@ Antdesign 中的弹框就是借助类似的思想开发的，它内部先用原�
 
 ## fragment
 
-![image-20211009145321116](.\typora-user-images\image-20211009145321116.png)
+![image-20211009145321116](..\typora-user-images\image-20211009145321116.png)
 
-![image-20211011224342656](.\typora-user-images\image-20211011224342656.png)
+![image-20211011224342656](..\typora-user-images\image-20211011224342656.png)
 
-![image-20211011224437640](.\typora-user-images\image-20211011224437640.png)
+![image-20211011224437640](..\typora-user-images\image-20211011224437640.png)
 
 ## StrictMode
 
 只是在开发阶段会有效，在生产环境下不会生效。
 
-![image-20211009145503619](.\typora-user-images\image-20211009145503619.png)
+![image-20211009145503619](..\typora-user-images\image-20211009145503619.png)
 
-![image-20211009145910655](.\typora-user-images\image-20211009145910655.png)
+![image-20211009145910655](..\typora-user-images\image-20211009145910655.png)
 
 ## React 中的 CSS
 
@@ -832,7 +832,7 @@ Antdesign 中的弹框就是借助类似的思想开发的，它内部先用原�
 
 内联样式：
 
-![image-20211009151817113](.\typora-user-images\image-20211009151817113.png)
+![image-20211009151817113](..\typora-user-images\image-20211009151817113.png)
 
 ```jsx
 const box = {
@@ -846,13 +846,13 @@ const box = {
 
 普通 CSS：
 
-![image-20211009153124044](.\typora-user-images\image-20211009153124044.png)
+![image-20211009153124044](..\typora-user-images\image-20211009153124044.png)
 
 css 单独以文件的形式进行书写，在对应的模块引入 css 文件即可。这种方式的不足是很容易引起样式的冲突，因为样式是全局生效的。
 
 CSS modules
 
-![image-20211009153353198](.\typora-user-images\image-20211009153353198.png)
+![image-20211009153353198](..\typora-user-images\image-20211009153353198.png)
 
 在组件文件中引入 css 文件并赋值给一个变量。之后通过变量名.类名或者变量名[类名]的方式使用。
 
@@ -862,9 +862,9 @@ CSS in JS：
 yarn add styled-components
 ```
 
-![image-20211012002846827](.\typora-user-images\image-20211012002846827.png)
+![image-20211012002846827](..\typora-user-images\image-20211012002846827.png)
 
-![image-20211012002948324](.\typora-user-images\image-20211012002948324.png)
+![image-20211012002948324](..\typora-user-images\image-20211012002948324.png)
 
 **使用 styled-components**
 
@@ -910,17 +910,17 @@ export default class Home extends PureComponent {
 }
 ```
 
-![image-20211012004249601](.\typora-user-images\image-20211012004249601.png)
+![image-20211012004249601](..\typora-user-images\image-20211012004249601.png)
 
-![image-20211012004300008](.\typora-user-images\image-20211012004300008.png)
+![image-20211012004300008](..\typora-user-images\image-20211012004300008.png)
 
 项目中使用 styled-components:
 
-![image-20211012005002884](.\typora-user-images\image-20211012005002884.png)
+![image-20211012005002884](..\typora-user-images\image-20211012005002884.png)
 
-![image-20211012005031890](.\typora-user-images\image-20211012005031890.png)
+![image-20211012005031890](..\typora-user-images\image-20211012005031890.png)
 
-![image-20211012005043256](.\typora-user-images\image-20211012005043256.png)
+![image-20211012005043256](..\typora-user-images\image-20211012005043256.png)
 
 特点：
 
@@ -963,25 +963,25 @@ const LoginInput = styled.input.attrs({
 
 - 继承
 
-  ![image-20211012093339574](.\typora-user-images\image-20211012093339574.png)
+  ![image-20211012093339574](..\typora-user-images\image-20211012093339574.png)
 
-  ​ ![image-20211012093359776](.\typora-user-images\image-20211012093359776.png)
+   ![image-20211012093359776](..\typora-user-images\image-20211012093359776.png)
 
 - 设置全局共享的 css 属性
 
-  ![image-20211012093525337](.\typora-user-images\image-20211012093525337.png)
+  ![image-20211012093525337](..\typora-user-images\image-20211012093525337.png)
 
-  ![image-20211012093548118](.\typora-user-images\image-20211012093548118.png)
+  ![image-20211012093548118](..\typora-user-images\image-20211012093548118.png)
 
-  ![image-20211012093615002](.\typora-user-images\image-20211012093615002.png)
+  ![image-20211012093615002](..\typora-user-images\image-20211012093615002.png)
 
 ## ant design
 
 classnames 库的使用
 
-![image-20211009160051151](.\typora-user-images\image-20211009160051151.png)
+![image-20211009160051151](..\typora-user-images\image-20211009160051151.png)
 
-![image-20211009160424667](.\typora-user-images\image-20211009160424667.png)
+![image-20211009160424667](..\typora-user-images\image-20211009160424667.png)
 
 ```
 npm install antd --save
@@ -1009,13 +1009,13 @@ import { 字体图标组件名 } from '@ant-design/icons'
 直接使用组件
 ```
 
-![image-20211012201101176](.\typora-user-images\image-20211012201101176.png)
+![image-20211012201101176](..\typora-user-images\image-20211012201101176.png)
 
 ## 编辑 create-react-app 脚手架中 webpack 的默认配置
 
 方式一：使用 npm run eject 将脚手架的 webpack 配置信息完全暴露后修改原 webpack 配置文件
 
-![image-20211012201519816](.\typora-user-images\image-20211012201519816.png)
+![image-20211012201519816](..\typora-user-images\image-20211012201519816.png)
 
 方式二：craco 库进行修改
 
@@ -1023,19 +1023,19 @@ npm install @craco/craco
 
 项目根目录下创建文件：craco.config.js
 
-![image-20211012201907911](.\typora-user-images\image-20211012201907911.png)
+![image-20211012201907911](..\typora-user-images\image-20211012201907911.png)
 
-![image-20211012201925605](.\typora-user-images\image-20211012201925605.png)
+![image-20211012201925605](..\typora-user-images\image-20211012201925605.png)
 
 ### 配置路径别名
 
-![image-20211012202649841](.\typora-user-images\image-20211012202649841.png)
+![image-20211012202649841](..\typora-user-images\image-20211012202649841.png)
 
 ## 前端网络请求
 
-![image-20211012205650834](.\typora-user-images\image-20211012205650834.png)
+![image-20211012205650834](..\typora-user-images\image-20211012205650834.png)
 
-![image-20211012205843525](.\typora-user-images\image-20211012205843525.png)
+![image-20211012205843525](..\typora-user-images\image-20211012205843525.png)
 
 ### axios
 
@@ -1068,7 +1068,7 @@ async componentDidMount(){
 
 axios 的配置信息
 
-![image-20211012220244073](.\typora-user-images\image-20211012220244073.png)
+![image-20211012220244073](..\typora-user-images\image-20211012220244073.png)
 
 service/config.js
 
@@ -1114,19 +1114,19 @@ export default instance
 
 ## React 动画
 
-![image-20211012222116002](.\typora-user-images\image-20211012222116002.png)
+![image-20211012222116002](..\typora-user-images\image-20211012222116002.png)
 
-![image-20211013192215445](.\typora-user-images\image-20211013192215445.png)
+![image-20211013192215445](..\typora-user-images\image-20211013192215445.png)
 
-![image-20211013202153882](.\typora-user-images\image-20211013202153882.png)
+![image-20211013202153882](..\typora-user-images\image-20211013202153882.png)
 
-![image-20211013202205028](.\typora-user-images\image-20211013202205028.png)
+![image-20211013202205028](..\typora-user-images\image-20211013202205028.png)
 
 CSSTransition 组件在实现 CSS 动画时，会给最外层的元素添加入场类名，过渡过程中的类名和离场类名，而开发者通过编写这些类名对应的 css 代码实现动画效果。
 
-![image-20211020221215630](.\typora-user-images\image-20211020221215630.png)
+![image-20211020221215630](..\typora-user-images\image-20211020221215630.png)
 
-![image-20211020215835997](.\typora-user-images\image-20211020215835997.png)
+![image-20211020215835997](..\typora-user-images\image-20211020215835997.png)
 
 入场类名：
 
@@ -1157,19 +1157,19 @@ CSSTransition 组件在实现 CSS 动画时，会给最外层的元素添加入�
 
 SwitchTransition 动画组件：
 
-![image-20211020221748055](.\typora-user-images\image-20211020221748055.png)
+![image-20211020221748055](..\typora-user-images\image-20211020221748055.png)
 
-![image-20211020222431883](.\typora-user-images\image-20211020222431883.png)
+![image-20211020222431883](..\typora-user-images\image-20211020222431883.png)
 
-![image-20211020222311162](.\typora-user-images\image-20211020222311162.png)
+![image-20211020222311162](..\typora-user-images\image-20211020222311162.png)
 
-![image-20211020222337592](.\typora-user-images\image-20211020222337592.png)
+![image-20211020222337592](..\typora-user-images\image-20211020222337592.png)
 
 动画组件的中的 timeout 标签属性设置的时间是用来确定类名添加和移除的时间周期的，而 css 中 transition 属性设置的时间则是用于设置该动画耗时多少时间的。但是两者的时间最后一致。
 
 TransitionGroup 动画组件：
 
-![image-20211020223404722](.\typora-user-images\image-20211020223404722.png)
+![image-20211020223404722](..\typora-user-images\image-20211020223404722.png)
 
 ## Redux
 
@@ -1249,7 +1249,7 @@ store.dispatch(action4);
     - ....
   - actions-type.js
 
-![image-20211020230234805](.\typora-user-images\image-20211020230234805.png)
+![image-20211020230234805](..\typora-user-images\image-20211020230234805.png)
 
 index.js:
 
@@ -1351,7 +1351,7 @@ stroe.dispatch(Sub(6))
 
 ### Redux 结合 React
 
-![image-20211016115602055](.\typora-user-images\image-20211016115602055.png)
+![image-20211016115602055](..\typora-user-images\image-20211016115602055.png)
 
 actions-type.js:
 
@@ -1487,7 +1487,7 @@ export default class Home extends PureComponent {
 
 组件中使用 redux 中数据整体的流程还是比较繁琐的。同时在不同的组件中要使用 redux 中的状态数据时，都有一些列相似的步骤需要做，就造成了代码的冗余。如下图中的代码分别在两个不同的组件中都书写了：
 
-![image-20211016123050237](.\typora-user-images\image-20211016123050237.png)
+![image-20211016123050237](..\typora-user-images\image-20211016123050237.png)
 
 为了解决这个问题就需要对相同的逻辑进行抽离。而 react-redux 就是实现了公共逻辑的抽离。
 
@@ -1621,7 +1621,7 @@ export function connect(mapStateToprops, mapDispatchProps) {
 
 使用 context 在项目的根组件上注册上下文对象
 
-![image-20211016141646332](.\typora-user-images\image-20211016141646332.png)
+![image-20211016141646332](..\typora-user-images\image-20211016141646332.png)
 
 ## react-redux
 
@@ -1684,11 +1684,11 @@ export default connect(mapStateToprops, mapDispatchProps)(Com);
 
 方式二：
 
-![image-20211016151239337](.\typora-user-images\image-20211016151239337.png)
+![image-20211016151239337](..\typora-user-images\image-20211016151239337.png)
 
-![image-20211016151504495](.\typora-user-images\image-20211016151504495.png)
+![image-20211016151504495](..\typora-user-images\image-20211016151504495.png)
 
-![image-20211016151640163](.\typora-user-images\image-20211016151640163.png)
+![image-20211016151640163](..\typora-user-images\image-20211016151640163.png)
 
 store/index.js:
 
@@ -1706,17 +1706,17 @@ export default store;
 
 redux 中间件 dispatch 一个 action 函数，该函数体中做一些业务逻辑或者异步处理，在这些任务完成后再拿着完成后的数据 dispatch 一个 action 对象给 reducer 进行之后任务的处理。
 
-![image-20211021204222977](.\typora-user-images\image-20211021204222977.png)
+![image-20211021204222977](..\typora-user-images\image-20211021204222977.png)
 
-![image-20211021204342466](.\typora-user-images\image-20211021204342466.png)
+![image-20211021204342466](..\typora-user-images\image-20211021204342466.png)
 
-![image-20211021203905691](.\typora-user-images\image-20211021203905691.png)
+![image-20211021203905691](..\typora-user-images\image-20211021203905691.png)
 
-![image-20211021204029168](.\typora-user-images\image-20211021204029168.png)
+![image-20211021204029168](..\typora-user-images\image-20211021204029168.png)
 
 ## Redux-Devtools
 
-![image-20211021205105549](.\typora-user-images\image-20211021205105549.png)
+![image-20211021205105549](..\typora-user-images\image-20211021205105549.png)
 
 ## React-saga
 
@@ -1827,17 +1827,17 @@ constants.js:
 export const FETCH_HOME_MULTIDATA = 'FETCH_HOME_MULTIDATA';
 ```
 
-![image-20211023133501228](.\typora-user-images\image-20211023133501228.png)
+![image-20211023133501228](..\typora-user-images\image-20211023133501228.png)
 
 ## 理解中间件
 
-![image-20211023133624540](.\typora-user-images\image-20211023133624540.png)
+![image-20211023133624540](..\typora-user-images\image-20211023133624540.png)
 
-![image-20211023133639166](.\typora-user-images\image-20211023133639166.png)
+![image-20211023133639166](..\typora-user-images\image-20211023133639166.png)
 
-![image-20211023141916360](.\typora-user-images\image-20211023141916360.png)
+![image-20211023141916360](..\typora-user-images\image-20211023141916360.png)
 
-![image-20211023141928884](.\typora-user-images\image-20211023141928884.png)
+![image-20211023141928884](..\typora-user-images\image-20211023141928884.png)
 
 ## reducer 的拆分
 
@@ -1914,11 +1914,11 @@ React Router 提供了多种不同环境下的路由库
 
 hashURL：
 
-![image-20211023193913831](.\typora-user-images\image-20211023193913831.png)
+![image-20211023193913831](..\typora-user-images\image-20211023193913831.png)
 
 historyURL：
 
-![image-20211023195940224](.\typora-user-images\image-20211023195940224.png)
+![image-20211023195940224](..\typora-user-images\image-20211023195940224.png)
 
 ```shell
 npm i -S react-router-dom
@@ -1992,11 +1992,11 @@ react-router-dom 包中提供的组件：
 
 NavLink：
 
-![image-20211023213805052](.\typora-user-images\image-20211023213805052.png)
+![image-20211023213805052](..\typora-user-images\image-20211023213805052.png)
 
 Switch:
 
-![image-20211023213838717](.\typora-user-images\image-20211023213838717.png)
+![image-20211023213838717](..\typora-user-images\image-20211023213838717.png)
 
 Redirect
 
@@ -2048,7 +2048,7 @@ export default class Profile extends Component {
 
 ## 编程式导航
 
-![image-20211024144421166](.\typora-user-images\image-20211024144421166.png)
+![image-20211024144421166](..\typora-user-images\image-20211024144421166.png)
 
 ## 路由传
 
@@ -2058,7 +2058,7 @@ export default class Profile extends Component {
 
   ```jsx
   <NavLink to='/details/123456'></NavLink>
-
+  
   <Route path='/details/:id'></Route>
 
 
@@ -2083,7 +2083,7 @@ export default class Profile extends Component {
           search:'?key1=value1',
           state:{key:value,....}
       }}></NavLink>
-
+  
   // 在类组件的this.props.location.state获取state对象传参
   ```
 
@@ -2140,7 +2140,7 @@ import routes from '@/router';
 renderRoutes(routes); //在组件的jsx部分使用该行命令
 ```
 
-![image-20220301211551907](.\typora-user-images\image-20220301211551907.png)
+![image-20220301211551907](..\typora-user-images\image-20220301211551907.png)
 
 通过该第三方包选择子代路由是，可以通过 renderRoutes(this.props.route.routes)
 
@@ -2164,7 +2164,7 @@ Hook 是 react16.8 以后的版本新增的内容。开发者在不编写 class 
 
 class 组件的优势：
 
-![image-20211016192429981](.\typora-user-images\image-20211016192429981.png)
+![image-20211016192429981](..\typora-user-images\image-20211016192429981.png)
 
 class 组件的不足：
 
@@ -2189,13 +2189,13 @@ useState 返回的数组的第二个参数是一个函数，该函数可以接�
 
 useState 返回的数组的第二个参数是一个函数，在同一个事件循环中多次调用时，也是存在合并为一个的情况，如果要避免这种情况，也就可以传入函数作为参数。
 
-![image-20220413213818065](.\typora-user-images\image-20220413213818065.png)
+![image-20220413213818065](..\typora-user-images\image-20220413213818065.png)
 
-![image-20220413212829090](.\typora-user-images\image-20220413212829090.png)
+![image-20220413212829090](..\typora-user-images\image-20220413212829090.png)
 
-![image-20220413213207542](.\typora-user-images\image-20220413213207542.png)
+![image-20220413213207542](..\typora-user-images\image-20220413213207542.png)
 
-![image-20220413213245715](.\typora-user-images\image-20220413213245715.png)
+![image-20220413213245715](..\typora-user-images\image-20220413213245715.png)
 
 一个函数组件中可以使用多个 useState
 
@@ -2203,9 +2203,9 @@ useState 返回的数组的第二个参数是一个函数，在同一个事件�
 
 该函数接受两个参数，第二个参数是可选的，第一个参数是回调函数。
 
-![image-20220413221954501](.\typora-user-images\image-20220413221954501.png)
+![image-20220413221954501](..\typora-user-images\image-20220413221954501.png)
 
-![image-20220413222013013](.\typora-user-images\image-20220413222013013.png)
+![image-20220413222013013](..\typora-user-images\image-20220413222013013.png)
 
 一个函数组件中可以使用多个 useEffect
 
@@ -2244,31 +2244,31 @@ useState 返回的数组的第二个参数是一个函数，在同一个事件�
 
 ### useContext
 
-![image-20220413231648085](.\typora-user-images\image-20220413231648085.png)
+![image-20220413231648085](..\typora-user-images\image-20220413231648085.png)
 
 useContext()接受一个 Context 对象作为参数，返回的值就是对应的 context 对象提供的数据。
 
 1. 创建 context 对象
 
-![image-20220413224741463](.\typora-user-images\image-20220413224741463.png)
+![image-20220413224741463](..\typora-user-images\image-20220413224741463.png)
 
 2. 定义共享数据
 
-   ![image-20220413224917928](.\typora-user-images\image-20220413224917928.png)
+   ![image-20220413224917928](..\typora-user-images\image-20220413224917928.png)
 
 3. 使用
 
-   ![image-20220413224818346](.\typora-user-images\image-20220413224818346.png)
+   ![image-20220413224818346](..\typora-user-images\image-20220413224818346.png)
 
-![image-20220413225010332](.\typora-user-images\image-20220413225010332.png)
+![image-20220413225010332](..\typora-user-images\image-20220413225010332.png)
 
 ### useReducer
 
-![image-20220413224547624](.\typora-user-images\image-20220413224547624.png)
+![image-20220413224547624](..\typora-user-images\image-20220413224547624.png)
 
-![image-20220413233345207](.\typora-user-images\image-20220413233345207.png)
+![image-20220413233345207](..\typora-user-images\image-20220413233345207.png)
 
-![image-20220413232101149](.\typora-user-images\image-20220413232101149.png)
+![image-20220413232101149](..\typora-user-images\image-20220413232101149.png)
 
 ### useCallback
 
@@ -2279,11 +2279,11 @@ useContext()接受一个 Context 对象作为参数，返回的值就是对应�
 
 在函数组件中定义的函数在组件重新渲染时，该函数组件的函数体都会重新执行依次，对于函数组件中定义的其他函数，则会在重新渲染的时候重新定义。
 
-![image-20220413234432537](.\typora-user-images\image-20220413234432537.png)
+![image-20220413234432537](..\typora-user-images\image-20220413234432537.png)
 
-![image-20220413235032134](.\typora-user-images\image-20220413235032134.png)
+![image-20220413235032134](..\typora-user-images\image-20220413235032134.png)
 
-![image-20220413235227462](.\typora-user-images\image-20220413235227462.png)
+![image-20220413235227462](..\typora-user-images\image-20220413235227462.png)
 
 上图的代码实际上没有达到性能优化的目的，因为 useCallback 函数传参部分的函数也会每次重新渲染组件时进行重新定义。
 
@@ -2334,7 +2334,7 @@ export default function CallbackHookDemo02() {
 
 ### useMemo
 
-![image-20220414000830179](.\typora-user-images\image-20220414000830179.png)
+![image-20220414000830179](..\typora-user-images\image-20220414000830179.png)
 
 对上面代码的优化：
 
@@ -2420,16 +2420,16 @@ export default function MemoHookDemo01() {
 
   ```JSX
   import React, { useRef, useState, useEffect } from 'react'
-
+  
   export default function RefHookDemo02() {
     const [count, setCount] = useState(0);
-
+  
     const numRef = useRef(count);
-
+  
     useEffect(() => {
       numRef.current = count;
     }, [count])
-
+  
     return (
       <div>
         {/* <h2>numRef中的值: {numRef.current}</h2>
@@ -2479,7 +2479,7 @@ export default function UseImperativeHandleHookDemo() {
 
 ### useLayoutEffect
 
-![image-20220414210209997](.\typora-user-images\image-20220414210209997.png)
+![image-20220414210209997](..\typora-user-images\image-20220414210209997.png)
 
 ```jsx
 import React, { useState, useEffect } from 'react';
@@ -2649,11 +2649,11 @@ export default function ForwardRefDemo() {
 
 对于使用 react 技术栈开发的产品，一般安装了 react 官方的 chrome 插件的浏览器在访问该产品时，往往该插件会高亮显示。为了避免暴露过多的网站技术栈情况，可用通过项目的代码判断在生产环境下让插件的图标不高亮显示。
 
-![image-20211024192938752](.\typora-user-images\image-20211024192938752.png)
+![image-20211024192938752](..\typora-user-images\image-20211024192938752.png)
 
 ### 项目结构
 
-![image-20211025191706284](.\typora-user-images\image-20211025191706284.png)
+![image-20211025191706284](..\typora-user-images\image-20211025191706284.png)
 
 ### css 样式重置
 
@@ -2663,9 +2663,9 @@ normalize.css 或者 reset.css
 
 方式二：npm install normalize.css
 
-![image-20211025192013862](.\typora-user-images\image-20211025192013862.png)
+![image-20211025192013862](..\typora-user-images\image-20211025192013862.png)
 
-![image-20211025192037068](.\typora-user-images\image-20211025192037068.png)
+![image-20211025192037068](..\typora-user-images\image-20211025192037068.png)
 
 同时定义了一些自己的全局样式，之后在需要使用的元素上直接使用即可。
 
@@ -2850,7 +2850,7 @@ export const HeaderWarpper = styled.div`
 
 **mobx 不同版本对浏览器的支持情况**
 
-![image-20220417174820185](.\typora-user-images\image-20220417174820185.png)
+![image-20220417174820185](..\typora-user-images\image-20220417174820185.png)
 
 **核心思想**
 
@@ -2858,4 +2858,4 @@ export const HeaderWarpper = styled.div`
 
 数据修改流程：
 
-![image-20220417175011934](.\typora-user-images\image-20220417175011934.png)
+![image-20220417175011934](..\typora-user-images\image-20220417175011934.png)
