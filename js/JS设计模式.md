@@ -1,5 +1,43 @@
 # JavaScript设计模式
 
+在软件工程中，设计模式（Design Pattern）是对软件设计中普遍存在（反复出现）的各种问题，所提出的解决方案。 ——维基百科
+
+针对特定或者类似场景下的写代码的优秀套路。
+
+> **基础理论知识是一个人的基线，理论越强基线越高。再为自己定一个目标和向上攀附的阶梯，那么达到目标就是时间问题，而很多野路子工程师搞了半辈子也未达到优秀工程师的基线，很多他们绞尽脑汁得出的高深学问，不过是正规工程师看起来很自然的东西。**—— 吴军
+
+
+
+解决知识抽象性带来的理解障碍，重要的不是反复的陈述、解释，而是**把自己放到一个正确的场景里，去体会这个模式的好**。
+
+
+
+## 设计模式原则
+
+设计原则是设计模式的指导理论，它可以帮助规避不良的软件设计。
+
+SOLID 指代的五个基本原则分别是：
+
+- 单一功能原则（Single Responsibility Principle）
+- 开放封闭原则（Opened Closed Principle）
+- 里式替换原则（Liskov Substitution Principle）
+- 接口隔离原则（Interface Segregation Principle）
+- 依赖反转原则（Dependency Inversion Principle）
+
+在 JavaScript 设计模式中，主要用到的设计模式基本都围绕“单一功能”和“开放封闭”这两个原则来展开。
+
+设计模式的核心思想——**封装变化**。**将变与不变分离，确保变化的部分灵活、不变的部分稳定**。
+
+《设计模式：可复用面向对象软件的基础》中将23种设计模式按照“创建型”、“行为型”和“结构型”进行划分：
+
+![img](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/4/6/169f16406d230ffe~tplv-t2oaga2asx-zoom-in-crop-mark:3024:0:0:0.awebp)
+
+无论是创建型、结构型还是行为型，这些具体的设计模式都是在用自己的方式去封装不同类型的变化 —— 创建型模式封装了创建对象过程中的变化，比如下节的工厂模式，它做的事情就是将创建对象的过程抽离；结构型模式封装的是对象之间组合方式的变化，目的在于灵活地表达对象间的配合与依赖关系；而行为型模式则将是对象千变万化的行为进行抽离，确保我们能够更安全、更方便地对行为进行更改。
+
+
+
+设计模式的核心操作是去观察你整个逻辑里面的**变与不变**，然后将变与不变分离，达到使变化的部分灵活、不变的地方稳定的目的。
+
 ## 第一章
 
 ### 案例
@@ -111,6 +149,166 @@ Anim.method('start',function(){  //调用隐式原型上的method方法以在函
 ## 第三章封装与隐藏
 
 对对象的属性或者方法进行封装能降低对象之间的耦合程度。在JavaScript中使用闭包来实现封装。
+
+
+
+
+
+### 构造器模式
+
+当创建一个对象时，一般的代码：
+
+```js
+const liLei = {
+    name: '李雷',
+    age: 25,
+    career: 'coder',
+}
+```
+
+当再增加一个具有相同属性的对象是：
+
+```js
+const hanMeiMei = {
+    name: '韩梅梅',
+    age: 24,
+    career: 'product manager'
+}
+```
+
+当再次增加多个具有相同属性的对象时，就会类似写出大量重复的代码。所以可以使用构造器来批量生成一些具有相同属性但属性值不同的对象。
+
+```js
+function User(name , age, career) {
+    this.name = name
+    this.age = age
+    this.career = career 
+}
+```
+
+能创建一系列对象并为对象进行初始化赋值的函数，就叫做构造器。
+
+在 JavaScript 中，使用的构造函数就应用了**构造器模式**。
+
+使用构造器模式的时候，本质上是去抽象了每个对象实例的变与不变。
+
+
+
+### 工厂模式
+
+#### 简单工厂模式
+
+使用工厂模式时，要做的就是去抽象不同构造函数（类）之间的变与不变。**将创建对象的过程单独封装。**
+
+当有多种类，且每个类中既有共性又有特性的情况下时：
+
+```js
+function Coder(name , age) {
+    this.name = name
+    this.age = age
+    this.career = 'coder' 
+    this.work = ['写代码','写系分', '修Bug']
+}
+
+function ProductManager(name, age) {
+    this.name = name 
+    this.age = age
+    this.career = 'product manager'
+    this.work = ['订会议室', '写PRD', '催更']
+}
+```
+
+上面编写了两个构造器。
+
+每从数据库拿到一条数据，都要人工判断一下这个员工的工种，然后手动给它分配构造器吗？不行，这也是一个“变”，**把这个“变”交给一个函数去处理**：
+
+```js
+function Factory(name, age, career) {
+  switch(career) {
+    case 'coder':
+      return new Coder(name, age) 
+      break
+    case 'product manager':
+      return new ProductManager(name, age)
+      break
+      ...   // 当有很多情况时，就需要创建很多的构造器。
+}
+```
+
+Coder 和 ProductManager 两个工种的员工，仍然存在都拥有 name、age、career、work 这四个属性这样的共性，它们之间的区别，在于每个字段取值的不同，以及 work 字段需要随 career 字段取值的不同而改变。这样一来，是不是对共性封装得不够彻底？那么相应地，共性与个性分离得也不够彻底。
+
+现在把相同的逻辑封装回User类里，然后把这个承载了共性的 User 类和个性化的逻辑判断写入同一个函数：
+
+```js
+function User(name , age, career, work) {
+    this.name = name
+    this.age = age
+    this.career = career 
+    this.work = work
+}
+
+function Factory(name, age, career) {
+    let work
+    switch(career) {
+        case 'coder':
+            work =  ['写代码','写系分', '修Bug'] 
+            break
+        case 'product manager':
+            work = ['订会议室', '写PRD', '催更']
+            break
+        case 'boss':
+            work = ['喝茶', '看报', '见客户']
+        case 'xxx':
+            // 其它工种的职责分配
+            ...
+            
+    return new User(name, age, career, work)
+}
+```
+
+
+
+**构造器解决的是多个对象实例的问题，简单工厂解决的是多个类的问题。**
+
+那么当复杂度从多个类共存上升到多个工厂共存时又该怎么处理呢？
+
+
+
+#### 抽象工厂模式
+
+对于**强类型的静态语言**。用这些语言创建对象时，需要时刻关注类型之间的解耦，以便该对象日后可以表现出多态性。但 JavaScript，作为一种弱类型的语言，它具有天然的多态性，好像压根不需要考虑类型耦合问题。目前的 JavaScript 语法里，也确实不支持抽象类的直接实现，只能凭借模拟去还原抽象类。
+
+在实际的业务中，往往面对的复杂度并非数个类、一个工厂可以解决，而是需要动用多个工厂。
+
+上节的示例代码：
+
+```js
+function Factory(name, age, career) {
+    let work
+    switch(career) {
+        case 'coder':
+            work =  ['写代码','写系分', '修Bug'] 
+            break
+        case 'product manager':
+            work = ['订会议室', '写PRD', '催更']
+            break
+        case 'boss':
+            work = ['喝茶', '看报', '见客户']
+        case 'xxx':
+            // 其它工种的职责分配
+            ...
+            
+    return new User(name, age, career, work)
+}
+```
+
+每考虑到一个新的员工群体，就回去修改一次 Factory 的函数体，这种做法危险。
+
+1. Factory会变得异常庞大
+2. Factory 的逻辑过于繁杂和混乱难以维护
+3. 不利于测试
+
+
 
 
 
