@@ -3615,6 +3615,252 @@ react-dom.js:
 
 ```
 
-![image-20211208180802476](.\typora-user-images\image-20211208180802476.png)
+![image-20211208180802476](..\typora-user-images\image-20211208180802476.png)
 
 深度优先变为线性更新
+
+
+
+
+
+
+
+
+
+## 卡颂React
+
+“学习源码”划分为5个层次，阐述了：
+
+- 达到每个层次需要掌握哪些知识
+- 怎样最快的掌握这些知识
+- 达到这一层次后会收获什么
+
+
+
+从理念到架构，从架构到实现，从实现到具体代码。从原理到源码得一个过程。
+
+
+
+React框架为了实现一个什么目的而产生？（理念）
+
+为了实现这个目的（理念），React又做了哪些处理和如何架构？
+
+目的：React 是用 JavaScript 构建**快速响应**的大型 Web 应用程序的首选方式。
+
+制约`快速响应`的因素是什么？
+
+- 当遇到大计算量的操作或者设备性能不足使页面掉帧，导致卡顿。
+- 发送网络请求后，由于需要等待数据返回才能进一步操作导致不能快速响应。
+
+这两类场景可以概括为：
+
+- CPU的瓶颈
+- IO的瓶颈
+
+`React`是如何解决这两个瓶颈的呢？
+
+
+
+针对CPU瓶颈：在浏览器每一帧的时间中，预留一些时间给JS线程，`React`利用这部分时间更新组件（可以看到，在[源码 (opens new window)](https://github.com/facebook/react/blob/1fb18e22ae66fdb1dc127347e169e73948778e5a/packages/scheduler/src/forks/SchedulerHostConfig.default.js#L119)中，预留的初始时间是5ms）。当预留的时间不够用时，`React`将线程控制权交还给浏览器使其有时间渲染UI，`React`则等待下一帧时间到来继续被中断的工作。——时间切片
+
+此时我们的长任务被拆分到每一帧不同的`task`中，`JS脚本`执行时间大体在`5ms`左右，这样浏览器就有剩余时间执行**样式布局**和**样式绘制**，减少掉帧的可能性。
+
+不是不可能掉帧，是尽可能的减少了掉帧的情况出现。所以，解决`CPU瓶颈`的关键是实现`时间切片`，而`时间切片`的关键是：将**同步的更新**变为**可中断的异步更新**。
+
+
+
+React15架构
+
+React15为什么不能满足**快速响应**的理念？
+
+React15架构可以分为两层：
+
+- Reconciler（协调器）—— 负责找出变化的组件
+- Renderer（渲染器）—— 负责将变化的组件渲染到页面上
+
+
+
+Reconciler（协调器）
+
+在React中，通过`this.setState`、`this.forceUpdate`、`ReactDOM.render`等API触发更新。
+
+每当有更新发生时，**Reconciler**会做如下工作：
+
+- 调用函数组件、或class组件的`render`方法，将返回的JSX转化为虚拟DOM
+- 将虚拟DOM和上次更新时的虚拟DOM对比
+- 通过对比找出本次更新中变化的虚拟DOM
+- 通知**Renderer**将变化的虚拟DOM渲染到页面上
+
+
+
+Renderer（渲染器）
+
+不同平台有不同的**Renderer**。前端是负责在浏览器环境渲染的**Renderer** —— ReactDOM。
+
+除此之外，还有：
+
+- [ReactNative](https://www.npmjs.com/package/react-native)渲染器，渲染App原生组件
+- [ReactTest ](https://www.npmjs.com/package/react-test-renderer)渲染器，渲染出纯Js对象用于测试
+- [ReactArt](https://www.npmjs.com/package/react-art)渲染器，渲染到Canvas, SVG 或 VML (IE8)
+
+在每次更新发生时，**Renderer**接到**Reconciler**通知，将变化的组件渲染在当前宿主环境。
+
+
+
+React15的缺点
+
+在**Reconciler**中，`mount`的组件会调用[mountComponent ](https://github.com/facebook/react/blob/15-stable/src/renderers/dom/shared/ReactDOMComponent.js#L498)，`update`的组件会调用[updateComponent ](https://github.com/facebook/react/blob/15-stable/src/renderers/dom/shared/ReactDOMComponent.js#L877)。这两个方法都会递归更新子组件。
+
+由于递归执行，所以更新一旦开始，中途就无法中断。当层级很深时，递归更新时间超过了16ms，用户交互就会卡顿。
+
+案例：
+
+```jsx
+import React from "react";
+
+export default class App extends React.Component {
+  constructor(...props) {
+    super(...props);
+    this.state = {
+      count: 1
+    };
+  }
+  onClick() {
+    this.setState({
+      count: this.state.count + 1
+    });
+  }
+  render() {
+    return (
+      <ul>
+        <button onClick={() => this.onClick()}>乘以{this.state.count}</button>
+        <li>{1 * this.state.count}</li>
+        <li>{2 * this.state.count}</li>
+        <li>{3 * this.state.count}</li>
+      </ul>
+    );
+  }
+}
+```
+
+**Reconciler**和**Renderer**是交替工作的，当第一个`li`在页面上已经变化后，第二个`li`再进入**Reconciler**。
+
+由于整个过程都是同步的，所以在用户看来所有DOM是同时更新的。
+
+
+
+React16架构
+
+React16架构可以分为三层：
+
+- Scheduler（调度器）—— 调度任务的优先级，高优任务优先进入**Reconciler**
+- Reconciler（协调器）—— 负责找出变化的组件
+- Renderer（渲染器）—— 负责将变化的组件渲染到页面上
+
+
+
+Scheduler（调度器）
+
+既然以浏览器是否有剩余时间作为任务中断的标准，那么需要一种机制，当浏览器有剩余时间时通知我们。
+
+部分浏览器已经实现了这个API，这就是[requestIdleCallback](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/requestIdleCallback)，但是有以下问题：
+
+- 浏览器兼容性
+- 触发频率不稳定，受很多因素影响。比如当我们的浏览器切换tab后，之前tab注册的`requestIdleCallback`触发的频率会变得很低
+
+为此，`React`实现了功能更完备的`requestIdleCallback`polyfill，这就是**Scheduler**。除了在空闲时触发回调的功能外，还提供了多种调度优先级供任务设置。
+
+> [Scheduler](https://github.com/facebook/react/blob/1fb18e22ae66fdb1dc127347e169e73948778e5a/packages/scheduler/README.md)是独立于`React`的库 
+
+
+
+Reconciler（协调器）
+
+在React15中**Reconciler**是递归处理虚拟DOM的。在React16中，更新工作从递归变成了可以中断的循环过程。每次循环都会调用`shouldYield`判断当前是否有剩余时间。
+
+```js
+/** @noinline */
+function workLoopConcurrent() {
+  // Perform work until Scheduler asks us to yield
+  while (workInProgress !== null && !shouldYield()) {
+    workInProgress = performUnitOfWork(workInProgress);
+  }
+}
+```
+
+那么当整个应用并没有全部更新为最新状态时，DOM渲染会不会不完全？
+
+在React16中，**Reconciler**与**Renderer**不再是交替工作。当**Scheduler**将任务交给**Reconciler**后，**Reconciler**会为变化的虚拟DOM打上代表增/删/更新的标记，类似这样：
+
+```js
+export const Placement = /*             */ 0b0000000000010;
+export const Update = /*                */ 0b0000000000100;
+export const PlacementAndUpdate = /*    */ 0b0000000000110;
+export const Deletion = /*              */ 0b0000000001000;
+```
+
+**整个**Scheduler**与**Reconciler**的工作都在内存中进行。只有当所有组件都完成**Reconciler**的工作，才会统一交给**Renderer**。**
+
+
+
+Renderer（渲染器）
+
+**Renderer**根据**Reconciler**为虚拟DOM打的标记，**同步执行**对应的DOM操作。这步就无法中断了。
+
+```jsx
+import React from "react";
+
+export default class App extends React.Component {
+  constructor(...props) {
+    super(...props);
+    this.state = {
+      count: 1
+    };
+  }
+  onClick() {
+    this.setState({
+      count: this.state.count + 1
+    });
+  }
+  render() {
+    return (
+      <ul>
+        <button onClick={() => this.onClick()}>乘以{this.state.count}</button>
+        <li>{1 * this.state.count}</li>
+        <li>{2 * this.state.count}</li>
+        <li>{3 * this.state.count}</li>
+      </ul>
+    );
+  }
+}
+```
+
+
+
+![image-20221213145302021](C:/Users/shuyi/Desktop/study-notes/%E7%8F%A0%E5%B3%B0%E6%9E%B6%E6%9E%84/React%E8%BF%9B%E9%98%B6.assets/image-20221213145302021.png)
+
+其中红框中的步骤随时可能由于以下原因被中断：
+
+- 有其他更高优任务需要先更新
+- 当前帧没有剩余时间
+
+由于红框中的工作都在内存中进行，不会更新页面上的DOM，所以即使反复中断，用户也不会看见更新不完全的DOM。
+
+
+
+之所以任务可中断，因为`React16`采用新的Reconciler,内部采用了Fiber的架构。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
