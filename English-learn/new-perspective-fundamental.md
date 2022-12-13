@@ -66,7 +66,7 @@
 
    
 
-![image-20221207185351572](C:/Users/shuyi/Desktop/study-notes/English-learn/new-perspective-fundamental.assets/image-20221207185351572.png)
+![image-20221207185351572](./new-perspective-fundamental.assets/image-20221207185351572.png)
 
 
 
@@ -271,7 +271,7 @@ It is interesting to listen to him.
 
 
 
-![image-20221208104845619](C:/Users/shuyi/Desktop/study-notes/English-learn/new-perspective-fundamental.assets/image-20221208104845619.png)
+![image-20221208104845619](./new-perspective-fundamental.assets/image-20221208104845619.png)
 
 
 
@@ -279,7 +279,7 @@ It is interesting to listen to him.
 
 在英语里，修饰名词的定语，其语序的位置是极有规律的。
 
-![image-20221208131908907](C:/Users/shuyi/Desktop/study-notes/English-learn/new-perspective-fundamental.assets/image-20221208131908907.png)
+![image-20221208131908907](./new-perspective-fundamental.assets/image-20221208131908907.png)
 
 在英语里，名词的定语要么在名词的前面或者叫左边， 要么在名词的后面或者叫右边。位于名词前面的定语，可以叫前置定语，或左置定语，或定语；而在名词后面的定语，可以叫后置定语，或右置定语。
 
@@ -340,9 +340,9 @@ It is interesting to listen to him.
 
 分类：
 
-![image-20221209125844507](C:/Users/shuyi/Desktop/study-notes/English-learn/new-perspective-fundamental.assets/image-20221209125844507.png)
+![image-20221209125844507](./new-perspective-fundamental.assets/image-20221209125844507.png)
 
-![image-20221209125853354](C:/Users/shuyi/Desktop/study-notes/English-learn/new-perspective-fundamental.assets/image-20221209125853354.png)
+![image-20221209125853354](./new-perspective-fundamental.assets/image-20221209125853354.png)
 
 专有名词：
 
@@ -401,15 +401,33 @@ It is interesting to listen to him.
 
 1. **对于一些无法分割的名词，将其看作一个整体，因而作为不可数名词**，没有复数变化（nouns that have no distinct, separate parts, we look as the whole）。这样的名词主要是一些物质名词：
 
-   ![image-20221209132037123](C:/Users/shuyi/Desktop/study-notes/English-learn/new-perspective-fundamental.assets/image-20221209132037123.png)
+   ![image-20221209132037123](./new-perspective-fundamental.assets/image-20221209132037123.png)
 
 或者按气体、液体和固体来作出分类：
 
 2. **一些因其组成部分太小而不易数的名词**（nouns that have parts that are too small or insignificant to count）用作不可数名词。
-   ![image-20221209132237835](C:/Users/shuyi/Desktop/study-notes/English-learn/new-perspective-fundamental.assets/image-20221209132237835.png)
+   ![image-20221209132237835](./new-perspective-fundamental.assets/image-20221209132237835.png)
 
 3. **表示总称的名词通常不可数**（nouns that are classes or categories of things）。这些名词侧重于表示某类事物的总的概念，而不是具体的事物。如果要具体指出该总称概念下的具体事物，则要用其他 不同的名词。
 
-   ![image-20221209143539050](C:/Users/shuyi/Desktop/study-notes/English-learn/new-perspective-fundamental.assets/image-20221209143539050.png)
+   ![image-20221209143539050](./new-perspective-fundamental.assets/image-20221209143539050.png)
 
 从形式上来总结可数名词的复数变化规则。
+
+
+
+其他的总称名词有：
+
+![image-20221209195724314](/Users/wuyi/Desktop/study-note/English-learn/new-perspective-fundamental.assets/image-20221209195724314.png)
+
+就拿character来说吧，很多同学在作文里谈到“特点”时，就喜欢说 characters，殊不知，character作为“特点”讲时，是一个不可数名词，不 能变成复数的。因为它真正的意思是the combination of qualities or features that distinguishes one person, group, or thing from another，表 示“使与其他人、群体或事物相区别的性质或特征的集合”，强调的是一 个整体的概念，因而是没有复数形式的。
+
+4. **抽象的名词一般是不可数的（nouns that are abstractions）**
+
+   ![image-20221209200007230](/Users/wuyi/Desktop/study-note/English-learn/new-perspective-fundamental.assets/image-20221209200007230.png)
+
+   要特别注意的是，上面这些名词可以有其他不同的意 思，因而可以转化为可数名词。
+
+5. 表示研究学科（subjects of study），一般作为不可数名 词。
+
+   ![image-20221209200047267](/Users/wuyi/Desktop/study-note/English-learn/new-perspective-fundamental.assets/image-20221209200047267.png)

@@ -2,13 +2,13 @@
 
 React 源码、底层原理及周边生态。
 
-入门到精通过程中的痛点和难点。
-
-将源码和底层原理分开，说明两者的区别。
-
 性能优化和前端工程化。
 
 基于 React 打造团队新基建。
+
+入门到精通过程中的痛点和难点。
+
+将源码和底层原理分开，说明两者的区别。 
 
 Vue、React 乃至 Angular 在代码编写层面越发相似，且在设计层面都在朝着 WebComponents 标准靠近。
 
@@ -78,6 +78,8 @@ React 知识体系庞大，精密复杂的底层原理与长的知识链路。
 
 **学习的本质是重复，重复的结果是记住。**
 
+
+
 ## jsx 代码映射为 DOM
 
 本节的重点是 jsx 如何转为 DOM。
@@ -90,7 +92,7 @@ jsx 中的三个重点问题（面试）：
 - **为什么要用 jsx，不用的后果是什么？**
 - **jsx 背后的功能模块是什么，这个功能模块都做了哪些事情？**
 
-大多数开发者认为它是模版语法中的一种。jsx 与 React 底层的联系。目标是：通过本课时的学习能用自己的话回答上面的三个问题。
+大多数开发者认为它是模版语法中的一种。jsx 与 React 底层的联系。目标是：通过本课时的学习目标是能用自己的话回答上面的三个问题。
 
 ```jsx
 import React from 'react'
@@ -109,8 +111,10 @@ class App extends React.Component{
     }
 }
 
-ReactDOM.render(<App />, .getElementById('root'))
+ReactDOM.render(<App />, document.getElementById('root'))
 ```
+
+
 
 #### jsx 的本质
 
@@ -122,7 +126,9 @@ Facebook 公司给 jsx 的定位是：jsx 是 JavaScript 的“扩展”，而�
 
 **JSX 会被编译为 React.createElement( )(该函数的调用), React.createElement( ) 执行后将会返回一个叫做 React Element 的 JS 对象。**
 
-JSX 在被编译后， 会被变为一个针对 React.createElement( ) 的调用。暂时不关注 React.createElement( ) ，先说 JSX 是如何被编译为 React.createElement( ) 形式的调用的。
+> React.createElement是React17以前babel转化jsx后生成的方法调用。
+
+JSX 在被编译后， 会被变为一个针对 React.createElement( ) 的调用。先说 JSX 是如何被编译为 React.createElement( ) 形式的调用的。
 
 编译这个过程是由 Babel 完成。
 
@@ -132,7 +138,7 @@ Babel 是什么？ Babel 是一个工具链，主要用于将 ECMAScript2015+版
 
 **JSX 其实是 React.createElement( ) 这个方法调用的语法糖形式。所以才说 JSX 充分具备 JavaScript 的能力**
 
-React 为什么选用 JSX？既然 JSX 等价于 React.createElement( )调用，那 React 官方为什么不直接引导开发者使用 React.createElement( ) 来创建元素？
+**React 为什么选用 JSX？**既然 JSX 等价于 React.createElement( )调用，那 React 官方为什么不直接引导开发者使用 React.createElement( ) 来创建元素？
 
 原因是 JSX 的书写和阅读大大优于 React.createElement( ) ，JSX 使用 HTML 标签来创建虚拟 DOM，降低学习成本同时提高研发效率和体验。
 
@@ -220,7 +226,7 @@ export function createElement(type, config, children){
 }
 ```
 
-创建一个元素需要知道的数据信息（3 个参数）：
+创建一个React元素需要知道的数据信息（3 个参数）：
 
 function createElement(type, config, children)
 
@@ -326,7 +332,7 @@ ReactDOM.render(
   // 回调函数，可选参数，可以用来处理渲染结束后的逻辑
   [callback]
 );
-
+ 
 const rootElement = document.getElementById('root');
 ReactDOM.render(<App />, rootElement);
 ```
@@ -334,6 +340,8 @@ ReactDOM.render(<App />, rootElement);
 ![image-20211129195738172.png](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/8ed669c7bafa450eb8929875ee358501~tplv-k3u1fbpfcp-watermark.awebp?)
 
 jsx 语法本质；React 创建一个真实 DOM 的流程；虚拟 DOM 的初步认知。
+
+
 
 ## 生命周期函数变更及逻辑
 
@@ -361,9 +369,11 @@ React16 为什么要修改生命周期函数？
 
   “开放”，则是针对组件间通信来说的。React 允许开发者基于“单向数据流”的原则完成组件间的通信。而组件之间的通信又将改变通信双方/某一方内部的数据，进而对渲染结果构成影响。
 
-render 函数算是生命周期函数中的核心，其中虚拟 DOM 的生成和组件的渲染工作流都离不开 render 函数，其他生命周期函数算得上组件的躯干。
+render 函数算是生命周期函数中的核心，其中虚拟 DOM的生成和组件的渲染工作流都离不开 render 函数，其他生命周期函数算得上组件的躯干。
 
 可以选择性地省略对 render 之外的任何生命周期方法内容的编写，而 render 函数却坚决不能省略；倘若其他生命周期函数做了点什么，往往都会直接或间接地影响到 render 执行（因为即便是 render 之外的生命周期逻辑，也大部分是在为 render 层面的效果服务）。
+
+
 
 ### React15 中的生命周期函数
 
@@ -486,7 +496,9 @@ ReactDOM.render(<LifeCycleContainer />, document.getElementById("root"));
 
 ![3.png](https://s0.lgstatic.com/i/image/M00/5E/32/Ciqc1F-GZ1OAWETTAAA3Am2CwU0383.png)
 
-### 挂在阶段
+
+
+### 挂在阶段 
 
 挂载过程在组件的一生中仅会发生一次，在这个过程中，组件被初始化，然后会被渲染到真实 DOM 里，完成所谓的“首次渲染”。
 
@@ -507,6 +519,8 @@ render 函数在执行的过程中并不会去操作真实的 DOM，它的职能
 componentDidMount 方法在渲染结束后被触发，真实的 DOM 已经挂在到页面上，可以在这个生命周期里执行真实 DOM 相关的操作，异步请求，数据初始化等操作。
 
 ![Drawing 3.png](https://s0.lgstatic.com/i/image/M00/5D/D8/CgqCHl-FU_6AeWUcAAB8X4bjwqE102.png)
+
+
 
 ### 更新阶段
 
@@ -532,7 +546,7 @@ componentWillReceiveProps(nextProps);
 
 正确的认知：**componentReceiveProps 并不是由 props 的变化触发的，而是由父组件的更新触发的。**
 
-![图片7.png](https://s0.lgstatic.com/i/image/M00/5D/E1/Ciqc1F-FaGuADV5vAACZ2YRV6qQ941.png)
+<img src="https://s0.lgstatic.com/i/image/M00/5D/E1/Ciqc1F-FaGuADV5vAACZ2YRV6qQ941.png" alt="图片7.png" style="zoom:50%;" />
 
 **shouldComponentUpdate**
 
@@ -558,6 +572,8 @@ render 方法伴随着**对虚拟 DOM 的构建和对比**，过程耗时长，�
 
 ![image-20211129224217585.png](https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/50250581a0dc4604ae50a8ef86dfad35~tplv-k3u1fbpfcp-watermark.awebp?)
 
+
+
 ### 卸载阶段
 
 ![图片6.png](https://s0.lgstatic.com/i/image/M00/5D/EC/CgqCHl-FaHuAVGc_AABE6JqN9E0073.png)
@@ -567,9 +583,11 @@ render 方法伴随着**对虚拟 DOM 的构建和对比**，过程耗时长，�
 - **组件在父组件中被移除**
 - **组件中设置了 key 属性，父组件在 render 的过程中，发现 key 值和上次不一致时也会销毁组件**
 
+
+
 ### React16 的生命周期函数
 
-理解 React16.3 中的生命周期函数，同时对比新旧两个版本中生命周期函数的差异以及为什么改变生命周期函数。
+理解React16.3 中的生命周期函数是什么，同时对比新旧两个版本中生命周期函数的差异以及为什么改变生命周期函数。
 
 React16 生命周期改变的原因和 Fiber 架构。
 
@@ -684,9 +702,9 @@ ReactDOM.render(<LifeCycleContainer />, document.getElementById('root'));
 
 Mounting 阶段：
 
-![Drawing 2.png](https://s0.lgstatic.com/i/image/M00/5D/CE/Ciqc1F-FVW6AAX_PAADMEGvjdFI487.png)
+<img src="https://s0.lgstatic.com/i/image/M00/5D/CE/Ciqc1F-FVW6AAX_PAADMEGvjdFI487.png" alt="Drawing 2.png" style="zoom:50%;" />
 
-![图片1.png](https://s0.lgstatic.com/i/image/M00/5F/B0/Ciqc1F-Klv6AIeOPAADAZZgLu7U105.png)
+<img src="https://s0.lgstatic.com/i/image/M00/5F/B0/Ciqc1F-Klv6AIeOPAADAZZgLu7U105.png" alt="图片1.png" style="zoom:50%;" />
 
 扩展：
 
@@ -694,7 +712,7 @@ React 16 对 render 方法也进行了一些改进。React 16 之前，render �
 
 React 15 生命周期和 React 16.3 生命周期在挂载阶段的主要差异在于，废弃了 componentWillMount，新增了 getDerivedStateFromProps。
 
-生命周期函数升级过程中的主要矛盾，工作流层面的改变。对现有方法的迭代细节 和 不在主要工作流中的[componentDidCatch](https://zh-hans.reactjs.org/docs/react-component.html#componentdidcatch) 生命周期不再进行说明。
+生命周期函数升级过程中的主要矛盾，工作流层面的改变。对现有方法的迭代细节和不在主要工作流中的[componentDidCatch](https://zh-hans.reactjs.org/docs/react-component.html#componentdidcatch) 生命周期不再进行说明。
 
 ```js
 componentDidCatch(error, info);
@@ -741,13 +759,15 @@ class ErrorBoundary extends React.Component {
 
 getDerivedStateFromProps 生命周期函数并不是代替之前的 componentWillMount 生命周期函数，componentWillMount 函数的存在本身就很鸡肋，同时危险，因此它不值得被代替而是直接被废弃了。
 
-getDerivedStateFromProps 生命周期函数设计的目的就一个，使用来自父组件的 props 来派生/更新自己组件的 state。getDerivedStateFromProps 它试图替代掉 React15 中的 componentWillReceiveProps 生命周期函数。
+getDerivedStateFromProps 生命周期函数设计的目的就一个，**使用来自父组件的 props 来派生/更新自己组件的 state**。getDerivedStateFromProps 它试图替代掉 React15 中的 componentWillReceiveProps 生命周期函数。
 
 React 团队为了明确该 getDerivedStateFromProps 生命周期函数的用途，直接从命名层面就约束了该生命周期函数的用途。 所以开发者如果不是出于该生命周期的目的来使用它的话，严格上来说都是不符合规范的。该生命周期函数会在初始化/更新时调用，因为派生组件自己的 state 在组件初始化阶段和组件更新阶段都有可能需要。
 
 React16 以提供特定生命周期函数的形式对这类特定的诉求提供更直接的支持。
 
-#### getDerivedStateFromProps 函数：
+
+
+#### getDerivedStateFromProps 函数
 
 调用该方法的注意点：
 
@@ -767,22 +787,28 @@ React16 以提供特定生命周期函数的形式对这类特定的诉求提供
 
 ![image-20211130111612016.png](https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/f9f52d80d1514aa286e0e6a1354ba3cd~tplv-k3u1fbpfcp-watermark.awebp?)
 
+
+
 Updating 阶段：
 
 ![image-20211129225830182.png](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/bd73ca49291b49e4a3920941adb017e9~tplv-k3u1fbpfcp-watermark.awebp?)
 
+
+
 **为什么要用 getDerivedStateFromProps 代替 componentWilllReceiveProps？**
 
-getDerivedStateFromProps 与 componentDidUpdate 一起，这个 getDerivedStateFromProps 函数涵盖过时的 componentWilllReceiveProps 的所有用例。getDerivedStateFromProps 只专注一件事：props 到 state 的映射。
+getDerivedStateFromProps 与 componentDidUpdate 一起，这个 getDerivedStateFromProps 函数涵盖过时的 componentWilllReceiveProps 的所有用例。**getDerivedStateFromProps 只专注一件事：props 到 state 的映射**。
 
 - getDerivedStateFromProps 是试图代替 componentWilllReceiveProps 出现的
 - getDerivedStateFromProps 不完全等于 componentWilllReceiveProps,其特性决定了我们曾经在 componentWillReceiveProps 里面做的事情，不能够百分百迁移到 getDerivedStateFromProps 里
 
 getDerivedStateFromProps 作为静态方法，内部拿不到组件实例 this，这就导致开发者无法在该函数中做任何 this.setStae(),this.fetch()等可能产生副作用的操作。**React16 在强制推行只用 getDerivedStateFromProps 来完成 props 到 state 的映射，意在确保生命周期函数的行为更加能预测可控，从根源上帮助开发者避免不合理的开发方式，避免生命周期函数的滥用，也是在为 Fiber 架构铺路。**
 
+
+
 **认识 getSnapshotBeforUpdate 函数：**
 
-getSnapshotBeforUpdate 函数的返回值会作为 componentDidUpdate 函数的第三个参数，**该生命周期函数是在 render 函数执行之后，真实 DOM 更新之前。在该函数中可以获取到更新前的真实 DOM 和更新前的 state 和 props 信息。**
+getSnapshotBeforUpdate 函数的返回值会作为 componentDidUpdate 函数的第三个参数，**该生命周期函数是在 render 函数执行之后，真实 DOM 更新之前。在该函数中可以获取到更新前的真实 DOM 和更新前后的 state 和 props 信息。**
 
 尽管在实际工作中，需要用到这么多信息的场景并不多，但在对于实现一些特殊的需求来说，没它还真的挺难办。这里举一个非常有代表性的例子：实现一个内容会发生变化的滚动列表，要求根据滚动列表的内容是否发生变化，来决定是否要记录滚动条的当前位置。
 
@@ -804,7 +830,13 @@ componentDidUpdate(prevProps, prevState, valueFromSnapshot) {
 }
 ```
 
+<img src="/Users/wuyi/Desktop/study-note/珠峰架构/React进阶.assets/image-20221212232753573.png" alt="image-20221212232753573" style="zoom:50%;" />
+
+
+
 那为什么 componentWillUpdata 要被废弃？ 因为它不利于 Fiber 架构。
+
+
 
 ### Fiber 架构
 
@@ -839,6 +871,8 @@ render 阶段在执行过程中允许被打断，而 commit 阶段则总是同�
 
 render 阶段的操作对用户来说其实是不可见的，所以打断再重启也是零感知的。而 commit 阶段的操作设计真实 DOM 的渲染，用户可见，所以必须以同步的方式求稳。
 
+
+
 ### 同步渲染变为异步渲染对生命周期函数的影响
 
 生命周期函数变更后面的原因：
@@ -866,6 +900,8 @@ render 阶段的操作对用户来说其实是不可见的，所以打断再重�
 **总的来说，React 16 改造生命周期的主要动机是为了配合 Fiber 架构带来的异步渲染机制。在这个改造的过程中，React 团队针对生命周期中长期被滥用的部分推行了具有强制性的最佳实践。这一系列的工作做下来，首先是确保了 Fiber 机制下数据和视图的安全性，同时也确保了生命周期方法的行为更加纯粹、可控、可预测。**
 
 现有的生命周期，虽然已经对方法的最佳实践做了强约束，但是仍然无法覆盖所有的“误操作”，其中最为典型的，就是对 getDerivedStateFromProps 的滥用。关于这点，社区的讨论不是很多，但是 [React 团队给出的这篇文章](https://zh-hans.reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html)就帮助大家规避“误操作”来说是绰绰有余的。
+
+
 
 ## 数据在组件间的传递
 
