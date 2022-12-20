@@ -1,18 +1,6 @@
 # React 进阶
 
-React 源码、底层原理及周边生态。
-
-性能优化和前端工程化。
-
-基于 React 打造团队新基建。
-
-入门到精通过程中的痛点和难点。
-
-将源码和底层原理分开，说明两者的区别。 
-
-Vue、React 乃至 Angular 在代码编写层面越发相似，且在设计层面都在朝着 WebComponents 标准靠近。
-
-未来的前端框架往往会逐渐趋同（标准化）。
+将源码和底层原理分开，说明两者的区别。 Vue、React 乃至 Angular 在代码编写层面越发相似，且在设计层面都在朝着 WebComponents 标准靠近。
 
 在环境无法提供优质的成长环境时，谨记自己创造途径：深挖一个优质的前端框架吃透它的原理，跟开发团队学习框架的思想，编码规范和学习设计模式。
 
@@ -48,11 +36,7 @@ Vue、React 乃至 Angular 在代码编写层面越发相似，且在设计层�
 - 事件系统
 - 在前端引入 hooks 思想
 
-React 知识体系庞大，精密复杂的底层原理与长的知识链路。
-
-大厂的 React 面试是最有效用导向的一个学习依据，将大厂面试的逻辑利用充分，将实现面试和应用的双重突破。
-
-贴着源码讲原理并不是死磕源码，源码不等于原理。源码是代码，而原理是逻辑，代码繁杂冗长，而原理可以简洁清晰。在一些场景下，源码可以是教具， 但是阅读源码不是抵达原理的唯一途径。
+React 知识体系庞大，精密复杂的底层原理与长的知识链路。大厂的 React 面试是最有效用导向的一个学习依据，将大厂面试的逻辑利用充分，将实现面试和应用的双重突破。贴着源码讲原理并不是死磕源码，源码不等于原理。源码是代码，而原理是逻辑，代码繁杂冗长，而原理可以简洁清晰。在一些场景下，源码可以是教具， 但是阅读源码不是抵达原理的唯一途径。
 
 对于体系性较强的知识，创建足够充分的上下文。一些知识难学不是因为它有多么复杂，而是因为理解它需要上下文，如果在正确的上下文中，理解它就是很轻松的事。如果学习上下文是断裂的，那知识点就难以理解。
 
@@ -132,7 +116,7 @@ JSX 在被编译后， 会被变为一个针对 React.createElement( ) 的调用
 
 编译这个过程是由 Babel 完成。
 
-Babel 是什么？ Babel 是一个工具链，主要用于将 ECMAScript2015+版本的代码转换为向后兼容的 JavaScript 语法，以便能运行在当前和旧版本的浏览器或其他环境中。**Babel 也具备将 JSX 语法转换为 JavaScript 代码的能力。**
+**Babel将 JSX 语法转换为 JavaScript 代码。**
 
 ![Drawing 0.png](https://s0.lgstatic.com/i/image/M00/5C/73/CgqCHl-BegWAbxNEAAH9HxafvWE988.png)
 
@@ -345,13 +329,13 @@ jsx 语法本质；React 创建一个真实 DOM 的流程；虚拟 DOM 的初步
 
 ## 生命周期函数变更及逻辑
 
-React 入门教材对 React 生命周期的讲解过于简单粗暴，并不是背下这些生命周期函数就可以。同时也缺少对新旧 React 库中生命周期函数的变化比较和原因分析。
+React 入门教材对 React 生命周期的讲解过于简单粗暴，并不是背下这些生命周期函数就可以。同时也缺少对新旧 React 库中生命周期函数的变化比较和原因分析。  
 
 React16 为什么要修改生命周期函数？
 
 从 React 的基本原理出发，对 React15，16 两版的生命周期函数进行探讨，比对和总结。建立系统而完善的生命周期知识体系。
 
-生命周期背后的设计思想：“组件”和“虚拟 DOM”
+生命周期背后的设计思想：“组件”和“虚拟 DOM” 
 
 - 虚拟 DOM 是核心算法的基石
 
@@ -391,7 +375,7 @@ componentWillUnmount();
 
 ` getDefaultProps 和 getInitState 这两个方法，它们都是 React.createClass() 模式下初始化数据的方法。由于这种写法在 ES6 普及后已经不常见，不再详细展开。`
 
-![1.png](https://s0.lgstatic.com/i/image/M00/5E/31/Ciqc1F-GZbGAGNcBAAE775qohj8453.png)
+<img src="https://s0.lgstatic.com/i/image/M00/5E/31/Ciqc1F-GZbGAGNcBAAE775qohj8453.png" alt="1.png" style="zoom:50%;" />
 
 Demo 实例：
 
@@ -492,15 +476,15 @@ class LifeCycleContainer extends React.Component {
 ReactDOM.render(<LifeCycleContainer />, document.getElementById("root"));
 ```
 
-![Drawing 1.png](https://s0.lgstatic.com/i/image/M00/5D/CC/Ciqc1F-FU-yAMLh0AABeqOeqLek815.png)
+<img src="https://s0.lgstatic.com/i/image/M00/5D/CC/Ciqc1F-FU-yAMLh0AABeqOeqLek815.png" alt="Drawing 1.png" style="zoom:50%;" />
 
-![3.png](https://s0.lgstatic.com/i/image/M00/5E/32/Ciqc1F-GZ1OAWETTAAA3Am2CwU0383.png)
+<img src="https://s0.lgstatic.com/i/image/M00/5E/32/Ciqc1F-GZ1OAWETTAAA3Am2CwU0383.png" alt="3.png" style="zoom:50%;" />
 
 
 
-### 挂在阶段 
+### 挂在阶段
 
-挂载过程在组件的一生中仅会发生一次，在这个过程中，组件被初始化，然后会被渲染到真实 DOM 里，完成所谓的“首次渲染”。
+挂载过程在组件的一生中仅会发生一次，在这个过程中，组件被初始化，然后会被渲染到真实 DOM 里，完成的“首次渲染”。
 
 **constructor 方法**
 
@@ -512,13 +496,13 @@ ReactDOM.render(<LifeCycleContainer />, document.getElementById("root"));
 
 **render 方法**
 
-render 函数在执行的过程中并不会去操作真实的 DOM，它的职能是把需要渲染的内容（虚拟 DOM）返回出来。真实 DOM 的渲染工作在挂载阶段由 ReactDOM.render 完成。
+**render 函数在执行的过程中并不会去操作真实的 DOM，它的职能是把需要渲染的内容（虚拟 DOM）返回出来。**真实 DOM 的渲染工作在挂载阶段由 ReactDOM.render 完成。
 
 **componentDidMount 方法**
 
-componentDidMount 方法在渲染结束后被触发，真实的 DOM 已经挂在到页面上，可以在这个生命周期里执行真实 DOM 相关的操作，异步请求，数据初始化等操作。
+在挂载阶段被调用一次，componentDidMount 方法在渲染结束后被触发，真实的 DOM 已经挂在到页面上，可以在这个生命周期里执行真实 DOM 相关的操作，异步请求，数据初始化等操作。
 
-![Drawing 3.png](https://s0.lgstatic.com/i/image/M00/5D/D8/CgqCHl-FU_6AeWUcAAB8X4bjwqE102.png)
+<img src="https://s0.lgstatic.com/i/image/M00/5D/D8/CgqCHl-FU_6AeWUcAAB8X4bjwqE102.png" alt="Drawing 3.png" style="zoom:50%;" />
 
 
 
@@ -528,19 +512,20 @@ componentDidMount 方法在渲染结束后被触发，真实的 DOM 已经挂在
 
 组件的更新分为两种：**一种是由父组件更新触发的更新；另一种是组件自身调用自己的 setState 触发的更新。**父组件触发的更新和组件自身的更新相比，多出了 componentWillReceiveProps(nextProps)。
 
-![2.png](https://s0.lgstatic.com/i/image/M00/5E/3C/CgqCHl-GZf-AUjsLAACmOsiQl3M485.png)
+<img src="https://s0.lgstatic.com/i/image/M00/5E/3C/CgqCHl-GZf-AUjsLAACmOsiQl3M485.png" alt="2.png" style="zoom:50%;" />
 
-**componentWillReceiveProps 并不是由传给改组件的 props 的变化触发，而是由父组件的更新触发。**
+**componentWillReceiveProps 并不是由传给改组件的 props 的变化才触发，而是由父组件的更新触发。**
 
 对于子组件的 componentWillReceiveProps 生命周期函数，如果父组件导致自身重新渲染，即使传给子组件的 props 没有改变，也会触发子组件的 componentWillReceiveProps 函数执行，如果只想对对应的 props 处理更改，请确保进行当前值与变更值的比较。
 
 在这个生命周期方法里，nextProps 表示的是接收到新 props 内容，而现有的 props （相对于 nextProps 的“旧 props”）我们可以通过 this.props 拿到，由此便能够感知到 props 的变化。
 
 ```js
-componentWillReceiveProps(nextProps);
+// 父组件更新的时候会触发子组件的这个生命周期函数
+componentWillReceiveProps(nextProps){}
 ```
 
-![image-20211129224130050.png](https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/0d2766a95d3449b384776b045fcee030~tplv-k3u1fbpfcp-watermark.awebp?)
+
 
 不准确的认知：**componentWillReceiveProps 是在父组件传递给子组件的 props 内容发生了变化时被触发的。**
 
@@ -551,7 +536,7 @@ componentWillReceiveProps(nextProps);
 **shouldComponentUpdate**
 
 ```js
-shouldComponentUpdata(nextProps, nextState);
+shouldComponentUpdata(nextProps, nextState){};
 ```
 
 render 方法伴随着**对虚拟 DOM 的构建和对比**，过程耗时长，而在 React 中很多时候不经意间就平频繁的调用了 render 函数，为了避免不必要的调用 Render，可以使用 shouldComponentUpdata 生命周期函数。React 组件会根据 shouldComponentUpdata 的返回值来决定是否执行该生命周期函数之后的生命周期函数，进而决定是否对组件进行 re-render（重渲染），shouldComponentUpdata 默认返回的值是 true。
@@ -587,9 +572,7 @@ render 方法伴随着**对虚拟 DOM 的构建和对比**，过程耗时长，�
 
 ### React16 的生命周期函数
 
-理解React16.3 中的生命周期函数是什么，同时对比新旧两个版本中生命周期函数的差异以及为什么改变生命周期函数。
-
-React16 生命周期改变的原因和 Fiber 架构。
+理解React16.3 中的生命周期函数是什么，同时对比新旧两个版本中生命周期函数的差异以及为什么改变生命周期函数和 Fiber 架构。
 
 React16.3 中的生命周期函数图：
 
@@ -699,6 +682,8 @@ class LifeCycleContainer extends React.Component {
 }
 ReactDOM.render(<LifeCycleContainer />, document.getElementById('root'));
 ```
+
+
 
 Mounting 阶段：
 
@@ -834,7 +819,7 @@ componentDidUpdate(prevProps, prevState, valueFromSnapshot) {
 
 
 
-那为什么 componentWillUpdata 要被废弃？ 因为它不利于 Fiber 架构。
+那为什么 componentWillUpdata 要被废弃？ 因为 Fiber 架构。
 
 
 
@@ -849,9 +834,11 @@ Fiber 是 React16 对 React 核心算法的一次重写。 该架构可以使得
 - 同步渲染和异步渲染
 - 任务拆解和可打断特性
 
-![图片4.png](https://s0.lgstatic.com/i/image/M00/5F/B0/Ciqc1F-Kl0WAO2mzAABxddWHnXI121.png)
+<img src="https://s0.lgstatic.com/i/image/M00/5F/B0/Ciqc1F-Kl0WAO2mzAABxddWHnXI121.png" alt="图片4.png" style="zoom:50%;" />
 
-![图片5.png](https://s0.lgstatic.com/i/image/M00/5F/B0/Ciqc1F-Kl1CAA6pwAADpyi-xSnM494.png)
+<img src="https://s0.lgstatic.com/i/image/M00/5F/B0/Ciqc1F-Kl1CAA6pwAADpyi-xSnM494.png" alt="图片5.png" style="zoom:50%;" />
+
+ 
 
 **Fiber 架构的重要特征就是可以被打断的异步渲染模式。**但这个“打断”是有原则的，根据“能否被打断”这一标准，React 16 的生命周期被划分为了 render 和 commit 两个阶段，而 commit 阶段又被细分为了 pre-commit 和 commit。
 
@@ -893,7 +880,7 @@ render 阶段的操作对用户来说其实是不可见的，所以打断再重�
 
 - 在 Fiber 的异步渲染机制下，使用这些已废弃的函数可能导致非常严重的 bug，假设开发者在 componentWillxxx 函数中发起付款请求，由于 render 阶段的生命周期都可能重复执行，在 componentWillxxx 被打断加上重启多次后，就会发出多个付款请求。 如果开发者在 componentWillxxx 中操作真实的 DOM，那就有可能重复操作真实 DOM。
 
-  结合上面的分析，我们再去思考 getDerivedStateFromProps 为何会在设计层面直接被约束为一个触碰不到 this 的静态方法，其背后的原因也就更加充分了——避免开发者触碰 this，就是在避免各种危险的骚操作。
+  结合上面的分析，我们再去思考 getDerivedStateFromProps 为何会在设计层面直接被约束为一个触碰不到 this 的静态方法，其背后的原因也就更加充分了——避免开发者触碰 this，就是在避免各种危险的操作。
 
 - 避免在 componentWillReceiveProps 或者 componentWillUpdate 中调用 setState，从而避免重复渲染死循环。
 
@@ -905,7 +892,7 @@ render 阶段的操作对用户来说其实是不可见的，所以打断再重�
 
 ## 数据在组件间的传递
 
-数据驱动视图。组件间通信的背后是 React 中环环相扣的数据流解决方案。这套解决方案在业界已经有了比较成熟和稳定的结论。
+数据驱动视图。
 
 ![Drawing 1.png](https://s0.lgstatic.com/i/image/M00/60/F7/Ciqc1F-OmrSAZkEwAAA2ThydXNs410.png)
 
@@ -925,9 +912,11 @@ render 阶段的操作对用户来说其实是不可见的，所以打断再重�
 
 props 是单向的。子组件并不能直接将自己的数据传给父组件，但是 props 的形式可以是多样的，如果父组件传递给子组件的是一个绑定了自身上下文的函数，那么子组件在调用该函数时就可以传参给父组件中的函数。
 
+
+
 ### 发布订阅模式通信
 
-![image-20211130202013494](..\typora-user-images\image-20211130202013494.png)
+<img src="..\typora-user-images\image-20211130202013494.png" alt="image-20211130202013494" style="zoom:50%;" />
 
 使用发布-订阅模式的优点在于，监听事件的位置和触发事件的位置是不受限的，只要它们在同一个上下文里，就能够彼此感知。
 
@@ -980,6 +969,8 @@ class EventEmitter {
 //为了处理传入一个事件队列中不存在的函数时，不会意外的移除掉，我们知道 splice 的第一个参数是负数时，会从数组的最后往前找。试想一下，如果传入一个不存在的函数给 off 方法，indexOf 找不到会返回 -1 ，再调用 splice 就会将队列中最后一个函数删除掉了。而使用无符号右移，-1 无符号右移的结果为 4294967295，这个数足够大，不会对原队列造成影响
 ```
 
+
+
 ### Context API
 
 一种组件树全局通信的方式
@@ -1010,6 +1001,8 @@ const {Provider,Consumer} = myContent
 Cosumer 不仅能够读取到 Provider 下发的数据，还能读取到这些数据后续的更新。这意味着数据在生产者和消费者之间能够及时同步。
 
 当 Consumer 没有对应的 Provider 时，value 参数会直接取创建 context 时传递给 createContext 的 defaultValue。
+
+
 
 老版 Context 的问题：
 
@@ -1065,7 +1058,7 @@ MessageList.childContextTypes = {
 ========================
 ```
 
-![图片4.png](https://s0.lgstatic.com/i/image/M00/62/8C/Ciqc1F-Sm8qAMOB0AAEcBeEv_vs533.png)
+<img src="https://s0.lgstatic.com/i/image/M00/62/8C/Ciqc1F-Sm8qAMOB0AAEcBeEv_vs533.png" alt="图片4.png" style="zoom:50%;" />
 
 过程：
 
@@ -1083,6 +1076,8 @@ MessageList.childContextTypes = {
 
 新的 Context API 改进了这一点：即便组件的 shouldComponentUpdate 返回 false，它仍然可以“穿透”组件继续向后代组件进行传播，进而确保了数据生产者和数据消费者之间数据的一致性。更好的语义化的声明式写法。
 
+
+
 ### Redux
 
 **Redux 是 JavaScript 状态容器，它提供可预测的状态管理。**
@@ -1093,7 +1088,7 @@ Redux 主要由三部分组成：store、reducer 和 action:
 - action 是对变化的描述
 - reducer 是一个函数，它负责对变化进行分发和处理， 最终将新的数据返回给 store
 
-![image-20211130213010337](..\typora-user-images\image-20211130213010337.png)
+<img src="..\typora-user-images\image-20211130213010337.png" alt="image-20211130213010337" style="zoom:50%;" />
 
 在 Redux 的整个工作过程中，数据流是严格单向的。
 
@@ -1137,15 +1132,18 @@ const action = {
   type: "ADD_ITEM",
   payload: '<li>text</li>'
 }
+
 // 使用 dispatch 派发 action，action 会进入到 reducer 里触发对应的更新
 store.dispatch(action)
 ```
 
-![图片7.png](https://s0.lgstatic.com/i/image/M00/81/9F/CgqCHl_Rii2AVvUbAADn4s_6rB8369.png)
+<img src="https://s0.lgstatic.com/i/image/M00/81/9F/CgqCHl_Rii2AVvUbAADn4s_6rB8369.png" alt="图片7.png" style="zoom:50%;" />
+
+
 
 ## React Hooks
 
-React Hooks 在面试中许多面试者都回答得不好。大场面试官问 React Hooks 真正想听的是什么？
+面试官问 React Hooks 真正想听的是什么？
 
 理解了 what 和 how 后，能更具象的理解理论层面的 why，对 why 的深入必然会反助到对 what 的理解和 how 的实践。
 
@@ -1197,6 +1195,8 @@ function DemoFunction(props) {
 }
 ```
 
+
+
 #### 类组件和函数组件的对比
 
 类组件和函数组件的对比：
@@ -1226,6 +1226,8 @@ function DemoFunction(props) {
 - 有利于逻辑拆分和复用
 - React 作者 Dan 早期特意为类组件和函数组件写过的[一篇非常棒的对比文章](https://overreacted.io/how-are-function-components-different-from-classes/)
 - 函数组件更加契合 React 框架的设计理念
+
+
 
 #### 为什么采用函数式组件
 
@@ -1502,6 +1504,8 @@ React 官方不建议在 useEffect 中执行 DOM 操作，因为 useEffect 的�
 
 这个理解一半对一半不对。两个钩子的区别在于，useEffect 是异步的，要等到浏览器将所有变化渲染到屏幕后才会被执行；而 useLayoutEffect 是同步的——这是执行时机上的区别，这块你应该是理解的。问题在于：1.React 官方真的不建议使用 useEffect 操作 DOM 吗？我在官方网站上找到了相反的描述：“尽可能使用标准的 useEffect 以避免阻塞视觉更新（出自 https://zh-hans.reactjs.org/docs/hooks-reference.html#uselayouteffect）”。 2. useEffect 会造成视觉阻塞吗？恰恰相反，因为 useLayoutEffect 是同步渲染的机制，而 useEffect 是异步非阻塞的渲染，所以说阻塞渲染的恰恰是 useLayoutEffect 而不是 useEffect。如果你有一段逻辑确实存在“阻塞渲染”这个同步的需求，那么可以使用 useLayoutEffect。否则就应该像 React 官网原文所说的那样，“尽可能使用标准的 useEffect 以避免阻塞视觉更新”
 
+
+
 ### React-Hooks 工作机制
 
 **React 团队面向开发者给出了两条 React-Hooks 的使用原则：**
@@ -1557,6 +1561,8 @@ function PersonalInfoComponent() {
 export default PersonalInfoComponent;
 ```
 
+
+
 不合理的代码：
 
 ```jsx
@@ -1602,7 +1608,7 @@ function PersonalInfoComponent() {
 export default PersonalInfoComponent;
 ```
 
-不合理的代码在初次挂载该组件时时正常的，和上面的合理的代码展示的效果一样。都涉及对 name，age 和 career 三个状态的获取和渲染。但是不合理的代码中变化发生在单击修改姓名按钮后触发的二次渲染里，
+不合理的代码在初次挂载该组件时是正常的，和上面的合理的代码展示的效果一样。都涉及对 name，age 和 career 三个状态的获取和渲染。但是不合理的代码中变化发生在单击修改姓名按钮后触发的二次渲染里，
 
 二次渲染时 isMounted 为 true，导致 if 语句直接跳过，按照代码中的设计意图，希望在二次渲染时只获取并展示 career。实际效果直接报错。 因为组件渲染的 Hooks 比期望的要少。 **按照不合理代码的逻辑，初次挂载时调用了三次 useState 函数，而二次渲染时只调用了一次 useState。**
 
@@ -1620,7 +1626,7 @@ export default PersonalInfoComponent;
 
 在点击按钮修改姓名时，调用的是 setName 方法，所以修改的应该是 name 数据对应的值（事实上修改也确实是 name 的值），但是在二次渲染时，在打印 career 数据时，打印的却是 name 对应的值，也就是说这个 useState 返回的是 name 对应的数据。
 
-#### Hooks 的正常运行在底层依赖的是循序链表
+#### Hooks 的正常运行在底层依赖的是顺序链表
 
 React Hooks 在源码层面和 Fiber 关系密切。所以针对关键方法做重点分析，重点不是源码中的每行和 hooks 相关的代码都做了什么，而是搞清楚整个调用链路是什么样的，理解 hooks 在每个关键环节做的事情，同时理解这些关键环节是如何对最终结果产生影响，最后理解 hooks 的工作机制。
 
@@ -1699,7 +1705,7 @@ function mountWorkInProgressHook(){
 
 首次挂载和更新渲染的区别在于调用的是 mountState 还是 updateState。
 
-![image-20211201115451558](.\typora-user-images\image-20211201115451558.png)
+![image-20211201115451558](..\typora-user-images\image-20211201115451558.png)
 
 updateState 之后的操作链路，虽然涉及的代码有很多，但其实做的事情很容易理解：**按顺序去遍历之前构建好的链表，取出对应的数据信息进行渲染。**
 
@@ -1731,7 +1737,7 @@ useState('我是一个前端，爱吃小熊饼干');
 
 但是链表的结构是由首次渲染就确定了的，如下图：
 
-![image-20211201120159572](..\typora-user-images\image-20211201120159572.png)
+<img src="..\typora-user-images\image-20211201120159572.png" alt="image-20211201120159572" style="zoom:50%;" />
 
 再复习一遍更新（二次渲染）的时候会发生什么事情：updateState 会依次遍历链表、读取数据并渲染。注意这个过程就像从数组中依次取值一样，是完全按照顺序（或者说索引）来的。因此 React 不会看你命名的变量名是 career 还是别的什么，它只认你这一次 useState 调用，于是它难免会认为：原来你想要的是第一个位置的 hook 啊。
 
@@ -1739,13 +1745,13 @@ useState('我是一个前端，爱吃小熊饼干');
 
 如此一来，career 就自然而然地取到了链表头节点 hook 对象中的“秀妍”这个值。
 
-## 虚拟 DOM 的新认知
+
+
+## 虚拟 DOM
 
 react 选择虚拟 DOM 真的是为了性能考虑吗？
 
 纯静态页面=>jQuery=>MVVM
-
-开发模式不断改变这件事情对于前端来说，蕴含着前端人对 “DOM 操作” 这一核心动作的持续思考和改进。虚拟 DOM 则是其中的精华。
 
 #### **为什么需要虚拟 DOM？**（面试）
 
@@ -1758,7 +1764,11 @@ react 选择虚拟 DOM 真的是为了性能考虑吗？
 
 **虚拟 DOM（Virtual DOM）本质上是 JS 和 DOM 之间的一个映射缓存，它在表现形态上是 js 中的对象类型，一个能够描述 DOM 结构（树结构）及其属性信息。**
 
-![image-20211201121815904](..\typora-user-images\image-20211201121815904.png)
+虚拟DOM在React中的结构：
+
+<img src="..\typora-user-images\image-20211201121815904.png" alt="image-20211201121815904" style="zoom:50%;" />
+
+
 
 #### 虚拟 DOM 参与的工作流
 
@@ -1770,27 +1780,27 @@ React 中的虚拟 DOM 是如何工作的？
 
 - 更新阶段，页面的变化在作用于真实 DOM 之前，会先作用于虚拟 DOM，虚拟 DOM 将在 JS 层借助算法先对比出具体有哪些真实 DOM 需要被改变，然后再将这些改变作用于真实 DOM
 
+
+
 #### 为什么需要虚拟 DOM？ 虚拟 DOM 是否伴随着更好的性能？ 虚拟 DOM 的优势是什么？
 
-要想回答好这无穷无尽的为什么，千万不要点对点地去看待问题本身。虚拟 DOM 相对于过往的 DOM 操作解决方案来说，是一个新生事物。要想理解一个新生事物存在、发展的合理性，必须将其放在一个足够长的、合理的上下文中去讨论。
+ 虚拟 DOM 相对于过往的 DOM 操作解决方案来说，是一个新生事物。要想理解一个新生事物存在、发展的合理性，必须将其放在一个足够长的、合理的上下文中去讨论。
 
 下面就是历史上下文：
 
 #### DOM 操作方案的发展
 
-原生 js 操作 DOM => jQuery 时期 => 模板引擎方案
+原生 js 操作 DOM：
 
 - 原生 JS 提供的 DOM API，实在是太难用
 
 jQuery:
 
-- 为了能够实现高效的开发，jQuery 首先解决的就是“API 不好使”这个问题——它将 DOM API 封装为了相对简单和优雅的形式，同时一口气做掉了跨浏览器的兼容工作，并且提供了链式 API 调用、插件扩展等一系列能力
+- 为了能够实现高效的开发，jQuery 首先解决的就是“API过长”——它将 DOM API 封装为了相对简单和优雅的形式，同时一口气做掉了跨浏览器的兼容工作，并且提供了链式 API 调用、插件扩展等一系列能力
 
-- jQuery 帮助我们能够以更舒服的姿势操作 DOM，但它并不能从根本上解决 DOM 操作量过大情况下前端侧的压力
+- jQuery 使操作 DOM变得简单，但它并不能从根本上解决 DOM 操作量过大情况下前端侧的压力
 
 模板引擎：
-
-DOM 操作还在不断增加。
 
 由于模板引擎更倾向于点对点解决烦琐 DOM 操作的问题，它在能力和定位上既不能够、也不打算替换掉 jQuery，两者是和谐共存的。
 
@@ -1809,19 +1819,17 @@ with 加上 new Function。
 
 数据驱动视图
 
-模板引擎的数据驱动视图方案，核心问题在于对真实 DOM 的修改过于“大刀阔斧”，导致了 DOM 操作的范围过大、频率过高，进而可能会导致糟糕的性能。然后这帮人就想啊：既然操作真实 DOM 对性能损耗这么大，那操作假的 DOM 不就行了？
-
-由此逐渐衍生出虚拟 DOM。
+模板引擎的数据驱动视图方案，核心问题在于对真实 DOM 的修改过于“大刀阔斧”，导致了 DOM 操作的范围过大、频率过高，进而可能会导致糟糕的性能。既然操作真实 DOM 对性能损耗这么大，那操作假的 DOM 不就行了？由此逐渐衍生出虚拟 DOM。
 
 **虚拟 DOM 如何解决问题？**
 
-早期模板引擎：
+早期模板引擎： 
 
-![image-20211201134124667](..\typora-user-images\image-20211201134124667.png)
+<img src="..\typora-user-images\image-20211201134124667.png" alt="image-20211201134124667" style="zoom:50%;" />
 
 虚拟 DOM：
 
-![image-20211201134145629](..\typora-user-images\image-20211201134145629.png)
+<img src="..\typora-user-images\image-20211201134145629.png" alt="image-20211201134145629" style="zoom:50%;" />
 
 模板：虚拟 DOM 在实现上并不总是借助模板，比如 React 就是使用 JSX 这种使用体验看上去像模板，但本质是 JS 语法糖。
 
@@ -1829,23 +1837,25 @@ with 加上 new Function。
 
 **差量更新可以确保虚拟 DOM 既能够提供高效的开发体验（开发者只需要关心数据），又能够保持过得去的性能（只更新发生了变化的那部分 DOM）。**
 
-![image-20211201134705489](..\typora-user-images\image-20211201134705489.png)
+<img src="..\typora-user-images\image-20211201134705489.png" alt="image-20211201134705489" style="zoom:50%;" />
 
 > 图中的 diff 和 patch 其实都是函数名，这些函数取材于一个独立的[虚拟 DOM 库](https://github.com/Matt-Esch/virtual-dom)。之所以写明了具体流程对应的函数名,很多面试官习惯于用函数名指代过程，但不少人不清楚这个对应关系（尤其是 patch），会非常影响作答。
 
+
+
 #### React 选用虚拟 DOM，真的是为了更好的性能吗？
 
-在整个 DOM 操作的演化过程中，主要矛盾并不在于性能，而在于开发者写得爽不爽，在于研发体验/研发效率。虚拟 DOM 不是别的，正是前端开发们为了追求更好的研发体验和研发效率而创造出来的高阶产物。
+在整个 DOM 操作的演化过程中，主要矛盾并不在于性能，在于研发体验/研发效率。虚拟 DOM 正是前端开发们为了追求更好的研发体验和研发效率而创造出来的高阶产物。
 
-虚拟 DOM 并不一定会带来更好的性能，React 官方也从来没有把虚拟 DOM 作为性能层面的卖点对外输出过。虚拟 DOM 的优越之处在于，它能够在提供更爽、更高效的研发模式（也就是函数式的 UI 编程方式）的同时，仍然保持一个还不错的性能。
+**虚拟 DOM 并不一定会带来更好的性能，React 官方也从来没有把虚拟 DOM 作为性能层面的卖点对外输出过。**虚拟 DOM 的优越之处在于，它能够在提供更高效的研发模式（也就是函数式的 UI 编程方式）的同时，仍然保持一个还不错的性能。
 
-虚拟 DOM 的优势在提供更高效的开发模式的同时，仍然保持一个还不错的性能。性能问题属于前端领域复杂度比较高的问题。当我们量化性能的时候，往往并不能只追求一个单一的数据，而是需要结合**具体的参照物、渲染的阶段、数据的吞吐量等**各种要素来作**分情况**的讨论。
+性能问题属于前端领域复杂度比较高的问题。当我们量化性能的时候，往往并不能只追求一个单一的数据，而是需要结合**具体的参照物、渲染的阶段、数据的吞吐量等**各种要素来作**分情况**的讨论。
 
 早期模板渲染和虚拟 DOM 渲染性能比较：
 
-![image-20211201140623341](..\typora-user-images\image-20211201140623341.png)
+<img src="..\typora-user-images\image-20211201140623341.png" alt="image-20211201140623341" style="zoom:50%;" />
 
-从图中可以看出，模板渲染的步骤 1，和虚拟 DOM 渲染的步骤 1、2 都属于 JS 范畴的行为，这两者是具备可比性的，我们放在一起来看：动态生成 HTML 字符串的过程本质是对字符串的拼接，对性能的消耗是有限的；而虚拟 DOM 的构建和 diff 过程逻辑则相对复杂，它不可避免地涉及递归、遍历等耗时操作。因此在 JS 行为这个层面，模板渲染胜出。
+从图中可以看出，模板渲染的步骤 1和虚拟 DOM 渲染的步骤 1、2 都属于 JS 范畴的行为，这两者是具备可比性的，放在一起来看：动态生成 HTML 字符串的过程本质是对字符串的拼接，对性能的消耗是有限的；而虚拟 DOM 的构建和 diff 过程逻辑则相对复杂，它不可避免地涉及递归、遍历等耗时操作。因此在 JS 行为这个层面，模板渲染胜出。
 
 模板渲染的步骤二 和虚拟 DOM 渲染的步骤三都是 DOM 范畴的行为，两者具备可比性，因此我们仍然可以进行性能对比。模板渲染的步骤二是全量更新，虚拟 DOM 渲染的步骤三是差量更新。 初始一看一定觉得差量更新优于全量更新。但特殊的情况是：
 
@@ -1853,7 +1863,7 @@ with 加上 new Function。
 
 在这种情况下，DOM 更新的工作量基本一致，而虚拟 DOM 却伴随着开销更大的 JS 计算，此时会出现的一种现象就是模板渲染和虚拟 DOM 在整体性能上难分伯仲：若两者最终计算出的 DOM 更新内容完全一致，那么虚拟 DOM 大概率不敌模板渲染；但只要两者在最终 DOM 操作量上拉开那么一点点的差距，虚拟 DOM 就将具备战胜模板渲染的底气。**因为虚拟 DOM 的劣势主要在于 JS 计算的耗时，而 DOM 操作的能耗和 JS 计算的能耗根本不在一个量级，极少量的 DOM 操作耗费的性能足以支撑大量的 JS 计算（极少量的 DOM 操作耗费的性能远远大于 JS 计算）。**
 
-当然，上面讨论的这种情况相对来说比较极端。在实际的开发中，更加高频的场景是这样的：我每次 setState 的时候只修改少量的数据，比如一个对象中的某几个属性，再比如一个数组中的某几个元素。在这样的场景下，模板渲染和虚拟 DOM 之间 DOM 操作量级的差距就完全拉开了，虚拟 DOM 将在性能上具备绝对的优势。
+当然，上面讨论的这种情况相对来说比较极端。在实际的开发中，更加高频的场景是这样的：每次 setState 的时候只修改少量的数据，比如一个对象中的某几个属性，再比如一个数组中的某几个元素。在这样的场景下，模板渲染和虚拟 DOM 之间 DOM 操作量级的差距就完全拉开了，虚拟 DOM 将在性能上具备绝对的优势。
 
 **重点明白：虚拟 DOM 的价值不在性能提升，因此想要从性能角度来把握虚拟 DOM 的优势有点缘木求鱼。**
 
@@ -1864,13 +1874,15 @@ with 加上 new Function。
 - 研发体验/研发效率的问题：DOM 操作模式的每一次革新，背后都是前端对效率和体验的进一步追求。虚拟 DOM 的出现，为数据驱动视图这一思想提供了高度可用的载体，使得前端开发能够基于函数式 UI 的编程方式实现高效的声明式编程。
 - 跨平台的问题：虚拟 DOM 是对真实渲染内容的一层抽象。若没有这一层抽象，那么视图层将和渲染平台紧密耦合在一起，为了描述同样的视图内容，你可能要分别在 Web 端和 Native 端写完全不同的两套甚至多套代码。但现在中间多了一层描述性的虚拟 DOM，它描述的东西可以是真实 DOM，也可以是 iOS 界面、安卓界面、小程序......同一套虚拟 DOM，可以对接不同平台的渲染逻辑，从而实现“一次编码，多端运行”，如下图所示。其实说到底，跨平台也是研发提效的一种手段，它在思想上和 1 是高度呼应的。
 
-![image-20211201143134344](..\typora-user-images\image-20211201143134344.png)
+<img src="..\typora-user-images\image-20211201143134344.png" alt="image-20211201143134344" style="zoom:50%;" />
 
 虚拟 DOM 的其他亮点：
 
 - 差量更新
 
 - 批量更新，它在通用[虚拟 DOM 库](https://github.com/Matt-Esch/virtual-dom)中由 batch 函数来处理，但差量更新速度非常快的情况下，用户实际只能看到的最后一次差量更新的效果，这种场景下，前面的多次更新动作意义不大但是都触发重新渲染流程，带来大量不必要的高耗能操作，这时 batch 就能缓冲每次生成的补丁集，把收集到的多个补丁集暂存到队列中，再将最终的结果交给渲染函数，最终实现集中化的 DOM 批量更新
+
+
 
 ## React 中的"栈调和"（Stack Reconciler）
 
@@ -1910,19 +1922,19 @@ Diff 算法基于上面的三点书写的算法中的要点：
 
 - **Diff 算法性能突破的关键点在于“分层对比”，改变算法的时间复杂度量级，只针对同层级的节点进行对比**
 
-  ![image-20211201160413600](.\typora-user-images\image-20211201160413600.png)
+  ![image-20211201160413600](..\typora-user-images\image-20211201160413600.png)
 
   只需要从上到下的一次遍历，就可以完成对整棵树的对比，这是降低复杂度量级的最重要的设计，虽然栈调和将传统的树对比算法优化为分层对比，但整个算法仍然是以递归的形式运行的，分层递归也是递归。
 
   如果发生跨层级的节点操作，这种情况就是次要矛盾，在这种情况下，react 并不能判断下图移动的这个行为，他只能机械的认为移除子树那层的组件消失了，对应子树需要被销毁，而移入子树的那层则新建一个组件（设计组件的销毁和重建，性能不高），所以不建议做跨层级操作，保持 DOM 结构的稳定性。销毁和重建消耗性能，所以 react 官方建议开发者不做跨层级的操作，尽量保证 dom 结构的稳定性。
 
-  ![image-20211201160947912](.\typora-user-images\image-20211201160947912.png)
+  ![image-20211201160947912](..\typora-user-images\image-20211201160947912.png)
 
 2. **如果两个组件属于同一个类型，那么他们将拥有相同的 DOM 树形结构**
 
 - **类型一致的节点才有继续 Diff 的必要性**
 
-  ![image-20211201162709719](.\typora-user-images\image-20211201162709719.png)
+  ![image-20211201162709719](..\typora-user-images\image-20211201162709719.png)
 
 如果参与 Diff 的两个节点类型不同，那直接放弃对他们及其子节点的比较 ，直接整体替换节点，只有确认节点类型相同后，react 才会在保留组件对应 DOM 树的基础上尝试深入遍历和递归。
 
@@ -1936,13 +1948,13 @@ Diff 算法基于上面的三点书写的算法中的要点：
 
   没有 key 的情况：
 
-  ![image-20211201163627853](.\typora-user-images\image-20211201163627853.png)
+  ![image-20211201163627853](..\typora-user-images\image-20211201163627853.png)
 
 图中 A 组件在保持类型和其他属性均不变的情况下，在两个子节点（B 和 D）之间插入了一个新的节点（C）。按照已知的 Diff 原则，两棵树之间的 Diff 过程应该是这样的：
 
 - 首先对比位于第 1 层的节点，发现两棵树的节点类型是一致的（都是 A），于是进一步 Diff；
 
-- 开始对比位于第 2 层的节点，第 1 个接受比较的是 B 这个位置，对比下来发现两棵树这个位置上的节点都是 B，没毛病，放过它；
+- 开始对比位于第 2 层的节点，第 1 个接受比较的是 B 这个位置，对比下来发现两棵树这个位置上的节点都是 B，过；
 
 - 第 2 个接受比较的是 D 这个位置，对比 D 和 C，发现前后的类型不一致，直接删掉 D 重建 C；
 
@@ -1964,9 +1976,9 @@ C、D、E 三个节点，其实都是可以直接拿来用的。原本新增 1 �
 
 虚拟 DOM 中还有 batch，描述的是批处理机制。这个机制和 diff 一样，在 react 中都可以由 setState 来触发。
 
-## setState 详解
 
-本节的内容（setState 工作机制）和栈调和下的 diff 算法在面试中对面试者的区分度非常高，所有尤其注意。
+
+## setState 详解
 
 面试题：
 
@@ -2022,23 +2034,25 @@ export default class App extends React.Component {
 }
 ```
 
-![image-20220424225732454](.\typora-user-images\image-20220424225732454.png)
+<img src="..\typora-user-images\image-20220424225732454.png" alt="image-20220424225732454" style="zoom:50%;" />
 
 问题：从左向右依次点击每个按钮，控制台输出？
 
-![image-20211201164908886](.\typora-user-images\image-20211201164908886.png)
+<img src="..\typora-user-images\image-20211201164908886.png" alt="image-20211201164908886" style="zoom:50%;" />
 
 问题 setState 调用后 state 到底在那个环节或者什么时候发生变化？
 
 在 setState 中的回调是异步执行的时候，当执行完 setState 函数调用后，state 本身并不会立刻发生改变。在同步代码执行完的某个时刻 state 中的值才会改变。
 
-### setState 情况
+
+
+###  setState
 
 **setState 在大部分情况下采用异步方式的动机和原理是因为可以进行批量的更新。** “setState 是一个异步的方法”，这意味着当执行完 setState 后，state 本身并不会立刻发生改变。 因此紧跟在 setState 后面输出的 state 值，仍然会维持在它的初始状态。
 
 在 setState 调用之后的情况：
 
-![image-20211201165905986](.\typora-user-images\image-20211201165905986.png)
+![image-20211201165905986](..\typora-user-images\image-20211201165905986.png)
 
 从上图可以看出，一个完整的更新流程包括 re-render 在内的多个生命周期函数，re-render 本身涉及对 DOM 的操作，它会带来较大的性能开销，假如一次 setState 就触发一次一个完成的上图更新流程，那么每一次 setState 的调用都会触发一次 re-render，会有极大的性能负担。 **所以 setState 的一个异步的重要理由就是避免频繁的 re-render。**
 
@@ -2077,7 +2091,9 @@ test = () => {
 };
 ```
 
-![image-20211201170729755](.\typora-user-images\image-20211201170729755.png)
+<img src="..\typora-user-images\image-20211201170729755.png" alt="image-20211201170729755" style="zoom:50%;" />
+
+
 
 ### setState 的工作流
 
@@ -2089,7 +2105,7 @@ React15 中 setState 的源码：
 
 主流程图
 
-![image-20211201171540153](.\typora-user-images\image-20211201171540153.png)
+<img src="..\typora-user-images\image-20211201171540153.png" alt="image-20211201171540153" style="zoom:50%;" />
 
 setState 入口函数：
 
@@ -2117,13 +2133,13 @@ enqueueSetState:
 
 ```js
 enqueueSetState: function (publicInstance, partialState) {
-  // 根据 this 拿到对应的组件实例
+    // 根据 this 拿到对应的组件实例
     // publicInstance组件实例
     // partialState是setState接受的传参
   var internalInstance = getInternalInstanceReadyForUpdate(publicInstance, 'setState');
   // 这个 queue 对应的就是一个组件实例的 state 数组， 组件实例上有一个state数组
   var queue = internalInstance._pendingStateQueue || (internalInstance._pendingStateQueue = []);
-    // 向组件对应的setState传参推入queue队列中存起来，queue是一个数组
+    // 将组件对应的setState传参推入queue队列中存起来，queue是一个数组
     // 将新的 state 放进组件的状态队列里
   queue.push(partialState);
 
@@ -2192,6 +2208,8 @@ var ReactDefaultBatchingStrategy = {
 这里的“锁”，是指 React 全局唯一的 isBatchingUpdates 变量，isBatchingUpdates 的初始值是 false，意味着“当前并未进行任何批量更新操作”。每当 React 调用 batchedUpdate 去执行更新动作时，会先把这个锁给“锁上”（置为 true），表明“现在正处于批量更新过程中”。当锁被“锁上”的时候，任何需要更新的组件都只能暂时进入 dirtyComponents 里排队等候下一次的批量更新，而不能随意“插队”。此处体现的“任务锁”的思想，是 React 面对大量状态仍然能够实现有序分批处理的基石。
 
 批量更新整体管理的机制，还需要注意 batchedUpdates 中有一个引人注目的调用：transaction.perform(callback, null, a, b, c, d, e)，它是 react 中的 transaction 机制。
+
+
 
 ### React 中的 transaction(事务)机制
 
@@ -2288,6 +2306,8 @@ dispatchEvent: function (topLevelType, nativeEvent) {
 }
 ```
 
+
+
 ### 为什么 setState 是异步的原因
 
 isBatchingUpdates 这个变量，在 React 的生命周期函数以及合成事件执行前，已经被 React 悄悄修改为了 true，这时我们所做的 setState 操作自然不会立即生效。当函数执行完毕后，事务的 close 方法会再把 isBatchingUpdates 改为 false。
@@ -2307,8 +2327,6 @@ increment = () => {
   isBatchingUpdates = false;
 };
 ```
-
-上图体现了在 isBatchingUpdates 的约束下，setState 只能是异步的。
 
 很明显，在 isBatchingUpdates 的约束下，setState 只能是异步的。而当 setTimeout 从中作祟时，事情就会发生一点点变化：
 
@@ -2352,13 +2370,11 @@ setState 并不是单纯同步/异步的，它的表现会因调用场景的不�
 
 以上是 React15 中的 setState。
 
-React 16 以来，整个 React 核心算法被重写，setState 也不可避免地被“Fiber 化”。
+React 16 以来，整个 React 核心算法被重写，setState 也不可避免地被“Fiber化”。
+
+
 
 ## Fiber 架构的迭代动机和设计思想
-
-React 是用 JavaScript 构建大型 Web 应用程序的首选方式，该应用可以**快速响应**。
-
-动机：快速响应
 
 随着时间的推移和业务复杂度的提升，React 曾经的 Stack Reconciler（栈调和架构） 也渐渐在体验方面显出疲态。为了更进一步贯彻“快速响应”的原则，React 团队在 16.x 版本中将其最为核心的 Diff 算法整个重写，使用“Fiber Reconciler（Fiber 架构）”。
 
@@ -2376,21 +2392,21 @@ Stack Reconciler 下 javascript 代码可能超时占用主线程，因为 Stack
 
 栈调和机制下的 Diff 算法，其实是树的深度优先遍历的过程。而树的深度优先遍历，总是和递归脱不了关系。
 
-![Drawing 1.png](https://s0.lgstatic.com/i/image/M00/6E/D8/CgqCHl-zlcmATw-hAAD1942js64663.png)
+<img src="https://s0.lgstatic.com/i/image/M00/6E/D8/CgqCHl-zlcmATw-hAAD1942js64663.png" alt="Drawing 1.png" style="zoom:50%;" />
 
 在 React 15 及之前的版本中，虚拟 DOM 树的数据结构是“树”，其 Diff 算法的遍历思路，也是沿袭了传统计算机科学中“对比两棵树”的算法，在此基础上优化得来。因此从本质上来说，**栈调和机制下的 Diff 算法，其实是树的深度优先遍历的过程。**而树的深度优先遍历，总是递归。
 
 拿这棵树来举例，若 A 组件发生了更新，那么栈调和的工作过程是这样的：对比第 1 层的两个 A，确认节点可复用，继续 Diff 其子组件。当 Diff 到 B 的时候，对比前后的两个 B 节点，发现可复用，于是继续 Diff 其子节点 D、E。待 B 树最深层的 Diff 完成、逐层回溯后，再进入 C 节点的 Diff 逻辑......调和器会重复“父组件调用子组件”的过程，直到最深的一层节点更新完毕，才慢慢向上返回。
 
-这个过程的致命性在于它是同步的，不可以被打断。当处理结构相对复杂、体量相对庞大的虚拟 DOM 树时，Stack Reconciler 需要的调和时间会很长，这就意味着 JavaScript 线程将长时间地霸占主线程，进而导致我们上文中所描述的渲染卡顿/卡死、交互长时间无响应等问题。
+这个过程的致命性在于它是同步的，不可以被打断。当处理结构相对复杂、体量相对庞大的虚拟 DOM 树时，Stack Reconciler 需要的调和时间会很长，这就意味着 JavaScript 线程将长时间地霸占主线程，进而导致渲染卡顿/卡死、交互长时间无响应等问题。
 
 #### Fiber 解决问题
 
-什么是 Fiber？从字面上来理解，Fiber 这个单词翻译过来是“丝、纤维”的意思，是比线还要细的东西。在计算机科学里，有进程、线程之分，而 Fiber 就是比线程还要纤细的一个过程，也就是所谓的“纤程”。纤程的出现，意在对渲染过程实现更加精细的控制。
+在计算机科学里，有进程、线程之分，而 Fiber 就是比线程还要纤细的一个过程，也就是所谓的“纤程”。纤程的出现，意在对渲染过程实现更加精细的控制。
 
 **从架构角度来看，**Fiber 是对 React 核心算法（即调和过程）的重写。
 
-**从编码角度来看**，Fiber 是 React 内部定义的一种数据结构，它是 Fiber 树结构的节点单位，也就是 React16 新架构下的虚拟 DOM；
+**从编码角度来看**，Fiber 是 React 内部定义的**一种数据结构**，它是 **Fiber 树结构的节点单位**，也就是 React16 新架构下的虚拟 DOM；
 
 **从工作流的角度来看，**Fiber 节点保存了组件需要更新的状态和副作用，一个 Fiber 同时对应着一个工作单元。
 
@@ -2404,19 +2420,21 @@ Fiber 架构的应用目的是实现“增量渲染”，所谓的“增量渲�
 
 React16 以前的下图，React 的渲染和更新阶段依赖于下图中的两层架构，Reconciler 层负责对比出新旧虚拟 DOM 的不同，Renderer 层负责将变化的部分应用到视图上，从 Reconciler 层到 Renderer 层这个过程是严格同步的。
 
-![Drawing 2.png](https://s0.lgstatic.com/i/image/M00/6E/D8/CgqCHl-zleqAJoRjAAA9BnH9jdQ473.png)
+<img src="https://s0.lgstatic.com/i/image/M00/6E/D8/CgqCHl-zleqAJoRjAAA9BnH9jdQ473.png" alt="Drawing 2.png" style="zoom:50%;" />
 
 在 React16 中为了实现可中断和优先级，采用了下图的三层架构，Scheduler 层负责调度更新的优先级。
 
-在这套架构模式下，更新的处理工作流变成了这样：首先，每个更新任务都会被赋予一个优先级。当更新任务抵达调度器时，高优先级的更新任务（记为 A）会更快地被调度进 Reconciler 层；此时若有新的更新任务（记为 B）抵达调度器，调度器会检查它的优先级，若发现 B 的优先级高于当前任务 A，那么当前处于 Reconciler 层的 A 任务就会被中断，调度器会将 B 任务推入 Reconciler 层。当 B 任务完成渲染后，新一轮的调度开始，之前被中断的 A 任务将会被重新推入 Reconciler 层，继续重头它的渲染，这便是所谓“可恢复”。
+在这套架构模式下，更新的处理工作流变成了这样：首先，每个更新任务都会被赋予一个优先级。当更新任务抵达调度器时，高优先级的更新任务（记为 A）会更快地被调度进 Reconciler 层；此时若有新的更新任务（记为 B）抵达调度器，调度器会检查它的优先级，若发现 B 的优先级高于当前任务 A，那么当前处于 Reconciler 层的 A 任务就会被中断，调度器会将 B 任务推入 Reconciler 层。当 B 任务完成渲染后，新一轮的调度开始，之前被中断的 A 任务将会被重新推入 Reconciler 层，继续重头它的渲染，这便是“可恢复”。
 
-![image-20211201205219857](.\typora-user-images\image-20211201205219857.png)
+<img src="..\typora-user-images\image-20211201205219857.png" alt="image-20211201205219857" style="zoom:50%;" />
 
 render 阶段主要是在内存中计算，明确 DOM 树的更新点，而 commit 阶段则负责把 render 阶段生成的更新真正的执行。
 
-![image-20211201210023652](.\typora-user-images\image-20211201210023652.png)
+<img src="..\typora-user-images\image-20211201210023652.png" alt="image-20211201210023652" style="zoom:50%;" />
 
-新旧两种架构对生命周期函数的影响主要在 render 阶段，是因为增加 scheduler 层和改写 Reconciler 层来实现的。在 Fiber 架构中的 render 阶段一个庞大的任务被分解为一个个的工作单元，他们有着不同的优先级，React 可以根据优先级的高低去实现工作单元的打断和回复。由于 render 阶段的操作对用户来说其实是“不可见”的，所以就算打断再重启，对用户来说也是 0 感知。但是，工作单元（也就是任务）的重启将会伴随着对部分生命周期的重复执行，这些生命周期是：
+
+
+新旧两种架构对生命周期函数的影响主要在 render 阶段，是通过增加 scheduler 层和改写 Reconciler 层来实现的。在 Fiber 架构中的 render 阶段，一个庞大的任务被分解为一个个的工作单元，他们有着不同的优先级，React 可以根据优先级的高低去实现工作单元的打断和回复。由于 render 阶段的操作对用户来说其实是“不可见”的，所以就算打断再重启，对用户来说也是 0 感知。但是，工作单元（也就是任务）的重启将会伴随着对部分生命周期的重复执行，这些生命周期是：
 
 - componentWillMount
 - componentWillUpdate
@@ -2432,11 +2450,13 @@ render 阶段主要是在内存中计算，明确 DOM 树的更新点，而 comm
 - Fiber 树和传统虚拟 DOM 树有什么不同？
 - 优先级调度如何实现的？
 
+
+
 ## ReactDOM.render 渲染链路
 
 以**首次渲染**为切入点，拆解 Fiber 架构下 ReactDOM.render 所触发的渲染链路，结合源码理解整个链路中所涉及的**初始化、render 和 commit** 等过程。
 
-#### ReactDOM.render 调用栈的逻辑分层：
+#### ReactDOM.render 调用栈的逻辑分层： 
 
 调用栈大图：
 
@@ -2478,9 +2498,11 @@ ReactDOM.render 方法对应的调用栈，如下图所示：
 
 ReactDOM.render 方法对应的调用栈非常深，中间涉及的函数量也比较大。分析调用栈是理解渲染链路的一个手段，目的是借此提取关键逻辑，而非理解调用栈中的每一个方法。
 
-![image-20220425125307885](.\typora-user-images\image-20220425125307885.png)
+![image-20220425125307885](..\typora-user-images\image-20220425125307885.png)
 
-图中 scheduleUpdateOnFiber 方法的作用是调度任务，在由 ReactDOM.render 发起的首屏渲染这个场景下，它触发的就是 performSyncWorkOnRoot。**performSyncWorkOnRoot 开启的正是 render 阶段；而 commitRoot 方法开启的则是真实 DOM 的渲染过程（commit 阶段）**。因此以 scheduleUpdateOnFiber 和 commitRoot 两个方法为界，大致把 ReactDOM.render 的调用栈划分为三个阶段：
+
+
+图中 scheduleUpdateOnFiber 方法的作用是调度任务，在由 ReactDOM.render 发起的首屏渲染这个场景下，它触发的就是 performSyncWorkOnRoot。**performSyncWorkOnRoot 同步开启的正是 render 阶段；而 commitRoot 方法开启的则是真实 DOM 的渲染过程（commit 阶段）**。因此以 scheduleUpdateOnFiber 和 commitRoot 两个方法为界，大致把 ReactDOM.render 的调用栈划分为三个阶段：
 
 - 初始化阶段
 - render 阶段
@@ -2562,9 +2584,9 @@ function legacyRenderSubtreeIntoContainer(
 }
 ```
 
-总结一下首次渲染过程中 legacyRenderSubtreeIntoContainer 方法的主要逻辑链路：
+总结一下首次渲染过程中 legacyRenderSubtreeIntoContainer 方法的主要逻辑链路： 
 
-![image-20211202133135821](.\typora-user-images\image-20211202133135821.png)
+<img src="..\typora-user-images\image-20211202133135821.png" alt="image-20211202133135821" style="zoom:50%;" />
 
 其中的 fiberRoot 到底是什么呢？运行时的 root 和 fiberRoot ，其中 root 对象的结构如下图所示：
 
@@ -2574,11 +2596,11 @@ function legacyRenderSubtreeIntoContainer(
 
 ![Drawing 7.png](https://s0.lgstatic.com/i/image/M00/6E/D9/CgqCHl-zmISANlmfAADLqX8jue0154.png)
 
-current 对象是一个 FiberNode 实例，**而 FiberNode，正是 Fiber 节点对应的对象类型**。current 对象是一个 Fiber 节点，不仅如此，它还是**当前 Fiber 树的头部节点**。
+current 对象是一个 FiberNode 实例，**而 FiberNode，正是 Fiber 节点对应的对象类型**。current 对象是一个 Fiber 节点，不仅如此，它还是**当前 Fiber 树的根节点**。 
 
 current 属性对应的 FiberNode 节点，在调用栈中实际是由 createHostRootFiber 方法创建的，React 源码中也有多处以 rootFiber 代指 current 对象，因此下文中我们将以 rootFiber 指代 current 对象。
 
-![Lark20201120-182610.png](https://s0.lgstatic.com/i/image/M00/6F/F8/Ciqc1F-3mh-AZrlvAABgy8S1u44402.png)
+<img src="https://s0.lgstatic.com/i/image/M00/6F/F8/Ciqc1F-3mh-AZrlvAABgy8S1u44402.png" alt="Lark20201120-182610.png" style="zoom:50%;" />
 
 fiberRoot 的关联对象是真实 DOM 的容器节点；而 rootFiber 则作为虚拟 DOM 的根节点存在。**这两个节点，将是后续整棵 Fiber 树构建的起点**。
 
@@ -2605,7 +2627,7 @@ function unbatchedUpdates(fn, a) {
 }
 ```
 
-在 unbatchedUpdates 函数体里，当下只需要 Get 到一个信息：它直接调用了传入的回调 fn。而在当前链路中，fn 是一个针对 updateContainer 的调用：
+在 unbatchedUpdates 函数体里，它直接调用了传入的回调 fn。而在当前链路中，fn 是一个针对 updateContainer 的调用：
 
 ```js
 unbatchedUpdates(function () {
@@ -2673,9 +2695,11 @@ performSyncWorkOnRoot 直译过来就是“执行根节点的同步任务”，*
 
 **concurrent 模式**： `ReactDOM.createRoot(rootNode).render(<App />)`。目前在实验中，未来稳定之后，打算作为 React 的默认开发模式，这个模式开启了所有的新功能。
 
-在这 3 种模式中，**我们常用的 ReactDOM.render 对应的是 legacy 模式，它实际触发的仍然是同步的渲染链路**。blocking 模式可以理解为 legacy 和 concurrent 之间的一个过渡形态，之所以会有这个模式，是因为 React 官方希望能够提供[渐进的迁移策略](https://zh-hans.reactjs.org/docs/faq-versioning.html#commitment-to-stability)，帮助我们更加顺滑地过渡到 Concurrent 模式。blocking 在实际应用中是比较低频的一个模式，了解即可。
+在这 3 种模式中，**我们常用的 ReactDOM.render 对应的是 legacy 模式，它实际触发的仍然是同步的渲染链路**。blocking 模式可以理解为 legacy 和 concurrent 之间的一个过渡形态，之所以会有这个模式，是因为 React 官方希望能够提供[渐进的迁移策略](https://zh-hans.reactjs.org/docs/faq-versioning.html#commitment-to-stability)，帮助我们更加顺滑地过渡到 Concurrent 模式。
 
 按照官方的说法，“**长远来看，模式的数量会收敛，不用考虑不同的模式**，但就目前而言，模式是一项重要的迁移策略，让每个人都能决定自己什么时候迁移，并按照自己的速度进行迁移”。由此可以看出，Concurrent 模式确实是 React 的终极目标，也是其创作团队使用 Fiber 架构重写核心算法的动机所在。
+
+
 
 ### 拓展：关于异步模式下的首次渲染链路
 
@@ -2693,13 +2717,13 @@ Concurrent 模式开启后，首次渲染的调用栈变成了如下图所示的
 
 ![Drawing 9.png](https://s0.lgstatic.com/i/image/M00/6E/D9/CgqCHl-zmJyAbYZNAAFI67qKm98019.png)
 
-乍一看，好像和 ReactDOM.render 差别很大，其实不然。图中 createRoot 所触发的逻辑仍然是一些准备性质的初始化工作，此处不必太纠结。关键在于下面我给你框出来的这部分，如下图所示：
+乍一看，好像和 ReactDOM.render 差别很大，其实不然。图中 createRoot 所触发的逻辑仍然是一些准备性质的初始化工作。关键在于下面框出来的这部分，如下图所示：
 
 ![Drawing 10.png](https://s0.lgstatic.com/i/image/M00/6E/CE/Ciqc1F-zmKKAF0ODAADhhdYWzo0441.png)
 
-我们拉近一点来看，如下图所示：
+拉近一点来看，如下图所示：
 
-![图片1.png](https://s0.lgstatic.com/i/image/M00/70/75/CgqCHl-7GiaAUY_zAAxz8mfEvT0309.png) 你会发现这地方也调用了一个 render。再顺着这个调用往下看，发现有大量的熟悉面孔：updateContainer、requestUpdateLane、createUpdate、scheduleUpdateOnFiber......这些函数在 ReactDOM.render 的调用栈中也出现过。
+![图片1.png](https://s0.lgstatic.com/i/image/M00/70/75/CgqCHl-7GiaAUY_zAAxz8mfEvT0309.png) 这地方也调用了一个 render。再顺着这个调用往下看，发现有大量的熟悉面孔：updateContainer、requestUpdateLane、createUpdate、scheduleUpdateOnFiber......这些函数在 ReactDOM.render 的调用栈中也出现过。
 
 其实，当前你看到的这个 render 调用链路，和 ReactDOM.render 的调用链路是非常相似的，主要的区别在 scheduleUpdateOnFiber 的这个判断里：
 
@@ -2707,7 +2731,7 @@ Concurrent 模式开启后，首次渲染的调用栈变成了如下图所示的
 
 在异步渲染模式下，由于请求到的 lane 不再是 SyncLane（同步优先级），故不会再走到 performSyncWorkOnRoot 这个调用，而是会转而执行 else 中调度相关的逻辑。
 
-这里有个点要给你点出来——React 是如何知道当前处于哪个模式的呢？我们可以以 requestUpdateLane 函数为例，下面是它局部的代码：
+这里有个点要给你点出来——React 是如何知道当前处于哪个模式的呢？可以以 requestUpdateLane 函数为例，下面是它局部的代码：
 
 复制代码
 
@@ -2728,19 +2752,21 @@ function requestUpdateLane(fiber) {
 
 上面代码中需要注意 fiber 节点上的 mode 属性：**React 将会通过修改 mode 属性为不同的值，来标识当前处于哪个渲染模式；在执行过程中，也是通过判断这个属性，来区分不同的渲染模式**。
 
-因此不同的渲染模式在挂载阶段的差异，本质上来说并不是工作流的差异（其工作流涉及 初始化 → render → commit 这 3 个步骤），而是 mode 属性的差异。mode 属性决定着这个工作流是一气呵成（同步）的，还是分片执行（异步）的。
+因此不同的渲染模式在挂载阶段的差异，本质上来说并不是工作流的差异（其工作流涉及初始化 → render → commit 这 3 个步骤），而是 mode 属性的差异。mode 属性决定着这个工作流是一气呵成（同步）的，还是分片执行（异步）的。
 
-关于异步挂载/更新的实现细节，我们将在后续的第 16 讲“Fiber 架构实现原理与编码形态”中详细探讨。
+
 
 ### Fiber 架构一定是异步渲染吗？
 
-之前我曾经被读者朋友问到过这样的问题：**React 16 如果没有开启 Concurrent 模式，那它还能叫 Fiber 架构吗**？
+**React 16 如果没有开启 Concurrent 模式，那它还能叫 Fiber 架构吗**？
 
-这个问题很有意思，从动机上来看，Fiber 架构的设计确实主要是为了 Concurrent 而存在。但经过了本讲紧贴源码的讲解，相信你也能够看出，在 React 16，包括已发布的 React 17 版本中，不管是否是 Concurrent，整个数据结构 层面的设计、包括贯穿整个渲染链路的处理逻辑，已经完全用 Fiber 重构了一遍。站在这个角度来看，Fiber 架构在 React 中并不能够和异步渲染画严格的等号，它是一种**同时兼容了同步渲染与异步渲染的设计**。
+从动机上来看，Fiber 架构的设计确实主要是为了 Concurrent 而存在。但经过了本讲紧贴源码的讲解，相信你也能够看出，在 React 16，包括已发布的 React 17 版本中，不管是否是 Concurrent，整个数据结构层面的设计、包括贯穿整个渲染链路的处理逻辑，已经完全用 Fiber 重构了一遍。站在这个角度来看，Fiber 架构在 React 中并不能够和异步渲染画严格的等号，它是一种**同时兼容了同步渲染与异步渲染的设计**。
 
 总结：
 
-以 ReactDOM.render 所触发的首次渲染为切入点，串联 React Fiber 架构 i 下完整的工作链路。 对 Fiber 树的初始形态，Fiber 根节点的创作过程由一定认知，同时讲解了 ReactDOM.render 同步渲染的过程和特征，理解 React16 和 17 中共存的 3 中渲染方式。
+以 ReactDOM.render 所触发的首次渲染为切入点，串联 React Fiber 架构下完整的工作链路。 对 Fiber 树的初始形态，Fiber 根节点的创作过程由一定认知，同时讲解了 ReactDOM.render 同步渲染的过程和特征，理解 React16 和 17 中共存的 3 中渲染方式。
+
+
 
 ## ReactDOM.render 调用栈：render 阶段
 
@@ -2750,11 +2776,13 @@ render 阶段在整个渲染链路中的定位，如下图所示：（diff 算�
 
 图中，performSyncWorkOnRoot 标志着 render 阶段的开始，finishSyncRender 标志着 render 阶段的结束。这中间包含了大量的 beginWork、completeWork 调用栈，正是 render 的工作内容。
 
+**beginWork方法开始调用的过程就是Fiber树的构建过程。**
+
 > beginWork、completeWork 这两个方法需要注意，它们串联起的是一个“模拟递归”的过程。
 
-React 15 下的调和过程是一个递归的过程。 Fiber 架构下的调和过程，虽然并不是依赖递归来实现的，但在 ReactDOM.render 触发的同步模式下，它仍然是一个深度优先搜索的过程。这个过程中，beginWork 将创建新的 Fiber 节点，而 completeWork 则负责将 Fiber 节点映射为 DOM 节点。上一讲中 Fiber 树只有根节点。
+React 15 下的调和过程是一个递归的过程。 Fiber 架构下的调和过程，虽然并不是依赖递归来实现的，但在 ReactDOM.render 触发的同步模式下，它仍然是一个深度优先搜索的过程。这个过程中，**beginWork 将创建新的 Fiber 节点**，而 **completeWork 则负责将 Fiber 节点映射为 DOM 节点**。上一讲中 Fiber 树只有根节点。
 
-![image-20220425200420687](.\typora-user-images\image-20220425200420687.png)
+<img src="..\typora-user-images\image-20220425200420687.png" alt="image-20220425200420687" style="zoom:50%;" />
 
 workInProgress 节点的创建：
 
@@ -2767,7 +2795,7 @@ prepareFreshStack 的作用是重置一个新的堆栈环境，其中最需要�
 ```js
 // 这里入参中的 current 传入的是现有树结构中的 rootFiber 对象
 function createWorkInProgress(current, pendingProps) {
-  var workInProgress = current.alternate;
+  var workInProgress = current.alternate;  // 原来根Fiber对应的双缓存中的另一个Fiber节点，初始化渲染的时候这个值为null
   // ReactDOM.render 触发的首屏渲染将进入这个逻辑
   if (workInProgress === null) {
     // 这是需要你关注的第一个点，workInProgress 是 createFiber 方法的返回值
@@ -2815,11 +2843,11 @@ workInProgress = createFiber(current.tag, pendingProps, current.key, current.mod
 
 **workInProgress 节点其实就是 current 节点（即 rootFiber）的副本**。
 
-再结合 current 指向 rootFiber 对象（同样是 FiberNode 实例），以及 current 和 workInProgress 通过 alternate 互相连接这些信息，我们可以分析出这波操作执行完之后，整棵树的结构应该如下图所示：
+再结合 current 指向 rootFiber 对象（同样是 FiberNode 实例），以及 current 和 workInProgress 通过 alternate 互相连接这些信息，可以分析出这波操作执行完之后，整棵树的结构应该如下图所示：
 
 ![1.png](https://s0.lgstatic.com/i/image/M00/71/49/CgqCHl-91EqAJlftAAB6KmeoTMw529.png)
 
-完成了这个任务之后，就会进入 workLoopSync 的逻辑。它的逻辑同样是简洁明了的，如下所示（解析在注释里）：
+完成了这个任务之后，就会进入 workLoopSync 的逻辑。如下所示（解析在注释里）：
 
 ```js
 function workLoopSync() {
@@ -2844,6 +2872,8 @@ workLoopSync 做的事情就是**通过 while 循环反复判断 workInProgress 
 相应地，图中 current 指针所指向的根节点所在的那棵树，我们叫它“**current 树**”。
 
 一棵 current 树，一棵 workInProgress 树，这两棵 Fiber 树至少在现在看来，是完全没区别的（毕竟都还只有一个根节点）。React 这样设计的目的何在？或者换个问法——到底是什么样的事情一棵树做不到，非得搞两棵“一样”的树出来？在一步一步理解 Fiber 树的构建和更新过程之后，我将带你去认识“两棵 Fiber 树”这一现象背后的动机。
+
+
 
 ### beginWork 开启 Fiber 节点创建过程
 
@@ -2943,6 +2973,8 @@ function reconcileChildren(current, workInProgress, nextChildren, renderLanes) {
 
 从源码来看，reconcileChildren 也只是做逻辑的分发，具体的工作还要到 **mountChildFibers** 和 **reconcileChildFibers** 里去看。
 
+
+
 ### ChildReconciler，处理 Fiber 节点
 
 ```js
@@ -2994,7 +3026,7 @@ function ChildReconciler(shouldTrackSideEffects) {
 }
 ```
 
-由于原本的代码量着实巨大，感兴趣的同学可以点开[这个文件](https://github.com/facebook/react/blob/56e9feead0f91075ba0a4f725c9e4e343bca1c67/packages/react-reconciler/src/ReactChildFiber.old.js#L253)查看细节，此处我仅针对与主流程强相关的逻辑为你总结以下要点：
+由于原本的代码量着实巨大，可以点开[这个文件](https://github.com/facebook/react/blob/56e9feead0f91075ba0a4f725c9e4e343bca1c67/packages/react-reconciler/src/ReactChildFiber.old.js#L253)查看细节，此处仅针对与主流程强相关的逻辑为你总结以下要点：
 
 1. 关键的入参 shouldTrackSideEffects，意为“是否需要追踪副作用”，**因此 reconcileChildFibers 和 mountChildFibers 的不同，在于对副作用的处理不同**；
 2. ChildReconciler 中定义了大量如 placeXXX、deleteXXX、updateXXX、reconcileXXX 等这样的函数，这些函数覆盖了对 Fiber 节点的创建、增加、删除、修改等动作，将直接或间接地被 reconcileChildFibers 所调用；
@@ -3071,7 +3103,7 @@ App 所对应的 Fiber 节点，将被 placeSingleChild 打上“Placement”（
 
 ![Drawing 12.png](https://s0.lgstatic.com/i/image/M00/71/12/CgqCHl-80WyARnfDAAGNRsiaht8973.png)
 
-reconcileChildren 函数上下文里的 workInProgress 就是 rootFiber 节点。那么此时，我们就将新创建的 App Fiber 节点和 rootFiber 关联了起来，整个 Fiber 树如下图所示：
+reconcileChildren 函数上下文里的 workInProgress 就是 rootFiber 节点。那么此时，就将新创建的 App Fiber 节点和 rootFiber 关联了起来，整个 Fiber 树如下图所示：
 
 ![3.png](https://s0.lgstatic.com/i/image/M00/71/3E/Ciqc1F-91MmARvQRAADFJC1K20o629.png)
 
@@ -3081,7 +3113,7 @@ reconcileChildren 函数上下文里的 workInProgress 就是 rootFiber 节点�
 
 刚刚这一通分析所涉及的调用栈很长，相信不少人如果是初读的话，过程中肯定不可避免地要反复回看，确认自己现在到底在调用栈的哪一环。这里为了方便你把握逻辑脉络，我将本讲讲解的 beginWork 所触发的调用流程总结进一张大图：
 
-![7.png](https://s0.lgstatic.com/i/image/M00/71/47/Ciqc1F-97fSAYLUIAAGBjhvNylg581.png)
+<img src="https://s0.lgstatic.com/i/image/M00/71/47/Ciqc1F-97fSAYLUIAAGBjhvNylg581.png" alt="7.png" style="zoom:50%;" />
 
 ### Fiber 树的构建过程
 
@@ -3091,7 +3123,7 @@ reconcileChildren 函数上下文里的 workInProgress 就是 rootFiber 节点�
 
 #### 循环创建新的 Fiber 节点
 
-研究节点创建的工作流，我们的切入点是`workLoopSync`这个函数。
+研究节点创建的工作流，切入点是`workLoopSync`这个函数。
 
 为什么选它？这里来复习一遍`workLoopSync`会做什么：
 
@@ -3121,7 +3153,7 @@ if (next === null) {
 
 如此便能够确保每次 performUnitOfWork 执行完毕后，当前的 **workInProgress 都存储着下一个需要被处理的节点，从而为下一次的 workLoopSync 循环做好准备**。
 
-现在我在 workLoopSync 内部打个断点，尝试输出每一次获取到的 workInProgress 的值，workInProgress 值的变化过程如下图所示：
+现在在 workLoopSync 内部打个断点，尝试输出每一次获取到的 workInProgress 的值，workInProgress 值的变化过程如下图所示：
 
 ![Drawing 15.png](https://s0.lgstatic.com/i/image/M00/71/12/CgqCHl-80ZuAA1HAAAEBle-yZFM332.png)
 
@@ -3148,7 +3180,7 @@ if (next === null) {
 
 结合这 7 个 FiberNode，再对照对照我们的 Demo：
 
-```js
+```jsx
 function App() {
   return (
     <div className='App'>
@@ -3166,17 +3198,17 @@ function App() {
 
 > 注：React 并不会为所有的文本类型 ReactElement 创建对应的 FiberNode，这是一种优化策略。是否需要创建 FiberNode，在源码中是通过[isDirectTextChild](https://github.com/facebook/react/blob/765e89b908206fe62feb10240604db224f38de7d/packages/react-reconciler/src/ReactFiberBeginWork.new.js#L1068)这个变量来区分的。
 
-这样一来，我们构建的这棵树里，就多出了不少 FiberNode，如下图所示：
+这样一来，构建的这棵树里，就多出了不少 FiberNode，如下图所示：
 
 ![4.png](https://s0.lgstatic.com/i/image/M00/71/49/CgqCHl-91PKANLSRAACt8c-uYAk378.png)
 
-Fiber 节点有是有了，但这些 Fiber 节点之间又是如何相互连接的呢？
+Fiber 节点有了，但这些 Fiber 节点之间又是如何相互连接的呢？
 
 #### Fiber 节点间是如何连接的呢
 
 **不同的 Fiber 节点之间，将通过 child、return、sibling 这 3 个属性建立关系**，**其中 child、return 记录的是父子节点关系，而 sibling 记录的则是兄弟节点关系**。
 
-这里我以 h1 这个元素对应的 Fiber 节点为例，给你展示下它是如何与其他节点相连接的。展开这个 Fiber 节点，对它的 child、 return、sibling 3 个属性作截取，如下图所示：
+这里以 h1 这个元素对应的 Fiber 节点为例，给你展示下它是如何与其他节点相连接的。展开这个 Fiber 节点，对它的 child、 return、sibling 3 个属性作截取，如下图所示：
 
 child 属性为 null，说明 h1 节点没有子 Fiber 节点：
 
@@ -3190,23 +3222,35 @@ sibling 属性局部截图：
 
 ![Drawing 23.png](https://s0.lgstatic.com/i/image/M00/71/13/CgqCHl-80eiAJ6doAAClFZDD7jE642.png)
 
-可以看到，return 属性指向的是 class 为 container 的 div 节点，而 sibling 属性指向的是第 1 个 p 节点。结合 JSX 中的嵌套关系我们不难得知 ——**FiberNode 实例中，return 指向的是当前 Fiber 节点的父节点，而 sibling 指向的是当前节点的第 1 个兄弟节点**。
+可以看到，return 属性指向的是 class 为 container 的 div 节点，而 sibling 属性指向的是第 1 个 p 节点。结合 JSX 中的嵌套关系不难得知 ——**FiberNode 实例中，return 指向的是当前 Fiber 节点的父节点，而 sibling 指向的是当前节点的第 1 个兄弟节点**。
 
-结合这 3 个属性所记录的节点间关系信息，我们可以轻松地将上面梳理出来的新 FiberNode 连接起来：
+结合这 3 个属性所记录的节点间关系信息，可以将上面梳理出来的新 FiberNode 连接起来：
 
 ![5.png](https://s0.lgstatic.com/i/image/M00/71/3E/Ciqc1F-91RGAAygAAAEYVWI-PXg439.png)
 
 以上便是 workInProgress Fiber 树的最终形态了。从图中可以看出，虽然人们习惯上仍然将眼前的这个产物称为“Fiber 树”，但**它的数据结构本质其实已经从树变成了链表**。
 
-注意，在分析 Fiber 树的构建过程时，我们选取了 **beginWork** 作为切入点，但整个 Fiber 树的构建过程中，并不是只有 beginWork 在工作。这其中，还穿插着 **completeWork** 的工作。只有将 completeWork 和 beginWork 放在一起来看，你才能够真正理解，Fiber 架构下的“深度优先遍历”到底是怎么一回事。
+注意，在分析 Fiber 树的构建过程时，选取了 **beginWork** 作为切入点，但整个 Fiber 树的构建过程中，并不是只有 beginWork 在工作。这其中，还穿插着 **completeWork** 的工作。只有将 completeWork 和 beginWork 放在一起来看，才能够真正理解，Fiber 架构下的“深度优先遍历”到底是怎么一回事。
 
 ### 总结
 
-通过本讲的学习，你掌握了 beginWork 的实现原理、理清了 Fiber 节点的创建链路，最终串联起了 Fiber 树的宏观构建过程。至此，你已经揽获了 render 阶段大半的知识，这一路道阻且难，胜在收获满满。
+通过本讲的学习，掌握 beginWork 的实现原理、理清 Fiber 节点的创建链路，最终串联起了 Fiber 树的宏观构建过程。
 
-下一讲，我们一方面将乘胜追击，继续探索 completeWork 的工作内容，将整个 render 阶段讲透；另一方面，我会带你快速地过一遍 commit 阶段的工作流，并基于此去串联由初始化、render、commit 所组成的完整渲染工作流，力求对整个 ReactDOM.render 所触发的渲染链路形成一个系统、通透的理解。
+下一讲，继续 completeWork 的工作内容，将整个 render 阶段讲透；另一方面，过一遍 commit 阶段的工作流，并基于此去串联由初始化、render、commit 所组成的完整渲染工作流，力求对整个 ReactDOM.render 所触发的渲染链路形成一个系统、通透的理解。
 
-此外，在本讲的开头，我还给你留下了一个悬念，也就是“为什么需要两棵 Fiber 树”的问题。这个问题的答案，也将会随着我们对 Fiber 探索的深入，逐渐浮出水面。
+
+
+
+
+### completeWork
+
+
+
+
+
+
+
+
 
 ## 从零实现 Fiber 与 Hooks（珠峰）
 
@@ -3222,9 +3266,9 @@ sibling 属性局部截图：
 
 JavaScript 引擎和渲染引擎在同一个主线程内运行，且它们是互斥的。如果某个 js 任务执行的时间过长，渲染线程则之能推至渲染，导致卡顿。
 
-![image-20211207173907384](.\typora-user-images\image-20211207173907384.png)
+![image-20211207173907384](..\typora-user-images\image-20211207173907384.png)
 
-![image-20211207183053092](.\typora-user-images\image-20211207183053092.png)
+![image-20211207183053092](..\typora-user-images\image-20211207183053092.png)
 
 **RAF**
 
