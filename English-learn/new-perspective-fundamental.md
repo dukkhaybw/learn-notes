@@ -413,3 +413,44 @@ It is interesting to listen to him.
    ![image-20221209143539050](C:/Users/shuyi/Desktop/study-notes/English-learn/new-perspective-fundamental.assets/image-20221209143539050.png)
 
 从形式上来总结可数名词的复数变化规则。
+
+
+
+
+
+
+
+#### 不可数名词的度量
+
+不能用具体的数字（基数）（比如one, two, three, four）来表示不可 数名词的数量，但可以借用量词来表示其量的概念。不同类型的不 可数名词所使用的量词不一样，一般的规则如下：
+
+1. piece修饰：
+
+   advice, bread, baggage, chalk, equipment, furniture, information, jewelry, luggage, music和news等
+
+   > a piece of news（一条消息） 
+   >
+   > two pieces of news（两条消息）
+   >
+   > several pieces of furniture（几件家具） 
+   >
+   > three pieces of luggage（三件行李）
+
+2. 用bottle, cup, drop和glass修饰液态物质
+   比如这些名词：beer, blood, coffee, milk, tea, water和wine等。
+
+   > several drops of blood（几滴血）
+   > a glass of milk（一杯牛奶） 
+   > two glasses of wine（两杯葡萄酒） 
+   > two cups of coffee（两杯咖啡）
+
+3. 其他的量词
+
+   > a loaf of bread（一长条面包） 
+   >
+   > a tube of toothpaste（一筒牙膏） 
+   >
+   > a slice of meat（一片肉）
+
+不可数名词一般不能直接被不定冠词 a/an 修饰。
+
