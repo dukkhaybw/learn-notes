@@ -1109,7 +1109,7 @@ store.dispatch(action)
 
 ## React Hooks
 
-React Hooks 在面试中许多面试者都回答得不好。大场面试官问 React Hooks 真正想听的是什么？
+面试官问 React Hooks 真正想听的是什么？
 
 理解了 what 和 how 后，能更具象的理解理论层面的 why，对 why 的深入必然会反助到对 what 的理解和 how 的实践。
 
@@ -1161,6 +1161,8 @@ function DemoFunction(props) {
 }
 ```
 
+
+
 #### 类组件和函数组件的对比
 
 类组件和函数组件的对比：
@@ -1169,10 +1171,6 @@ function DemoFunction(props) {
 - 类组件可以访问生命周期方法，函数组件不能；
 - 类组件中可以获取到实例化后的 this，并基于这个 this 做各种各样的事情，而函数组件不可以；
 - 类组件中可以定义并维护 state（状态），而函数组件不可以；
-
-在 React-Hooks 出现之前，类组件的能力边界明显强于函数组件，但要进一步推导“类组件强于函数组件”，未免显得有些牵强。
-
-当讨论这两种组件形式时，不应怀揣“孰优孰劣”这样的成见，而应该更多地去关注两者的不同，进而把不同的特性与不同的场景做连接，这样才能求得一个全面的、辩证的认知。
 
 类组件（面向对象编程的表征）：
 
@@ -1191,9 +1189,9 @@ function DemoFunction(props) {
 - React 作者 Dan 早期特意为类组件和函数组件写过的[一篇非常棒的对比文章](https://overreacted.io/how-are-function-components-different-from-classes/)
 - 函数组件更加契合 React 框架的设计理念
 
-#### 为什么采用函数式组件
 
-两者的差异体现面向对象和函数式编程的不同设计思想，心智模式层面的差异。
+
+#### 为什么采用函数式组件
 
 开发者编写声明式的代码，React 库的主要工作是及时的把声明式的代码转为命令式的 DOM 操作，把数据层的描述映射到用户可见的 UI 变化中去，这就意味着从原则上讲，React 中的数据应该总是紧紧的和渲染绑定到一起，而类组件无法做到。
 
@@ -1212,6 +1210,7 @@ class App extends React.Component {
   state = {
     user: 'Dan'
   };
+  
   render() {
     return (
       <>
@@ -1398,6 +1397,8 @@ useEffect(callBack, []);
   }, [num1, num2, num3]);
   // 示意数组是 [num1, num2, num3]。首先需要说明，数组中的变量一般都是来源于组件本身的数据（props 或者 state）。若数组不为空，那么 React 就会在新的一次渲染后去对比前后两次的渲染，查看数组内是否有变量发生了更新（只要有一个数组元素变了，就会被认为更新发生了），并在有更新的前提下去触发 useEffect 中定义的副作用逻辑。
   ```
+
+
 
 #### 为什么需要 React Hooks？
 
