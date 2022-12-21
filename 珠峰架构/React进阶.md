@@ -62,8 +62,6 @@ React 知识体系庞大，精密复杂的底层原理与长的知识链路。�
 
 **学习的本质是重复，重复的结果是记住。**
 
-
-
 ## jsx 代码映射为 DOM
 
 本节的重点是 jsx 如何转为 DOM。
@@ -79,26 +77,24 @@ jsx 中的三个重点问题（面试）：
 大多数开发者认为它是模版语法中的一种。jsx 与 React 底层的联系。目标是：通过本课时的学习目标是能用自己的话回答上面的三个问题。
 
 ```jsx
-import React from 'react'
-import ReactDOM from 'react-dom'
+import React from "react";
+import ReactDOM from "react-dom";
 
-class App extends React.Component{
-    constructor(props){
-        super(props)
-    }
-    render(){
-        return (
-            <div>
-            	<h1>hello world</h1>
-            </div>
-        )
-    }
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    return (
+      <div>
+        <h1>hello world</h1>
+      </div>
+    );
+  }
 }
 
-ReactDOM.render(<App />, document.getElementById('root'))
+ReactDOM.render(<App />, document.getElementById("root"));
 ```
-
-
 
 #### jsx 的本质
 
@@ -110,13 +106,13 @@ Facebook 公司给 jsx 的定位是：jsx 是 JavaScript 的“扩展”，而�
 
 **JSX 会被编译为 React.createElement( )(该函数的调用), React.createElement( ) 执行后将会返回一个叫做 React Element 的 JS 对象。**
 
-> React.createElement是React17以前babel转化jsx后生成的方法调用。
+> React.createElement 是 React17 以前 babel 转化 jsx 后生成的方法调用。
 
 JSX 在被编译后， 会被变为一个针对 React.createElement( ) 的调用。先说 JSX 是如何被编译为 React.createElement( ) 形式的调用的。
 
 编译这个过程是由 Babel 完成。
 
-**Babel将 JSX 语法转换为 JavaScript 代码。**
+**Babel 将 JSX 语法转换为 JavaScript 代码。**
 
 ![Drawing 0.png](https://s0.lgstatic.com/i/image/M00/5C/73/CgqCHl-BegWAbxNEAAH9HxafvWE988.png)
 
@@ -210,7 +206,7 @@ export function createElement(type, config, children){
 }
 ```
 
-创建一个React元素需要知道的数据信息（3 个参数）：
+创建一个 React 元素需要知道的数据信息（3 个参数）：
 
 function createElement(type, config, children)
 
@@ -220,31 +216,31 @@ function createElement(type, config, children)
 
 ```jsx
 React.createElement(
-  'ul',
+  "ul",
   {
     // 传入属性键值对
-    className: 'list'
+    className: "list",
     // 从第三个入参开始往后，传入的参数都是 children
   },
   React.createElement(
-    'li',
+    "li",
     {
-      key: '1'
+      key: "1",
     },
-    '1'
+    "1"
   ),
   React.createElement(
-    'li',
+    "li",
     {
-      key: '2'
+      key: "2",
     },
-    '2'
+    "2"
   )
 );
 
-<ul className='list'>
-  <li key='1'>1</li>
-  <li key='2'>2</li>
+<ul className="list">
+  <li key="1">1</li>
+  <li key="2">2</li>
 </ul>;
 ```
 
@@ -290,9 +286,9 @@ ReactElement 的代码很短，作用是组装 ReactElement 将传入的参数�
 
 ```jsx
 const AppJSX = (
-  <div className='App'>
-    <h1 className='title'>I am the title</h1>
-    <p className='content'>I am the content</p>
+  <div className="App">
+    <h1 className="title">I am the title</h1>
+    <p className="content">I am the content</p>
   </div>
 );
 
@@ -316,8 +312,8 @@ ReactDOM.render(
   // 回调函数，可选参数，可以用来处理渲染结束后的逻辑
   [callback]
 );
- 
-const rootElement = document.getElementById('root');
+
+const rootElement = document.getElementById("root");
 ReactDOM.render(<App />, rootElement);
 ```
 
@@ -325,17 +321,15 @@ ReactDOM.render(<App />, rootElement);
 
 jsx 语法本质；React 创建一个真实 DOM 的流程；虚拟 DOM 的初步认知。
 
-
-
 ## 生命周期函数变更及逻辑
 
-React 入门教材对 React 生命周期的讲解过于简单粗暴，并不是背下这些生命周期函数就可以。同时也缺少对新旧 React 库中生命周期函数的变化比较和原因分析。  
+React 入门教材对 React 生命周期的讲解过于简单粗暴，并不是背下这些生命周期函数就可以。同时也缺少对新旧 React 库中生命周期函数的变化比较和原因分析。
 
 React16 为什么要修改生命周期函数？
 
 从 React 的基本原理出发，对 React15，16 两版的生命周期函数进行探讨，比对和总结。建立系统而完善的生命周期知识体系。
 
-生命周期背后的设计思想：“组件”和“虚拟 DOM” 
+生命周期背后的设计思想：“组件”和“虚拟 DOM”
 
 - 虚拟 DOM 是核心算法的基石
 
@@ -353,11 +347,9 @@ React16 为什么要修改生命周期函数？
 
   “开放”，则是针对组件间通信来说的。React 允许开发者基于“单向数据流”的原则完成组件间的通信。而组件之间的通信又将改变通信双方/某一方内部的数据，进而对渲染结果构成影响。
 
-render 函数算是生命周期函数中的核心，其中虚拟 DOM的生成和组件的渲染工作流都离不开 render 函数，其他生命周期函数算得上组件的躯干。
+render 函数算是生命周期函数中的核心，其中虚拟 DOM 的生成和组件的渲染工作流都离不开 render 函数，其他生命周期函数算得上组件的躯干。
 
 可以选择性地省略对 render 之外的任何生命周期方法内容的编写，而 render 函数却坚决不能省略；倘若其他生命周期函数做了点什么，往往都会直接或间接地影响到 render 执行（因为即便是 render 之外的生命周期逻辑，也大部分是在为 render 层面的效果服务）。
-
-
 
 ### React15 中的生命周期函数
 
@@ -480,8 +472,6 @@ ReactDOM.render(<LifeCycleContainer />, document.getElementById("root"));
 
 <img src="https://s0.lgstatic.com/i/image/M00/5E/32/Ciqc1F-GZ1OAWETTAAA3Am2CwU0383.png" alt="3.png" style="zoom:50%;" />
 
-
-
 ### 挂在阶段
 
 挂载过程在组件的一生中仅会发生一次，在这个过程中，组件被初始化，然后会被渲染到真实 DOM 里，完成的“首次渲染”。
@@ -504,8 +494,6 @@ ReactDOM.render(<LifeCycleContainer />, document.getElementById("root"));
 
 <img src="https://s0.lgstatic.com/i/image/M00/5D/D8/CgqCHl-FU_6AeWUcAAB8X4bjwqE102.png" alt="Drawing 3.png" style="zoom:50%;" />
 
-
-
 ### 更新阶段
 
 **componentWillReceiveProps**
@@ -524,8 +512,6 @@ ReactDOM.render(<LifeCycleContainer />, document.getElementById("root"));
 // 父组件更新的时候会触发子组件的这个生命周期函数
 componentWillReceiveProps(nextProps){}
 ```
-
-
 
 不准确的认知：**componentWillReceiveProps 是在父组件传递给子组件的 props 内容发生了变化时被触发的。**
 
@@ -557,8 +543,6 @@ render 方法伴随着**对虚拟 DOM 的构建和对比**，过程耗时长，�
 
 ![image-20211129224217585.png](https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/50250581a0dc4604ae50a8ef86dfad35~tplv-k3u1fbpfcp-watermark.awebp?)
 
-
-
 ### 卸载阶段
 
 ![图片6.png](https://s0.lgstatic.com/i/image/M00/5D/EC/CgqCHl-FaHuAVGc_AABE6JqN9E0073.png)
@@ -568,11 +552,9 @@ render 方法伴随着**对虚拟 DOM 的构建和对比**，过程耗时长，�
 - **组件在父组件中被移除**
 - **组件中设置了 key 属性，父组件在 render 的过程中，发现 key 值和上次不一致时也会销毁组件**
 
-
-
 ### React16 的生命周期函数
 
-理解React16.3 中的生命周期函数是什么，同时对比新旧两个版本中生命周期函数的差异以及为什么改变生命周期函数和 Fiber 架构。
+理解 React16.3 中的生命周期函数是什么，同时对比新旧两个版本中生命周期函数的差异以及为什么改变生命周期函数和 Fiber 架构。
 
 React16.3 中的生命周期函数图：
 
@@ -587,62 +569,62 @@ React16.4 以后的生命周期函数：
 **Demo：**
 
 ```js
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from "react";
+import ReactDOM from "react-dom";
 // 定义子组件
 class LifeCycle extends React.Component {
   constructor(props) {
-    console.log('进入constructor');
+    console.log("进入constructor");
     super(props);
     // state 可以在 constructor 里初始化
-    this.state = { text: '子组件的文本' };
+    this.state = { text: "子组件的文本" };
   }
   // 初始化/更新时调用
   static getDerivedStateFromProps(props, state) {
-    console.log('getDerivedStateFromProps方法执行');
+    console.log("getDerivedStateFromProps方法执行");
     return {
-      fatherText: props.text
+      fatherText: props.text,
     };
   }
   // 初始化渲染时调用
   componentDidMount() {
-    console.log('componentDidMount方法执行');
+    console.log("componentDidMount方法执行");
   }
   // 组件更新时调用
   shouldComponentUpdate(prevProps, nextState) {
-    console.log('shouldComponentUpdate方法执行');
+    console.log("shouldComponentUpdate方法执行");
     return true;
   }
 
   // 组件更新时调用
   getSnapshotBeforeUpdate(prevProps, prevState) {
-    console.log('getSnapshotBeforeUpdate方法执行');
-    return 'haha';
+    console.log("getSnapshotBeforeUpdate方法执行");
+    return "haha";
   }
   // 组件更新后调用
   componentDidUpdate(preProps, preState, valueFromSnapshot) {
-    console.log('componentDidUpdate方法执行');
-    console.log('从 getSnapshotBeforeUpdate 获取到的值是', valueFromSnapshot);
+    console.log("componentDidUpdate方法执行");
+    console.log("从 getSnapshotBeforeUpdate 获取到的值是", valueFromSnapshot);
   }
   // 组件卸载时调用
   componentWillUnmount() {
-    console.log('子组件的componentWillUnmount方法执行');
+    console.log("子组件的componentWillUnmount方法执行");
   }
   // 点击按钮，修改子组件文本内容的方法
   changeText = () => {
     this.setState({
-      text: '修改后的子组件文本'
+      text: "修改后的子组件文本",
     });
   };
   render() {
-    console.log('render方法执行');
+    console.log("render方法执行");
     return (
-      <div className='container'>
-        <button onClick={this.changeText} className='changeText'>
+      <div className="container">
+        <button onClick={this.changeText} className="changeText">
           修改子组件文本内容
         </button>
-        <p className='textContent'>{this.state.text}</p>
-        <p className='fatherContent'>{this.props.text}</p>
+        <p className="textContent">{this.state.text}</p>
+        <p className="fatherContent">{this.props.text}</p>
       </div>
     );
   }
@@ -651,28 +633,28 @@ class LifeCycle extends React.Component {
 class LifeCycleContainer extends React.Component {
   // state 也可以像这样用属性声明的形式初始化
   state = {
-    text: '父组件的文本',
-    hideChild: false
+    text: "父组件的文本",
+    hideChild: false,
   };
   // 点击按钮，修改父组件文本的方法
   changeText = () => {
     this.setState({
-      text: '修改后的父组件文本'
+      text: "修改后的父组件文本",
     });
   };
   // 点击按钮，隐藏（卸载）LifeCycle 组件的方法
   hideChild = () => {
     this.setState({
-      hideChild: true
+      hideChild: true,
     });
   };
   render() {
     return (
-      <div className='fatherContainer'>
-        <button onClick={this.changeText} className='changeText'>
+      <div className="fatherContainer">
+        <button onClick={this.changeText} className="changeText">
           修改父组件文本内容
         </button>
-        <button onClick={this.hideChild} className='hideChild'>
+        <button onClick={this.hideChild} className="hideChild">
           隐藏子组件
         </button>
         {this.state.hideChild ? null : <LifeCycle text={this.state.text} />}
@@ -680,10 +662,8 @@ class LifeCycleContainer extends React.Component {
     );
   }
 }
-ReactDOM.render(<LifeCycleContainer />, document.getElementById('root'));
+ReactDOM.render(<LifeCycleContainer />, document.getElementById("root"));
 ```
-
-
 
 Mounting 阶段：
 
@@ -750,8 +730,6 @@ React 团队为了明确该 getDerivedStateFromProps 生命周期函数的用途
 
 React16 以提供特定生命周期函数的形式对这类特定的诉求提供更直接的支持。
 
-
-
 #### getDerivedStateFromProps 函数
 
 调用该方法的注意点：
@@ -772,13 +750,9 @@ React16 以提供特定生命周期函数的形式对这类特定的诉求提供
 
 ![image-20211130111612016.png](https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/f9f52d80d1514aa286e0e6a1354ba3cd~tplv-k3u1fbpfcp-watermark.awebp?)
 
-
-
 Updating 阶段：
 
 ![image-20211129225830182.png](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/bd73ca49291b49e4a3920941adb017e9~tplv-k3u1fbpfcp-watermark.awebp?)
-
-
 
 **为什么要用 getDerivedStateFromProps 代替 componentWilllReceiveProps？**
 
@@ -788,8 +762,6 @@ getDerivedStateFromProps 与 componentDidUpdate 一起，这个 getDerivedStateF
 - getDerivedStateFromProps 不完全等于 componentWilllReceiveProps,其特性决定了我们曾经在 componentWillReceiveProps 里面做的事情，不能够百分百迁移到 getDerivedStateFromProps 里
 
 getDerivedStateFromProps 作为静态方法，内部拿不到组件实例 this，这就导致开发者无法在该函数中做任何 this.setStae(),this.fetch()等可能产生副作用的操作。**React16 在强制推行只用 getDerivedStateFromProps 来完成 props 到 state 的映射，意在确保生命周期函数的行为更加能预测可控，从根源上帮助开发者避免不合理的开发方式，避免生命周期函数的滥用，也是在为 Fiber 架构铺路。**
-
-
 
 **认识 getSnapshotBeforUpdate 函数：**
 
@@ -817,11 +789,7 @@ componentDidUpdate(prevProps, prevState, valueFromSnapshot) {
 
 <img src="/Users/wuyi/Desktop/study-note/珠峰架构/React进阶.assets/image-20221212232753573.png" alt="image-20221212232753573" style="zoom:50%;" />
 
-
-
 那为什么 componentWillUpdata 要被废弃？ 因为 Fiber 架构。
-
-
 
 ### Fiber 架构
 
@@ -837,8 +805,6 @@ Fiber 是 React16 对 React 核心算法的一次重写。 该架构可以使得
 <img src="https://s0.lgstatic.com/i/image/M00/5F/B0/Ciqc1F-Kl0WAO2mzAABxddWHnXI121.png" alt="图片4.png" style="zoom:50%;" />
 
 <img src="https://s0.lgstatic.com/i/image/M00/5F/B0/Ciqc1F-Kl1CAA6pwAADpyi-xSnM494.png" alt="图片5.png" style="zoom:50%;" />
-
- 
 
 **Fiber 架构的重要特征就是可以被打断的异步渲染模式。**但这个“打断”是有原则的，根据“能否被打断”这一标准，React 16 的生命周期被划分为了 render 和 commit 两个阶段，而 commit 阶段又被细分为了 pre-commit 和 commit。
 
@@ -857,8 +823,6 @@ render 阶段在执行过程中允许被打断，而 commit 阶段则总是同�
 为什么 render 阶段可以被打断而 commit 阶段总是同步执行？
 
 render 阶段的操作对用户来说其实是不可见的，所以打断再重启也是零感知的。而 commit 阶段的操作设计真实 DOM 的渲染，用户可见，所以必须以同步的方式求稳。
-
-
 
 ### 同步渲染变为异步渲染对生命周期函数的影响
 
@@ -888,8 +852,6 @@ render 阶段的操作对用户来说其实是不可见的，所以打断再重�
 
 现有的生命周期，虽然已经对方法的最佳实践做了强约束，但是仍然无法覆盖所有的“误操作”，其中最为典型的，就是对 getDerivedStateFromProps 的滥用。关于这点，社区的讨论不是很多，但是 [React 团队给出的这篇文章](https://zh-hans.reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html)就帮助大家规避“误操作”来说是绰绰有余的。
 
-
-
 ## 数据在组件间的传递
 
 数据驱动视图。
@@ -911,8 +873,6 @@ render 阶段的操作对用户来说其实是不可见的，所以打断再重�
 在使用 props 实现多层组件的数据通信时，中间层组件的属性结构和项目代码都会受到污染。
 
 props 是单向的。子组件并不能直接将自己的数据传给父组件，但是 props 的形式可以是多样的，如果父组件传递给子组件的是一个绑定了自身上下文的函数，那么子组件在调用该函数时就可以传参给父组件中的函数。
-
-
 
 ### 发布订阅模式通信
 
@@ -938,7 +898,7 @@ class EventEmitter {
   on(type, handler) {
     // hanlder 必须是一个函数，如果不是直接报错
     if (!(handler instanceof Function)) {
-      throw new Error('请传一个函数');
+      throw new Error("请传一个函数");
     }
     // 判断 type 事件对应的队列是否存在
     if (!this.eventMap[type]) {
@@ -968,8 +928,6 @@ class EventEmitter {
 
 //为了处理传入一个事件队列中不存在的函数时，不会意外的移除掉，我们知道 splice 的第一个参数是负数时，会从数组的最后往前找。试想一下，如果传入一个不存在的函数给 off 方法，indexOf 找不到会返回 -1 ，再调用 splice 就会将队列中最后一个函数删除掉了。而使用无符号右移，-1 无符号右移的结果为 4294967295，这个数足够大，不会对原队列造成影响
 ```
-
-
 
 ### Context API
 
@@ -1001,8 +959,6 @@ const {Provider,Consumer} = myContent
 Cosumer 不仅能够读取到 Provider 下发的数据，还能读取到这些数据后续的更新。这意味着数据在生产者和消费者之间能够及时同步。
 
 当 Consumer 没有对应的 Provider 时，value 参数会直接取创建 context 时传递给 createContext 的 defaultValue。
-
-
 
 老版 Context 的问题：
 
@@ -1076,8 +1032,6 @@ MessageList.childContextTypes = {
 
 新的 Context API 改进了这一点：即便组件的 shouldComponentUpdate 返回 false，它仍然可以“穿透”组件继续向后代组件进行传播，进而确保了数据生产者和数据消费者之间数据的一致性。更好的语义化的声明式写法。
 
-
-
 ### Redux
 
 **Redux 是 JavaScript 状态容器，它提供可预测的状态管理。**
@@ -1139,8 +1093,6 @@ store.dispatch(action)
 
 <img src="https://s0.lgstatic.com/i/image/M00/81/9F/CgqCHl_Rii2AVvUbAADn4s_6rB8369.png" alt="图片7.png" style="zoom:50%;" />
 
-
-
 ## React Hooks
 
 面试官问 React Hooks 真正想听的是什么？
@@ -1157,7 +1109,7 @@ React Hooks 自从 16.8 版本以来才被更好的推广。
 class DemoClass extends React.Component {
   // 初始化类组件的 state
   state = {
-    text: ''
+    text: "",
   };
   // 编写生命周期方法 didMount
   componentDidMount() {
@@ -1167,13 +1119,13 @@ class DemoClass extends React.Component {
   changeText = (newText) => {
     // 更新 state
     this.setState({
-      text: newText
+      text: newText,
     });
   };
   // 编写生命周期方法 render
   render() {
     return (
-      <div className='demoClass'>
+      <div className="demoClass">
         <p>{this.state.text}</p>
         <button onClick={this.changeText}>点我修改</button>
       </div>
@@ -1188,14 +1140,12 @@ class DemoClass extends React.Component {
 function DemoFunction(props) {
   const { text } = props;
   return (
-    <div className='demoFunction'>
+    <div className="demoFunction">
       <p>{`function 组件所接收到的来自外界的文本内容是：[${text}]`}</p>
     </div>
   );
 }
 ```
-
-
 
 #### 类组件和函数组件的对比
 
@@ -1205,10 +1155,6 @@ function DemoFunction(props) {
 - 类组件可以访问生命周期方法，函数组件不能；
 - 类组件中可以获取到实例化后的 this，并基于这个 this 做各种各样的事情，而函数组件不可以；
 - 类组件中可以定义并维护 state（状态），而函数组件不可以；
-
-在 React-Hooks 出现之前，类组件的能力边界明显强于函数组件，但要进一步推导“类组件强于函数组件”，未免显得有些牵强。
-
-当讨论这两种组件形式时，不应怀揣“孰优孰劣”这样的成见，而应该更多地去关注两者的不同，进而把不同的特性与不同的场景做连接，这样才能求得一个全面的、辩证的认知。
 
 类组件（面向对象编程的表征）：
 
@@ -1227,11 +1173,7 @@ function DemoFunction(props) {
 - React 作者 Dan 早期特意为类组件和函数组件写过的[一篇非常棒的对比文章](https://overreacted.io/how-are-function-components-different-from-classes/)
 - 函数组件更加契合 React 框架的设计理念
 
-
-
 #### 为什么采用函数式组件
-
-两者的差异体现面向对象和函数式编程的不同设计思想，心智模式层面的差异。
 
 开发者编写声明式的代码，React 库的主要工作是及时的把声明式的代码转为命令式的 DOM 操作，把数据层的描述映射到用户可见的 UI 变化中去，这就意味着从原则上讲，React 中的数据应该总是紧紧的和渲染绑定到一起，而类组件无法做到。
 
@@ -1240,25 +1182,29 @@ function DemoFunction(props) {
 代码说明：
 
 ```jsx
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from "react";
+import ReactDOM from "react-dom";
 
-import ProfilePageFunction from './ProfilePageFunction';
-import ProfilePageClass from './ProfilePageClass';
+import ProfilePageFunction from "./ProfilePageFunction";
+import ProfilePageClass from "./ProfilePageClass";
 
 class App extends React.Component {
   state = {
-    user: 'Dan'
+    user: "Dan",
   };
+
   render() {
     return (
       <>
         <label>
           <b>Choose profile to view: </b>
-          <select value={this.state.user} onChange={(e) => this.setState({ user: e.target.value })}>
-            <option value='Dan'>Dan</option>
-            <option value='Sophie'>Sophie</option>
-            <option value='Sunil'>Sunil</option>
+          <select
+            value={this.state.user}
+            onChange={(e) => this.setState({ user: e.target.value })}
+          >
+            <option value="Dan">Dan</option>
+            <option value="Sophie">Sophie</option>
+            <option value="Sunil">Sunil</option>
           </select>
         </label>
         <h1>Welcome to {this.state.user}’s profile!</h1>
@@ -1276,16 +1222,16 @@ class App extends React.Component {
   }
 }
 
-const rootElement = document.getElementById('root');
+const rootElement = document.getElementById("root");
 ReactDOM.render(<App />, rootElement);
 ```
 
 ```jsx
-import React from 'react';
+import React from "react";
 
 class ProfilePage extends React.Component {
   showMessage = () => {
-    alert('Followed ' + this.props.user);
+    alert("Followed " + this.props.user);
   };
 
   handleClick = () => {
@@ -1301,11 +1247,11 @@ export default ProfilePage;
 ```
 
 ```jsx
-import React from 'react';
+import React from "react";
 
 function ProfilePage(props) {
   const showMessage = () => {
-    alert('Followed ' + props.user);
+    alert("Followed " + props.user);
   };
 
   const handleClick = () => {
@@ -1430,7 +1376,7 @@ useEffect(callBack, []);
   ```js
   useEffect(() => {
     // 这是回调函数的业务逻辑
-  
+
     // 若 xxx 是一个函数，则 xxx 会在组件每次因 num1、num2、num3 的改变而重新渲染时被触发
     return xxx;
   }, [num1, num2, num3]);
@@ -1504,8 +1450,6 @@ React 官方不建议在 useEffect 中执行 DOM 操作，因为 useEffect 的�
 
 这个理解一半对一半不对。两个钩子的区别在于，useEffect 是异步的，要等到浏览器将所有变化渲染到屏幕后才会被执行；而 useLayoutEffect 是同步的——这是执行时机上的区别，这块你应该是理解的。问题在于：1.React 官方真的不建议使用 useEffect 操作 DOM 吗？我在官方网站上找到了相反的描述：“尽可能使用标准的 useEffect 以避免阻塞视觉更新（出自 https://zh-hans.reactjs.org/docs/hooks-reference.html#uselayouteffect）”。 2. useEffect 会造成视觉阻塞吗？恰恰相反，因为 useLayoutEffect 是同步渲染的机制，而 useEffect 是异步非阻塞的渲染，所以说阻塞渲染的恰恰是 useLayoutEffect 而不是 useEffect。如果你有一段逻辑确实存在“阻塞渲染”这个同步的需求，那么可以使用 useLayoutEffect。否则就应该像 React 官网原文所说的那样，“尽可能使用标准的 useEffect 以避免阻塞视觉更新”
 
-
-
 ### React-Hooks 工作机制
 
 **React 团队面向开发者给出了两条 React-Hooks 的使用原则：**
@@ -1523,33 +1467,33 @@ hooks 的实现机制导致顺序非常重要。
 合理的代码：
 
 ```jsx
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 function PersonalInfoComponent() {
   // 集中定义变量
   let name, age, career, setName, setCareer;
 
   // 获取姓名状态
-  [name, setName] = useState('修言');
+  [name, setName] = useState("修言");
 
   // 获取年龄状态
-  [age] = useState('99');
+  [age] = useState("99");
 
   // 获取职业状态
-  [career, setCareer] = useState('我是一个前端，爱吃小熊饼干');
+  [career, setCareer] = useState("我是一个前端，爱吃小熊饼干");
 
   // 输出职业信息
-  console.log('career', career);
+  console.log("career", career);
 
   // 编写 UI 逻辑
   return (
-    <div className='personalInfo'>
+    <div className="personalInfo">
       <p>姓名：{name}</p>
       <p>年龄：{age}</p>
       <p>职业：{career}</p>
       <button
         onClick={() => {
-          setName('秀妍');
+          setName("秀妍");
         }}
       >
         修改姓名
@@ -1561,43 +1505,41 @@ function PersonalInfoComponent() {
 export default PersonalInfoComponent;
 ```
 
-
-
 不合理的代码：
 
 ```jsx
-import React, { useState } from 'react';
+import React, { useState } from "react";
 // isMounted 用于记录是否已挂载（是否是首次渲染）
 let isMounted = false;
 function PersonalInfoComponent() {
   let name, age, career, setName, setCareer;
 
   // 这里追加对 isMounted 的输出，这是一个 debug 性质的操作
-  console.log('isMounted is', isMounted);
+  console.log("isMounted is", isMounted);
   // 这里追加 if 逻辑：只有在首次渲染（组件还未挂载）时，才获取 name、age 两个状态
   if (!isMounted) {
     // eslint-disable-next-line
-    [name, setName] = useState('修言');
+    [name, setName] = useState("修言");
     // eslint-disable-next-line
-    [age] = useState('99');
+    [age] = useState("99");
 
     // if 内部的逻辑执行一次后，就将 isMounted 置为 true（说明已挂载，后续都不再是首次渲染了）
     isMounted = true;
   }
 
   // 对职业信息的获取逻辑不变
-  [career, setCareer] = useState('我是一个前端，爱吃小熊饼干');
+  [career, setCareer] = useState("我是一个前端，爱吃小熊饼干");
   // 这里追加对 career 的输出，这也是一个 debug 性质的操作
-  console.log('career', career);
+  console.log("career", career);
   // UI 逻辑的改动在于，name和age成了可选的展示项，若值为空，则不展示
   return (
-    <div className='personalInfo'>
+    <div className="personalInfo">
       {name ? <p>姓名：{name}</p> : null}
       {age ? <p>年龄：{age}</p> : null}
       <p>职业：{career}</p>
       <button
         onClick={() => {
-          setName('秀妍');
+          setName("秀妍");
         }}
       >
         修改姓名
@@ -1648,7 +1590,7 @@ function mountState(initialState) {
   var hooks = mountWorkInProgressHook();
 
   // initialState可以是一个回调函数，若是回调函数，则取回调执行后的结果作为initialState
-  if (typeof initialState === 'function') {
+  if (typeof initialState === "function") {
     initialState = initialState();
   }
 
@@ -1657,14 +1599,18 @@ function mountState(initialState) {
     last: null,
     dispatch: null,
     lastRenderedReducer: basicStateReducer,
-    lastRenderedState: (initialState: any)
+    lastRenderedState: (initialState: any),
   });
 
   // 将initialState作为一个‘记忆值’存下来
   hook.memoizedState = hook.baseState = initialState;
 
   // dispatch是由上下文中一个叫dispatchAction的方法创建的
-  var dispatch = (queue.dispatch = dispatchAction.bind(null, currentlyRenderingFiber$1, queue));
+  var dispatch = (queue.dispatch = dispatchAction.bind(
+    null,
+    currentlyRenderingFiber$1,
+    queue
+  ));
 
   // 返回目标数组，dispatch其实就是setXxx函数
   returne[(hook.memoizedState, dispatch)];
@@ -1718,9 +1664,9 @@ updateState 之后的操作链路，虽然涉及的代码有很多，但其实�
 三个 hooks 首次渲染时都会执行
 
 ```js
-[name, setName] = useState('修言');
-[age] = useState('99');
-[career, setCareer] = useState('我是一个前端，爱吃小熊饼干');
+[name, setName] = useState("修言");
+[age] = useState("99");
+[career, setCareer] = useState("我是一个前端，爱吃小熊饼干");
 ```
 
 由首次渲染生成的链表结构：
@@ -1730,7 +1676,7 @@ updateState 之后的操作链路，虽然涉及的代码有很多，但其实�
 当首次渲染结束，进行二次渲染的时候，实际发生的 useState 调用只有一个：
 
 ```js
-useState('我是一个前端，爱吃小熊饼干');
+useState("我是一个前端，爱吃小熊饼干");
 ```
 
 ![image-20211201120127111](..\typora-user-images\image-20211201120127111.png)
@@ -1744,8 +1690,6 @@ useState('我是一个前端，爱吃小熊饼干');
 ![图片16.png](https://s0.lgstatic.com/i/image/M00/67/65/CgqCHl-hJe2ATIhGAAHpze3gFHg893.png)
 
 如此一来，career 就自然而然地取到了链表头节点 hook 对象中的“秀妍”这个值。
-
-
 
 ## 虚拟 DOM
 
@@ -1764,11 +1708,9 @@ react 选择虚拟 DOM 真的是为了性能考虑吗？
 
 **虚拟 DOM（Virtual DOM）本质上是 JS 和 DOM 之间的一个映射缓存，它在表现形态上是 js 中的对象类型，一个能够描述 DOM 结构（树结构）及其属性信息。**
 
-虚拟DOM在React中的结构：
+虚拟 DOM 在 React 中的结构：
 
 <img src="..\typora-user-images\image-20211201121815904.png" alt="image-20211201121815904" style="zoom:50%;" />
-
-
 
 #### 虚拟 DOM 参与的工作流
 
@@ -1780,11 +1722,9 @@ React 中的虚拟 DOM 是如何工作的？
 
 - 更新阶段，页面的变化在作用于真实 DOM 之前，会先作用于虚拟 DOM，虚拟 DOM 将在 JS 层借助算法先对比出具体有哪些真实 DOM 需要被改变，然后再将这些改变作用于真实 DOM
 
-
-
 #### 为什么需要虚拟 DOM？ 虚拟 DOM 是否伴随着更好的性能？ 虚拟 DOM 的优势是什么？
 
- 虚拟 DOM 相对于过往的 DOM 操作解决方案来说，是一个新生事物。要想理解一个新生事物存在、发展的合理性，必须将其放在一个足够长的、合理的上下文中去讨论。
+虚拟 DOM 相对于过往的 DOM 操作解决方案来说，是一个新生事物。要想理解一个新生事物存在、发展的合理性，必须将其放在一个足够长的、合理的上下文中去讨论。
 
 下面就是历史上下文：
 
@@ -1796,9 +1736,9 @@ React 中的虚拟 DOM 是如何工作的？
 
 jQuery:
 
-- 为了能够实现高效的开发，jQuery 首先解决的就是“API过长”——它将 DOM API 封装为了相对简单和优雅的形式，同时一口气做掉了跨浏览器的兼容工作，并且提供了链式 API 调用、插件扩展等一系列能力
+- 为了能够实现高效的开发，jQuery 首先解决的就是“API 过长”——它将 DOM API 封装为了相对简单和优雅的形式，同时一口气做掉了跨浏览器的兼容工作，并且提供了链式 API 调用、插件扩展等一系列能力
 
-- jQuery 使操作 DOM变得简单，但它并不能从根本上解决 DOM 操作量过大情况下前端侧的压力
+- jQuery 使操作 DOM 变得简单，但它并不能从根本上解决 DOM 操作量过大情况下前端侧的压力
 
 模板引擎：
 
@@ -1823,7 +1763,7 @@ with 加上 new Function。
 
 **虚拟 DOM 如何解决问题？**
 
-早期模板引擎： 
+早期模板引擎：
 
 <img src="..\typora-user-images\image-20211201134124667.png" alt="image-20211201134124667" style="zoom:50%;" />
 
@@ -1841,8 +1781,6 @@ with 加上 new Function。
 
 > 图中的 diff 和 patch 其实都是函数名，这些函数取材于一个独立的[虚拟 DOM 库](https://github.com/Matt-Esch/virtual-dom)。之所以写明了具体流程对应的函数名,很多面试官习惯于用函数名指代过程，但不少人不清楚这个对应关系（尤其是 patch），会非常影响作答。
 
-
-
 #### React 选用虚拟 DOM，真的是为了更好的性能吗？
 
 在整个 DOM 操作的演化过程中，主要矛盾并不在于性能，在于研发体验/研发效率。虚拟 DOM 正是前端开发们为了追求更好的研发体验和研发效率而创造出来的高阶产物。
@@ -1855,7 +1793,7 @@ with 加上 new Function。
 
 <img src="..\typora-user-images\image-20211201140623341.png" alt="image-20211201140623341" style="zoom:50%;" />
 
-从图中可以看出，模板渲染的步骤 1和虚拟 DOM 渲染的步骤 1、2 都属于 JS 范畴的行为，这两者是具备可比性的，放在一起来看：动态生成 HTML 字符串的过程本质是对字符串的拼接，对性能的消耗是有限的；而虚拟 DOM 的构建和 diff 过程逻辑则相对复杂，它不可避免地涉及递归、遍历等耗时操作。因此在 JS 行为这个层面，模板渲染胜出。
+从图中可以看出，模板渲染的步骤 1 和虚拟 DOM 渲染的步骤 1、2 都属于 JS 范畴的行为，这两者是具备可比性的，放在一起来看：动态生成 HTML 字符串的过程本质是对字符串的拼接，对性能的消耗是有限的；而虚拟 DOM 的构建和 diff 过程逻辑则相对复杂，它不可避免地涉及递归、遍历等耗时操作。因此在 JS 行为这个层面，模板渲染胜出。
 
 模板渲染的步骤二 和虚拟 DOM 渲染的步骤三都是 DOM 范畴的行为，两者具备可比性，因此我们仍然可以进行性能对比。模板渲染的步骤二是全量更新，虚拟 DOM 渲染的步骤三是差量更新。 初始一看一定觉得差量更新优于全量更新。但特殊的情况是：
 
@@ -1881,8 +1819,6 @@ with 加上 new Function。
 - 差量更新
 
 - 批量更新，它在通用[虚拟 DOM 库](https://github.com/Matt-Esch/virtual-dom)中由 batch 函数来处理，但差量更新速度非常快的情况下，用户实际只能看到的最后一次差量更新的效果，这种场景下，前面的多次更新动作意义不大但是都触发重新渲染流程，带来大量不必要的高耗能操作，这时 batch 就能缓冲每次生成的补丁集，把收集到的多个补丁集暂存到队列中，再将最终的结果交给渲染函数，最终实现集中化的 DOM 批量更新
-
-
 
 ## React 中的"栈调和"（Stack Reconciler）
 
@@ -1976,49 +1912,47 @@ C、D、E 三个节点，其实都是可以直接拿来用的。原本新增 1 �
 
 虚拟 DOM 中还有 batch，描述的是批处理机制。这个机制和 diff 一样，在 react 中都可以由 setState 来触发。
 
-
-
 ## setState 详解
 
 面试题：
 
 ```jsx
-import React from 'react';
+import React from "react";
 
 export default class App extends React.Component {
   state = {
-    count: 0
+    count: 0,
   };
 
   increment = () => {
-    console.log('increment setState前的count', this.state.count);
+    console.log("increment setState前的count", this.state.count);
     this.setState({
-      count: this.state.count + 1
+      count: this.state.count + 1,
     });
-    console.log('increment setState后的count', this.state.count);
+    console.log("increment setState后的count", this.state.count);
   };
 
   triple = () => {
-    console.log('triple setState前的count', this.state.count);
+    console.log("triple setState前的count", this.state.count);
     this.setState({
-      count: this.state.count + 1
+      count: this.state.count + 1,
     });
     this.setState({
-      count: this.state.count + 1
+      count: this.state.count + 1,
     });
     this.setState({
-      count: this.state.count + 1
+      count: this.state.count + 1,
     });
-    console.log('triple setState后的count', this.state.count);
+    console.log("triple setState后的count", this.state.count);
   };
 
   reduce = () => {
     setTime(() => {
-      console.log('reduce setState前的count', this.state.count);
+      console.log("reduce setState前的count", this.state.count);
       this.setState({
-        count: this.state.count - 1
+        count: this.state.count - 1,
       });
-      console.log('reduce setState后的count', this.state.count);
+      console.log("reduce setState后的count", this.state.count);
     }, 0);
   };
 
@@ -2044,9 +1978,7 @@ export default class App extends React.Component {
 
 在 setState 中的回调是异步执行的时候，当执行完 setState 函数调用后，state 本身并不会立刻发生改变。在同步代码执行完的某个时刻 state 中的值才会改变。
 
-
-
-###  setState
+### setState
 
 **setState 在大部分情况下采用异步方式的动机和原理是因为可以进行批量的更新。** “setState 是一个异步的方法”，这意味着当执行完 setState 后，state 本身并不会立刻发生改变。 因此紧跟在 setState 后面输出的 state 值，仍然会维持在它的初始状态。
 
@@ -2080,20 +2012,18 @@ this.setState({
 
 ```js
 test = () => {
-  console.log('循环100次 setState前的count', this.state.count);
+  console.log("循环100次 setState前的count", this.state.count);
   for (let i = 0; i < 100; i++) {
     // 只是增加state任务入队的次数，并不会导致频繁的re-render，当100次调用结束后，仅仅是state的任务队列内容发生变化，state本身并不会立刻改变。
     this.setState({
-      count: this.state.count + 1
+      count: this.state.count + 1,
     });
   }
-  console.log('循环100次 setState后的count', this.state.count);
+  console.log("循环100次 setState后的count", this.state.count);
 };
 ```
 
 <img src="..\typora-user-images\image-20211201170729755.png" alt="image-20211201170729755" style="zoom:50%;" />
-
-
 
 ### setState 的工作流
 
@@ -2121,7 +2051,7 @@ ReactComponent.prototype.setState = function (partialState, callback) {
 
   //如果第二参数是函数，则将该回调函数加入到回调的队列中去，并传入对应的组件
   if (callback) {
-    this.updater.enqueueCallback(this, callback, 'setState');
+    this.updater.enqueueCallback(this, callback, "setState");
   }
 };
 ```
@@ -2191,7 +2121,8 @@ var ReactDefaultBatchingStrategy = {
   // 发起更新动作的方法
   batchedUpdates: function (callback, a, b, c, d, e) {
     // 缓存锁变量
-    var alreadyBatchingStrategy = ReactDefaultBatchingStrategy.isBatchingUpdates;
+    var alreadyBatchingStrategy =
+      ReactDefaultBatchingStrategy.isBatchingUpdates;
     // 把锁“锁上”
     ReactDefaultBatchingStrategy.isBatchingUpdates = true;
 
@@ -2201,15 +2132,13 @@ var ReactDefaultBatchingStrategy = {
       // 启动事务，将 callback 放进事务里执行
       transaction.perform(callback, null, a, b, c, d, e);
     }
-  }
+  },
 };
 ```
 
 这里的“锁”，是指 React 全局唯一的 isBatchingUpdates 变量，isBatchingUpdates 的初始值是 false，意味着“当前并未进行任何批量更新操作”。每当 React 调用 batchedUpdate 去执行更新动作时，会先把这个锁给“锁上”（置为 true），表明“现在正处于批量更新过程中”。当锁被“锁上”的时候，任何需要更新的组件都只能暂时进入 dirtyComponents 里排队等候下一次的批量更新，而不能随意“插队”。此处体现的“任务锁”的思想，是 React 面对大量状态仍然能够实现有序分批处理的基石。
 
 批量更新整体管理的机制，还需要注意 batchedUpdates 中有一个引人注目的调用：transaction.perform(callback, null, a, b, c, d, e)，它是 react 中的 transaction 机制。
-
-
 
 ### React 中的 transaction(事务)机制
 
@@ -2306,8 +2235,6 @@ dispatchEvent: function (topLevelType, nativeEvent) {
 }
 ```
 
-
-
 ### 为什么 setState 是异步的原因
 
 isBatchingUpdates 这个变量，在 React 的生命周期函数以及合成事件执行前，已经被 React 悄悄修改为了 true，这时我们所做的 setState 操作自然不会立即生效。当函数执行完毕后，事务的 close 方法会再把 isBatchingUpdates 改为 false。
@@ -2318,11 +2245,11 @@ isBatchingUpdates 这个变量，在 React 的生命周期函数以及合成事�
 increment = () => {
   // 进来先锁上
   isBatchingUpdates = true;
-  console.log('increment setState前的count', this.state.count);
+  console.log("increment setState前的count", this.state.count);
   this.setState({
-    count: this.state.count + 1
+    count: this.state.count + 1,
   });
-  console.log('increment setState后的count', this.state.count);
+  console.log("increment setState后的count", this.state.count);
   // 执行完函数再放开
   isBatchingUpdates = false;
 };
@@ -2335,11 +2262,11 @@ reduce = () => {
   // 进来先锁上
   isBatchingUpdates = true;
   setTimeout(() => {
-    console.log('reduce setState前的count', this.state.count);
+    console.log("reduce setState前的count", this.state.count);
     this.setState({
-      count: this.state.count - 1
+      count: this.state.count - 1,
     });
-    console.log('reduce setState后的count', this.state.count);
+    console.log("reduce setState后的count", this.state.count);
   }, 0);
   // 执行完函数再放开
   isBatchingUpdates = false;
@@ -2353,11 +2280,11 @@ reduce = () => {
   // 进来先锁上
   isBatchingUpdates = true;
   setTimeout(() => {
-    console.log('reduce setState前的count', this.state.count);
+    console.log("reduce setState前的count", this.state.count);
     this.setState({
-      count: this.state.count - 1
+      count: this.state.count - 1,
     });
-    console.log('reduce setState后的count', this.state.count);
+    console.log("reduce setState后的count", this.state.count);
   }, 0);
   // 执行完函数再放开
   isBatchingUpdates = false;
@@ -2370,9 +2297,7 @@ setState 并不是单纯同步/异步的，它的表现会因调用场景的不�
 
 以上是 React15 中的 setState。
 
-React 16 以来，整个 React 核心算法被重写，setState 也不可避免地被“Fiber化”。
-
-
+React 16 以来，整个 React 核心算法被重写，setState 也不可避免地被“Fiber 化”。
 
 ## Fiber 架构的迭代动机和设计思想
 
@@ -2432,8 +2357,6 @@ render 阶段主要是在内存中计算，明确 DOM 树的更新点，而 comm
 
 <img src="..\typora-user-images\image-20211201210023652.png" alt="image-20211201210023652" style="zoom:50%;" />
 
-
-
 新旧两种架构对生命周期函数的影响主要在 render 阶段，是通过增加 scheduler 层和改写 Reconciler 层来实现的。在 Fiber 架构中的 render 阶段，一个庞大的任务被分解为一个个的工作单元，他们有着不同的优先级，React 可以根据优先级的高低去实现工作单元的打断和回复。由于 render 阶段的操作对用户来说其实是“不可见”的，所以就算打断再重启，对用户来说也是 0 感知。但是，工作单元（也就是任务）的重启将会伴随着对部分生命周期的重复执行，这些生命周期是：
 
 - componentWillMount
@@ -2450,24 +2373,22 @@ render 阶段主要是在内存中计算，明确 DOM 树的更新点，而 comm
 - Fiber 树和传统虚拟 DOM 树有什么不同？
 - 优先级调度如何实现的？
 
-
-
 ## ReactDOM.render 渲染链路
 
 以**首次渲染**为切入点，拆解 Fiber 架构下 ReactDOM.render 所触发的渲染链路，结合源码理解整个链路中所涉及的**初始化、render 和 commit** 等过程。
 
-#### ReactDOM.render 调用栈的逻辑分层： 
+#### ReactDOM.render 调用栈的逻辑分层：
 
 调用栈大图：
 
 ```jsx
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from "react";
+import ReactDOM from "react-dom";
 
 function App() {
   return (
-    <div className='App'>
-      <div className='container'>
+    <div className="App">
+      <div className="container">
         <h1>我是标题</h1>
         <p>我是第一段话</p>
         <p>我是第二段话</p>
@@ -2476,7 +2397,7 @@ function App() {
   );
 }
 
-const rootElement = document.getElementById('root');
+const rootElement = document.getElementById("root");
 ReactDOM.render(<App />, rootElement);
 ```
 
@@ -2500,8 +2421,6 @@ ReactDOM.render 方法对应的调用栈非常深，中间涉及的函数量也�
 
 ![image-20220425125307885](..\typora-user-images\image-20220425125307885.png)
 
-
-
 图中 scheduleUpdateOnFiber 方法的作用是调度任务，在由 ReactDOM.render 发起的首屏渲染这个场景下，它触发的就是 performSyncWorkOnRoot。**performSyncWorkOnRoot 同步开启的正是 render 阶段；而 commitRoot 方法开启的则是真实 DOM 的渲染过程（commit 阶段）**。因此以 scheduleUpdateOnFiber 和 commitRoot 两个方法为界，大致把 ReactDOM.render 的调用栈划分为三个阶段：
 
 - 初始化阶段
@@ -2523,7 +2442,13 @@ ReactDOM.render 方法对应的调用栈非常深，中间涉及的函数量也�
 源码中的关键逻辑，首先是 legacyRenderSubtreeIntoContainer 方法。在 ReactDOM.render 函数体中，以下面代码的形式调用 legacyRenderSubtreeIntoContainer ：
 
 ```js
-return legacyRenderSubtreeIntoContainer(null, element, container, false, callback);
+return legacyRenderSubtreeIntoContainer(
+  null,
+  element,
+  container,
+  false,
+  callback
+);
 ```
 
 legacyRenderSubtreeIntoContainer 的关键逻辑如下：
@@ -2555,7 +2480,7 @@ function legacyRenderSubtreeIntoContainer(
     fiberRoot = root._internalRoot;
 
     // 这里处理的是 ReactDOM.render 入参中的回调函数，了解即可
-    if (typeof callback === 'function') {
+    if (typeof callback === "function") {
       var originalCallback = callback;
       callback = function () {
         var instance = getPublicRootInstance(fiberRoot);
@@ -2570,7 +2495,7 @@ function legacyRenderSubtreeIntoContainer(
   } else {
     // else 逻辑处理的是非首次渲染的情况（即更新），其逻辑除了跳过了初始化工作，与上面基本一致
     fiberRoot = root._internalRoot;
-    if (typeof callback === 'function') {
+    if (typeof callback === "function") {
       var _originalCallback = callback;
       callback = function () {
         var instance = getPublicRootInstance(fiberRoot);
@@ -2584,7 +2509,7 @@ function legacyRenderSubtreeIntoContainer(
 }
 ```
 
-总结一下首次渲染过程中 legacyRenderSubtreeIntoContainer 方法的主要逻辑链路： 
+总结一下首次渲染过程中 legacyRenderSubtreeIntoContainer 方法的主要逻辑链路：
 
 <img src="..\typora-user-images\image-20211202133135821.png" alt="image-20211202133135821" style="zoom:50%;" />
 
@@ -2596,7 +2521,7 @@ function legacyRenderSubtreeIntoContainer(
 
 ![Drawing 7.png](https://s0.lgstatic.com/i/image/M00/6E/D9/CgqCHl-zmISANlmfAADLqX8jue0154.png)
 
-current 对象是一个 FiberNode 实例，**而 FiberNode，正是 Fiber 节点对应的对象类型**。current 对象是一个 Fiber 节点，不仅如此，它还是**当前 Fiber 树的根节点**。 
+current 对象是一个 FiberNode 实例，**而 FiberNode，正是 Fiber 节点对应的对象类型**。current 对象是一个 Fiber 节点，不仅如此，它还是**当前 Fiber 树的根节点**。
 
 current 属性对应的 FiberNode 节点，在调用栈中实际是由 createHostRootFiber 方法创建的，React 源码中也有多处以 rootFiber 代指 current 对象，因此下文中我们将以 rootFiber 指代 current 对象。
 
@@ -2699,8 +2624,6 @@ performSyncWorkOnRoot 直译过来就是“执行根节点的同步任务”，*
 
 按照官方的说法，“**长远来看，模式的数量会收敛，不用考虑不同的模式**，但就目前而言，模式是一项重要的迁移策略，让每个人都能决定自己什么时候迁移，并按照自己的速度进行迁移”。由此可以看出，Concurrent 模式确实是 React 的终极目标，也是其创作团队使用 Fiber 架构重写核心算法的动机所在。
 
-
-
 ### 拓展：关于异步模式下的首次渲染链路
 
 当下，如果想要开启异步渲染，我们需要调用 `ReactDOM.createRoot`方法来启动应用，那`ReactDOM.createRoot`开启的渲染链路与 ReactDOM.render 有何不同呢？
@@ -2754,8 +2677,6 @@ function requestUpdateLane(fiber) {
 
 因此不同的渲染模式在挂载阶段的差异，本质上来说并不是工作流的差异（其工作流涉及初始化 → render → commit 这 3 个步骤），而是 mode 属性的差异。mode 属性决定着这个工作流是一气呵成（同步）的，还是分片执行（异步）的。
 
-
-
 ### Fiber 架构一定是异步渲染吗？
 
 **React 16 如果没有开启 Concurrent 模式，那它还能叫 Fiber 架构吗**？
@@ -2766,8 +2687,6 @@ function requestUpdateLane(fiber) {
 
 以 ReactDOM.render 所触发的首次渲染为切入点，串联 React Fiber 架构下完整的工作链路。 对 Fiber 树的初始形态，Fiber 根节点的创作过程由一定认知，同时讲解了 ReactDOM.render 同步渲染的过程和特征，理解 React16 和 17 中共存的 3 中渲染方式。
 
-
-
 ## ReactDOM.render 调用栈：render 阶段
 
 render 阶段在整个渲染链路中的定位，如下图所示：（diff 算法发生的过程）
@@ -2776,7 +2695,7 @@ render 阶段在整个渲染链路中的定位，如下图所示：（diff 算�
 
 图中，performSyncWorkOnRoot 标志着 render 阶段的开始，finishSyncRender 标志着 render 阶段的结束。这中间包含了大量的 beginWork、completeWork 调用栈，正是 render 的工作内容。
 
-**beginWork方法开始调用的过程就是Fiber树的构建过程。**
+**beginWork 方法开始调用的过程就是 Fiber 树的构建过程。**
 
 > beginWork、completeWork 这两个方法需要注意，它们串联起的是一个“模拟递归”的过程。
 
@@ -2795,11 +2714,16 @@ prepareFreshStack 的作用是重置一个新的堆栈环境，其中最需要�
 ```js
 // 这里入参中的 current 传入的是现有树结构中的 rootFiber 对象
 function createWorkInProgress(current, pendingProps) {
-  var workInProgress = current.alternate;  // 原来根Fiber对应的双缓存中的另一个Fiber节点，初始化渲染的时候这个值为null
+  var workInProgress = current.alternate; // 原来根Fiber对应的双缓存中的另一个Fiber节点，初始化渲染的时候这个值为null
   // ReactDOM.render 触发的首屏渲染将进入这个逻辑
   if (workInProgress === null) {
     // 这是需要你关注的第一个点，workInProgress 是 createFiber 方法的返回值
-    workInProgress = createFiber(current.tag, pendingProps, current.key, current.mode);
+    workInProgress = createFiber(
+      current.tag,
+      pendingProps,
+      current.key,
+      current.mode
+    );
     workInProgress.elementType = current.elementType;
     workInProgress.type = current.type;
     workInProgress.stateNode = current.stateNode;
@@ -2838,7 +2762,12 @@ var createFiber = function (tag, pendingProps, key, mode) {
 而 FiberNode 正是 Fiber 节点的类型。**因此 workInProgress 就是一个 Fiber 节点**。workInProgress 的创建入参其实来源于 current，如下面代码所示：
 
 ```js
-workInProgress = createFiber(current.tag, pendingProps, current.key, current.mode);
+workInProgress = createFiber(
+  current.tag,
+  pendingProps,
+  current.key,
+  current.mode
+);
 ```
 
 **workInProgress 节点其实就是 current 节点（即 rootFiber）的副本**。
@@ -2872,8 +2801,6 @@ workLoopSync 做的事情就是**通过 while 循环反复判断 workInProgress 
 相应地，图中 current 指针所指向的根节点所在的那棵树，我们叫它“**current 树**”。
 
 一棵 current 树，一棵 workInProgress 树，这两棵 Fiber 树至少在现在看来，是完全没区别的（毕竟都还只有一个根节点）。React 这样设计的目的何在？或者换个问法——到底是什么样的事情一棵树做不到，非得搞两棵“一样”的树出来？在一步一步理解 Fiber 树的构建和更新过程之后，我将带你去认识“两棵 Fiber 树”这一现象背后的动机。
-
-
 
 ### beginWork 开启 Fiber 节点创建过程
 
@@ -2958,7 +2885,12 @@ function reconcileChildren(current, workInProgress, nextChildren, renderLanes) {
   // 判断 current 是否为 null
   if (current === null) {
     // 若 current 为 null，则进入 mountChildFibers 的逻辑
-    workInProgress.child = mountChildFibers(workInProgress, null, nextChildren, renderLanes);
+    workInProgress.child = mountChildFibers(
+      workInProgress,
+      null,
+      nextChildren,
+      renderLanes
+    );
   } else {
     // 若 current 不为 null，则进入 reconcileChildFibers 的逻辑
     workInProgress.child = reconcileChildFibers(
@@ -2972,8 +2904,6 @@ function reconcileChildren(current, workInProgress, nextChildren, renderLanes) {
 ```
 
 从源码来看，reconcileChildren 也只是做逻辑的分发，具体的工作还要到 **mountChildFibers** 和 **reconcileChildFibers** 里去看。
-
-
 
 ### ChildReconciler，处理 Fiber 节点
 
@@ -3076,12 +3006,12 @@ reconcileSingleElement 将基于 rootFiber 子节点的 ReactElement 对象信�
 这里需要说明的一点是：**rootFiber 作为 Fiber 树的根节点**，它并没有一个确切的 ReactElement 与之映射。结合 JSX 结构来看，**我们可以将其理解为是 JSX 中根组件的父节点**。课时所给出的 Demo 中，组件编码如下：
 
 ```jsx
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from "react";
+import ReactDOM from "react-dom";
 function App() {
   return (
-    <div className='App'>
-      <div className='container'>
+    <div className="App">
+      <div className="container">
         <h1>我是标题</h1>
         <p>我是第一段话</p>
         <p>我是第二段话</p>
@@ -3089,7 +3019,7 @@ function App() {
     </div>
   );
 }
-const rootElement = document.getElementById('root');
+const rootElement = document.getElementById("root");
 ReactDOM.render(<App />, rootElement);
 ```
 
@@ -3183,8 +3113,8 @@ if (next === null) {
 ```jsx
 function App() {
   return (
-    <div className='App'>
-      <div className='container'>
+    <div className="App">
+      <div className="container">
         <h1>我是标题</h1>
         <p>我是第一段话</p>
         <p>我是第二段话</p>
@@ -3238,19 +3168,7 @@ sibling 属性局部截图：
 
 下一讲，继续 completeWork 的工作内容，将整个 render 阶段讲透；另一方面，过一遍 commit 阶段的工作流，并基于此去串联由初始化、render、commit 所组成的完整渲染工作流，力求对整个 ReactDOM.render 所触发的渲染链路形成一个系统、通透的理解。
 
-
-
-
-
 ### completeWork
-
-
-
-
-
-
-
-
 
 ## 从零实现 Fiber 与 Hooks（珠峰）
 
@@ -3276,14 +3194,17 @@ requestAnimationFrame 该函数会在绘制前执行。
 
 ```html
 <body>
-  <div id="progress" style="background-color: aqua; width: 0; height: 20px"></div>
+  <div
+    id="progress"
+    style="background-color: aqua; width: 0; height: 20px"
+  ></div>
   <button id="btn" onclick="begin">开始</button>
   <script>
-    let bar = document.getElementById('progress');
-    let btn = document.getElementById('btn');
+    let bar = document.getElementById("progress");
+    let btn = document.getElementById("btn");
     let start;
     function progress() {
-      bar.style.width = bar.offsetWidth + 1 + 'px';
+      bar.style.width = bar.offsetWidth + 1 + "px";
       let current = Date.now();
       if (bar.offsetWidth < 100) {
         console.log(current - start);
@@ -3291,8 +3212,8 @@ requestAnimationFrame 该函数会在绘制前执行。
         requestAnimationFrame(progress);
       }
     }
-    btn.addEventListener('click', function () {
-      bar.style.width = 0 + 'px';
+    btn.addEventListener("click", function () {
+      bar.style.width = 0 + "px";
       start = Date.now();
       requestAnimationFrame(progress);
     });
@@ -3328,20 +3249,20 @@ var handle = window.requestIdleCallback(callback[, options])
     }
     const works = [
       () => {
-        console.log('task 1 begin');
+        console.log("task 1 begin");
         sleep(10);
-        console.log('task 1 end');
+        console.log("task 1 end");
       },
       () => {
-        console.log('task 2 begin');
+        console.log("task 2 begin");
         sleep(10);
-        console.log('task 2 end');
+        console.log("task 2 end");
       },
       () => {
-        console.log('task 3 begin');
+        console.log("task 3 begin");
         // sleep(20);
-        console.log('task 3 end');
-      }
+        console.log("task 3 end");
+      },
     ];
 
     requestIdleCallback(workLoop, { timeout: 1000 });
@@ -3351,9 +3272,14 @@ var handle = window.requestIdleCallback(callback[, options])
     function workLoop(deadline) {
       // 如果此帧有剩余时间或者此任务已经超时且队列中还有剩余任务
       console.log(`本帧剩余时间${parseInt(deadline.timeRemaining())}`);
-      while ((deadline.timeRemaining() > 0 || deadline.didTimeout) && works.length > 0) {
+      while (
+        (deadline.timeRemaining() > 0 || deadline.didTimeout) &&
+        works.length > 0
+      ) {
         works.shift()();
-        console.log(`执行完一次任务后还剩余时间${parseInt(deadline.timeRemaining())}`);
+        console.log(
+          `执行完一次任务后还剩余时间${parseInt(deadline.timeRemaining())}`
+        );
       }
       // 如果没有剩余时间了，就需要放弃执行之后的任务，并将控制权交还给浏览器
 
@@ -3402,7 +3328,7 @@ class UpdateQueue {
     let currentUpdate = this.fisrtUpdate;
     while (currentUpdate) {
       let nextState =
-        typeof currentUpdate.payload === 'function'
+        typeof currentUpdate.payload === "function"
           ? currentUpdate.payload(currentState)
           : currentUpdate.payload;
       currentState = { ...currentState, ...nextState };
@@ -3416,7 +3342,7 @@ class UpdateQueue {
 
 // 每个setState会成为一个Update实例节点，多个setState会形成一个链表，最后再某个时间点进行合并
 let queue = new UpdateQueue();
-queue.enqueueUpdate(new Update({ name: 'jack' }));
+queue.enqueueUpdate(new Update({ name: "jack" }));
 queue.enqueueUpdate(new Update({ number: 0 }));
 queue.enqueueUpdate(new Update((state) => ({ number: state.number + 1 })));
 queue.enqueueUpdate(new Update((state) => ({ number: state.number + 1 })));
@@ -3440,20 +3366,20 @@ fiber 之前的调和，React 会递归的比较虚拟 DOM 树，找出需要变
 
 ```js
 let root = {
-  key: 'A1',
+  key: "A1",
   children: [
     {
-      key: 'B1',
+      key: "B1",
       children: [
-        { key: 'C1', children: [] },
-        { key: 'C2', children: [] }
-      ]
+        { key: "C1", children: [] },
+        { key: "C2", children: [] },
+      ],
     },
     {
-      key: 'B2',
-      children: []
-    }
-  ]
+      key: "B2",
+      children: [],
+    },
+  ],
 };
 
 function walk(vdom) {
@@ -3489,7 +3415,7 @@ type Fiber = {
   type: any, // 类型
   return: Fiber, //父节点
   child: Fiber, //第一个子节点
-  sibling: Fiber //下一个兄弟节点
+  sibling: Fiber, //下一个兄弟节点
 };
 ```
 
@@ -3512,11 +3438,11 @@ Render 阶段的结果是 Effect list（副作用链表）
 构建 fiber 树。
 
 ```js
-let A1 = { type: 'div', key: 'A1' };
-let B1 = { type: 'div', key: 'B1', return: A1 };
-let B2 = { type: 'div', key: 'B2', return: A1 };
-let C1 = { type: 'div', key: 'C1', return: B1 };
-let C2 = { type: 'div', key: 'C2', return: B1 };
+let A1 = { type: "div", key: "A1" };
+let B1 = { type: "div", key: "B1", return: A1 };
+let B2 = { type: "div", key: "B2", return: A1 };
+let C1 = { type: "div", key: "C1", return: B1 };
+let C2 = { type: "div", key: "C2", return: B1 };
 
 A1.child = B1;
 B1.sibling = B2;
@@ -3535,14 +3461,14 @@ module.export = A1;
 - 没有则父节点遍历结束开始向上返回
 
 ```js
-const rootFiber = require('./element.js');
+const rootFiber = require("./element.js");
 let nextUnitOfWork = null;
 function workLoop() {
   while (nextUnitOfWork) {
     nextUnitOfWork = performUnitOfWork(nextUnitOfWork);
   }
   if (!nextUnitOfWork) {
-    console.log('render阶段结束');
+    console.log("render阶段结束");
   }
 }
 
@@ -3562,11 +3488,11 @@ function performUnitOfWork(fiber) {
 }
 
 function beginWork(fiber) {
-  console.log('开始' + fiber.key);
+  console.log("开始" + fiber.key);
 }
 
 function completeUnitOfWork(fiber) {
-  console.log('结束' + fiber.key);
+  console.log("结束" + fiber.key);
 }
 
 nextUnitOfWork = rootFiber;
@@ -3576,15 +3502,18 @@ workLoop();
 requestIdleCallback 和 Fiber 实现可中断任务：
 
 ```js
-const rootFiber = require('./element.js');
+const rootFiber = require("./element.js");
 let nextUnitOfWork = null;
 function workLoop(deadline) {
   // while (nextUnitOfWork) {
-  while ((deadline.timeRemaining() > 0 || deadline.didTimeout) && nextUnitOfWork) {
+  while (
+    (deadline.timeRemaining() > 0 || deadline.didTimeout) &&
+    nextUnitOfWork
+  ) {
     nextUnitOfWork = performUnitOfWork(nextUnitOfWork);
   }
   if (!nextUnitOfWork) {
-    console.log('render阶段结束');
+    console.log("render阶段结束");
   } else {
     window.requestIdleCallback(workLoop, { timeout: 1000 });
   }
@@ -3606,11 +3535,11 @@ function performUnitOfWork(fiber) {
 }
 
 function beginWork(fiber) {
-  console.log('开始' + fiber.key);
+  console.log("开始" + fiber.key);
 }
 
 function completeUnitOfWork(fiber) {
-  console.log('结束' + fiber.key);
+  console.log("结束" + fiber.key);
 }
 
 nextUnitOfWork = rootFiber;
@@ -3633,13 +3562,13 @@ constants.js:
 
 ```js
 // 文本元素
-export const ELEMENT_TEXT = Symbol.for('ELEMENT_TEXT');
+export const ELEMENT_TEXT = Symbol.for("ELEMENT_TEXT");
 // 根Fiber
-export const TAG_ROOT = Symbol.for('TAG_ROOT');
+export const TAG_ROOT = Symbol.for("TAG_ROOT");
 // 元素标签节点
-export const TAG_HOST = Symbol.for('TAG_HOST');
+export const TAG_HOST = Symbol.for("TAG_HOST");
 // 文本节点
-export const TAG_TEXT = Symbol.for('TAG_TEXT');
+export const TAG_TEXT = Symbol.for("TAG_TEXT");
 ```
 
 index.js:
@@ -3651,7 +3580,7 @@ index.js:
 react.js:
 
 ```js
-import { ELEMENT_TEXT } from './constants';
+import { ELEMENT_TEXT } from "./constants";
 /**
  * 创建元素（虚拟DOM）的方法
  * @param {*} type
@@ -3668,22 +3597,22 @@ function createElement(type, config, ...children) {
       ...config,
       children: children.forEach((child) => {
         // 子节点分为reactElement对象或者文本字符串
-        return typeof child === 'object'
+        return typeof child === "object"
           ? child
           : {
               type: ELEMENT_TEXT,
               props: {
                 text: child,
-                children: []
-              }
+                children: [],
+              },
             };
-      })
-    }
+      }),
+    },
   };
 }
 
 const React = {
-  createElement
+  createElement,
 };
 
 export default React;
@@ -3699,31 +3628,19 @@ react-dom.js:
 
 深度优先变为线性更新
 
+## 卡颂 React
 
-
-
-
-
-
-
-
-## 卡颂React
-
-“学习源码”划分为5个层次，阐述了：
+“学习源码”划分为 5 个层次，阐述了：
 
 - 达到每个层次需要掌握哪些知识
 - 怎样最快的掌握这些知识
 - 达到这一层次后会收获什么
 
-
-
 从理念到架构，从架构到实现，从实现到具体代码。从原理到源码得一个过程。
 
+React 框架为了实现一个什么目的而产生？（理念）
 
-
-React框架为了实现一个什么目的而产生？（理念）
-
-为了实现这个目的（理念），React又做了哪些处理和如何架构？
+为了实现这个目的（理念），React 又做了哪些处理和如何架构？
 
 目的：React 是用 JavaScript 构建**快速响应**的大型 Web 应用程序的首选方式。
 
@@ -3734,44 +3651,36 @@ React框架为了实现一个什么目的而产生？（理念）
 
 这两类场景可以概括为：
 
-- CPU的瓶颈
-- IO的瓶颈
+- CPU 的瓶颈
+- IO 的瓶颈
 
 `React`是如何解决这两个瓶颈的呢？
 
-
-
-针对CPU瓶颈：在浏览器每一帧的时间中，预留一些时间给JS线程，`React`利用这部分时间更新组件（可以看到，在[源码 (opens new window)](https://github.com/facebook/react/blob/1fb18e22ae66fdb1dc127347e169e73948778e5a/packages/scheduler/src/forks/SchedulerHostConfig.default.js#L119)中，预留的初始时间是5ms）。当预留的时间不够用时，`React`将线程控制权交还给浏览器使其有时间渲染UI，`React`则等待下一帧时间到来继续被中断的工作。——时间切片
+针对 CPU 瓶颈：在浏览器每一帧的时间中，预留一些时间给 JS 线程，`React`利用这部分时间更新组件（可以看到，在[源码 (opens new window)](https://github.com/facebook/react/blob/1fb18e22ae66fdb1dc127347e169e73948778e5a/packages/scheduler/src/forks/SchedulerHostConfig.default.js#L119)中，预留的初始时间是 5ms）。当预留的时间不够用时，`React`将线程控制权交还给浏览器使其有时间渲染 UI，`React`则等待下一帧时间到来继续被中断的工作。——时间切片
 
 此时我们的长任务被拆分到每一帧不同的`task`中，`JS脚本`执行时间大体在`5ms`左右，这样浏览器就有剩余时间执行**样式布局**和**样式绘制**，减少掉帧的可能性。
 
 不是不可能掉帧，是尽可能的减少了掉帧的情况出现。所以，解决`CPU瓶颈`的关键是实现`时间切片`，而`时间切片`的关键是：将**同步的更新**变为**可中断的异步更新**。
 
+React15 架构
 
+React15 为什么不能满足**快速响应**的理念？
 
-React15架构
-
-React15为什么不能满足**快速响应**的理念？
-
-React15架构可以分为两层：
+React15 架构可以分为两层：
 
 - Reconciler（协调器）—— 负责找出变化的组件
 - Renderer（渲染器）—— 负责将变化的组件渲染到页面上
 
-
-
 Reconciler（协调器）
 
-在React中，通过`this.setState`、`this.forceUpdate`、`ReactDOM.render`等API触发更新。
+在 React 中，通过`this.setState`、`this.forceUpdate`、`ReactDOM.render`等 API 触发更新。
 
 每当有更新发生时，**Reconciler**会做如下工作：
 
-- 调用函数组件、或class组件的`render`方法，将返回的JSX转化为虚拟DOM
-- 将虚拟DOM和上次更新时的虚拟DOM对比
-- 通过对比找出本次更新中变化的虚拟DOM
-- 通知**Renderer**将变化的虚拟DOM渲染到页面上
-
-
+- 调用函数组件、或 class 组件的`render`方法，将返回的 JSX 转化为虚拟 DOM
+- 将虚拟 DOM 和上次更新时的虚拟 DOM 对比
+- 通过对比找出本次更新中变化的虚拟 DOM
+- 通知**Renderer**将变化的虚拟 DOM 渲染到页面上
 
 Renderer（渲染器）
 
@@ -3779,19 +3688,17 @@ Renderer（渲染器）
 
 除此之外，还有：
 
-- [ReactNative](https://www.npmjs.com/package/react-native)渲染器，渲染App原生组件
-- [ReactTest ](https://www.npmjs.com/package/react-test-renderer)渲染器，渲染出纯Js对象用于测试
-- [ReactArt](https://www.npmjs.com/package/react-art)渲染器，渲染到Canvas, SVG 或 VML (IE8)
+- [ReactNative](https://www.npmjs.com/package/react-native)渲染器，渲染 App 原生组件
+- [ReactTest ](https://www.npmjs.com/package/react-test-renderer)渲染器，渲染出纯 Js 对象用于测试
+- [ReactArt](https://www.npmjs.com/package/react-art)渲染器，渲染到 Canvas, SVG 或 VML (IE8)
 
 在每次更新发生时，**Renderer**接到**Reconciler**通知，将变化的组件渲染在当前宿主环境。
 
-
-
-React15的缺点
+React15 的缺点
 
 在**Reconciler**中，`mount`的组件会调用[mountComponent ](https://github.com/facebook/react/blob/15-stable/src/renderers/dom/shared/ReactDOMComponent.js#L498)，`update`的组件会调用[updateComponent ](https://github.com/facebook/react/blob/15-stable/src/renderers/dom/shared/ReactDOMComponent.js#L877)。这两个方法都会递归更新子组件。
 
-由于递归执行，所以更新一旦开始，中途就无法中断。当层级很深时，递归更新时间超过了16ms，用户交互就会卡顿。
+由于递归执行，所以更新一旦开始，中途就无法中断。当层级很深时，递归更新时间超过了 16ms，用户交互就会卡顿。
 
 案例：
 
@@ -3802,12 +3709,12 @@ export default class App extends React.Component {
   constructor(...props) {
     super(...props);
     this.state = {
-      count: 1
+      count: 1,
     };
   }
   onClick() {
     this.setState({
-      count: this.state.count + 1
+      count: this.state.count + 1,
     });
   }
   render() {
@@ -3825,38 +3732,32 @@ export default class App extends React.Component {
 
 **Reconciler**和**Renderer**是交替工作的，当第一个`li`在页面上已经变化后，第二个`li`再进入**Reconciler**。
 
-由于整个过程都是同步的，所以在用户看来所有DOM是同时更新的。
+由于整个过程都是同步的，所以在用户看来所有 DOM 是同时更新的。
 
+React16 架构
 
-
-React16架构
-
-React16架构可以分为三层：
+React16 架构可以分为三层：
 
 - Scheduler（调度器）—— 调度任务的优先级，高优任务优先进入**Reconciler**
 - Reconciler（协调器）—— 负责找出变化的组件
 - Renderer（渲染器）—— 负责将变化的组件渲染到页面上
 
-
-
 Scheduler（调度器）
 
 既然以浏览器是否有剩余时间作为任务中断的标准，那么需要一种机制，当浏览器有剩余时间时通知我们。
 
-部分浏览器已经实现了这个API，这就是[requestIdleCallback](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/requestIdleCallback)，但是有以下问题：
+部分浏览器已经实现了这个 API，这就是[requestIdleCallback](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/requestIdleCallback)，但是有以下问题：
 
 - 浏览器兼容性
-- 触发频率不稳定，受很多因素影响。比如当我们的浏览器切换tab后，之前tab注册的`requestIdleCallback`触发的频率会变得很低
+- 触发频率不稳定，受很多因素影响。比如当我们的浏览器切换 tab 后，之前 tab 注册的`requestIdleCallback`触发的频率会变得很低
 
 为此，`React`实现了功能更完备的`requestIdleCallback`polyfill，这就是**Scheduler**。除了在空闲时触发回调的功能外，还提供了多种调度优先级供任务设置。
 
-> [Scheduler](https://github.com/facebook/react/blob/1fb18e22ae66fdb1dc127347e169e73948778e5a/packages/scheduler/README.md)是独立于`React`的库 
-
-
+> [Scheduler](https://github.com/facebook/react/blob/1fb18e22ae66fdb1dc127347e169e73948778e5a/packages/scheduler/README.md)是独立于`React`的库
 
 Reconciler（协调器）
 
-在React15中**Reconciler**是递归处理虚拟DOM的。在React16中，更新工作从递归变成了可以中断的循环过程。每次循环都会调用`shouldYield`判断当前是否有剩余时间。
+在 React15 中**Reconciler**是递归处理虚拟 DOM 的。在 React16 中，更新工作从递归变成了可以中断的循环过程。每次循环都会调用`shouldYield`判断当前是否有剩余时间。
 
 ```js
 /** @noinline */
@@ -3868,9 +3769,9 @@ function workLoopConcurrent() {
 }
 ```
 
-那么当整个应用并没有全部更新为最新状态时，DOM渲染会不会不完全？
+那么当整个应用并没有全部更新为最新状态时，DOM 渲染会不会不完全？
 
-在React16中，**Reconciler**与**Renderer**不再是交替工作。当**Scheduler**将任务交给**Reconciler**后，**Reconciler**会为变化的虚拟DOM打上代表增/删/更新的标记，类似这样：
+在 React16 中，**Reconciler**与**Renderer**不再是交替工作。当**Scheduler**将任务交给**Reconciler**后，**Reconciler**会为变化的虚拟 DOM 打上代表增/删/更新的标记，类似这样：
 
 ```js
 export const Placement = /*             */ 0b0000000000010;
@@ -3881,11 +3782,9 @@ export const Deletion = /*              */ 0b0000000001000;
 
 **整个**Scheduler**与**Reconciler**的工作都在内存中进行。只有当所有组件都完成**Reconciler**的工作，才会统一交给**Renderer**。**
 
-
-
 Renderer（渲染器）
 
-**Renderer**根据**Reconciler**为虚拟DOM打的标记，**同步执行**对应的DOM操作。这步就无法中断了。
+**Renderer**根据**Reconciler**为虚拟 DOM 打的标记，**同步执行**对应的 DOM 操作。这步就无法中断了。
 
 ```jsx
 import React from "react";
@@ -3894,12 +3793,12 @@ export default class App extends React.Component {
   constructor(...props) {
     super(...props);
     this.state = {
-      count: 1
+      count: 1,
     };
   }
   onClick() {
     this.setState({
-      count: this.state.count + 1
+      count: this.state.count + 1,
     });
   }
   render() {
@@ -3915,8 +3814,6 @@ export default class App extends React.Component {
 }
 ```
 
-
-
 ![image-20221213145302021](C:/Users/shuyi/Desktop/study-notes/%E7%8F%A0%E5%B3%B0%E6%9E%B6%E6%9E%84/React%E8%BF%9B%E9%98%B6.assets/image-20221213145302021.png)
 
 其中红框中的步骤随时可能由于以下原因被中断：
@@ -3924,23 +3821,6 @@ export default class App extends React.Component {
 - 有其他更高优任务需要先更新
 - 当前帧没有剩余时间
 
-由于红框中的工作都在内存中进行，不会更新页面上的DOM，所以即使反复中断，用户也不会看见更新不完全的DOM。
+由于红框中的工作都在内存中进行，不会更新页面上的 DOM，所以即使反复中断，用户也不会看见更新不完全的 DOM。
 
-
-
-之所以任务可中断，因为`React16`采用新的Reconciler,内部采用了Fiber的架构。
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+之所以任务可中断，因为`React16`采用新的 Reconciler,内部采用了 Fiber 的架构。
