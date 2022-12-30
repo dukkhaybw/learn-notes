@@ -899,7 +899,6 @@ export default class Home extends PureComponent {
   render() {
     return (
       <StyleBox>
-        {' '}
         //该div自带了上面设置好的样式
         <h2>我是home的标题</h2>
         <TitleH2>哈哈哈哈</TitleH2>
