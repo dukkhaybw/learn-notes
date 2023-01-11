@@ -35,11 +35,9 @@
 
 3. 把语法规则当成随意的公式
 
-   > 比如，对于冠词的用法，一般语法书上会有这样一条规 则：“第一次提到的单数可数名词前面用不定冠词a或an，这一名词再次出现则要用定冠词the”。传统语法书上往往只是给出这样的规则，但不解释为什么会这样选择冠词，英语学习者很容易误认为语法规则是随意的、专断的，没有什么道理可言的，因而容易死记规则，而忽略了规则背后的合乎情理的思维规律。
+   > 比如，对于冠词的用法，一般语法书上会有这样一条规 则：“第一次提到的单数可数名词前面用不定冠词 a 或 an，这一名词再次出现则要用定冠词 the”。传统语法书上往往只是给出这样的规则，但不解释为什么会这样选择冠词，英语学习者很容易误认为语法规则是随意的、专断的，没有什么道理可言的，因而容易死记规则，而忽略了规则背后的合乎情理的思维规律。
    >
    > 其实，很多看似随意的规则，其背后都有共同的思维规律。因此，学语法重在理解规则背后的合乎情理的思维，而不能“死记”规则。
-
-
 
 由于以上的错误认知，导致国人和老外（native speakers of English） 在使用英语方面的最大的区别就是：我们记住了英语语法规则却没有英语思维，而老外是在用英语思维，尽管他们不懂语法规则。
 
@@ -55,23 +53,17 @@
 
 学习语法规则应该包括哪些方面内容，词汇除了有发音外，还包括形式（即单词的拼写形 式）、意义（即单词的含义）和用法（即单词的用法）。语法也有形式 （form）、意义（meaning）和用法（usage）这三方面：
 
-1. 形式：某个语法结构是怎样构成的。比如“现在完成进行时”的构成 形式是have been doing。这是使用语法规则的起点，即首先要做到能够准确地构造某个语法结构，这是语法形式的准确性问题。
+1. 形式：某个语法结构是怎样构成的。比如“现在完成进行时”的构成 形式是 have been doing。这是使用语法规则的起点，即首先要做到能够准确地构造某个语法结构，这是语法形式的准确性问题。
 
-2. 意义：某个语法结构表达什么意义。比如“现在完成进行时”可以表示“一个活动从过去一直延续到现在说话时刻”这样的含义，这就是**现在完成进行   时态**这一结构所具备的语法意义。特定意义一般是 对应于特定结构形式的，或者说，特定的结构形式能够表达特定的意义。**这是语法结构的表意性问题**。
+2. 意义：某个语法结构表达什么意义。比如“现在完成进行时”可以表示“一个活动从过去一直延续到现在说话时刻”这样的含义，这就是**现在完成进行 时态**这一结构所具备的语法意义。特定意义一般是 对应于特定结构形式的，或者说，特定的结构形式能够表达特定的意义。**这是语法结构的表意性问题**。
 
    > 对于一个句子，它的含义不仅仅是来自于句中所使用的词汇的含义，还有来自于其中特定语法结构所含有的语法意义。
 
 3. 用法：关于何时／为什么使用某一语法结构的问题。这与在实际交流中的语境有关系，即在什么样的语境中，采用何种语法结构来表达特定的意义才合适，这是有关语法结构的合适性问题。
 
-   
-
-![image-20221207185351572](C:/Users/shuyi/Desktop/study-notes/English-learn/new-perspective-fundamental.assets/image-20221207185351572.png)
-
-
+![image-20221207185351572](./new-perspective-fundamental.assets/image-20221207185351572.png)
 
 学习英语最后要达到的目的：**英语学习者要能够准确地、有意义地、恰当地去运用英语语言结构。才能够真正灵活使用语法规则，并进而在思维高度上来使用英语。**
-
-
 
 说明形式与意义的关系案例：
 
@@ -79,20 +71,16 @@
 
 可能被误认为的理解：
 
-1. 我来北京有14年了。
-2. 我到北京一路上走了14年
+1. 我来北京有 14 年了。
+2. 我到北京一路上走了 14 年
 
-即使每个单词都认识，并且都知道语法结构have been coming是“现在完成进行时态”，尽管如此，但依然不知道这句话真正所要表达的意义。  正确的理解是：在过去这14年当中，我常常来北京。  
+即使每个单词都认识，并且都知道语法结构 have been coming 是“现在完成进行时态”，尽管如此，但依然不知道这句话真正所要表达的意义。 正确的理解是：在过去这 14 年当中，我常常来北京。
 
-由此可见，知道语法结构的形式并不一定就懂得语法结构的意义。其实，这里的have been coming在英文里表示的是一个重复的活 动，具体来说：==用短暂动词（如come）的完成进行时（如have been coming）来表示到目前为止的一段时间内重复发生的动作==。
-
-
+由此可见，知道语法结构的形式并不一定就懂得语法结构的意义。其实，这里的 have been coming 在英文里表示的是一个重复的活 动，具体来说：==用短暂动词（如 come）的完成进行时（如 have been coming）来表示到目前为止的一段时间内重复发生的动作==。
 
 2. I have been coming to Beijing fourteen times.
 
-说话人是想表达“我来北京有十四次了”这样的意思。这样对吗？这也不对。为什么？==因为现在完成进行时态在表示重复活动时， 不能说明具体的次数，比如这里的“十四次”==。这就属于知道have been coming形式（现在完成进行时态）和意义（表示重复活动），但并没有真正掌握其用法，即不知道如何恰当地使用完成进行时态来表达重复意义。由此可见，知道语法结构的正确构造形式以及所能表达的意义，也并不一定就保证能够正确使用。
-
-
+说话人是想表达“我来北京有十四次了”这样的意思。这样对吗？这也不对。为什么？==因为现在完成进行时态在表示重复活动时， 不能说明具体的次数，比如这里的“十四次”==。这就属于知道 have been coming 形式（现在完成进行时态）和意义（表示重复活动），但并没有真正掌握其用法，即不知道如何恰当地使用完成进行时态来表达重复意义。由此可见，知道语法结构的正确构造形式以及所能表达的意义，也并不一定就保证能够正确使用。
 
 传统教学中，基本都只是强调某种句子的结构形式，然后告诉学生根据句子形式构造出正确的句子，重点掌握句子构造的形式，而很少把例句中的真正意义和所使用的语境交待 给学生，因而学生对这些句子不知道该如何恰当地使用。致使学生学习到的都是一些死句子而不能交流。
 
@@ -108,9 +96,9 @@
 
 比如下面这个对白发生在一位父亲与自己女儿的男朋友之间：
 
-> Father: Do you drink? 
+> Father: Do you drink?
 >
-> Young Man: No, thanks, I'm cool. 
+> Young Man: No, thanks, I'm cool.
 >
 > Father: I'm not offering; I'm asking IF you drink. Do you think I'd offer alcohol to teenage drivers taking my daughter out?
 
@@ -120,37 +108,35 @@
 
 
 
-
-
 ## 英语和汉语思维
 
 例句：我已经结婚了。句子用英语如何表达？
 
-“我已经结婚了”为什么不是：I have married; I have been married; I got married; I married; I had married，而是I am married.
+“我已经结婚了”为什么不是：I have married; I have been married; I got married; I married; I had married，而是 I am married.
 
-去年结婚的。：I got married last year. 
+去年结婚的。：I got married last year.
 
 到现在结婚有一年多了。：I've been married for over a year
 
-简单比较一下，读者看到，汉语中的“结婚”一词，用英文表达却有 am married、got married以及have been married这样的区分。
+简单比较一下，读者看到，汉语中的“结婚”一词，用英文表达却有 am married、got married 以及 have been married 这样的区分。
 
-==而这样形式上的区分背后反映了英汉语言的一个重大思维差异：英文中有“动作 （action）”与“状态（state）”的区分，以及时态方面的问题，而这些话语特点在汉语思维中都 是“盲点”，是天然缺失的。==这就造成这样的窘境：我们可以轻而易举地 把“I am married. I got married last year. I've been married for over a year.”译成地道的中文，但反过来由中文却无法译成地道的英文，即能读懂英语句子，但在真正交际中不一定能准确地说出这样的句子，这就 说明“读懂≠会用”。
+==而这样形式上的区分背后反映了英汉语言的一个重大思维差异：英文中有“动作 （action）”与“状态（state）”和 "时态"的区分，而这些话语特点在汉语思维中都 是“盲点”，是天然缺失的。==这就造成这样的窘境：可以轻而易举地 把“I am married. I got married last year. I've been married for over a year.”译成地道的中文，但反过来由中文却无法译成地道的英文，即能读懂英语句子，但在真正交际中不一定能准确地说出这样的句子，这就 说明“读懂 ≠ 会用”。
 
 更严重的是，因为不懂英文思维特点，有时甚至都 读不懂句子，而造成误解句义。比如下面这句：
 
 He is interesting to listen to
 
-是要表达什么意思呢？一定有读者这么理解： 他对听别人讲话很感兴趣。 这么理解就错了。其实这句话意思是： 听他讲话很有趣。 不能正确理解这个句子的一个根本原因是没有真正理解这个句子的 如下“深层结构”： 
+是要表达什么意思呢？一定有读者这么理解： 他对听别人讲话很感兴趣。 这么理解就错了。其实这句话意思是： 听他讲话很有趣。 不能正确理解这个句子的一个根本原因是没有真正理解这个句子的 如下“深层结构”：
 
 It is interesting to listen to him.
 
-也就是说，在表层结构上，he是做句子的主语（He is...），但在深 层结构上，he是作listen to的逻辑宾语（...listen to him）。这里不定式to listen to的逻辑主语是泛指大众，在句中没有明确给出，而只是隐含其中的。
+也就是说，在表层结构上，he 是做句子的主语（He is...），但在深层结构上，he 是作 listen to 的逻辑宾语（...listen to him）。这里不定式 to listen to 的逻辑主语是泛指大众，在句中没有明确给出，而只是隐含其中的。
 
 
 
 ## 名词短语
 
-名词短语（noun phrase，简称NP）是英语句子的核心组成部分（a core element of a sentence）。
+名词短语（noun phrase，简称 NP）是英语句子的核心组成部分（a core element of a sentence）。
 
 搞清楚名词短语的构造规则。
 
@@ -158,60 +144,56 @@ It is interesting to listen to him.
 
 “世界最著名的七大奇迹”该如何翻译成 英文。对于这个表达，笔者认为中文里可以说得很灵活。比如：
 
-1. 世界最著名的七大奇迹 
+1. 世界最著名的七大奇迹
 
-2. 最著名的世界七大奇迹 
+2. 最著名的世界七大奇迹
 3. 七大世界最著名的奇迹
 
 汉语可以如此灵活地表达，那么英语也像汉语这样灵活吗？当然不是。**英语向来以语序固定严格而著称**，因而英文被称为“固定词序语言（a fixed-word-order language）”。
 
-那么英 文该怎么说？我们下面提供几个译文： 
+那么英 文该怎么说？我们下面提供几个译文：
 
-1. the world's most famous seven wonders 
-2. the most famous Seven Wonders of the World 
-3. the seven world most famous wonders 
+1. the world's most famous seven wonders
+2. the most famous Seven Wonders of the World
+3. the seven world most famous wonders
 4. the world's seven most famous wonders
 
 上面的译文哪个才是正确的呢？要想回答这个问题，就必须搞清楚“名词短语”的构造规律。
 
-语言的构造级别可以分为这样五个层次： 
+语言的构造级别可以分为这样五个层次：
 
-1．词（word） 
+1．词（word）
 
-2．短语（phrase） 
+2．短语（phrase）
 
 3．句子（sentence）
 
-4．段落（paragraph） 
+4．段落（paragraph）
 
 5．篇章（discourse）
 
-在本篇中，我们主要就是进入句子的内部来分析，即在“短语”这一层次来讨论句子的构造特点。英语里的短语有很多类，比如有动词短语（如have been doing）、介词短语（如for you）、名词短语（如my best friend）等。其中名词短语最为重要， 因为它是英语造句中不可或缺的元素。
-
-
+在本篇中，我们主要就是进入句子的内部来分析，即在“短语”这一层次来讨论句子的构造特点。英语里的短语有很多类，比如有动词短语（如 have been doing）、介词短语（如 for you）、名词短语（如 my best friend）等。其中名词短语最为重要， 因为它是英语造句中不可或缺的元素。
 
 ### 定义
 
 名词短语：名词与它的修饰语一 起即构成名词短语。
 
-
-
 ### 功能
 
-先来看几个简单的句子，考察一下名词短语在 句子中可以充当哪些成分： 
+先来看几个简单的句子，考察一下名词短语在 句子中可以充当哪些成分：
 
-1. These red roses are for you.  名词短语these red roses在句中充当**主语**。 译文：这些红玫瑰是送给你的。
-2. I have three close friends.  名词短语three close friends在句中充当**宾语**。 译文：我有三个要好的朋友。
-3. I really need a new computer. 名词短语a new computer在句中充当**宾语**。译文：我真的很需要一台新电脑。
-4. I can't find the best answer. 名词短语the best answer在句中充当**宾语**。译文：我找不到最佳答案。
-5. He is my best friend. 名词短语my best friend在句中充当**表语**。 译文：他是我最好的朋友。 
-6. There are some red roses **on that small table**. 名词短语some red roses在句中充当**主语**；名词短语that small table在句中充当**介词on的宾语**。 译文：在那张小餐桌上有一些红玫瑰。
+1. These red roses are for you. 名词短语 these red roses 在句中充当**主语**。 译文：这些红玫瑰是送给你的。
+2. I have three close friends. 名词短语 three close friends 在句中充当**宾语**。 译文：我有三个要好的朋友。
+3. I really need a new computer. 名词短语 a new computer 在句中充当**宾语**。译文：我真的很需要一台新电脑。
+4. I can't find the best answer. 名词短语 the best answer 在句中充当**宾语**。译文：我找不到最佳答案。
+5. He is my best friend. 名词短语 my best friend 在句中充当**表语**。 译文：他是我最好的朋友。
+6. There are some red roses **on that small table**. 名词短语 some red roses 在句中充当**主语**；名词短语 that small table 在句中充当**介词 on 的宾语**。 译文：在那张小餐桌上有一些红玫瑰。
 
 ==英文中的介词不能单独使用，其后面必须接宾语，所接的宾语也往往是名词短语。==
 
 短文案例：
 
-> National Flag 
+> National Flag
 >
 > The national flag of the People's Republic of China (PRC) is a red rectangle emblazoned with five stars. The red of the flag symbolizes revolution; the stars are yellow so that they will stand out brightly against the red ground. The larger star represents the Communist Party of China (CPC) and the four smaller ones, the Chinese people. This expresses the great unity of the Chinese people under the leadership of the CPC.
 
@@ -222,20 +204,20 @@ It is interesting to listen to him.
 上面短文的名词短语分析：
 
 1. the national flag of the People's Republic of China (PRC)
-   这是一个较大的名词短语，它又可以细分成the national flag和the People's Republic of China 这样两个小的名词短语。该名词短语作句子的主语。
+   这是一个较大的名词短语，它又可以细分成 the national flag 和 the People's Republic of China 这样两个小的名词短语。该名词短语作句子的主语。
 
 2. a red rectangle emblazoned with five stars
 
-   这个名词短语又可以进一步分成a red rectangle和five stars这样两个小的名词短语。该名词短 语作句子的表语。
+   这个名词短语又可以进一步分成 a red rectangle 和 five stars 这样两个小的名词短语。该名词短 语作句子的表语。
 
 3. the red of the flag
-   这个名词短语又可以进一步分成the red和the flag两部分。该名词短语作句子的主语。
+   这个名词短语又可以进一步分成 the red 和 the flag 两部分。该名词短语作句子的主语。
 
 4. the stars
    该名词短语作句子的主语。
 
 5. the red ground
-   该名词短语作介词against的宾语。
+   该名词短语作介词 against 的宾语。
 
 6. the larger star
    该名词短语作句子的主语。
@@ -252,11 +234,9 @@ It is interesting to listen to him.
 
 10. the great unity of the Chinese people under the leadership of the CPC
 
-    这个名词短语又可以进一步分成the great unity, the Chinese people和the leadership of the CPC 三部分。该名词短语作句子的宾语。
+    这个名词短语又可以进一步分成 the great unity, the Chinese people 和 the leadership of the CPC 三部分。该名词短语作句子的宾语。
 
 不论是英语的单句还是文章，都含有大量的名词短语。
-
-
 
 ### 构造规律
 
@@ -264,21 +244,17 @@ It is interesting to listen to him.
 
 名词短语是由名词与它的修饰语一起构成的。==名词的修饰语与名词 的位置关系不外乎两种：一是放在被修饰名词的前面，称之为前置定语或定语；二是放在被修饰名词的后面，称之为后置定语。==
 
-一般来讲，名词前面有两种修饰语。一是限定词，==用来限定名词所指的范围，对名词起泛指或特指、定量或不定量等的限定修饰作用。== 比如上文中的these, three, a, the, my和that。二是形容词，==是用来表示名词的性质和特征的==。比如上文中的 red, close, new, best和small。
+一般来讲，名词前面有两种修饰语。一是限定词，==用来限定名词所指的范围，对名词起泛指或特指、定量或不定量等的限定修饰作用。== 比如上文中的 these, three, a, the, my 和 that。二是形容词，==是用来表示名词的性质和特征的==。比如上文中的 red, close, new, best 和 small。
 
 在复杂的名词短语中，更常见的是后置修饰语。一个名词可以带的后置修饰语的种类很多，包括**定语从句、 同位语从句、分词短语、不定式、介词短语、形容词短语和副词短语**等，而且还有这些**不同的后置定语复式出现**的情况。
 
+![image-20221208104845619](./new-perspective-fundamental.assets/image-20221208104845619.png)
 
-
-![image-20221208104845619](C:/Users/shuyi/Desktop/study-notes/English-learn/new-perspective-fundamental.assets/image-20221208104845619.png)
-
-
-
-的中心词名词是boy，然后在boy的前面或后面分别添加各类修饰语，组合成不同的名词短语。
+的中心词名词是 boy，然后在 boy 的前面或后面分别添加各类修饰语，组合成不同的名词短语。
 
 在英语里，修饰名词的定语，其语序的位置是极有规律的。
 
-![image-20221208131908907](C:/Users/shuyi/Desktop/study-notes/English-learn/new-perspective-fundamental.assets/image-20221208131908907.png)
+![image-20221208131908907](./new-perspective-fundamental.assets/image-20221208131908907.png)
 
 在英语里，名词的定语要么在名词的前面或者叫左边， 要么在名词的后面或者叫右边。位于名词前面的定语，可以叫前置定语，或左置定语，或定语；而在名词后面的定语，可以叫后置定语，或右置定语。
 
@@ -292,10 +268,6 @@ It is interesting to listen to him.
 
 ==英语和汉语的一 个基本差别就是名词修饰语即**定语**的位置差异。汉语的定语一律是在名词的前面，而英语的定语有在名词前面的，也有在名词后面的， 多的定语是置于被修饰名词的后面，构成后置定语。所以，在**语言学** 上，**汉语被称作是“中心词（head）在后”的语言（head-last language）；英语被称作是“中心词在前”的语言（head-first language）**。==
 
-
-
-
-
 ### 句子成分
 
 一般说到句子成分，都会说是“主谓宾定状补”六大句子成分。其实，“定语”并不能算是真正意义上的句子 成分。原因：
@@ -303,35 +275,27 @@ It is interesting to listen to him.
 1. 定语是用来修饰或 限定名词的。从上面讨论的名词短语来看，定语只是名词短语的构成成分，最多称之为“短语成分”。
 2. 语言的构造级别可以分为词、短语、句子、段落 和篇章这样的等级。主语、谓语、宾语、补语和状语这五种“句子成 分”都是在“句子”这一层级上的成分。而定语成分则“稍逊一层”，它属于“短语”这一层 级，是属于“短语成分”，即是组成名词短语的成分，然后通过名词短语 间接地构成句子成分。
 
-
-
 因为造成我们对英语句子理解障碍的“罪魁祸首”之一 就是英语里**复杂的定语修饰关系**。所以，前面介绍的关于**定语的结构规律**是非常重要的**英语思维规律之一**，建议读者在今后无论是读英语还是写英语，都要给予极大的关注。
-
-
 
 ## 名词
 
 名词短语的核心部分——名词。关于名词的一些列问题：
 
-1. 何谓可数名词？ 
+1. 何谓可数名词？
 
-2. 何谓不可数名词？ 
+2. 何谓不可数名词？
 
-3. 如何判断一个名词是可数还是不可数？ 
+3. 如何判断一个名词是可数还是不可数？
 
-4. 名词复数形式的变化规则有哪些？ 
+4. 名词复数形式的变化规则有哪些？
 
-5. 什么时候要用's所有格？ 
+5. 什么时候要用's 所有格？
 
-6. 什么时候要用of属格？
+6. 什么时候要用 of 属格？
 
-   
+英语里的可数名词与不可数名词来 说，汉语思维里是不把名词作这一区分的。这一区分涉及了思维上的差异，而这种思维在我们汉语语言里是天然缺失的。因此，学了很 多年英语的中国人，通常还是搞不清楚某个名词是可数还是不可数，因 而造成大量的表达错误。比如在说话或写作中，大批的中国学生常 常“忘记”在复数名词后面加-s，或者搞不清楚某个名词的后面该不该加 s。
 
-英语里的可数名词与不可数名词来 说，汉语思维里是不把名词作这一区分的。这一区分涉及了思维上的差异，而这种思维在我们汉语语言里是天然缺失的。因此，学了很 多年英语的中国人，通常还是搞不清楚某个名词是可数还是不可数，因 而造成大量的表达错误。比如在说话或写作中，大批的中国学生常 常“忘记”在复数名词后面加-s，或者搞不清楚某个名词的后面该不该加s。
-
-从思维的高度来说，可数名词与不可数名词这一区分反映了中国人与英语的native speakers在看待客观外界事物时所持的两种不同的 世界观：**国人的脑子里想到某个名词时，不关注它是可数或不可数；但在native speakers的脑子里，每个名词都有可数与不可数之分**，因而对事物的理解是不一样的。
-
-
+从思维的高度来说，可数名词与不可数名词这一区分反映了中国人与英语的 native speakers 在看待客观外界事物时所持的两种不同的 世界观：**国人的脑子里想到某个名词时，不关注它是可数或不可数；但在 native speakers 的脑子里，每个名词都有可数与不可数之分**，因而对事物的理解是不一样的。
 
 #### 分类
 
@@ -339,9 +303,9 @@ It is interesting to listen to him.
 
 分类：
 
-![image-20221209125844507](C:/Users/shuyi/Desktop/study-notes/English-learn/new-perspective-fundamental.assets/image-20221209125844507.png)
+![image-20221209125844507](./new-perspective-fundamental.assets/image-20221209125844507.png)
 
-![image-20221209125853354](C:/Users/shuyi/Desktop/study-notes/English-learn/new-perspective-fundamental.assets/image-20221209125853354.png)
+![image-20221209125853354](./new-perspective-fundamental.assets/image-20221209125853354.png)
 
 专有名词：
 
@@ -357,7 +321,7 @@ It is interesting to listen to him.
    >
    > the lunar calendar：阴历
    >
-   > 阴历二月”不能说February，而是the second month on the lunar calendar或者说成the second lunar month。
+   > 阴历二月”不能说 February，而是 the second month on the lunar calendar 或者说成 the second lunar month。
 
 4. 星期、四季
 
@@ -369,21 +333,15 @@ It is interesting to listen to him.
 
 6. 地理名称
 
-
-
 普通名词：分为可数名词（countable noun）和不可数名词（uncountable noun）。
 
 1. 可数名词变复数？
 2. 限定词修饰名词？
 3. 名词用作可数与用作不可数，意义上的差别？
 
-
-
 根据名词的构成，可将名词分为简单名词和复合名词。
 
-简单名词就是组成部分不可被分割的名词，比如story, student和teacher 等。英语中的名词绝大多数是简单名词。复合名词就是由若干单词组合而构成的名词，比如girlfriend, roommate和mother-in-law（岳母／婆婆） 等
-
-
+简单名词就是组成部分不可被分割的名词，比如 story, student 和 teacher 等。英语中的名词绝大多数是简单名词。复合名词就是由若干单词组合而构成的名词，比如 girlfriend, roommate 和 mother-in-law（岳母／婆婆） 等
 
 #### 名词的数
 
@@ -400,54 +358,64 @@ It is interesting to listen to him.
 
 1. **对于一些无法分割的名词，将其看作一个整体，因而作为不可数名词**，没有复数变化（nouns that have no distinct, separate parts, we look as the whole）。这样的名词主要是一些物质名词：
 
-   ![image-20221209132037123](C:/Users/shuyi/Desktop/study-notes/English-learn/new-perspective-fundamental.assets/image-20221209132037123.png)
+   ![image-20221209132037123](./new-perspective-fundamental.assets/image-20221209132037123.png)
 
 或者按气体、液体和固体来作出分类：
 
 2. **一些因其组成部分太小而不易数的名词**（nouns that have parts that are too small or insignificant to count）用作不可数名词。
-   ![image-20221209132237835](C:/Users/shuyi/Desktop/study-notes/English-learn/new-perspective-fundamental.assets/image-20221209132237835.png)
+   ![image-20221209132237835](./new-perspective-fundamental.assets/image-20221209132237835.png)
 
 3. **表示总称的名词通常不可数**（nouns that are classes or categories of things）。这些名词侧重于表示某类事物的总的概念，而不是具体的事物。如果要具体指出该总称概念下的具体事物，则要用其他 不同的名词。
 
-   ![image-20221209143539050](C:/Users/shuyi/Desktop/study-notes/English-learn/new-perspective-fundamental.assets/image-20221209143539050.png)
+   ![image-20221209143539050](./new-perspective-fundamental.assets/image-20221209143539050.png)
 
 从形式上来总结可数名词的复数变化规则。
 
+其他的总称名词有：
 
+![image-20221209195724314](/Users/wuyi/Desktop/study-note/English-learn/new-perspective-fundamental.assets/image-20221209195724314.png)
 
+就拿 character 来说吧，很多同学在作文里谈到“特点”时，就喜欢说 characters，殊不知，character 作为“特点”讲时，是一个不可数名词，不 能变成复数的。因为它真正的意思是 the combination of qualities or features that distinguishes one person, group, or thing from another，表 示“使与其他人、群体或事物相区别的性质或特征的集合”，强调的是一 个整体的概念，因而是没有复数形式的。
 
+4. **抽象的名词一般是不可数的（nouns that are abstractions）**
 
+   ![image-20221209200007230](/Users/wuyi/Desktop/study-note/English-learn/new-perspective-fundamental.assets/image-20221209200007230.png)
 
+   要特别注意的是，上面这些名词可以有其他不同的意 思，因而可以转化为可数名词。
+
+5. 表示研究学科（subjects of study），一般作为不可数名 词。
+
+   ![image-20221209200047267](/Users/wuyi/Desktop/study-note/English-learn/new-perspective-fundamental.assets/image-20221209200047267.png)
 
 #### 不可数名词的度量
 
-不能用具体的数字（基数）（比如one, two, three, four）来表示不可 数名词的数量，但可以借用量词来表示其量的概念。不同类型的不 可数名词所使用的量词不一样，一般的规则如下：
+不能用具体的数字（基数）（比如 one, two, three, four）来表示不可 数名词的数量，但可以借用量词来表示其量的概念。不同类型的不 可数名词所使用的量词不一样，一般的规则如下：
 
-1. piece修饰：
+1. piece 修饰：
 
-   advice, bread, baggage, chalk, equipment, furniture, information, jewelry, luggage, music和news等
+   advice, bread, baggage, chalk, equipment, furniture, information, jewelry, luggage, music 和 news 等
 
-   > a piece of news（一条消息） 
+   > a piece of news（一条消息）
    >
    > two pieces of news（两条消息）
    >
-   > several pieces of furniture（几件家具） 
+   > several pieces of furniture（几件家具）
    >
    > three pieces of luggage（三件行李）
 
-2. 用bottle, cup, drop和glass修饰液态物质
-   比如这些名词：beer, blood, coffee, milk, tea, water和wine等。
+2. 用 bottle, cup, drop 和 glass 修饰液态物质
+   比如这些名词：beer, blood, coffee, milk, tea, water 和 wine 等。
 
    > several drops of blood（几滴血）
-   > a glass of milk（一杯牛奶） 
-   > two glasses of wine（两杯葡萄酒） 
+   > a glass of milk（一杯牛奶）
+   > two glasses of wine（两杯葡萄酒）
    > two cups of coffee（两杯咖啡）
 
 3. 其他的量词
 
-   > a loaf of bread（一长条面包） 
+   > a loaf of bread（一长条面包）
    >
-   > a tube of toothpaste（一筒牙膏） 
+   > a tube of toothpaste（一筒牙膏）
    >
    > a slice of meat（一片肉）
 
@@ -539,24 +507,48 @@ It is interesting to listen to him.
 
 
 
+## 五大基本句型
+
+根据**动词的词义**和其**在谓语中的作用**，把动词分为**实义动词（notional verb）**、**助动词（auxiliary verb）**和**情态助动词（modal verb）**。在三类动词中，能独 立充当句子谓语的只有实义动词。
+
+实义动词不仅是句子谓语的核心成分，更重要的是，**它决定了一个句子的骨架结构**。具体来说，**实义动词决定了一个句子是否有宾语、有几个宾语以及其他的句子成分。**
+
+五大基本句型都直接和**实义动词的分类**直接相关。
+
+英语的语序不如许多其他语言灵活，现在的英语是依赖于较为固定的词序来区分主语和宾语的。
+
+1. A dog bites a man. ：这里的a dog是动作bites的执行者 （agent），语法术语叫做主语；而a man是动作bites的承受者（recipient），语法术语叫做宾语。
+2. A man bites a dog. ：这里的a man是动作bites的执行者，即主语；而a dog则是动作bites的 承受者，即宾语。
+
+英语这门语言的词序比较严格，**词与词之间先后位置的改变往往会使句子的意思也发生变化，所以，英文被称为“固定词序语言”（English is a "fixed-word-order" language.）**
 
 
 
+英语一般遵循的严格词序：
 
+1. 主语＋谓语动词＋宾语（subject-verb-object，即SVO句型）
 
+汉语是否也是按照SVO的规则来造句呢？先通过一个非常简单的汉语句子“我吃了饭（I had a meal.）”来考察一下汉语的词序特点。对于这个句子，汉语中至少有下列这些说法： 
 
+1. SVO型：我吃了饭。 
+2. OVS型：饭吃了我。
+3. SOV型：我饭吃了。
+4. OSV型：饭我吃了。
+5. VOS型：吃了饭了我。
 
+同样是“我吃饭”这个意思，汉语里至少可以有上述五种表达方式。由此足见中文表达的词序可以如此灵活。
 
+语言学家的研究统计表明，人类的语言中 有三大基本的常见语序，分别是SVO（如“我吃了饭”）、SOV（如“我饭吃了”）和VSO（Most languages have SVO or SOV order; fewer have VSO）。遵从SVO语序的语言非常多，比如英语和汉 语。遵从SOV词序（即把动词放在句末）的语言主要是日语、韩语、土耳其语和波斯语等，这就 是为什么在日语和韩语里，往往是把动词放在句末的道理。遵从VSO语序的语言包括希伯来语、 阿拉伯语和爱尔兰语等。
 
+三大句型之一的VSO在汉语中一般是没有的。
 
+其次，绝大多数语言里没有的句型在汉语里却有。比如，语言学家的研究统计表明，在众多 的人类语言中，VOS和OVS的句型极其罕见，而OSV的句型可能不存在（VOS and OVS are rare; and OSV may be nonexistent.）但这些句型在汉语中却大量存在，比如“吃了饭了我（VOS）”和“饭 吃了我（OVS）”，以及“饭我吃了（OSV）”。其他例子比如“钱他偷了（OSV）”、“书我拿走了 （OSV）”、“这个包裹你送一下（OSV）”等等OSV型的句子。
 
+再次，关于主语与宾语的先后顺序问题。语言学家的研究统计表明，几乎所有的语言都 是“主语”在“宾语”前的（Subjects normally precede objects in almost all languages.）。对于上述中文 句子，“我吃了饭（SVO）”和“我饭吃了（SOV）”这两个是符合这个规律的，却有“饭吃了我 （OVS）”、“饭我吃了（OSV）”和“吃了饭了我（VOS）”这三个不符合该规律。
 
+关于主语的问题。汉语不仅是主语可以在宾语之后，而且更多的是省略主语。
 
-
-
-
-
-
+英汉语序的差异比较多。汉语说“上网聊天很有趣”，我们就不能按照汉 语的语序把这句话翻译成up net chat very interesting，这根本就不是一个英语句子
 
 
 
