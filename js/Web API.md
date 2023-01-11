@@ -1010,7 +1010,7 @@ innerText 属性与 outerText 属性
 ```
 element.style.xxxYyy
 element.style.xxx
-element/style.cssFloat
+element.style.cssFloat
 ```
 
 任何时候，只要获得了有效 DOM 元素的引用，就可以通过 JavaScript 来设置样式。
@@ -1117,7 +1117,7 @@ document.style Sheets：表示文档中可用的样式表的集合，其中有 l
 
 - offsetParent，元素的包含元素。包含元素并不一定就是最近的一级的父级元素。
 
-![image-20210812225607457](...\typora-user-images\image-20210812225607457.png)
+![image-20210812225607457](..\typora-user-images\image-20210812225607457.png)
 
 要确定一个元素在页面中的偏移量，可以把它的 offsetLeft 和 offsetTop 属性分别与 offsetParent 的相同属性相加，一直加到根元素。下面是一个例子：
 
@@ -1151,7 +1151,7 @@ function getElementTop(element) {
 
 客户端尺寸指的是元素内容及其内边距所占用的空间。
 
-![image-20210812225623696](...\typora-user-images\image-20210812225623696.png)
+![image-20210812225623696](..\typora-user-images\image-20210812225623696.png)
 
 clientWidth 是内容区宽度加左、右内边距宽度
 
@@ -1167,7 +1167,7 @@ clientHeight 是内容区高度加上、下内边距高度
 
 #### 滚动尺寸
 
-![image-20210812225726107](...\typora-user-images\image-20210812225726107.png)
+![image-20210812225726107](..\typora-user-images\image-20210812225726107.png)
 
 document.documentElement.scrollHeight 就是整个页面垂直方 向的总高度，可读可写。
 
@@ -1179,7 +1179,7 @@ scrollLeft 和 scrollTop 的值是可以设置的。
 
 element.getBoundingClientRect():该方法返回一个对象，包含 6 个属性：left、top、right、bottom、height 和 width。这些属性给出了元素在页面中相对于视 口的位置。
 
-![image-20210812232548731](...\typora-user-images\image-20210812232548731.png)
+![image-20210812232548731](..\typora-user-images\image-20210812232548731.png)
 
 #### 节点遍历
 
@@ -1847,7 +1847,7 @@ link.onclick = function(event) {
      window.addEventListener("contextmenu", (event) => {
       event.preventDefault();
      })
-    
+      
      其他实例：
      html部分：
      <!DOCTYPE html>
@@ -1866,7 +1866,7 @@ link.onclick = function(event) {
       </ul>
      </body>
      </html>
-    
+      
      js部分：
      window.addEventListener("load", (event) => {
       let div = document.getElementById("myDiv");

@@ -423,6 +423,88 @@ It is interesting to listen to him.
 
 
 
+## 动词
+
+一般来讲，对于一个完整的英语句子来说，谓语是不可或缺的；也就是说，一个完整的英语句子可以没有主语或宾语等成分，但不能没有谓语。谓语部分一般有动词和动词的不同形式来充当。
+
+英语句子的否定、疑问，五种基本句型，句子谓语的时态、语态、语气，非谓语动词等，都是有关动词的语法规则。
+
+### 动词分类
+
+1. 句子的谓语构造的基本分类，涉及助动词、情态动词和实义动词，这关系到英语句子的否定和提问等结构变化
+2. 实义动词的分类，这关系到英语句子的五种结构类型，关系到英语造句
+
+根据动词的词义和在谓语中的作用分类：
+
+1. 实义动词（notional verb）
+2. 助动词（auxiliary verb）
+3. 情态动词（modal verb）
+
+
+
+### 实义动词
+
+实义动词的特点： 
+
+1．从词义的角度来看，**实义动词具备完整的词汇意义；** 
+
+2．从在谓语中的作用的角度来看，实义动词能**单独**充当句子的谓语。英语中除了助动词和情态动词以外，其他的均为实义动词。
+
+
+
+![image-20221222091111234](C:/Users/shuyi/Desktop/study-notes/English-learn/new-perspective-fundamental.assets/image-20221222091111234.png)
+
+特殊的实义动词：be，do和have
+
+三个助动词be，do和have，可以用作实义动词或者助动词。而作为助动词或实义动词，它们在词义和谓语中的作用这两方面是完全不同的。所以，不要混淆be作为系动词和助动词、do作为实义动词和助动词以及have作为实义动词和助动词。
+
+![image-20221222092545085](C:/Users/shuyi/Desktop/study-notes/English-learn/new-perspective-fundamental.assets/image-20221222092545085.png)
+
+### 助动词
+
+助动词的特点： 
+
+1．从词义的角度来看，**助动词不具备词汇意义**； 
+
+2．从在谓语中的作用的角度来看，助动词**不能单独**充当句子的谓语，它**必须和实义动词连用，以帮助构成各种时态、语态、语气、否定和疑问等。**
+
+英语的助动词有三个：be，do和have，它们分别具有各种变化形式。如下： 
+
+1．be: am, is, are, was, were, been, being 
+
+2．do: does, did 
+
+3．have: has, had, having
+
+同时这些各种形式的助动词还有各种变化形式。
+
+![image-20221222092901259](C:/Users/shuyi/Desktop/study-notes/English-learn/new-perspective-fundamental.assets/image-20221222092901259.png)
+
+
+
+### 情态动词
+
+情态动词的特点： 
+
+1. 从词义的角度来看，情态动词有其自身的词汇意义，如用来**表示可能、建议、愿望、必要、允许、能力、怀疑**等，以表示说话者对某种行为或状态的看法或态度。 
+
+2. 从在谓语中的作用的角度来看，情态动词在句中**不能单独**作句子的谓语，而必须和实义动词一起构成复合谓语。
+
+英文中的情态动词主要有下列10个： can/could, may/might, shall/should, will/would, must和had better。
+
+另外还有一些与上述情态动词有关的短语动词： 
+
+1. be able to（与can类似） 
+2. be going to（与will类似） 
+3. ought to, be supposed to（与should类似）
+4. have to, have got to（与must类似） 
+
+此外，need和dare既可以用作情态动词，也可以用作实义动词。
+
+
+
+
+
 
 
 ## 五大基本句型
@@ -467,6 +549,7 @@ It is interesting to listen to him.
 关于主语的问题。汉语不仅是主语可以在宾语之后，而且更多的是省略主语。
 
 英汉语序的差异比较多。汉语说“上网聊天很有趣”，我们就不能按照汉 语的语序把这句话翻译成up net chat very interesting，这根本就不是一个英语句子
+
 
 
 
