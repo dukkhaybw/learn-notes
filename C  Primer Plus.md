@@ -301,7 +301,7 @@ getchar()；
 
 
 
-<img src="/Users/wuyi/Desktop/study-note/images/image-20221029005114323.png" alt="image-20221029005114323" style="zoom:50%;" />
+<img src="./images/image-20221029005114323.png" alt="image-20221029005114323" style="zoom:50%;" />
 
 
 
@@ -376,7 +376,7 @@ int num;  // 声明（declaration）
 
 标识符命名规则：**可以用小写字母、大写字母、数字和下划线（_）来命名。而且，名称的第1个字符必须是字母或下划线，不能是数字。**
 
-<img src="/Users/wuyi/Desktop/study-note/images/image-20221029111303738.png" alt="image-20221029111303738" style="zoom:50%;" />
+<img src="./images/image-20221029111303738.png" alt="image-20221029111303738" style="zoom:50%;" />
 
 操作系统和C库经常使用以一个或两个下划线字符开始的标识符（如，_kcab），因此最好避免在自己的程序中使用这种名称。
 
