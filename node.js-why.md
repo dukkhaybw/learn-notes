@@ -1,9 +1,5 @@
 # Node.js
 
-Node.js是JavaScript代码运行的环境，它底层基于V8引擎。
-
-
-
 ## 前言
 
 ​	之前的js代码是写在html文档的script标签中，由浏览器打开后，解析并执行的。这时浏览器就是js代码的执行环境；要想单独写一个以js为文件并在操作系统下运行，则需要安装Node.js，由Node.js去解析执行js代码。
@@ -22,6 +18,8 @@ Node.js是JavaScript代码运行的环境，它底层基于V8引擎。
   - 核心模块
   - 第三方模块
   - 自定义模块
+  
+  
 
 ### windows下的常用命令行指令
 
@@ -2028,7 +2026,7 @@ commonJS加载模块是同步加载的，这意味着只有等到对应的模块
 
 模块化开发的最终目的是将程序划分为一个个小的结构，这些小结构中有自己逻辑代码，有自己的作用域，不影响其他结构，这个结构可以暴露自己的变量，方法，对象等给其他结构使用，也可以以特定方式导入其他结构暴露的变量，方法等
 
-### 定义：
+### 定义
 
 模块（构件）：一种可以有自己的模块名字，内部有能实现一定功能逻辑的代码的集合体。它对外表现出接口特征，对内有自己的代码逻辑和数据。简而言之，模块就是一个具有独立作用域，对外暴露特定功能接口的代码集合。
 
@@ -2038,14 +2036,14 @@ commonJS加载模块是同步加载的，这意味着只有等到对应的模块
 
 可以按需导入模块中的数据, 但是不能按需导入脚本中的数据，对应脚本，一旦导入了它, 就会将脚本中的所有数据全都导入到了全局作用域中。对于模块, 则可以只导入我们需要的数据。一个模块可能会暴露出很多的变量、函数和对象, 但我们可以只把需要的那一部分导入进来使用。
 
-### 模块化的优势：
+### 模块化的优势
 
 - 避免变量的命名冲突
 - 代码隔离，避免相互影响
 - 利于项目维护
 - 模块之间的依赖明确
 
-### 模块化的发展历程：
+### 模块化的发展历程
 
 #### **无模块化**
 
@@ -2072,6 +2070,10 @@ commonJS加载模块是同步加载的，这意味着只有等到对应的模块
 
 
 
+**IIFE**
+
+
+
 
 
 #### **Common.js**
@@ -2095,9 +2097,10 @@ var add = function(param){
     return a + param
 }
 
-module.exports.a = a;module.exports.add = add
+module.exports.a = a;
+module.exports.add = add
 
-// 另一种写法 exports.a = a  export.add = add
+// 另一种写法 exports.a = a  exports.add = add  this.a = a this.add = add
 
 // b.js引用自定义a.js模块，参数包含路径，可省略.js（导入）
 var addFn = require('./a-commonJs')
@@ -2375,8 +2378,8 @@ export {a,b,fn}   //ES6这种导出方式不同于commonJs的 module.exports = {
 // 以别名的方式导出
 export {
 	a as Ba,
-    b as Bb,
-    fn as Bfn
+  b as Bb,
+  fn as Bfn
 }
 
 
@@ -2402,9 +2405,11 @@ console.log(add(1, 2)); // 3
 
 ```
 
+
+
 常见的导出方式：
 
-```
+```js
 方式一：
 export const name = 'abc'
 export const age = 17
@@ -2432,9 +2437,11 @@ export {
 export default xxx
 ```
 
+
+
 常见的导入方式：
 
-```
+```js
 方式一：
 import { name, age, fun } from './module1.js'
 
@@ -2444,6 +2451,7 @@ import { name as mName, age as mAge, fun as mFun} from './foo.js'
 
 
 方式三：
+import { fName, fName, fFun} from './foo.js'
 import { fName as mName, fName as mAge, fFun as mFun} from './foo.js'
 
 
@@ -2455,6 +2463,8 @@ import * as foo from './foo.js'
 
 import xxx from './foo.js'
 ```
+
+
 
 export 和 import 的结合使用：
 
@@ -2476,16 +2486,16 @@ export {name, age, fun } from './foo.js'
 
 - es6的模块化语法是不能直接在node.js中使用的，虽然能在工程化项目中看到对应的用法，那是经过配置的结果
 
-  ```
-  add.js中
+  ```js
+  // add.js中
   export const a = 123
   export const b = 345
   
-  main.js中
+  // main.js中
   import {a,b} from './add'
-  console.log(add.a);
+  console.log(a);
   
-  执行node main.js 后控制台报错  SyntaxError: Cannot use import statement outside a module
+  // 执行node main.js 后控制台报错  SyntaxError: Cannot use import statement outside a module
   ```
 
 - 错误导出方式：
@@ -2504,7 +2514,7 @@ export {name, age, fun } from './foo.js'
 
 JS引擎在解析阶段（parsing）是不执行代码的，只进行词法，语法分析，**import关键字导入的模块必须是能在解析阶段就能确定的。**不能再运行阶段有增加新的依赖关系。
 
-import既有关键字 又有import函数。可以使用import的函数实现在代码中动态异步加载js文件。
+import既有关键字 又有import函数。可以使用import的函数实现在代码中动态**异步加载js文件**，加载后的结果通过promise的方式获取。。
 
 
 
@@ -2591,11 +2601,9 @@ CommonJS 加载的是一个对象（即`module.exports`属性），该对象只�
 
 
 
-# 开发自己的脚手架工具
+# 脚手架工具
 
-类似于webpack这样的工具
-
-其实像vue和react这样的脚手架本质上也是帮助开发者于下载一个已经存在于远端仓库的项目基本结构模板。 
+类似于webpack这样的工具，其实像vue和react这样的脚手架本质上也是帮助开发者于下载一个已经存在于远端仓库的项目基本结构模板。 
 
 
 
@@ -2623,8 +2631,6 @@ module.exports ={
 
 
 在该vue项目中一种比较高阶的写法，就是将路由和对应的组件单独分在了一个组件下面，而并非统一写在了router文件目录下。
-
-
 
 ![image-20210726092247480](.\typora-user-images\image-20210726092247480.png)
 
