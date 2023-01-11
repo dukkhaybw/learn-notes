@@ -1,5 +1,7 @@
 ## promise 和异步编程
 
+异步函数发展流程
+
 ### 高阶函数
 
 什么样的函数是高阶函数？满足下一面的条件之一就是
@@ -26,11 +28,13 @@
    }
    ```
 
+
+
 #### 高阶函数的应用
 
-例如，现在项目中有一个核心方法。它的业务逻辑已经非常完善了。但是某个开发者想自己在执行这个核心代码逻辑之前做点自己的逻辑，核心代码执行之后再做自己的逻辑（比如计算核心代码逻辑执行的耗时）。原有的方式是：
+例如，现在项目中有一个核心方法。它的业务逻辑已经非常完善了。但是某个开发者想自己在执行这个核心代码逻辑之前做点自己的逻辑，核心代码执行之后再做自己的逻辑。原有的方式是：
 
-**作用一：可以在原来核心代码逻辑的前面和后面分别增加自己的代码。但是这样做的不足就是别人在调取这段核心代码时也会执行到自己添加的代码（破坏了原有函数）。——面向切片编程（AOP）**
+**作用一：可以在原来核心代码逻辑的前面和后面分别增加自己的代码。但是这样做的不足：别人在调取这段核心代码时也会执行到自己添加的代码（破坏了原有函数）。——面向切片编程（AOP）**
 
 在 Vue 中就用了 AOP 思想对数组原型上的方法进行额外逻辑捕获。
 
@@ -66,7 +70,7 @@ Function.prototype.after = function (callback) {
 };
 ```
 
-react 中的 setState 中就用到了事务，也就是在 setState 函数执行前做一些事，执行后再做一些事。等同于 before 和 after。
+react 的 setState 中就用到了事务，也就是在 setState 函数执行前做一些事，执行后再做一些事。等同于 before 和 after。
 
  react 事务：
 
@@ -84,7 +88,7 @@ function perform(fn, wrappers) {
 
 <img src="..\typora-user-images\image-20211113222412658.png" alt="image-20211113222412658" style="zoom: 67%;" />
 
-<img src="..\typora-user-images\image-20211113222902802.png" alt="image-20211113222902802" style="zoom:67%;" />
+
 
 <img src="..\typora-user-images\image-20211113222830481.png" alt="image-20211113222830481" style="zoom:67%;" />
 
@@ -112,6 +116,8 @@ let fn = after(3, function () {
 ```
 
 2. 利用高阶函数的闭包机制，实现参数的保存（函数柯里化，偏函数）
+
+   currying(函数柯里化)，一个柯里化后的函数会先接受一些参数，接受这些参数后，函数并不会立即被调用求值，而是继续返回另一个函数，之前传递的参数都被保存在闭包中。等到函数需要被真正执行的时候，之前传入的所有参数都会被一次性用于求值。
 
 ```js
 // 通过高阶函数来实现参数的保留
@@ -168,7 +174,7 @@ let r1 = sum(1, 2)(3)(4, 5, 6)(7); // 缩小了函数的范围
 
    > 面试题：为什么typeof null 返回 ‘object’ ？
    >
-   > 因为在 JS 的最初版本中，使用的是 32 位系统，为了性能考虑，在判断数据类型时，使用**低位存储的二进制数据进行变量类型信息的判断**，000 开头代表是对象，然而 null 表示为全零，所以将它错误的判断为 object 。虽然现在的内部类型判断代码已经改变了，但是对于这个 Bug 却是一直流传下来。
+   > 在 JS 的最初版本中，使用的是 32 位系统，为了性能考虑，在判断数据类型时，使用**低位存储的二进制数据进行变量类型信息的判断**，000 开头代表是对象，然而 null 表示为全零，所以将它错误的判断为 object 。虽然现在的内部类型判断代码已经改变了，但是对于这个 Bug 却是一直流传下来。
    >
    > | 数据类型     | 机器码标识     |
    > | ------------ | -------------- |
@@ -246,6 +252,25 @@ let test = sum.fun(6);
 
 console.log(test(1)(2)(3)(4)(5)(6));
 ```
+
+
+
+```js
+function currying(callback){
+  let arr = []
+  
+  return function (...args){
+    if(args.length===0){
+      callback.call(this,...arr)
+    }else{
+      arr.push(...args)
+      return arugments.callee
+    }
+  }
+}
+```
+
+
 
 反柯里化使用 call 在增大函数的调用范围。
 
@@ -410,82 +435,50 @@ Promise 本身还是基于回调函数实现异步的。
 重点思路：
 
 - 创建 promise 实例时传入的回调函数是同步回调(executor)，且该回调函数接受两个函数：resolve 和 reject 作为参数
-- 每个 promise 实例有可能是三种状态中的一种：pending, fulfilled 或 rejected
+
+  ```js
+  const pro1 = new Promise((resolve,reject)=>{
+    console.log('executor')
+  })
+  
+  console.log('123') 
+  // 先打印executor，再打印123
+  ```
+
+  
+
+- 每个 promise 实例有可能是三种状态中的一种：pending（默认状态）, fulfilled 或 rejected
+
 - resolve 和 reject 可以改变 promise 实例对象的状态 pending=> fulfilled 或者 pending => rejected
+
+- resolve和reject函数可以接受一个javascript中的数据，也可以是一个新的Promise
+
 - executor 函数执行报错时，调用 reject 函数
+
 - 同一个 promise 实例可以调用多次 then 函数
+
 - promise 可以链式调用
-- then 方法调用时是同步执行的，传给 then 方法的 onFulfilled 函数和 onRejected 函数是可选的
+
+- **then 方法调用时是同步执行的，传给 then 方法的 onFulfilled 函数和 onRejected 函数是可选的**
+
 - then 方法同步执行的时候，会首先判断 onFulfilled 函数和 onRejected 函数是否传值，没传则用默认值
-- then 方法执行时会先判断给方法的 peomise 实例对象的 state 是否不为 pending，如果不是，则根据 state 的状态立即执行 onFulfilled 函数或者 onRejected 函数，并将实例上的 this.value 或者 this.reason 传给对应的回调函数并且该回调函数会立即执行
-- 如果 then 方法执行时，对应的 promises 实例的状态仍就时 pending，则将对应的 onFulfilled 函数和 onRejected 函数订阅到 promise 实例的对应属性上存放起来
+
+- then 方法执行时会先判断该方法的 promise 实例对象的 state 是否不为 pending，如果不是，则根据 state 的状态立即开启一个微任务执行 onFulfilled 函数或者 onRejected 函数，并将实例上的 this.value 或者 this.reason 传给对应的回调函数并且该回调函数会作为微任务加入微任务队列
+
+- 如果 then 方法执行时，对应的 promises 实例的状态仍是 pending，则将对应的 onFulfilled 函数和 onRejected 函数订阅到 promise 实例的对应属性上存放起来
+
 - onFulfilled 函数和 onRejected 函数是有返回值的，返回值的不同情况： 非 promise 实例数据，抛出错误，promise 实例
+
 - onFulfilled 函数和 onRejected 函数是两个异步执行的任务，原生中是微任务
 
-```js
-// 最基本版本的promise，没有实现链式调用
-
-const PENDING = 'pending';
-const FULFILLED = 'fulfilled';
-const REJECTED = 'rejected';
-
-class Promise {
-  constructor(executor) {
-    this.state = PENDING;
-    this.value = undefined;
-    this.reason = undefined;
-
-    this.onResolvedCallbacks = [];
-    this.onRejectedCallbacks = [];
-
-    const resolve = (value) => {
-      if (this.state === PENDING) {
-        this.state = FULFILLED;
-        this.value = value;
-        this.onResolvedCallbacks.forEach((fn) => fn());
-      }
-    };
-
-    const reject = (reason) => {
-      if (this.state === PENDING) {
-        this.state = REJECTED;
-        this.reason = reason;
-        this.onRejectedCallbacks.forEach((fn) => fn());
-      }
-    };
-
-    try {
-      executor(resolve, reject);
-    } catch (error) {
-      reject(error);
-    }
-  }
-
-  then(onFulfilled, onRejected) {
-    if (this.state === FULFILLED) {
-      onFulfilled(this.value);
-    }
-    if (this.state === REJECTED) {
-      onRejected(this.reason);
-    }
-
-    if (this.state === PENDING) {
-      this.onResolvedCallbacks.push(() => {
-        onFulfilled(this.value);
-      });
-      this.onRejectedCallbacks.push(() => {
-        onRejected(this.reason);
-      });
-    }
-  }
-}
-```
+  
 
 ```js
 // 1.默认三个状态
 const PENDING = 'PENDING';
 const FULFILLED = 'FULFILLED';
 const REJECTED = 'REJECTED';
+
 function resolvePromise(promise2, x, resolve, reject) {
   if (promise2 === x) {
     reject(new TypeError('[TypeError: Chaining cycle detected for promise #<Promise>]'));
@@ -526,6 +519,7 @@ function resolvePromise(promise2, x, resolve, reject) {
     resolve(x); // 这里直接成功即可 普通值的情况
   }
 }
+
 class Promise {
   constructor(executor) {
     this.status = PENDING;
@@ -559,6 +553,7 @@ class Promise {
       reject(e);
     }
   }
+  
   then(onFulfilled, onRejected) {
     // 4.调用then的时候来判断成功还是失败
     onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : (v) => v;
@@ -642,13 +637,18 @@ Promise.reject = function (reason) {
     reject(reason);
   });
 };
+
 Promise.resolve = function (value) {
   return new Promise((resolve, reject) => {
     resolve(value);
   });
 };
+
+
 module.exports = Promise;
 ```
+
+
 
 ### promise 的其他方法
 
@@ -773,6 +773,8 @@ Promise.reject = function (reason){
 }
 ```
 
+
+
 #### catch
 
 注意点：
@@ -786,6 +788,8 @@ class Promise {
   }
 }
 ```
+
+
 
 #### finally
 
@@ -831,6 +835,8 @@ Promise.prototype.finally = function (finalCallback) {
   );
 };
 ```
+
+
 
 #### all（异步并发）
 
@@ -878,6 +884,30 @@ Promise.all = function (promises) {
 };
 ```
 
+
+
+```js
+Promise.all = function(promises){
+  return new Promise((resolve,reject)=>{
+    let resultArr = []
+    let len = promises.length
+    
+    promises.forEach((promiseItem,index)=>{   
+      Promise.resolve(promiseItem).then((data)=>{
+        resultArr[index] = data
+        if(index+1 === len){
+          resolve(resultArr)
+        }
+      },reject)
+    })
+  })
+}
+
+// 这种写法上的缺陷，针对后面这个数组 [promise1,promise2,2,3,4]  因为后面几项不是promise实例，当forEach循环到后面几项时，具体是最后一项时，会直接触发Promise.resolve()的then方法，这是index+1 直接就等于len，直接触发外出promise实例的resolve，而这时resultArr中的每一项并不一定都有对应的值。
+```
+
+
+
 #### race
 
 **`Promise.race(iterable)`** 方法返回一个 promise，一旦迭代器中的某个 promise 解决或拒绝，返回的 promise 就会解决或拒绝。
@@ -891,6 +921,8 @@ Promise.race = function (iterable) {
   });
 };
 ```
+
+
 
 #### allSettled
 
@@ -1059,25 +1091,7 @@ Promise 串行通过 then 链解决，并行通过 Promise.all 来解决。如�
 
 
 
-
-   let likeArray = {
-       0:1,
-       1:2,
-       2:3,
-       length:3,
-       [Symbol.interayor]:function* (){
-           let index = 0;
-           let len = this.length;
-           while(len!===index){
-               yield this[index++]
-           }
-       }
-   }
-
-   let arr = [...likeArray]
-   ```
-
-```jsx
+   ```js
 // 类数组转化成数组： length，索引，迭代方法
 
 let likeArray = {
@@ -1188,6 +1202,8 @@ if (!done) {
 }
 ```
 
+
+
 ### CO 库
 
 异步串行写为同步方式需要通过函数递归来调用。
@@ -1229,6 +1245,8 @@ co(read())
     console.log(err);
   });
 ```
+
+
 
 ### 实现 generator 函数(状态机)
 
@@ -1321,6 +1339,8 @@ console.log(it.next('ccc'));
 ```
 
 整个 genertator 构造器函数的实现就是依靠的状态机，给函数提供闭包中的一个上下文，上下文中有一些列的标识或方法去修改该上下文中的标识，根据标识不同走不同逻辑。
+
+
 
 ### async + await
 
@@ -1529,6 +1549,8 @@ async();
 console.log(8);
 ```
 
+
+
 ## node 代码调试
 
 ### 方式一
@@ -1549,7 +1571,7 @@ Node.js 开启调试服务被动等待，调试客户端主动发起对接。
 
    node--inspect-bar=8080 name.js
 
-   ![image-20220428203239608](.\typora-user-images\image-20220428203239608.png)
+   ![image-20220428203239608](..\typora-user-images\image-20220428203239608.png)
 
    注意点：
 
@@ -1561,7 +1583,7 @@ Node.js 开启调试服务被动等待，调试客户端主动发起对接。
 
  在已运行的程序上开启调试服务，`kill -s SIGUSR1 49026` 作用是给进程 id 是 49026 的进程发送 `SIGUSR1` 信号，当 Node.js 进程收到 `SIGUSR1` 时，将启动调试服务。
 
-2. 客户端调试 Chrome DevTools 会根据地址列表自动检查调试服务启动情况，默认地址有本地的 9229 和 9222 端口。`chrome://inspect` 面板负责调试管理。 ![image-20220428204207581](.\typora-user-images\image-20220428204207581.png)
+2. 客户端调试 Chrome DevTools 会根据地址列表自动检查调试服务启动情况，默认地址有本地的 9229 和 9222 端口。`chrome://inspect` 面板负责调试管理。 ![image-20220428204207581](..\typora-user-images\image-20220428204207581.png)
 
 ### VSCode
 
@@ -1628,13 +1650,15 @@ VSCode 提供了两种启动模式：
 }
 ```
 
+
+
 ## 介绍
 
 Node 能干什么？特点？node 中模块的实现原理？require 引用一个文件的原理？被引入文件导出原理？
 
 ### 是什么
 
-nodejs：是 js 运行时，让 js 能跑在服务器上。
+nodejs：是一个 js 运行环境，让 js 能跑在服务器上。
 
 在浏览器端 JavaScript 由：ECMAScript + BOM + DOM 组成
 
@@ -1752,6 +1776,8 @@ node 中的全局对象是 global 对象，该对象上的属性或者方法都�
 上面这几个属性是在模块包裹的函数传入的，也是 argument 上对应的。
 
 在 commonjs 模块化规范中 require 方法底层就是依赖的 fs.readFileSync( )同步读取模块文件内容的，会有阻塞。
+
+
 
 ## 模块化原理前置支持
 
@@ -2310,7 +2336,7 @@ close callbacks：一些关闭的回调函数，如：`socket.on('close', ...)`
 
 开发者主要关心的队列情况有，先只考虑宏任务，下图
 
-![image-20220222080449935](.\typora-user-images\image-20220222080449935.png)
+![image-20220222080449935](..\typora-user-images\image-20220222080449935.png)
 
 先在主执行栈中执行本轮同步代码，执行完后再执行 nextTick 相关任务，执行完 nextTick 相关任务后，开始进入事件环。在事件环中，先依次清空各个队列（从上往下）。如果走到 poll 阶段后，会检测 check 队列中是否有任务，有，则清空 poll 队列后向下继续执行 check 队列，然后循环回到 timers，然后再到 poll 中；如果没有，事件环运行则停在 poll 阶段等着，等自身任务队列中是否有新 i/o 任务入队，等 check 或者 timers 中有任务产生，如果是 check 中先有任务产生则向下执行，如果是 timers 中先有任务，则回到 timers 中开始向下执行。
 
@@ -2362,7 +2388,7 @@ timeout
 
 ## 模块查找流程
 
-![image-20210418105915555](.\typora-user-images\image-20210418105915555.png)
+![image-20210418105915555](..\typora-user-images\image-20210418105915555.png)
 
 ## event 模块
 
@@ -3293,7 +3319,7 @@ add(element){
 - 后续遍历
 - 层序遍历
 
-<img src=".\typora-user-images\image-20220305205147995.png" alt="image-20220305205147995" style="zoom: 150%;" />
+<img src="..\typora-user-images\image-20220305205147995.png" alt="image-20220305205147995" style="zoom: 150%;" />
 
 面试：二叉树的反转。
 
@@ -3380,7 +3406,7 @@ server.listen(3000, function () {
 // 上面这套代码能很好的体现node单线程的特点
 ```
 
-![image-20220306133537938](.\typora-user-images\image-20220306133537938.png)
+![image-20220306133537938](..\typora-user-images\image-20220306133537938.png)
 
 ```js
 const http = require('http');
@@ -3389,10 +3415,6 @@ let port = 3000;
 
 // server继承了发布订阅模式类
 const server = http.createServer((request, response) => {});
-
-server.listen(3000, function () {
-  console.log(`server start 3000`);
-});
 
 server.listen(port, function () {
   console.log(`server start ${port}`); // 监听成功就会触发此函数
@@ -3404,6 +3426,8 @@ server.on('error', function (err) {
   }
 });
 ```
+
+
 
 ```js
 const http = require('http');
@@ -3456,6 +3480,8 @@ server.on('error', function (err) {
 // 可以采用nodemon 工具来监控文件的变化，文件变化后可以自动重启  （开发的时候用nodemon  生产环境pm2）
 // npm install nodemon -g
 ```
+
+
 
 ## 网络
 
