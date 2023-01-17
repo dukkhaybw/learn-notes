@@ -787,6 +787,8 @@ var isOdd = compose(equalsToOne, remainderOfTwo);
 var isOdd = (x) => equalsToOne(remainderOfTwo(x));
 ```
 
+point free的理解：把参数去掉，是指参数的含义已经体现在函数声明（名字）里面了，比如equalsToOne，那就是说传入的值是否等于1，如果是equalsToA，那么这个A就得传为参数，加上要比较的x就是两个参数了。这就是所谓“**暴露给使用者的就是功能本身**”。
+
 
 
 **函数组件**
@@ -881,6 +883,15 @@ function reverseArgs(fn) {
 }
 
 var pipe = reverseArgs( compose );
+
+// 或者
+function pipe(...fns) {
+    return fns.reduce( function reducer(fn1,fn2){
+        return function piped(...args){
+            return fn2( fn1( ...args ) );
+        };
+    } );
+}
 
 
 const isOdd = pipe(remainderOfTwo, equalsToOne);  // 这次，把 remainderOfTwo 和 equalsToOne 按照比较直观的方式进行排序。在前面的函数现执行
@@ -993,10 +1004,6 @@ composeReducer 用的就是一个类似组合的功能。
 
 
 
-
-
-
-
 扩展：
 
 > Array.prototype.reduce()
@@ -1024,6 +1031,238 @@ composeReducer 用的就是一个类似组合的功能。
 > `initialValue` 可选
 >
 > 作为第一次调用 `callback` 函数时参数 *previousValue* 的值。若指定了初始值 `initialValue`，则 `currentValue` 则将使用数组第一个元素；否则 `previousValue` 将使用数组第一个元素，而 `currentValue` 将使用数组第二个元素。
+
+
+
+**使用reduce实现 map 和 filter** 
+
+```js
+Array.prototype.mapReduce = function (cb, initValue) {
+  return this.reduce(function (mappedArray, curValue, curIndex, array) {
+    mappedArray[curIndex] = cb.call(initValue, curValue, curIndex, array);
+    return mappedArray;
+  }, []);
+};
+
+Array.prototype.filterReduce = function (cb, initValue) {
+  return this.reduce(function (mappedArray, curValue, curIndex, array) {
+    if (cb.call(initValue, curValue, curIndex, array)) {
+      mappedArray.push(curValue);
+    }
+    return mappedArray;
+  }, []);
+};
+
+// 这里利用了reduce的第二个参数的初始值可以是一个“空数组”，映射或过滤后，放入“新数组”。
+```
+
+
+
+
+
+## transduce 的原理
+
+通过 JS 中数组自带的功能方法，进一步了解 transduce 的原理。以及由 map 作为 functor 可以引申出的 monad 的概念，如何让函数间更好地进行交互。	
+
+
+
+### map 映射和函子
+
+函子：是一个带运算工具的**数据类型**或**数据结构值**。例如：在 JavaScript 中，字符串（string）就是一个数据类型，而数组（array）既是一个数据类型也是一个数据结构。
+
+
+
+这是一段抽象的代码来表示一个字符串的映射函子 stringMap。
+
+```js
+stringMap( uppercaseLetter, "Hello World!" ); // HELLO WORLD!
+```
+
+
+
+这是一段抽象的代码一个数组的映射函子 arrayMap。
+
+```js
+["1","2","3","4","5"].map( unary( parseInt ) ); // [1,2,3,4,5]
+```
+
+
+
+### filter
+
+过滤器（filter）和断言（predicate）
+
+filter 可以是双向的，可以过滤掉（filter out）不想要的，也可以筛选出（filter in）出不想要的。在函数式编程中，断言就是一个个的筛选条件，所以在过滤器中，经常会使用断言函数。
+
+![img](https://static001.geekbang.org/resource/image/92/8e/92dcf58f0fc6c36869183f54d3ae478e.jpeg?wh=1920x1080)
+
+
+
+isOdd是一个用于判断是否时奇数的函数。
+
+````js
+[1,2,3,4,5].filter( isOdd ); // [1,3,5]
+````
+
+
+
+### reduce 和缩减器
+
+缩减（reduce）主要的作用就是把列表中的值合成一个值。
+
+![img](https://static001.geekbang.org/resource/image/87/21/8741b90f842643350d34077b9c40f721.jpeg?wh=1920x1080)
+
+
+
+函数reduce的功能也可以用映射 map 和过滤 filter 的方法来实现。这是因为 reduce 的初始值可以是一个空数组[]，这样就可以把迭代的结果当成另一个数组了。
+
+```js
+var half = v => v / 2;
+[2,4,6,8,10].map( half ); // [1,2,3,4,5]
+
+[2,4,6,8,10].reduce(
+    (list,v) => (
+        list.push( half( v ) ),
+        list
+    ), []
+); // [1,2,3,4,5]
+
+
+
+var isEven = v => v % 2 == 0;
+[1,2,3,4,5].filter( isEven ); // [2,4]
+
+[1,2,3,4,5].reduce(
+    (list,v) => (
+        isEven( v ) ? list.push( v ) : undefined,
+        list
+    ), []
+); // [2,4]
+```
+
+可以发现，这里故意利用了一个副作用。 array.push 是一个非纯函数的方法，它会改变原数组，而不是复制后修改。而如果想完全避免副作用，可以用 concat。但是， concat 虽然遵循的是纯函数、不可变的原则，但是有一点是需要注意的，就是它在面对大量的复制和修改时会产生性能上的问题。所以估计到这里，你也猜到了在上节课中提到的 transducer 的原理了。这里就是故意利用了副作用来提高性能！
+
+这里严格来将其实并没有副作用，因为在原则上，**做的这些变化都是在函数内部的**，而前面说过，副作用一般多是来自外部。所以在这个例子中，没有必要为了几乎没有负面影响的副作用而牺牲性能。而 transducer 正是利用了副作用，才做到的性能提升。
+
+
+
+## monad 单子
+
+由 map 作为 functor 引申出的 monad 概念，让函数间更好地进行交互。
+
+monad 和 functor 有什么区别呢？函子（functor）其实就是一个值和围绕值的一些功能。array.map 可以被看做是一个 functor，它有一组值，而如 map 这样的方法可以作用于数组里面的每一个值，提供了一个映射的功能。	
+
+**monad 就是在 functor 的基础上，又增加了一些特殊功能，其中最常见的就是 chain 和应用函子（applicative)。**
+
+
+
+### array 作为 functor
+
+数组就是一种函子，它自带一些功能函数（原型上）。那开发者自己也可以写一个有一些自己定义的方法的函子。
+
+可以自己写一个带有映射方法的 Just Monad，用它来包装一个值（val）。这个时候，monad 相当于是一个基于值形成的新的数据结构，这个数据结构里有 map 的方法函数。
+
+```js
+function Just(val) {
+  return { map, log };
+
+  function map(fn) {
+    return Just(fn(val));
+  }
+
+  function log() {
+    return `Just(${val})`;
+  }
+}
+
+var A = Just(10);
+
+var B = A.map((v) => v * 2); // 20
+console.log(B.log());   // Just(20)
+console.log(A.log());   // Just(10)
+
+```
+
+它的使用方式就类似于我们之前看到的 array.map 映射。比如在下面的例子里，我们用 map 将一个函数 v => v * 2 运用到了 Just monad 封装的值 10 上，它返回的就是 20。
+
+
+
+### chain 作为 bind、flatMap
+
+chain 通常又叫做 flatMap 或 bind，它的作用是 flatten 或 unwrap，也就是说它可以展开被 Just 封装的值 val。你可以使用 chain 将一个函数作用到一个包装的值上，返回一个结果值。如下代码所示：
+
+```js
+function Just(val) {
+  return { map, chain };
+
+  function map(fn) {
+    return Just(fn(val));
+  }
+
+  // aka: bind, flatMap
+  function chain(fn) {
+    return fn(val);
+  }
+}
+```
+
+
+
+例子：
+
+用 chain 方法函数把一个加一的函数作为参数运用到 monad A 上，得到了一个 15+1=16 的结果，那么之后返回的就是一个 flatten 或 unwrap 展开的 16 了。
+
+```js
+var A = Just( 15 );
+var B = A.chain( v => v + 1 );
+
+B;          // 16
+typeof B;   // "number"
+```
+
+
+
+
+
+### monoid
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
