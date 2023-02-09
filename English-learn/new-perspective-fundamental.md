@@ -147,9 +147,9 @@ You are what you read.(你即你所读。)
 
 ## 本书的结构
 
-对英语句子的分析将从结构方面展开，即句子结构分析。
+对英语句子的分析将从**结构**方面展开，即句子结构分析。
 
-句子结构分析又是围绕句子成分展开的。
+**句子结构**分析是围绕**句子成分**展开的。
 
 1. 先对句子成分进行简单的分类、组合，从而得出五种基本句型。
 2. 对每一个句子成分进行深入的分析，包括这些句子成分的结构、位置、功能和语义等。
@@ -164,6 +164,10 @@ You are what you read.(你即你所读。)
 第二章 句子成分详述
 
 第三章 简单句与复合句
+
+
+
+
 
 
 
@@ -723,3 +727,286 @@ It is interesting to listen to him.
 
 
 
+## 句子成分
+
+分析句子结构就是理解一个句子中的**各个组成部分**之间的**逻辑语义关系**。即分清句子成分 (constituent)，比如哪部分是句子的主语、哪部分是句子的谓语等。
+
+
+
+### 为什么要分析句子成分？
+
+很多英语学习者不愿意分析句子成分（**断句**），看句子只是凭借自己的感觉去理解。很多时候，如果不理性地分析句子成分，不搞清楚句子的逻辑语义结构，我们就会误解句意。
+
+同样的一组字词线性地从左往右一字排开，不同的断句方式，造成的句意是不一样的。
+
+
+
+汉语示例：“请带好孩子！”
+
+这句话有两种不同的断句方式：
+
+a. 请［带好］［孩子］
+
+ b. 请［带］［好孩子］
+
+如果要进行普遍性的，一般性的分析，需要借助不同的语法术语，比如句子成分的术语包括主语、 谓语、宾语等，以及不同的词性，比如名词、动词、形容词、副词等。 有了这些术语，才能进行概括、总结，才能阐述**一般规律性**的东 西，而不是进行具体例子的具体分析。
+
+
+
+使用术语对“请带好孩子！”进行分析：
+
+在a中，“好”是一个副词，修饰动词“带”。从句子成分的角度来 看，“带”是谓语，“好”是状语，具体来说，是方式状语，说明该怎么去带孩子。相应的译文可以是look after your children well或者take good care of your children。
+
+在b中，“带”还是动词，但“好”不是副词而是形容词，修饰名词“孩 子”，此时“好”充当定语。相应的英语译文可以是bring along good children或者bring along well-behaved kids。
+
+在a、b不同的断句分析中，“带”的含义是不同的：a中 的“带”是“照看”的意思，b中的“带”是“携带”的意思，因而相应的英语译文也不同。
+
+
+
+
+
+英语示例1：
+
+> A man was standing at a bus stop eating fish and chips (炸薯条). An old lady and her little white dog stood next to him. The dog, excited by the smell of the fish and chips, started to bark and jump up on the man’s leg. 
+>
+> “Do you mind if I throw him a bit?” the man said to the old lady. 
+>
+> “Not at all,” she said. “Go ahead.” 
+>
+> So the man picked up the little dog and threw it over a wall.
+
+老太太为什么同意那个男的把她的狗扔出去呢？关键在于理解Do you mind if I throw him a bit?这句话。
+
+老太太是**把a bit当作动词throw的直接宾语**来理解，因此她把这句话理解成“我 给你的狗扔点吃的你介意吗？”所以老太太说：“不介意，你扔吧。”但是，这名男子是**把a bit当作修饰谓语throw的状语**来理解的，因而他的本 意是“我把你这条（讨厌的）狗扔远一点你介意吗？”
+
+这就是没能正确分析句子成分带来的误解。
+
+
+
+
+
+英语示例2：
+
+> How can you drop a raw egg onto a concrete floor without cracking it?
+
+一位美国小孩的回答是：
+
+> Any way you want, because a concrete floor is very hard to crack.
+
+从他的回答可知，他把句末的it看成是指代concrete floor，而一般人会理解成是指代raw egg。实际上，中文译文“你往水泥地上扔生鸡蛋，怎样才能不把它打破？”里的“它”既可以指“鸡蛋”也可以指“水泥地”。这种对**代词指代对象的不同理解**，也可以看作一种断句方式。
+
+其实在考研或者阅读中，常常会因为**把代词的指代对象搞错而误读句子的意思**。
+
+
+
+分析句子成分的两种可能角度：
+
+1. 分析如何断句
+2. 对代词指代对象的不同理解
+
+
+
+高考示例：
+
+> MIT has offered a program called OpenCourseWare for ten years that makes materials from more than 2,000 classes free online.
+
+主要问题是，该如何理解其中的这个定语从句：that makes materials from more than 2,000 classes free online。
+
+分析方式一：
+
+![image-20230209204649899](/Users/wuyi/Desktop/study-note/English-learn/new-perspective-fundamental.assets/image-20230209204649899.png)
+
+此时的make是一个接单个宾语的及物动词，意为“制作”，在这句话 中的基本搭配是make X from Y，即“用Y来制作X”，X是宾语，Y是状语。形容词短语free online作定语，后置修饰名词classes，相当于一个定语从句that are free online。
+
+方式一的翻译：从2000多个网上的免费课程中选材来制作新的课程。
+
+
+
+分析方式二：
+
+![image-20230209204848238](/Users/wuyi/Desktop/study-note/English-learn/new-perspective-fundamental.assets/image-20230209204848238.png)
+
+此时的make是一个接复合宾语（即宾语＋宾补）的及物动词，也就是常说的“使役动词”，是“使什么怎么样”的意思，在这句话中的基 本搭配是make X Y，即“使X成为Y这个样子”，X是宾语，Y是宾语补足语。在本句中，Y就是形容词短语free online，作宾语补足语，补充说明宾语materials。此时，该形容词短语不等于定语从句that are free online。
+
+方式二的翻译：把2000多个课程的相关材料免费放在网上。
+
+
+
+此外，a、b两种断句方式的差异还在于句子改写方面。具体来说， a句无法进行其他改写，而对于b这种断句方式，考虑到宾语materials from more than 2,000 classes比宾补free online要长，**还可以将二者互换位置**，说成：
+
+> that makes free online materials from more than 2,000 classes.
+
+但是原文到底取哪种结构对应的翻译？此时就需要看上下文的语境。该句 的上文是：
+
+> “Anyone with an Internet connection anywhere in the world can use our online courses,” Harvard President Drew Faust said during a meeting to announce the plan.
+
+这里提到use our online courses（使用我们的网上课 程），与此意思呼应的应该是上面的b句。实际上，只需要研读主 句MIT has offered a program called OpenCourseWare for ten years，也可以断定b种断句才是正确的。定语从句所修饰的先行词是program，它就是 makes的主语。
+
+因此，正确理解program的意思关系到如何理解makes的 意思，进而影响到makes后边的整个断句。这里的program不是指“软件 程序”，而是指“计划，项目”，这个项目的名称是OpenCourseWare。
+
+所以整个句子可以翻译成：
+
+> 麻省理工学院发起了一个名为“公开课件”的项目，至今已有10年， 它把2000多个课程的相关材料免费放在网上。
+
+
+
+
+
+不会分析句子成分，会导致误判句子意思。更有甚者，面对一个句子，其中的单词都认识，但就是不知道什么意 思。
+
+英语示例3：
+
+> a. John killed a rich person. 
+>
+> b. John died a rich person.
+>
+> 
+>
+> a. She will make him a good husband. 
+>
+> b. She will make him a good wife.
+
+对于两个示例的第一个句子，都容易理解，但是后一句便存在困惑。
+
+
+
+以上这些例子能看出准确的句子分析对于理解句子意思是多么重要。如果不能灵活地掌握句子结构，就不能正确地构造英语句子，这就会直接影响到使用英语的水平。
+
+
+
+**练习**：
+
+1. 不同角度解释：How can you lift an elephant with one hand?
+   
+2. A: My father can lift a pig with one hand. Can your dad do that? 
+   B: I’m not sure. Where do you get a pig with one hand? 
+3. Hairdresser: I’ve had a lot of strange customers in my time. 
+   Customer: Have you ever shaved a man with a wooden leg? 
+   Hairdresser: No. I always use a razor.
+
+
+
+
+
+### 句子成分有哪些？	
+
+一般想到的组成英语句子的六种句子成分有：“**主、谓、宾、补、 状、定**”。
+
+其中，有 四种基本成分（basic constituents）：
+
+1. 主语（subject） 
+
+2. 谓语动词（main verb） 
+
+3. 宾语（object） 
+
+4. 补足语（complement）
+
+   
+
+另外两种是修饰成分（modifiers）：
+
+5. 状语（adverbial）：这是用来修饰动词的成分（注：状语的修饰 对象不仅限于动词）
+6. 定语（attribute）：这是用来修饰名词的成分
+
+
+
+英语的句子成分的两种大分类方式：
+
+1. 句子成分：基本成分和修饰成分；
+2. 基本成分：核心成分和谓语成分；
+3. 核心成分：主语和谓语；
+4. 谓语成分：宾语和补足语；
+5. 修饰成分：定语和状语。
+
+宾语：直接宾语与间接宾语。
+
+补足语：主语补足语和宾语补足语。
+
+因为宾语和补足语都是由谓语动词决定的，故此，把宾语和补足语称为“谓语成分”，所以谓语成分不是指谓语，而是指谓语后边所能接的成分。
+
+其实，宾语和补足语是对谓语动词的补充，所以谓语成分也可以称为谓语补足语（predicate complement）。
+
+
+
+<img src="/Users/wuyi/Desktop/study-note/English-learn/new-perspective-fundamental.assets/image-20230209230108687.png" alt="image-20230209230108687" style="zoom:50%;" />
+
+
+
+**句子成分的属性**
+
+| 句子成分   | 属性                 |
+| ---------- | -------------------- |
+| 主语、宾语 | 名称性的             |
+| 谓语       | 动词性的             |
+| 补足语     | 名称性的或形容词性的 |
+| 状语       | 副词性的             |
+| 定语       | 形容词性的           |
+
+副词不能充当主语补足语或者 说表语，因为表语是对主语的补充，而主语和表语都是名词性的，表语还可能是形容词性的，副词不能修饰名词，故副词不充当表语。
+
+**表语是主语补足语的一种，即属于补足语。**
+
+
+
+
+
+### 怎么分析句子成分？
+
+搞清楚这些句子成分在一个句子中是怎样排列组合的。知道了它们的组合关系，理清句子各成分之间的逻辑语义关系，并最终读懂句意。
+
+
+
+**基本句型**
+
+英语句型的划分不涉及句子的修饰成分（即状语和定语），而只涉及句子的基本成分。
+
+参与构成基本句型的基本成分包括：主语、谓语、间接宾语、直接宾语、宾语补足语以及主语补足语（表语）这六种句子成 分。
+
+基本成分的不同组合就构成了英语的五种基本句型，其中**谓语动词对句子是什么基本句型起决定性的作用**。
+
+不同的动词类型决定了不同的句子类型。所以先看一下动词的分类：
+
+![image-20230209231443026](/Users/wuyi/Desktop/study-note/English-learn/new-perspective-fundamental.assets/image-20230209231443026.png)
+
+从本表的“动词分类2”中看到动词可以分为五类，因而就决定了**英语的五种基本句型**。
+
+
+
+**五种基本句型**
+
+![image-20230209231613004](/Users/wuyi/Desktop/study-note/English-learn/new-perspective-fundamental.assets/image-20230209231613004.png)
+
+1. subject + verb (vi.) 
+2. subject + verb (vt.) + object 
+3. subject + verb (vt.) + indirect object + direct object 
+4. subject + verb (vt.) + object + object complement 
+5. subject + linking verb + subject
+
+Her love died. She loved me. She gave me a kiss. She made me happy. She is lovable.（她的爱已死。她爱过我，吻过我，让我开心过。她依然那么迷人。）
+
+![image-20230209231750757](/Users/wuyi/Desktop/study-note/English-learn/new-perspective-fundamental.assets/image-20230209231750757.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### 区分句子成分与短语成分
+
+
+
+
+
+### 句子成分的修饰关系
