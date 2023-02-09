@@ -2,11 +2,11 @@
 
 故事：
 
-![image-20230208224012550](/Users/wuyi/Desktop/study-note/English-learn/new-perspective-fundamental.assets/image-20230208224012550.png)
+![image-20230208224012550](./new-perspective-fundamental.assets/image-20230208224012550.png)
 
 他们不知道大鱼在说什么，所以他们继续游着，没有回答。
 
-![image-20230208224116103](/Users/wuyi/Desktop/study-note/English-learn/new-perspective-fundamental.assets/image-20230208224116103.png)
+![image-20230208224116103](./new-perspective-fundamental.assets/image-20230208224116103.png)
 
 对于语言也是如此：1. 水，就是母语环境; 鱼，就是母语人士。
 
@@ -88,6 +88,82 @@ D.的
 2. 提供语境背景
 3. 提供思路总结
 4. 提供构思过程，逻辑推理和论证，最后总结本质规律
+
+
+
+推理示例：
+
+交易时常说的：“你看着给吧”。
+
+1. 根据语境，这里“给”不是give而是pay。
+
+2. 实际上是“给一个合理的价格”，英文就是pay a fair price。
+
+3. “你看着给”意思是“给一个你认为合理的价格”，这里有“你认为”you think，这时就需要构造一个从
+
+   句，以便于把you think作为一个插入语放进去。
+
+4. 于是想到把形容词fair前置修饰改为后置修饰，构造一个定语从句pay a price that is fair，然后放进插入语you think说成pay a price that you think is fair。现在可以用what替换a price that，于是说成：
+
+   a. Pay what you think is fair.
+
+   或者添加you can这样说：
+
+   b. You can pay what you think is fair.
+
+   这里what从句没有疑问意义，是一个名词性定语从句，并且具有泛指含义，因此，可以把what改为whatever说成：
+
+   c. You can pay whatever you think is fair.
+
+整个句子的字面意思是“你可以按照你认为合理的价格来支付”，这也就是汉语“你看着给吧”所要传达的意思。
+
+
+
+**学习贵在坚持**
+
+“Stayhungry; stay foolish.”——JOBS
+
+强调做事的激情和坚持。要像傻瓜一样地坚持。真正的好东西是聪明人下笨功夫做出来的。需要长期的坚持，坚持观察、思考、总结、验证、运用等。
+
+because引导的从句作主语:
+
+There is a big difference between activity and accomplishment. Just because you are doing something doesn’t mean you are getting anywhere.One must evaluate one’s activity in order to have accomplishment.(忙碌并不意味着就一定会有成果，二者之间有很大不同。只是因为你在不停地忙碌并不意味着就有成果。因此，人们必须认真审视自己的忙碌，看能否取得成果。) 
+
+
+
+the point where...定语从句：
+
+Whatever you do, if you want to become great at it, you need to work day in and day out, almost to the point where you are addicted to it, and over a long period of time.（不论你从事什么工作，如果你想成为该领域的专家，你必须日复一日地去做，直到几乎迷恋成瘾的程度，并且要长期坚持。）
+
+
+
+名词从句中以wh-连词引导的表语从句：
+
+You are what you eat.(你即你所食。)
+
+You are what you read.(你即你所读。)
+
+
+
+## 本书的结构
+
+对英语句子的分析将从结构方面展开，即句子结构分析。
+
+句子结构分析又是围绕句子成分展开的。
+
+1. 先对句子成分进行简单的分类、组合，从而得出五种基本句型。
+2. 对每一个句子成分进行深入的分析，包括这些句子成分的结构、位置、功能和语义等。
+3. 介绍一下这五种简单句型是如何“进化”成复合句，为定语从句和名词从句打基础。
+
+
+
+结构：
+
+第一章 句子成分概述
+
+第二章 句子成分详述
+
+第三章 简单句与复合句
 
 
 
