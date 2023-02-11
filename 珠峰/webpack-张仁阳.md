@@ -137,7 +137,7 @@ loader 的几种使用方式：
 
   ```js
   const CopyWebpackPlugin  = require('copy-webpack-plugin')
-
+  
   plugins:[
       new CopyWebpackPlugin({
           patterns:[
@@ -520,11 +520,11 @@ postcss-normalize
 
 Browserlist 可以编写的字段：
 
-![image-20210917211144929](.\typora-user-images\image-20210917211144929.png)
+![image-20210917211144929](..\typora-user-images\image-20210917211144929.png)
 
-![image-20210917211240022](.\typora-user-images\image-20210917211240022.png)
+![image-20210917211240022](..\typora-user-images\image-20210917211240022.png)
 
-![image-20210917211320884](.\typora-user-images\image-20210917211320884.png)
+![image-20210917211320884](..\typora-user-images\image-20210917211320884.png)
 
 直接使用 browserslist 命令行工具查询根据条件匹配到的浏览器：
 
@@ -532,7 +532,7 @@ Browserlist 可以编写的字段：
 npx browserslist ">1%, last 2 version, not dead"
 ```
 
-![image-20220828190451254](.\typora-user-images\image-20220828190451254.png)
+![image-20220828190451254](..\typora-user-images\image-20220828190451254.png)
 
 Browserlist 可以编写的位置：
 
@@ -571,9 +571,9 @@ Browserlist 可以编写的位置：
   last 1 version #最后的一个版本
   maintained node versions #所有还被 node 基金会维护的 node 版本
   not dead
-
+  
   或者
-
+  
   [production staging]
   > 1%
   last 2 version
@@ -613,7 +613,7 @@ devServer:{
             });
         }
 }
-```
+  ```
 
 使用 webpack-dev-server 时，内部会使用 webpack 的配置文件模拟打包，并将打包后生成文件的文件更目录作为 web 服务器的根目录（/），当访问该地址时，默认访问的就是根目录下的 index.html 文件。而 devServer 配置项指定的目录中的文件也会直接放在本地服务器的根目录下。
 
@@ -953,7 +953,7 @@ module.exports = {
     asset: true
   },
 };
-```
+  ```
 
 ```js
 {
@@ -1036,7 +1036,7 @@ import png from './assets/images/logo.png?time=2022-8-21';
         ],
      type: "javascript/auto"
 }
-```
+  ```
 
 ## 清除打包目录
 
