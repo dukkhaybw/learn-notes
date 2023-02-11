@@ -169,8 +169,6 @@ You are what you read.(你即你所读。)
 
 
 
-
-
 - 注重规则背后的英语思维的培养，而非记忆一些教条式的规则
 - 理解那些例外的规则背后的思维
 - 注重句子，短文以及上下文环境及其中英语思维，而不是单一的例句
@@ -219,6 +217,8 @@ You are what you read.(你即你所读。)
 **语法是对语言表达习惯的归纳，总结出来的规律是为了对语言学习者正确引导，而不是严格限定。**
 
 **把语法当作思维规律来理解，而不应该当作规则来死记。**
+
+
 
 
 
@@ -858,13 +858,17 @@ a. 请［带好］［孩子］
 
 > a. John killed a rich person. 
 >
-> b. John died a rich person.
+> ​	killed是及物动词，后边接名词短语a rich person，作宾 语。因此，这是一个“主谓宾”句型。
+>
+> b. John died a rich person.  （主系主补或者说主系表）
+>
+> ​	died是一个不及物动词，因此其后边的名词短语a rich person不可能是宾语。实际上，这里died的作用类似于一个系动词，它 把主语John和a rich person联系起来，二者表达的是同一个人。等价于：John was a rich person when he died.  
 >
 > 
 >
-> a. She will make him a good husband. 
+> a. She will make him a good husband.  （主谓宾宾补）
 >
-> b. She will make him a good wife.
+> b. She will make him a good wife.  （主谓间宾直宾）
 
 对于两个示例的第一个句子，都容易理解，但是后一句便存在困惑。
 
@@ -989,11 +993,85 @@ Her love died. She loved me. She gave me a kiss. She made me happy. She is lovab
 
 
 
+文章：Where Does the Love Go When It Dies？
+
+> But things happened. You had failed to account for the changes that would literally pull you in different directions, that would make you a sort of new person, that would leave one or the other longing to forget about their wild days before adulthood and everything that came with it. From a distance, emotional or geographic, the rate at which you come together to share everything dwindles to nothingness. Eventually, it’s been too long to just call them back. Things have become strange, and there’s a certain metallic taste in your mouth when you think of the memories that have evaporated into thin air behind you.
+>
+> This lost love must still exist somewhere, transmuting into more love and better love and love for people who haven’t yet felt it. It must be there, because you still remember it. Maybe we just need to hear that they do, too.
+
+
+
+>但世事无常。有些变化是你无法解 释清楚的，这些变化使你们各奔东西，使你们成了某种意义上的另一个 人，使你们中的一个或另一个渴望忘掉年少轻狂时那些疯狂的日子，忘 掉伴随着成年而来的一切。隔着遥远的距离——不管这距离是感情上的 还是地理上的——你们重新聚首、分享一切的机会越来越少，直至完全消失。最终，因为时间太久已无法将他/她唤回。一切都变得那么陌 生。曾经那些消失得无影无踪的记忆，如今重新回想起，这让你嘴里有 一种说不出的苦涩味道。
+>
+>那失去的爱一定还存在于某个地方，转化成更多的爱、更美的爱、让 没有感受过爱的人也能感受到的爱。爱一定还存在着，因为它就活在你 的记忆里。也许我们只需要知道，爱也活在他/她的记忆里。
+
+
+
+上面既有长句也有短句，他们本质都可以归属于五种基本句型之一。长难句都是由这五种基本句型叠加、组合修饰语成分而成的。
+
+a. But things happened
+
+but是并列连词，表示与上文转折。主语是things，谓语是 happened，因此，这是一个“主谓”句型。
+
+
+
+b.You had failed to account for the changes **that would literally pull you in different directions**, t**hat would make you a sort of new person**, **that would leave one or the other longing to forget about their wild days before adulthood and everything that came with it**.
+
+这是一个主从复合句。主句是：
+
+b1. You had failed to account for the changes you是主语，had failed to account for这个部分整个看成谓语。之所以这么看，是因为fail to do something多用于书面语，意思相当于do not do something或cannot do something。因此，这里相当于说couldn’t account for或者hadn’t been able to account for。名词短语the changes是宾语。因此，该主句属于“主谓宾”句型。
+
+在changes后边的是三个并列的定语从句：
+
+b2. that would literally pull..., that would make..., that would leave...with it 自然都是作定语，修饰changes。
+
+由于这三个定语也是句子，因此还可以进一步对这三个定语从句进行分析，分析的结果依然属于上述五种基本句型。
+
+
+
+五大基本句型必然都有主语和谓语（实际口语交际中不一定都有），不论是在主句中，在从句中也是必要的。
+
+
+
+1. I love what I am doing.
+
+主句层次：I love ...
+
+主语是I，谓语动词是love，宾语是what I am doing这个宾语从句。
+
+从句层次：...what I am doing 
+
+在what I am doing这个宾语从句中，主语是I，谓语动词是am doing，宾语是what这个**连接代词**。
+
+
+
+示例：
+
+a. Money can buy you love.
+
+b. Money can buy your love.
+
+在a句中，谓语buy后边接 了两个宾语：you是间接宾语，love是直接宾语。因此，a句属于“主谓间宾直宾”句型。
+
+在b句中，谓语buy后边只接一个宾语，即直接宾语your love。因此，b句属于“主谓宾”句型。
 
 
 
 
 
+示例：Does Money Buy Happiness?
+
+> At what point does our interest in money go too far? When we come to see money as the measure of all things; when we start to believe that money can buy happiness.
+>
+> Like our talents, skills, and contacts, money is a tool that can be used to make our lives better. However, true happiness is found in areas of our lives that often have little to do with money.
+>
+> Money may not be the root of all evil,    but it often brings us anguish, regrets and disasters.（主谓间宾直宾）
+>
+> Give all your money to me.（主谓间宾直宾）   （You）Let me suffer from the anguish for you（主谓宾宾补）.
+>
+> Money can buy a house, but not a home.（主谓宾，排比句）
+>
+> Well, I’m just kidding.(主谓)
 
 
 
@@ -1005,8 +1083,404 @@ Her love died. She loved me. She gave me a kiss. She made me happy. She is lovab
 
 ### 区分句子成分与短语成分
 
+两个修饰成分。
 
+定语不是句子成分：剔除定语，剩下的其他五种成分才是**句子层级**的成分；
+
+状语不是由动词决定的句子成分：剔除状语，剩下的其他四种句子成分进行不同的排列组合，从而形成五种基本句型。
+
+
+
+**定语**
+
+示例：
+
+> Legendary Hollywood actress and violet-eyed beauty （截止此处前面的是同位语）Elizabeth Taylor, who captured hearts in National Velvet to launch a film career that spanned five decades, five Oscar nominations and eight marriages, died in Los Angeles at age 79.
+
+这句话里的谓语动词是died，其前面的内容都是主语部分。在这个长长的主语中，中心词是Elizabeth Taylor，剩下的都是修饰语成分，包括前置定语（确切来说是同位语）和后置定语即定语从句。谓语动词后面分别是介词短语in Los Angeles是地点状语，介词短语at age 79是时间状语，他们都修饰died。
+
+所以这句话就是一个**主谓句型**。（Elizabeth Taylor died.）
+
+
+
+名词短语：名词与其定语（包括前置定语和后置定语）合起来构成名词短语（noun phrase）。
+
+Legendary **Hollywood actress** and violet-eyed beauty Elizabeth Taylor, who captured hearts in National Velvet to launch a film career that spanned five decades, five Oscar nominations and eight marriages其实就是一个名词短语，作句子的主语。该名词短语的中 心词是Elizabeth Taylor，而其他两个定语团结在以Elizabeth Taylor为核心的周围。
+
+
+
+定语是修饰或者限定名词的。
+
+语言的层次划分：单词 短语 句子 段落 篇章
+
+主语、谓语、宾语、补语、状语属于“句子”这一层级上的成分，统称为“句子成分”（sentence-level constituent）。
+
+定语成分属于“短语”这一层级，是属于“短语成分”（phrase-level constituent），即是组成名词短语的成分，然后通过名词短语间接地成为句子成分。
+
+英语中复杂的定语修饰关系经常造成对英语句子理解障碍。通过剔除中心名词前后的定语，能够大大简化英语句子的结构，这有助于抓住句子的核心结构，从而降低句子的阅读难度。
+
+定语的构成方式和修饰名词的位置很大程度上体现了英语思维。
+
+
+
+
+
+**状语**
+
+动词决定不了状语的存在与否。实际上，状语是修饰动词的成分，**表示动作发生的时间、地点、原因、结果、方式、条件、目的**等含义。
+
+决定状语是否存在在句子中是由句子的意思决定的。说话人根据自己表达意思的需要来选择加或不加状语。五种基本句型都可以有或没有状语，这完全取决于句意表达的需要。
+
+示例：
+
+a. Elizabeth Taylor died.
+
+添加时间状语：
+
+b. Elizabeth Taylor died on March 23, 2011.
+
+添加地点状语：
+
+c. Elizabeth Taylor died in Los Angeles.
+
+同时添加时间和地点状语：
+
+d. Elizabeth Taylor died in Los Angeles on March 23, 2011.
+
+添加原因状语：
+
+e. Elizabeth Taylor died of congestive heart failure.
+
+同时添加时间、地点和原因状语：
+
+f. Elizabeth Taylor died of congestive heart failure in Los Angeles on March 23, 2011.
+
+虽然添加了不同长度的状语，但是主体结构仍就是：“主谓”。
+
+
+
+主谓宾示例：
+
+a. The students are playing football
+
+时间状语：
+
+b. The students are playing football now.
+
+地点状语：
+
+c. The students are playing football at the sports field.
+
+原因状语：
+
+d. The students are playing football because they love the sport
+
+
+
+
+
+主谓双宾示例：
+
+a. I gave him 100 yuan.
+
+时间状语： 
+
+b. I gave him 100 yuan yesterday.
+
+地点状语：
+
+c. I gave him 100 yuan in the classroom.
+
+原因状语：
+
+d. I gave him 100 yuan because I owed him that much.
+
+
+
+
+
+主谓宾宾补示例：
+
+a. I made the teacher angry.
+
+b. I made the teacher angry this morning.
+
+c. I made the teacher angry in the office.
+
+d. I made the teacher angry because I didn’t do my homework.
+
+
+
+主系表示例：
+
+a. He looked happy.
+
+b. He looked happy last night.
+
+c. He looked happy at the party.
+
+d. He looked happy because he won the game.
+
+
+
+对于五大基本句型，添加状语并没有改变基本句型结构。状语都不是必须有的。状语自身有很大的自由度和灵 活性，不是说有了动词就必须带有状语，这是因为状语是辅佐动词的， 但不是由动词决定的。
+
+
+
+五种基本句型只是涉及主语、谓语动 词、宾语和补足语（宾补，表语）这四种成分，没有定语和状语。
+
+英语中的句型是一种固定的模式，各种成分的结构和规律相对固定。
 
 
 
 ### 句子成分的修饰关系
+
+**修饰**
+
+作为修饰成分的定语与状语，必定是要对它们所修饰的对象产生影响，作出各种改变。
+
+定语会改变名词的形式及/或意思。比如数量词作定语就会改变名词的单复数形式。
+
+比如people是原形，与two连用时可以说two people或two peoples，但意思不同，前者是“两个人”，后者 是“两个民族”，词形改变，意思也改变。
+
+
+
+状语修饰动词的角度来看，状语可能会改变动词的形式和意思。
+
+示例：
+
+a. I miss you.   （原型）
+
+b. I missed you yesterday.  （过去式）
+
+在实际使用中，修饰语与修饰对象存在必有的联系，需要找到二者之间的联系， 才能读懂句子的意思。这种联系如果建立错误，就会造成对句子的不同解读。
+
+示例：
+
+> Customer: Have you ever shaved a man with a wooden leg? 
+>
+> Hairdresser: No. I always use a razor.
+
+介词短语with a wooden leg是一个修饰语，它在语义上与名词man存在着强联系，与动词shaved存在弱联系。按理说，应该取强联系， 译成“一个装有木头腿的男子”。但理发师却取了弱联系，理解成“用木头腿给客人刮脸”，然后在此基础上，他再强调自己是“用剃刀给客人刮 脸”。这种误读或者说歧义的背后涉及修饰语与修饰对象之间的位置关系问题。
+
+
+
+
+
+**就近修饰**
+
+大脑在解读话语的时候习惯于试图在相邻的两个词之间建立起逻辑语义联系。语言，作为思维的载体，也必然 会反映大脑这种懒惰的天性，那就是在造句时，把语义相关的词尽量放在一起。
+
+就近修饰：修饰语应该尽量靠近被修饰的对象（Modifiers are usually placed as close as possible to the words they describe.）。
+
+
+
+**关于定语的就近修饰**
+
+示例：“餐桌底下躺着一只猫”。
+
+1. a cat
+2. is lying
+3. under the tabl
+
+a. A cat is lying under the table
+
+用倒装语序（全部倒装）：
+
+b. Under the table is lying a cat.
+
+添加一些修饰语：**that I bought from the flea market**
+
+a1. A cat is lying under the table that I bought from the flea market. 
+
+b1. Under the table is lying a cat that I bought from the flea market.
+
+两个句子的意思发生改变。根据“就近修饰”原则，在a1 句中，定语从句that I bought from the flea market就近修饰table ；在b1句中，该定语从句就近修饰cat。
+
+
+
+a. The science teacher uses an erector set to simulate the structure of human DNA. 
+
+b. The science teacher simulates the structure of human DNA by using an erector set.
+
+erector set：“积木玩具”
+
+simulate：“模拟，模仿”
+
+从句子结构的角度来看，a句采用 了use X to do Y句式，而b句采用了do Y by using X句式，意思都是“用X 来做Y”。虽然a、b两句结构、语序不同，但意思是一样的，都可 以译成“在生命科学课上，老师用积木玩具来模拟人类DNA的结构”。
+
+
+
+现在要添加一个定语从句，那么此时就需要根据定语从句的含义来判断该选择a还是b：`______________________`, which she rearranges to represent different mutations and variations.
+
+根据“就近修饰”原则，which要就近指代前面的名词，并且在从句 中作rearranges的宾语。从句的意思是“她通过重新排列它来表现不同的 基因突变和变异”。据此含义，这里的which应该指代erector set。为了让 二者位置临近，显然空格处应该填入b句而不是a句，请比较：
+
+a1.The science teacher uses an erector set to simulate the structure of human DNA, which she rearranges to represent different mutations and variations.* 
+
+b1.The science teacher simulates the structure of human DNA by using an erector set, which she rearranges to represent different mutations and variations.
+
+在a1句中，erector set与which被分隔；而在b1句中， erector set与which紧靠在一起。定语从句改为简单句是:
+
+b2. She rearranges the erector set to represent different mutations and variations.
+
+根据“**就近修饰**”原则，b1句优于a1句。句意为“在生命科学课上， 老师用积木玩具来模拟人类DNA的结构。她通过变换积木玩具的排列方 式，以此来表现各种基因突变和变异”。
+
+
+
+**段落层面的就近修饰**
+
+示例：
+
+A subway system is expanded to provide service to a growing suburb. A bike sharing program is adopted to encourage non-motorized transportation.` _____`.
+
+请从下面四个选项中选出最佳的句子填入空格处：
+
+A. To alleviate rush hour traffic jams in a congested downtown area, stoplight timing is coordinated.
+
+B. Coordinating stoplight timing can help alleviate rush hour traffic jams in a congested downtown area.
+
+C. Stoplight timing is coordinated to alleviate rush hour traffic jams in a congested downtown area.
+
+D. In a congested downtown area, stoplight timing is coordinated to alleviate rush hour traffic jams.
+
+
+
+> suburb   / ˈsʌbɜːb /  城郊，近郊
+>
+> non-motorized   / non - ˈməʊtəraɪzd /   非机动化（步行、骑自行车等方式）
+>
+> Be adopted to     被采用 
+>
+> alleviate     / əˈliːvieɪt /  减轻，缓和
+>
+> congested    / kənˈdʒestɪd /   v.  / adj.  挤满；超负荷 /  堵塞的，拥挤的.  
+>
+> rush hour     上下班高峰时间
+>
+> stoplight    / ˈstɒpˌlaɪt /   交通信号灯；停止行进号志
+>
+> coordinated   / kəʊˈɔːdɪneɪtɪd /   v./adj.   协调，配合；使身体协调
+
+
+
+首先，如果只是从单句层面来看，这四个句子的语法都是正确的。
+
+其次，从“就近修饰”的角度来看，介词短语in a congested downtown area应该是后置修饰rush hour traffic jams这个名词短语的，因此，应该调整该介词短语的语序。据此 可以排除D选项。
+
+再次，从题干的两个句子结构来看，二者都采用了被动结构，如is expanded和is adopted，据此可以排除B选项。
+
+最后，再进 一步比对句子结构，发现题干的两个句子都采用了is done to do结 构，如is expanded to provide和is adopted to encourage，据此可以排除A 选项。所以，C选项为最佳答案。
+
+从这个例子我们看到，影响句子结构 的因素有很多，包括“就近修饰”以及上下文语境中的其他因素。
+
+
+
+**关于状语的就近修饰**
+
+a. The boy drew pictures of people who were waiting for their planes at an airport.
+
+根据“就近修饰”原则，介词短语at an airport后置，修饰定语从句的 谓语动词were waiting，以说明候机的地点，而不是修饰主句的谓语 drew。据此分析，可以把这个句子译成“那个男孩为正在机场候机的人们画了一些画”。
+
+
+
+b. The boy drew pictures of people at an airport who were waiting for their planes.
+
+根据“就近修饰”原则，此时的at an airport修饰drew，以强调绘画的地点。此时b句译成“那个男孩在一个机场为正在候机的人画了一些 画”。
+
+
+
+
+
+a.The chair of the school board announced a plan to build two new elementary schools during an interview with a local news reporter. 
+
+b.During an interview with a local news reporter, the chair of the school board announced a plan to build two new elementary schools.
+
+这里的介词短语during an interview with a local news reporter在逻辑 语义上是修饰动词announced的，因此两者应该尽量靠近。在a句中， during短语靠近动词build，会被误认为修饰build，这样就会导致句子误 译成“校董事会主席宣布了一项计划：将要在接受当地一家媒体记者的 采访过程中新建两所小学”。在b句中，during短语在句首，离动词 announced最近，只能修饰announced，从而不会引起歧义。因此，b句比 a句更好。
+
+
+
+排序:
+
+A. visit 
+
+B. a day 
+
+C. the park 
+
+D. several thousand people 
+
+E. during the summer months 
+
+F. (which is) known for its waterfalls and rock formations
+
+
+
+七种不同的排序方式：
+
+A.Several thousand people visit the park a day, which is known for its waterfalls and rock formations during the summer months. 
+
+时间状语during the summer months在逻辑语义上应该修饰动词 visit，即说明人们什么时候去公园，而不是修饰定语从句的谓语is known，即不是说明公园什么时候出名。因此，本句不是最佳的，主要 原因在于动词visit与其修饰语——时间状语during the summer months被 分隔了，这违背了“就近修饰”原则。
+
+B.Several thousand people a day visit the park during the summer months known for its waterfalls and rock formations.
+
+分词短语known for its waterfalls and rock formations在逻辑语义上应 该修饰名词park，即说明公园是以什么出名，而不能修饰紧靠其前的 months，即不能说明夏季月份以什么出名，并且其中的代词its是单数 的，不能指代复数名词months。因此，本句不是最佳的，主要原因在于 名词park与其修饰语——作定语的分词短语known for its waterfalls and rock formations被分隔了，这违背了“就近修饰”原则。
+
+C.A day, several thousand people visit the park known for its waterfalls and rock formations during the summer months. 
+
+一方面，a day修饰主语several thousand people，说明每天的人数， 此时应该放在people后边。另一方面，时间状语during the summer months在逻辑语义上应该修饰动词visit，即说明人们什么时候去公园， 而不是修饰过去分词known，即不是说明公园什么时候出名的。因此本句不是最佳的，主要原因在于a day的位置不对，以及动词visit与其修饰 语——时间状语during the summer months被分隔了，这违背了“就近修 饰”原则。
+
+D.Known for its waterfalls and rock formations, several thousand people a day visit the park during the summer months.
+
+句首的分词短语known for its waterfalls and rock formations离主语several thousand people最近，因而只能修饰该 主语。但是从逻辑语义的角度来看，该分词短语应该修饰名词park，即 说明公园是以什么出名，而不是说明人们以什么出名。因此本句不是最 佳的，主要原因在于名词park与其修饰语——作定语的分词短语known for its waterfalls and rock formations被分隔了，而该分词短语与紧跟其后 的people没有逻辑语义关系，这违背了“就近修饰”原则。
+
+E.During the summer months, known for its waterfalls and rock formations, several thousand people a day visit the park. 
+
+介词短语during the summer months与其所修饰的动词visit 被分隔，另一方面，分词短语known for its waterfalls and rock formations 与其所修饰的名词park被分隔。因此本句不是最佳的。
+
+F.During the summer months, several thousand people visit the park a day which is known for its waterfalls and rock formations. 
+
+名词短语a day修饰主语several thousand people，说明每天的人数， 而不是修饰动词visit，所以a day不应该放在visit the park的后边，而应该 放在people的后边。况且此时的a day又分隔了名词park与其修饰语—— 定语从句which is known for its waterfalls and rock formations。因此本句 不是最佳的，依然有改善的空间，因为a day的位置可以进一步优化。
+
+G.During the summer months, several thousand people a day visit the park, which is known for its waterfalls and rock formations.
+
+首先，句首的介词短语during the summer months紧靠（因为该介词 短语不可能修饰主语several thousand people a day）它所修饰的动词 visit，正确地修饰了动词visit。其次，a day紧跟在它所修饰的名词 people后边，正确地修饰了people。再次，定语从句which is known for its waterfalls and rock formations紧跟在它所修饰的名词park后边，正确 地修饰了park。在这三个修饰关系当中，修饰语与被修饰词的位置都是 最靠近的，符合“就近修饰”原则。因此，本句的语序是最佳的，句意 为“这个公园因其瀑布和奇特的岩石地貌而出名，在夏季，每天都能迎 来几千名游客”。
+
+
+
+就近修饰（英文造句的一条 **基本原则**，深刻影响着英文造句的词序排列）语应该尽量靠近被修饰的对象，而不是一定要靠近。不要对“就近修饰”原则僵化地理解和运用。
+
+
+
+**多重修饰**
+
+多重修饰就是指一个中心词带有多个修饰语。比如某个动词带有多个状语，或者某个名词带有多个后置定语。
+
+There is much chance `_____ `Bill will recover from his injury in time for the race.（2006天津，14） 
+
+A. that        B. which       C. until       D. if
+
+本题应该填that，引导一个**同位语从句**，修饰chance。对于这样一个看似简单的句子，发现很多同学都会误解。比如有人译成“比尔的病情将会在比赛时恢复，那是一个绝好的机会”。还 有考生误译成“比尔很有可能为了参加比赛而及时康复”。误解句意的同学大多是没有理解谓语动词recover后边的多重修饰关系。其实这里的三 个介词短语from his injury, in time和for the race都与recover有逻辑语义关系，分别表示地点（从哪里康复，这里的his injury含有抽象地点的意 义）、时间（什么时间康复）、目的（为什么需要及时康复）的语义关系。
+
+**比尔很有可能会从受伤中及时康复，以便赶上参加这个比赛。**
+
+
+
+Social support consists of the exchange of resources among people based on their interpersonal ties.
+
+具体来说就是中心名词exchange后边带有三个定语，即介词短语of resources、介词短语 among people以及分词短语based on their interpersonal ties。这三个短语都是修饰中心名词exchange的，从而构成 一个“介词短语＋介词短语＋分词短语”的并列定语结构。
+
+the exchange of resources，表示“资源的交换”； 
+
+the exchange...among people，表示“人与人之间的交换”；
+
+the exchange...based on their interpersonal ties，表示“建立在人际关系基础之上的交换”。
+
+社会资助是由人与人之间的资源交换所构成的，而这种交换乃是建 立在他们的人际关系基础之上的。
+
+
+
+
+
+> Two basic kinds of learning or conditioning occur, one of which is famously known as the classical conditioning. Classical conditioning happens when an animal learns to associate a neutral stimulus (signal) with a stimulus that has intrinsic meaning based on how closely in time the two stimuli are presented.
+>
+> 学习反射或条件反射有两种基本类型，其中之一就是众所周知的经 典条件反射。当一个动物学会将一个中性刺激（比如信号）和另一个带有内在意义的刺激（这一内在意义取决于这个刺激与中性刺激发生的时间间距）联系在一起时，就会产生经典条件反射。
