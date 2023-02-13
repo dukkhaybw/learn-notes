@@ -15,6 +15,8 @@ webpack 是 JavaScript 应用程序的静态打包工具。
 
 webpack5 中配置文件不再是必须的了，会有一个默认的配置文件——webpack.config.js。
 
+
+
 ## 浏览器直接使用 ES module
 
 ```html
@@ -27,6 +29,7 @@ ES6 模块化语法：
 ```js
 index.js:
 import { sum, mul } from './js/math.js'
+
 console.log(sum(20,30))
 console.log(mul(20,30))
 ```
@@ -44,9 +47,11 @@ export const mul =(num1,num2)=>{
 
 **证明 ES6 的模块化语法是需要发起网络请求：**
 
-![image-20220310071821033](.\typora-user-images\image-20220310071821033.png)
+![image-20220310071821033](..\typora-user-images\image-20220310071821033.png)
 
-![image-20220310072112724](.\typora-user-images\image-20220310072112724.png)
+
+
+![image-20220310072112724](..\typora-user-images\image-20220310072112724.png)
 
 在上面，直接使用 file 协议打开本地的 index.html 文件，产生跨域请求。说明 ES6 的 import 语法是需要发起网络请求的。
 
@@ -55,6 +60,8 @@ npx webpack --entry ./src/main.js --output-path ./build
 
 npx webpack --config  ./xxx/xxx.js
 ```
+
+
 
 ## entry
 
@@ -69,6 +76,8 @@ entry: {
 }
 ```
 
+
+
 ## output
 
 - `output` 属性告诉 webpack 在哪里输出它所创建的 bundle，以及如何命名这些文件
@@ -77,6 +86,8 @@ entry: {
 webpack 本身只能识别 js 和 json 文件，如果引入的有其他类型的文件，webpack 是无法识别的，为此需要使用 loader 加载器来加载这类文件并转为 webpack 可以处理的模块，一般都是 js，并添加到依赖关系图中。
 
 loader 一般用于转为文件类型，插件则用来执行更为复杂的任务（打包优化，资源管理，注入环境变量...）
+
+
 
 ## loader
 
@@ -96,15 +107,33 @@ loader 的几种使用方式：
 
 - webpack 配置文件中写 loader
 
+
+
 ## plugin
 
 - clean-webpack-plugin
 
   ```js
   const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-
+  
   plugins: [new CleanWebpackPlugin()];
+  
   ```
+
+
+  现在可以在webpack 的output配置项中编写一个字段clean：boolean 实现clean-webpack-plugin插件的能力。 
+
+  ```js
+  {
+    output: {
+      path: path.resolve(__dirname, 'dist'),
+      filename: 'main.js',
+      clean: true,
+    },
+  }
+  ```
+
+  
 
 - html-webpack-plugin
 
@@ -124,7 +153,7 @@ loader 的几种使用方式：
 
   ```js
   const HtmlWebpackPlugin = require('html-webpack-plugin');
-
+  
   plugins: [
     new HtmlWebpackPlugin({
       title: 'hello world',
@@ -137,7 +166,7 @@ loader 的几种使用方式：
 
   ```js
   const CopyWebpackPlugin  = require('copy-webpack-plugin')
-
+  
   plugins:[
       new CopyWebpackPlugin({
           patterns:[
@@ -156,24 +185,28 @@ loader 的几种使用方式：
   ]
   ```
 
+
+
 ## 模式(mode)
 
-- 日常的前端开发工作中，一般都会有两套构建环境
+- 前端开发工作中，一般都会有两套构建环境
 
 - 一套开发时使用，构建结果用于本地开发调试，不进行代码压缩，打印 debug 信息，包含 sourcemap 文件
 
 - 一套构建后的结果是直接应用于线上的，即代码都是压缩后，运行时不打印 debug 信息，静态文件不包括 sourcemap
 
-- webpack 4.x 版本引入了 [mode](https://webpack.docschina.org/configuration/mode/) 的概念
+- webpack 4.x 版本引入的 [mode](https://webpack.docschina.org/configuration/mode/) 的概念
 
-- 当你指定使用 production mode 时，默认会启用各种性能优化的功能，包括构建结果优化以及 webpack 运行性能优化
+- 当指定使用 production mode 时，默认会启用各种性能优化的功能，包括构建结果优化以及 webpack 运行性能优化
 
-- 而如果是 development mode 的话，则会开启 debug 工具，运行时打印详细的错误信息，以及更加快速的增量编译构建
+- 如果是 development mode 的话，则会开启 debug 工具，运行时打印详细的错误信息，以及更加快速的增量编译构建
 
 | 选项 | 描述 |
 | :-- | :-- |
 | development | 会将 process.env.NODE_ENV 的值设为 development。启用 NamedChunksPlugin 和 NamedModulesPlugin |
 | production | 会将 process.env.NODE_ENV 的值设为 production。启用 FlagDependencyUsagePlugin, FlagIncludedChunksPlugin, ModuleConcatenationPlugin, NoEmitOnErrorsPlugin, OccurrenceOrderPlugin, SideEffectsFlagPlugin 和 UglifyJsPlugin |
+
+
 
 ```js
 module.export = {
@@ -249,13 +282,15 @@ module.export = {
 };
 ```
 
-![image-20211004195304621](.\typora-user-images\image-20211004195304621.png)
+![image-20211004195304621](..\typora-user-images\image-20211004195304621.png)
+
+
 
 ## 区分环境
 
 读取变量的两个地方：
 
-- webpack 配置文件所在的 node 环境，该环境的全局对象上有 process 进程对象
+- webpack 配置文件被读取时所在的 node 环境，该环境的全局对象上有 process 进程对象
 - 项目的源码文件中，实际运行在浏览器中，浏览器全局对象上没有 process 进程对象，访问则报错
 
 1. **`--mode`用来设置模块内（源代码中）的`process.env.NODE_ENV`**
@@ -268,9 +303,11 @@ module.export = {
 }
 ```
 
-`webpack --mode=development` => 设置 webpack.config.js 文件中 mode 的值为 development => mode 为开发模式（development ）下时，webpack 内部通过 webpack.definePlugin 插件设置字符串 process.env.NODE_ENV 在项目源码中的代表的实际值为 development， 在编译阶段，当解析到项目源码中有用到 process.env.NODE_ENV 时，直接将它替换为 字符串（development） 。 webpack --mode=production 也是一样的原理。
+`webpack --mode=development` => 设置 webpack.config.js 文件中 mode 的值为 development => mode 为开发模式（development ）下时，webpack 内部通过 webpack.definePlugin 插件设置字符串 process.env.NODE_ENV 在项目源码中的代表的实际值为 development， 在编译阶段，当解析到项目源码中有用到 process.env.NODE_ENV 时，直接将它替换为字符串（development） 。 webpack --mode=production 也是一样的原理。
 
 其中通过命令行的--mode 和配置文件中的 mode 取指定环境，都是一个原理，如果两者同时存在，则命令行--mode 的优先级更高。
+
+
 
 2. **`--env`用来设置 webpack 配置文件的函数参数**
 
@@ -282,6 +319,8 @@ module.export = {
     "build":"webpack --env=development"
 }
 ```
+
+
 
 webpack.config.js
 
@@ -329,8 +368,8 @@ module.exports = function (env, argv) {
 
 ```js
 const path = require('path');
-
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+
 module.exports = function (env, argv) {
   console.log(env);
   console.log(argv);
@@ -358,6 +397,8 @@ module.exports = function (env, argv) {
   };
 };
 ```
+
+
 
 3. **`cross-env`用来设置 node 环境的`process.env.NODE_ENV`**
 
@@ -406,6 +447,8 @@ console.log(process.env.FIRST_ENV); //  process.env.FIRST_ENV则直接在打包�
 ```
 
 **vue 中可以通过.env 格式的文件向 node 环境中设置变量。借助的是一个第三方库：dotenv-expand。**
+
+
 
 4. **`DefinePlugin`用来设置模块内(源码中)的全局变量**
 
@@ -505,6 +548,8 @@ console.log('development', '----------------');
 
 在 script 脚本中使用 --mode=development 的效果和在 webpack 配置文件的 mode 字段中设置值是一样的。
 
+
+
 ## Browserlist
 
 在不同的前端工具之间共用目标浏览器和 node 版本的配置文件。它主要被以下工具使用(许多的 webpack 插件会依赖它)：
@@ -520,11 +565,11 @@ postcss-normalize
 
 Browserlist 可以编写的字段：
 
-![image-20210917211144929](.\typora-user-images\image-20210917211144929.png)
+![image-20210917211144929](..\typora-user-images\image-20210917211144929.png)
 
-![image-20210917211240022](.\typora-user-images\image-20210917211240022.png)
+![image-20210917211240022](..\typora-user-images\image-20210917211240022.png)
 
-![image-20210917211320884](.\typora-user-images\image-20210917211320884.png)
+![image-20210917211320884](..\typora-user-images\image-20210917211320884.png)
 
 直接使用 browserslist 命令行工具查询根据条件匹配到的浏览器：
 
@@ -532,7 +577,7 @@ Browserlist 可以编写的字段：
 npx browserslist ">1%, last 2 version, not dead"
 ```
 
-![image-20220828190451254](.\typora-user-images\image-20220828190451254.png)
+![image-20220828190451254](..\typora-user-images\image-20220828190451254.png)
 
 Browserlist 可以编写的位置：
 
@@ -571,31 +616,32 @@ Browserlist 可以编写的位置：
   last 1 version #最后的一个版本
   maintained node versions #所有还被 node 基金会维护的 node 版本
   not dead
-
+  
   或者
-
+  
   [production staging]
   > 1%
   last 2 version
   not dead
-
-
+  
   [development]
   last 1 chrome version
   last 1 firefox version
-  ```
-
+  
   不配置默认为：**> 0.5%, last 2 versions, Firefox ESR, not dead**
+  ```
+  
+  
 
-## webpack-dev-server
+ ## webpack-dev-server
 
 内部依赖的是 express 框架。
 
 onBeforeSetupMiddleware 在 webpack-dev-server 静态资源中间件处理之前，可以用于拦截部分请求返回特定内容，或者实现简单的数据 mock。
 
-```js
+  ```js
 devServer:{
-    static:path.resolve(__dirname,'public'),
+  static:path.resolve(__dirname,'public'),
 	port:8080,
 	open:true,
 	proxy:{
@@ -605,17 +651,19 @@ devServer:{
             pathRewrite:{"^/api":''}
         }
     },
-        // webpack-dev-server 内部就是一个express服务器，devServer就是express执行返回值
-        onBeforeSetupMiddleware(devServer){// express()
-            // 简单模拟一个后端接口
-            devServer.app.get('/api/users', (req, res) => {
-                res.json([{ id: 1 }, { id: 2 }]);
-            });
-        }
+  // webpack-dev-server 内部就是一个express服务器，devServer就是express执行返回值
+  onBeforeSetupMiddleware(devServer){// express()
+     // 简单模拟一个后端接口
+     devServer.app.get('/api/users', (req, res) => {
+       res.json([{ id: 1 }, { id: 2 }]);
+     });
+  }
 }
-```
+  ```
 
-使用 webpack-dev-server 时，内部会使用 webpack 的配置文件模拟打包，并将打包后生成文件的文件更目录作为 web 服务器的根目录（/），当访问该地址时，默认访问的就是根目录下的 index.html 文件。而 devServer 配置项指定的目录中的文件也会直接放在本地服务器的根目录下。
+使用 webpack-dev-server 时，内部会使用 webpack 的配置文件模拟打包，并将打包后生成文件的文件根目录和static字段指定的文件夹合并后，作为 web 服务器的根目录（/），当访问该地址时，默认访问的就是根目录下的 index.html 文件。而 devServer 配置项指定的目录中的文件也会直接放在本地服务器的根目录下。
+
+
 
 css-loader 的配置
 
@@ -641,7 +689,7 @@ css-loader 的配置
 
 css-loader 在 css 文件中默认支持 **~ 符号**表示 node_modules 文件路径，不需要用户去配置。
 
-node-sass sass-loader
+node-sass  sass-loader
 
 sass：老版后缀
 
@@ -649,7 +697,13 @@ scss：新版本后缀
 
 node-sass 负责将 scss 或者 sass 编译为 css，原始的 sass 包使用 ruby 写的，本地安装的话需要编译，node-sass 是 node 写的，比较好安装执行。
 
+dart-sass
+
+
+
 ## eslint
+
+### 旧版配置
 
 npm install eslint eslint-loader babel-eslint --D
 
@@ -729,6 +783,62 @@ module.exports = {
 };
 ```
 
+
+
+### 新版配置
+
+npm install eslint -D
+
+Npc aslant. --init 问答式选择生产.eslintrc.js文件，同时会安装一些配置预设和插件。
+
+以前通过配置loader实现在编译阶段对源代码规范的校验并在不规范的情况下抱错。
+
+现在则改为插件的形式。同时原来的解析器babel-eslint已经停止维护了，现在使用@babel/eslint-parser。
+
+```js
+// webpack.config.js
+
+const ESLintPlugin = require('eslint-webpack-plugin');
+
+plugins:[
+  new ESLintPlugin({
+    fix: true,
+  }),
+]
+```
+
+
+
+.eslintrc.js
+
+```js
+module.exports = {
+  env: {
+    browser: true,
+    es2021: true,
+    node: true,
+    commonjs: true,
+  },
+  parser: '@babel/eslint-parser',
+  extends: ['plugin:react/recommended', 'airbnb'],
+  overrides: [],
+  parserOptions: {
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+  },
+  plugins: ['react'],
+  rules: {
+    'no-unused-vars': 'error',
+    'no-undef': 'error',
+  },
+};
+
+```
+
+
+
+
+
 ## webpack-dev-middleware
 
 [webpack-dev-middleware](https://www.npmjs.com/package/)就是在 Express 中提供 `webpack-dev-server` 静态服务能力的一个中间件
@@ -749,6 +859,8 @@ app.listen(3000);
 
 - webpack-dev-server 的好处是相对简单，直接安装依赖后执行命令即可
 - 而使用`webpack-dev-middleware`的好处是可以在既有的 Express 代码基础上快速添加 webpack-dev-server 的功能，同时利用 Express 来根据需要添加更多的功能，如 mock 服务、代理 API 请求等
+
+
 
 ## CSS 兼容性
 
@@ -810,6 +922,8 @@ module.exports = {
 
 配置文件的内容也可以写在 package.json 文件中。
 
+
+
 ## 资源模块
 
 type 的四种类型：
@@ -844,32 +958,32 @@ output:{
       filename:'bundle.js',
       path:path.resolve(__dirname,"./build")
   }
-
-
-
+  
+  
   {
-      test:/\.(jpg|png|svg|gif|jpeg)$/,
-     	type:"asset/resource",
+    test:/\.(jpg|png|svg|gif|jpeg)$/,
+    type:"asset/resource",
       generator:{
-          filename:"img/[name].[hash:6][ext]"   //img会是图片资源打包后存放了目录
+        filename:"img/[name].[hash:6][ext]"   //img会是图片资源打包后存放了目录
       }
   }
-  ```
+
+
 
 - `url-loader` => `asset/inline` 导出一个资源的 data URI
 
   ```js
-  output:{
-      filename:'bundle.js',
-      path:path.resolve(__dirname,"./build")
-  }
+
+output:{
+  filename:'bundle.js',
+  path:path.resolve(__dirname,"./build")
+}
 
 
-
-  {
-      test:/\.(jpg|png|svg|gif|jpeg)$/,
-     	type:"asset/inline"  // 不要配置文件打包路径，因为没有输出文件，都在js中以base64表示了
-  }
+{
+  test:/\.(jpg|png|svg|gif|jpeg)$/,
+  type:"asset/inline"  // 不要配置文件打包路径，因为没有输出文件，都在js中以base64表示了
+}
   ```
 
 - asset 在导出一个 data URI 和发送一个单独的文件之间自动选择。之前通过使用 `url-loader`，并且配置资源体积限制实现
@@ -879,24 +993,25 @@ output:{
       filename:'bundle.js',
       path:path.resolve(__dirname,"./build")
   }
-
-
-
+  
   {
-      test:/\.(jpg|png|svg|gif|jpeg)$/,
-     	type:"asset",
+    test:/\.(jpg|png|svg|gif|jpeg)$/,
+    type:"asset",
       generator:{
-          filename:"img/[name].[hash:6][ext]"
+        filename:"img/[name].[hash:6][ext]"
       },
       parser:{
-  		dataUrlCondition:{
-              maxSize: 100 *1024   // 小于该体积则打包为base64
-          }
+        dataUrlCondition:{
+          maxSize: 100 *1024   // 小于该体积（100kb）则打包为base64
+        }
       }
   }
-  ```
 
-```diff
+
+
+
+  ```diff
+
 module.exports = {
 	output:{
 		path:path.resolve(__dirname,'dist')
@@ -924,7 +1039,7 @@ module.exports = {
 +               test: /\.png$/,
 +               type: 'asset/resource',   // file-loader
 +               generator:{
-+					filename:'images/[hash][ext]'  (方式二 )
++									filename:'images/[hash][ext]'  (方式二 )
 +               }
 +           },
 +           {
@@ -944,8 +1059,8 @@ module.exports = {
 +                   }
 +               }，
 +               generator:{
-+					filename:'images/[hash][ext]'  (方式二 )
-+               }z'z'z
++									filename:'images/[hash][ext]'  (方式二 )
++               }
 +           }
         ]
     },
@@ -953,7 +1068,7 @@ module.exports = {
     asset: true
   },
 };
-```
+  ```
 
 ```js
 {
@@ -964,6 +1079,8 @@ module.exports = {
     }
 }
 ```
+
+
 
 ### query
 
@@ -994,12 +1111,11 @@ import png from './assets/images/logo.png?time=2022-8-21';
   ```js
   const imgEl = new Image()
   imgEl.src = require('./src/asset/images/xx/xx.jpg').default   file-loader 5版本中的特点
-
-
+  
+  
   import imgSrc from './src/asset/images/xx/xx.jpg'
   const imgEl = new Image()
   imgEl.src = imgSrc
-  ```
 
 有时经过 webpack 打包后的文件希望保留源文件的名字再外加一些特别的标识符进行表示。
 
@@ -1021,7 +1137,7 @@ import png from './assets/images/logo.png?time=2022-8-21';
 
 现在不能直接像上图一样在 css 中引用图片了：具体参考文章https://blog.csdn.net/w184167377/article/details/118930758
 
-```js
+  ```js
 {
     test: /\.(jpe?g|png|svg|gif)$/,
     use: [
@@ -1036,7 +1152,9 @@ import png from './assets/images/logo.png?time=2022-8-21';
         ],
      type: "javascript/auto"
 }
-```
+  ```
+
+
 
 ## 清除打包目录
 
@@ -1049,6 +1167,8 @@ output:{
     clean:true  // +++++++++++++++++++++++++++
 }
 ```
+
+
 
 ## JS 兼容性处理
 
@@ -1121,6 +1241,8 @@ class @decode Person {}
 
 ```
 
+
+
 ## webpack 原理预备知识
 
 - `Symbol.toStringTag` 是一个内置 symbol，它通常作为对象的属性键使用，对应的属性值应该为字符串类型，这个字符串用来表示该对象的自定义类型标签
@@ -1139,6 +1261,8 @@ Object.defineProperty(myExports, Symbol.toStringTag, { value: 'Module' });
 console.log(Object.prototype.toString.call(myExports)); //[object Module]   自定义某个数据的标识
 ```
 
+
+
 webpack.config.js
 
 ```js
@@ -1147,13 +1271,12 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 module.exports = {
   mode: 'development',
-  devtool: 'source-map',
+  devtool: false,
   entry: './src/index.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'main.js'
   },
-  module: {},
   plugins: [
     new CleanWebpackPlugin({ cleanOnceBeforeBuildPatterns: ['**/*'] }),
     new HtmlWebpackPlugin({
@@ -1161,9 +1284,10 @@ module.exports = {
       filename: 'index.html'
     })
   ],
-  devServer: {}
 };
 ```
+
+
 
 入口文件 index.js
 
@@ -1212,7 +1336,9 @@ module.exports = 'title';
 })();
 ```
 
-在 webpack 中由两种模块化规范，commonjs 和 esmodule，他们之间可以相会转换和混用。并且在 webpack 打包后都统一使用 commonJS 模块规范。如果对不同模块化规范做兼容。
+在 webpack 中有两种模块化规范，commonjs 和 esmodule，他们之间可以相会转换和混用。并且在 webpack 打包后都统一使用 commonJS 模块规范。如果对不同模块化规范做兼容。
+
+
 
 ### common.js 加载 common.js
 
@@ -1226,10 +1352,11 @@ console.log(title.age);
 exports.name = 'title_name';
 exports.age = 'title_age';
 
+
 // 打包结果， 基本不用转换和pollfill支持
 (() => {
   var modules = {
-    // 定义了一个对象，用模块的路径作为key,函数作为值value ，将每一个加载的模块以及模块对应的代码，代码放在一个函数内部  ，然后该函数作为值，而模块的路径对应key 。  在commonjs中并没有将入口文件加入到__webpack_modules__对象内部作为一个属性。而在ES6的中是做了的。可以看下面的ES6打包文件
+      // 定义了一个对象，用模块的路径作为key,函数作为值value ，将每一个加载的模块以及模块对应的代码，代码放在一个函数内部  ，然后该函数作为值，而模块的路径对应key 。  在commonjs中并没有将入口文件加入到__webpack_modules__对象内部作为一个属性。而在ES6的中是做了的。可以看下面的ES6打包文件
     './src/title.js': (module, exports) => {
       exports.name = 'title_name';
       exports.age = 'title_age';
@@ -1256,12 +1383,14 @@ exports.age = 'title_age';
 })();
 ```
 
+
+
 ### common.js 加载 ES6 modules
 
 ```js
 // index.js:
 let title = require('./title');
-console.log(title);
+console.log(title.default);
 console.log(title.age);
 
 // title.js
@@ -1285,6 +1414,7 @@ export const age = 'title_age'; // 命名导出
       const age = 'title_age';
     }
   };
+  
   var cache = {};
 
   function require(moduleId) {
@@ -1327,6 +1457,8 @@ export const age = 'title_age'; // 命名导出
   console.log(title.age);
 })();
 ```
+
+
 
 ### ES6 modules 加载 ES6 modules
 
@@ -1396,6 +1528,8 @@ var _title_0__ = require('./src/title.js');
 console.log(_title_0__['default']);
 console.log(_title_0__.age);
 ```
+
+
 
 ### ES6 modules 加载 common.js
 
@@ -1476,7 +1610,7 @@ export default 'title_name'; // 默认导出
 export const age = 'title_age'; // 命名导出
 ```
 
-![image-20220522184522377](.\typora-user-images\image-20220522184522377.png)
+![image-20220522184522377](..\typora-user-images\image-20220522184522377.png)
 
 面试：commonjs 和 es Module 导出的区别？
 
@@ -1521,6 +1655,8 @@ setTimeout(() => {
 }, 1000);
 ```
 
+
+
 ## 异步加载
 
 懒加载和代码分割
@@ -1535,7 +1671,7 @@ import(/* webpackChunkName: "hello" */ './hello.js').then((result) => {
 export default 'hello';
 ```
 
-打包后，用户访问打包后的 html 文件，该文件引入了整个项目的启动 js 文件（build.js 或者 main.js）,不会加载拆包后没有用到的 js 文件。当在浏览器中执行启动 js 文件时，该文件会将用到的 js 文件通过创建 script 标签的形式去加载拆包的 js 文件
+打包后，用户访问打包后的 html 文件，该文件引入了整个项目的启动 js 文件（build.js 或者 main.js）,不会加载拆包后没有用到的 js 文件。当在浏览器中执行启动 js 文件时，该文件会将用到的 js 文件通过创建 script 标签的形式去加载拆包的 js 文件。
 
 ```js
 debugger;
@@ -1652,11 +1788,13 @@ require
 
 懒加载一定意味着代码分割。
 
+
+
 ## AST
 
 - 抽象语法树（Abstract Syntax Tree，AST）是源代码语法结构的一种抽象表示
 - 它以树状的形式表现编程语言的语法结构，树上的每个节点都表示源代码中的一种结构
-- 原理都是通过`JavaScript Parser`把代码转化为一颗抽象语法树（AST），这颗树定义了代码的结构，通过操纵这颗树，可以精准的定位到声明语句、赋值语句、运算语句等等，实现对代码的分析、优化、变更等操作
+- 原理都是通过`JavaScript Parser`把代码转化为一颗抽象语法树（AST），这颗树定义了代码的结构，通过操纵这颗树，可以精准的定位到声明语句、赋值语句、运算语句等，实现对代码的分析、优化、变更等操作
 
 ### 用途
 
@@ -1665,19 +1803,42 @@ require
 
 ![ast](http://img.zhufengpeixun.cn/ast.jpg)
 
+
+
 第一步：词法解析，拆成最小词法单元，一个个分词（token）都有自己的含义。
 
 第二步：语法分析，生成 ast，树程序由一行行代码组成，每行代码都是 body 中的某个元素，body 本身是数组格式，每个元素都有一个类型（如：变量声明）是一个节点。
+
+
 
 `JavaScript Parser`是把 JavaScript 源码转化为抽象语法树的解析器
 
 JavaScript 的代表 parser 有哪些：
 
 - SpiderMonkey
-  - estree（规范）
-    - esprima
-    - acorn
-    - babel parser
+- estree（规范）
+- esprima
+- acorn
+- babel parser
+
+
+
+### AST节点
+
+- [estree](https://github.com/estree/estree)
+- [spec.md](https://github.com/babel/babel/blob/main/packages/babel-parser/ast/spec.md)
+- [astexplorer](https://astexplorer.net/)
+- AST节点
+  - File 文件
+  - Program 程序
+  - Literal 字面量 NumericLiteral StringLiteral BooleanLiteral
+  - Identifier 标识符
+  - Statement 语句
+  - Declaration 声明语句
+  - Expression 表达式
+  - Class 类
+
+
 
 ### 遍历语法树
 
@@ -1730,6 +1891,8 @@ Program进入
 Program离开
 ```
 
+
+
 ## babel
 
 工作过程分为三个部分：
@@ -1741,6 +1904,8 @@ Program离开
 - Generate(代码生成) 将上一步经过转换过的抽象语法树生成新的代码
 
 ![ast-compiler-flow.jpg](https://img.zhufengpeixun.com/ast-compiler-flow.jpg)
+
+
 
 ### babel 插件
 
@@ -1760,6 +1925,8 @@ Program离开
 - [类型别名](https://github.com/babel/babel/blob/main/packages/babel-types/src/ast-types/generated/index.ts#L2489-L2535)
 - [DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types)
 
+
+
 ## AST 的前置知识
 
 ### 访问器模式
@@ -1769,6 +1936,8 @@ Program离开
 - **Visitor 上挂载以节点 `type` 命名的方法，当遍历 AST 的时候，如果匹配上 type，就会执行对应的方法**
 - 说白了 Visitor 就是一个对象，该对象可以提供许多不同的方法，供给不同的访问者调用不同的方法
 - 插件就是一个访问器对象，每个插件只关注一个 AST 中不同的节点类型，并对这些关注的节点进行操作
+
+
 
 ### path
 
@@ -1799,6 +1968,8 @@ Program离开
 
 每个路径对应一个节点。
 
+
+
 ### AST 节点
 
 - File 文件
@@ -1813,6 +1984,8 @@ Program离开
 - VariableDeclarator
 - FunctionDeclaration，函数声明
 - BlockStatement，块级语句
+
+
 
 ### scope
 
@@ -1832,12 +2005,15 @@ scope 对象上的属性或者方法：
 - moveBindingTo(name, scope) 把当前作用域的变量移动到其它作用域中
 - generateUid(name) 生成作用域中的唯一变量名,如果变量名被占用就在前面加下划线
 
+
+
 ### 转换箭头函数插件
 
 ```js
 const core = require('@babel/core');
 const types = require('@babel/types');
 const arrowFunctionPlugin = require('babel-plugin-transform-es2015-arrow-functions');
+
 let arrowFunctionPlugin2 = {
   visitor: {
     ArrowFunctionExpression(path) {
@@ -1853,6 +2029,7 @@ let arrowFunctionPlugin2 = {
     }
   }
 };
+
 function hoistFunctionEnvironment(path) {
   //1.看看当前节点里有没有使用到this
   const thisPaths = getThisPaths(path);
@@ -1878,6 +2055,7 @@ function hoistFunctionEnvironment(path) {
     }
   }
 }
+
 function getThisPaths(path) {
   let thisPaths = [];
   //遍历此路径所有的子路径
@@ -1890,9 +2068,7 @@ function getThisPaths(path) {
 }
 //这是JS源代码，用字符串表示
 const sourceCode = `
-
 const sum = (a,b)=>{
-
   const minis = (a,b)=>{
     console.log(this);
     return a-b;
@@ -1900,6 +2076,7 @@ const sum = (a,b)=>{
   return a+b;
 }
 `;
+
 const result = core.transform(sourceCode, {
   plugins: [arrowFunctionPlugin2]
 });
@@ -1913,6 +2090,8 @@ const sum = (a,b)=>{
 }
  */
 ```
+
+
 
 ### 日志插件
 
@@ -1949,6 +2128,8 @@ const result = core.transform(sourceCode, {
 });
 console.log(result.code);
 ```
+
+
 
 ## webpack 工作流
 
@@ -2024,6 +2205,8 @@ compiler.run((err, stats) => {
 });
 ```
 
+
+
 ### loader
 
 webpack 的 loder 的本质就是一个 JavaScript 函数，用于转换或者翻译 webpack 不能识别的模块转为 js 或者 json 模块。
@@ -2068,6 +2251,8 @@ function loader2(source) {
 module.exports = loader2;
 ```
 
+
+
 ### tapable
 
 - tapable 是一个类似于 Node.js 中的 EventEmitter 的库，但更专注于自定义事件的触发和处理
@@ -2101,6 +2286,8 @@ class Plugin {
 new Plugin().apply();
 hook.call();
 ```
+
+
 
 ### plugin
 
