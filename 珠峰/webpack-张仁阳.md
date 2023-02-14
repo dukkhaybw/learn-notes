@@ -2131,7 +2131,76 @@ console.log(result.code);
 
 
 
+
+
+### 数据埋点
+
+当调用方法时，向服务器发送一个请求，通知服务器。
+
+```js
+const core = require('@babel/core')
+const types = require('@babel/types')
+const pathLib = require('path')
+
+const sourceCode = `
+	function sum(a, b){
+		return a + b
+	};
+	
+	const multiply = function(a, b){
+		return a * b 
+	};
+	
+	const minus = (a, b)=>a + b;
+	class Calculator{
+		divide(a, b){
+			return a/b
+		}
+	}
+`
+
+
+
+```
+
+
+
+转化后的代码：
+
+```js
+·
+const sourceCode = `
+	import logger from 'logger'
+	
+	function sum(a, b){
+		logger()
+		return a + b
+	};
+	
+	const multiply = function(a, b){
+		logger()
+		return a * b 
+	};
+	
+	const minus = (a, b)=>{
+		logger()
+		return a + b
+	};
+	
+	class Calculator{
+		divide(a, b){
+			logger()
+			return a/b
+		}
+	}
+`
+```
+
+
+
 ## webpack 工作流
+
+
 
 ### 调试 webpack
 
@@ -2141,17 +2210,26 @@ package.json 中
 
 ```json
 {
-  "script": "webpack"
+  "script": {
+    "build":"webpack"
+  }
 }
 ```
 
-当执行这个脚本命令时，找到项目根目录下 node_modules 目录下的.bin 目录下的 webpack.cmd,该文件中执行的是 node_modules 目录下的 webpack/bin/webpack.js 文件，该文件中会去调用 webpack-cli 目录中的 bin 目录中的 cli.js 文件。所以可以直接调试 cli 文件：
+当执行这个脚本命令时，找到项目根目录下 node_modules 目录下的.bin 目录下的 webpack.cmd，该文件中执行的是 node_modules 目录下的 webpack/bin/webpack.js 文件，该文件中会去调用 webpack-cli 目录中的 bin 目录中的 cli.js 文件。所以可以直接调试 cli 文件：
 
 ```js
+node --inspect-brk ./node_modules/webpack/bin/webpack.js
+
+
 node --inspect-brk ./node_modules/webpack-cli/bin/cli.js
 ```
 
 > 然后打开 Chrome 浏览器控制台调试
+
+![image-20230213214843358](./webpack-张仁阳.assets/image-20230213214843358.png)
+
+
 
 方式二：
 
@@ -2170,13 +2248,17 @@ node --inspect-brk ./node_modules/webpack-cli/bin/cli.js
       "type": "node",
       "request": "launch",
       "name": "debug webpack",
-      "skipFiles": ["<node_internals>/**"],
+      "skipFiles": ["<node_internals>/**"],  // 跳过node核心模块代码
       "cwd": "${workspaceFolder}",
       "program": "${workspaceFolder}/node_modules/webpack-cli/bin/cli.js"
     }
   ]
 }
 ```
+
+> 在webpack-cli包中的cli.js文件中添加断点后便可以开始调试。
+
+
 
 方式三：
 
@@ -2187,7 +2269,7 @@ const webpack = require('./webpack2');
 const webpackConfig = require('./webpack.config');
 dubugger;
 const compiler = webpack(webpackConfig);
-//4.执行`Compiler`对象的 run 方法开始执行编译
+//4.执行Compiler对象的 run 方法开始执行编译
 compiler.run((err, stats) => {
   if (err) {
     console.log(err);
@@ -2195,10 +2277,10 @@ compiler.run((err, stats) => {
     //stats代表统计结果对象
     console.log(
       stats.toJson({
-        files: true, //代表打包后生成的文件
-        assets: true, //其它是一个代码块到文件的对应关系
-        chunks: true, //从入口模块出发，找到此入口模块依赖的模块，或者依赖的模块依赖的模块，合在一起组成一个代码块
-        modules: true //打包的模块
+        files: true, // 代表打包后生成的文件
+        assets: true, // 其它是一个代码块到文件的对应关系
+        chunks: true, // 从入口模块出发，找到此入口模块依赖的模块，或者依赖的模块依赖的模块，合在一起组成一个代码块
+        modules: true // 打包的模块，项目源码仓库中的每个文件都是一个模块（js文件，jsx文件，图片，html，css等）
       })
     );
   }
