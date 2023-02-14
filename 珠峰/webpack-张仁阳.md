@@ -2379,7 +2379,7 @@ webpack 插件的格式是固定的，插件是一个类，需要实例化，实
 
 **插件的之间的书写顺序并不会影响各个插件的执行顺序，但是如果两个插件监听的是一个 hook，那么书写顺序就和执行顺序有关了。**
 
-插件的挂载或者说监听是在 webpack 启动前全部挂载的。具体由哪些 hook 实例属性值，可以在官网中查看。
+插件的挂载或者说监听是在 webpack 启动编译前全部挂载的。具体由哪些 hook 实例属性值，可以在官网中查看。
 
 plugins/run1-plugin.js
 
@@ -2457,128 +2457,227 @@ module.exports = {
 
 babel 和 webpack 的关系是什么？ 执行顺序是？ webpack 在编译的时候，如果遇到 js 文件，会调用 babel-loader 进行文件内容的转换 在 babel 转换的时候会使用 babel 插件来转换。
 
+
+
 ### webpack 编译流程
 
-1. 初始化参数：从配置文件和 Shell 语句中读取并合并参数,得出最终的配置对象
+配置文件参考：
 
-   ```diff
-   const Compiler = require("./Compiler");
-   function webpack(options) {
-   +  // 1.初始化参数：从配置文件和 Shell 语句中读取并合并参数,得出最终的配置对象
-   +  //argv[0]是Node程序的绝对路径 argv[1] 正在运行的脚本
-   +  const argv = process.argv.slice(2);
-   +  const shellOptions = argv.reduce((shellOptions,options)=>{
-   +    // options = '--mode=development'
-   +    const [key,value] = options.split('=');
-   +    shellOptions[key.slice(2)] = value;
-   +    return shellOptions;
-   +  }, {});
-   +  const finalOptions = { ...options, ...shellOptions };
+webpack.config.js:
+
+```js
+const path = require('path');
+const Run1Plugin = require('./plugins/run1-plugin');
+const Run2Plugin = require('./plugins/run2-plugin');
+const DonePlugin = require('./plugins/done-plugin');
+module.exports = {
+  mode: 'development',
+  devtool: false,
+  cache: {
+    type :'filesystem'
+  },
+  entry: {
+    entry1: './src/entry1.js',
+    entry2:'./src/entry2.js'//name就是此模块属于哪个模块  a
+  },
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename:'[name].js'
+  },
+  resolve: {
+    extensions:['.js','.jsx','.ts','.tsx']
+  },
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        use: [
+          //最左则的loader需要返回合法的JS
+          path.resolve(__dirname, 'loaders/loader2.js'),
+          //最右侧的loader拿到的是源代码
+          path.resolve(__dirname, 'loaders/loader1.js')
+        ]
+      }
+    ]
+  },
+  plugins: [
+    //插件的挂载或者说监听是在编译启动前全部挂载的
+    new Run1Plugin(),
+    new Run2Plugin(),
+    new DonePlugin()
+   ]
+}
+```
 
 
-     //2.用上一步得到的参数初始化 `Compiler` 对象
-     const compiler = new Compiler(finalOptions);
+
+1. **初始化参数：从配置文件和 Shell 语句中读取并合并参数,得出最终的配置对象**
+
+2. **用上一步得到的参数初始化 `Compiler` 对象**
+
+3. **加载(挂载)所有配置的插件，插件是在编译开始之前全部挂载（订阅）好的，等到后面编译过程中触发插件的中各种订阅函数**
+
+4. **执行 Compiler 对象的 run 方法开始执行编译**
+
+5. **根据配置中的`entry`找出入口文件**
+
+6. **从入口文件出发,调用所有配置的`Loader`对模块进行编译**
+
+7. **再找出该模块依赖的模块，再递归本步骤直到所有入口依赖的文件都经过了本步骤的处理**
+
+8. **根据入口和模块之间的依赖关系，组装成一个个包含多个模块的 Chunk**
+
+9. **再把每个 Chunk 转换成一个单独的文件加入到输出列表**
+
+10. **在确定好输出内容后，根据配置确定输出的路径和文件名，把文件内容写入到文件系统**
+
+    在以上过程中，Webpack 会在特定的时间点广播出特定的事件，插件在监听到感兴趣的事件后会执行特定的逻辑，并且插件可以调用 Webpack 提供的 API 改变 Webpack 的运行结果
+
+    
+
+    webpack.js:
+
+    ```js
+    const Compiler = require("./Compiler");
+    function webpack(options) {
+      // 1.初始化参数：从配置文件和 Shell 语句中读取并合并参数,得出最终的配置对象
+      //argv[0]是Node程序的绝对路径 argv[1] 正在运行的脚本
+      const argv = process.argv.slice(2);  // 真正需要的shell参数
+      const shellOptions = argv.reduce((shellOptions,options)=>{
+        // options = '--mode=development'
+        const [key,value] = options.split('=');
+        shellOptions[key.slice(2)] = value;
+        return shellOptions;
+      }, {});
+      
+      const finalOptions = { ...options, ...shellOptions };  // 这里就体现的shell中设置参数的权重更高的原因
+      
+      //2.用上一步得到的参数初始化 `Compiler` 对象，单例的
+      const compiler = new Compiler(finalOptions);
+      
+      //3.加载所有配置的插件  plugins这就是插件类的实例组成的数组
+      const { plugins } = finalOptions;
+      for (let plugin of plugins) {
+        plugin.apply(compiler);
+      }
+      return compiler;
+    }
+    module.exports = webpack;
+    ```
 
 
-     //3.加载(挂载)所有配置的插件，等到后面编译过程中触发插件的中各种订阅函数
-     const { plugins } = finalOptions;
-     for (let plugin of plugins) {
-       plugin.apply(compiler);
-     }
-     return compiler;
-   }
-   module.exports = webpack;
-   ```
+    Compiler.js:
 
-2. 用上一步得到的参数初始化 Compiler 对象,单例的。
+    ```js
+    const { SyncHook } = require('tapable');
+    const Compilation = require('./Compilation');
+    const fs = require('fs');
+    const path = require('path');
+    
+    // Compiler代表整个编译过程，在编译一启动时创建，贯穿整个编译打包的生命周期且是单例的，整个编译打包过程中就一个实例。
+    class Compiler {
+      constructor(options) {
+        this.options = options;
+        this.hooks = {
+          // Compiler 实例上有许多构造函数实例化后的钩子
+          run: new SyncHook(), // 在开始编译之前调用
+          done: new SyncHook() // 在编译完成时执行
+        };
+      }
+      
+      run(callback) {
+        this.hooks.run.call(); // 在编译开始前触发run钩子执行
+        
+        // 在编译的过程中会收集所有的依赖的模块或者说文件
+        // stats指的是统计信息 modules chunks  files=bundle assets指的是文件名和文件内容的映射关系
+        const onCompiled = (err, stats, fileDependencies) => {
+          console.log('stats', stats);
+          console.log('fileDependencies', fileDependencies);
+          //10.在确定好输出内容后，根据配置确定输出的路径和文件名，把文件内容写入到文件系统
+          for (let filename in stats.assets) {
+            let filePath = path.join(this.options.output.path, filename);
+            fs.writeFileSync(filePath, stats.assets[filename], 'utf8');
+          }
+          callback(err, { toJson: () => stats });
+          for (let fileDependency of fileDependencies) {
+            //监听依赖的文件变化，如果依赖的文件变化后会开始一次新的编译
+            fs.watch(fileDependency, () => this.compile(onCompiled));
+          }
+          this.hooks.done.call(); // 在编译完成时触发done钩子执行
+        };
+        
+        // 调用compile方法进行编译
+        this.compile(onCompiled);
+      }
+      
+      // 开启一次新的编译
+      compile(callback) {
+        // 每次编译 都会创建一个新的Compilation实例
+        let compilation = new Compilation(this.options, this);
+        compilation.build(callback);
+      }
+    }
+    
+    module.exports = Compiler;
+    ```
 
-   ```js
-   const { SyncHook } = require('tapable');
-   const Compilation = require('./Compilation');
-   const fs = require('fs');
-   const path = require('path');
+    
 
-   class Compiler {
-     constructor(options) {
-       this.options = options;
-       this.hooks = {
-         //Compiler 实例上有许多构造函数实例化后的钩子
-         run: new SyncHook(), //在开始编译之前调用
-         done: new SyncHook() //在编译完成时执行
-       };
-     }
-     run(callback) {
-       this.hooks.run.call(); //在编译开始前触发run钩子执行
-       //在编译的过程中会收集所有的依赖的模块或者说文件
-       //stats指的是统计信息 modules chunks  files=bundle assets指的是文件名和文件内容的映射关系
-       const onCompiled = (err, stats, fileDependencies) => {
-         console.log('stats', stats);
-         console.log('fileDependencies', fileDependencies);
-         //10.在确定好输出内容后，根据配置确定输出的路径和文件名，把文件内容写入到文件系统
-         for (let filename in stats.assets) {
-           let filePath = path.join(this.options.output.path, filename);
-           fs.writeFileSync(filePath, stats.assets[filename], 'utf8');
-         }
-         callback(err, { toJson: () => stats });
-         for (let fileDependency of fileDependencies) {
-           //监听依赖的文件变化，如果依赖的文件变化后会开始一次新的编译
-           fs.watch(fileDependency, () => this.compile(onCompiled));
-         }
-         this.hooks.done.call(); //在编译完成时触发done钩子执行
-       };
-       //调用compile方法进行编译
-       this.compile(onCompiled);
-     }
-     //开启一次新的编译
-     compile(callback) {
-       //每次编译 都会创建一个新的Compilation实例
-       let compilation = new Compilation(this.options, this);
-       compilation.build(callback);
-     }
-   }
-   module.exports = Compiler;
-   ```
+    dubugger.js:
 
-3. 加载所有配置的插件
 
-4. 执行 Compiler 对象的 run 方法开始执行编译
+    ```js
+    const webpack = require('./webpack');
+    const webpackConfig = require('./webpack.config');
+    dubugger;
+    const compiler = webpack(webpackConfig);
+    //4.执行`Compiler`对象的 run 方法开始执行编译
+    compiler.run((err, stats) => {
+      if (err) {
+        console.log(err);
+      } else {
+        //stats代表统计结果对象
+        console.log(
+          stats.toJson({
+            files: true, //代表打包后生成的文件
+            assets: true, //其它是一个代码块到文件的对应关系
+            chunks: true, //从入口模块出发，找到此入口模块依赖的模块，或者依赖的模块依赖的模块，合在一起组成一个代码块
+            modules: true //打包的模块
+          })
+        );
+      }
+    });
+    ```
 
-   ```js
-   const webpack = require('./webpack2');
-   const webpackConfig = require('./webpack.config');
-   dubugger;
-   const compiler = webpack(webpackConfig);
-   //4.执行`Compiler`对象的 run 方法开始执行编译
-   compiler.run((err, stats) => {
-     if (err) {
-       console.log(err);
-     } else {
-       //stats代表统计结果对象
-       console.log(
-         stats.toJson({
-           files: true, //代表打包后生成的文件
-           assets: true, //其它是一个代码块到文件的对应关系
-           chunks: true, //从入口模块出发，找到此入口模块依赖的模块，或者依赖的模块依赖的模块，合在一起组成一个代码块
-           modules: true //打包的模块
-         })
-       );
-     }
-   });
-   ```
+    
 
-5. 根据配置中的`entry`找出入口文件
+compiler和compilation概念辨析：
 
-6. 从入口文件出发,调用所有配置的`Loader`对模块进行编译
+`compiler`实例对象上挂载着webpack环境所有的配置信息，包括loader，plugins，entry等等，`compiler`实例对象是在启动webpack的时候实例化好的，它是全局唯一的，可以理解为webpack实例
 
-7. 再找出该模块依赖的模块，再递归本步骤直到所有入口依赖的文件都经过了本步骤的处理
+`Compiler` 模块是 webpack 的主要引擎，它通过 [CLI](https://www.webpackjs.com/api/cli) 或者 [Node API](https://www.webpackjs.com/api/node) 传递的所有选项创建出一个 compilation 实例。 它扩展（extends）自 `Tapable` 类，用来注册和调用插件。 大多数面向用户的插件会首先在 `Compiler` 上注册。
 
-8. 根据入口和模块之间的依赖关系，组装成一个个包含多个模块的 Chunk
 
-9. 再把每个 Chunk 转换成一个单独的文件加入到输出列表
 
-10. 在确定好输出内容后，根据配置确定输出的路径和文件名，把文件内容写入到文件系统
+compilation 对象代表了一次资源版本的构建。它包含了当前的模块资源(modules)、编译生成资源(asset)、变化的文件(files)、以及被跟踪依赖的状态信息(fileDependencies)等。当 webpack 以开发模式运行时，每当检测到一个依赖文件发生变化变化，一次新的 compilation 将被创建。compilation 对象也提供了很多事件回调供插件做扩展。通过 compilation 也可以读取到 compiler 对象。
 
-> 在以上过程中，Webpack 会在特定的时间点广播出特定的事件，插件在监听到感兴趣的事件后会执行特定的逻辑，并且插件可以调用 Webpack 提供的 API 改变 Webpack 的运行结果
+`Compilation` 模块会被 `Compiler` 用来创建新的 compilation 对象（或新的 build 对象）。 `compilation` 实例能够访问所有的模块和它们的依赖（大部分是循环依赖）。 它会对应用程序的依赖图中所有模块， 进行字面上的编译(literal compilation)。 在编译阶段，模块会被加载(load)、封存(seal)、优化(optimize)、 分块(chunk)、哈希(hash)和重新创建(restore)。
+
+`Compilation` 类扩展(extend)自 `Tapable`，并提供了以下生命周期钩子。 可以按照 compiler 钩子的相同方式来调用 tap：
+
+
+
+扩展：
+
+> tapable 是 webpack 的一个核心工具，它暴露了 tap、tapAsync、tapPromise 方法，可以使用这些方法来触发 compiler 钩子，使得插件可以监听 webpack 在运行过程中广播的事件，然后通过 compiler 对象去操作 webpack。也可以使用这些方法注入自定义的构建步骤，这些步骤将在整个编译过程中的不同时机触发。 
+>
+> deps的变化会导致整个依赖链路上的内容都重新编译还是只编译变化部分？ 
+>
+> 如果有文件变化的话，在webpack5以前会全部会重新编译，比较慢，所以在webpack5以前可以使用：cache hardsource dllplugin等方法提升打包构建速度，但是 webpack5以后，内置这些缓存机制。
+
+
+
+
 
 ![2020webpackflow](http://img.zhufengpeixun.cn/webpackflow2020.jpg)
 
