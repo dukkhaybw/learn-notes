@@ -3,17 +3,15 @@
 ## Webpack
 
 ```shell
-npm install  webpack webpack-cli --save-dev
+npm install webpack webpack-cli --save-dev
 ```
-
-用法，实战，优化和源码。
 
 webpack 是 JavaScript 应用程序的静态打包工具。
 
 - webpack：核心包
 - webpack-cli：命令行工具，主要是在执行 webpack 命令时，解析命令行中设置的一些列参数，加载 webpack 配置文件（默认 webpack.config.js）
 
-webpack5 中配置文件不再是必须的了，会有一个默认的配置文件——webpack.config.js。
+webpack5 中配置文件不再必须，有一个默认的配置文件——webpack.config.js。
 
 
 
@@ -211,7 +209,6 @@ loader 的几种使用方式：
 ```js
 module.export = {
   mode: 'development', // 等于开启下面的这些配置
-
   devtool: 'eval',
   cache: true,
   performace: {
@@ -244,6 +241,10 @@ module.export = {
   }
 };
 ```
+
+
+
+
 
 ```js
 module.export = {
@@ -292,6 +293,8 @@ module.export = {
 
 - webpack 配置文件被读取时所在的 node 环境，该环境的全局对象上有 process 进程对象
 - 项目的源码文件中，实际运行在浏览器中，浏览器全局对象上没有 process 进程对象，访问则报错
+
+
 
 1. **`--mode`用来设置模块内（源代码中）的`process.env.NODE_ENV`**
 
@@ -420,7 +423,7 @@ module.exports = function (env, argv) {
 },
 ```
 
-webpack 配置文件中读取的是 node 的配置的环境变量，可以通过 cross-env key=value 来设置。 然后在 webpack 配置文件中可以访问到设置的环境变量，然后再用这个环境变量作为 webpack 配置的项中的值，从而来改变项目模块内的变量的值或者打包方式。
+webpack 配置文件中读取的是 node 配置的环境变量，可以通过 cross-env key=value 来设置。 然后在 webpack 配置文件中可以访问到设置的环境变量，然后再用这个环境变量作为 webpack 配置项中的值，从而来改变项目模块内的变量的值或者打包方式。
 
 cross-env 这是的环境变量在项目的模块文件中是无法访问到的。
 
@@ -522,31 +525,11 @@ plugins: [
 ];
 ```
 
-webpack 配置文件中的 mode 根据不同的值，然后借助 webpack.DefinePlugin 插件来给项目中的源文件设置的环境变量，但是在 webpack 配置文件中（node 环境中）无法访问到的。
 
---env=development 和 --mode=development 两种写法都不会影响 node 环境中的 process.env.NODE_ENV。
-
-**--mode 的优先级高于配置文件中的 mode 字段设置的值。**
 
 webpack 的 mode 默认为`production`， webpack serve 的 mode 默认为 development
 
-- 可以在模块内通过`process.env.NODE_ENV`获取当前的变量,无法在 webpack 配置文件中获取此变量
-
 webpack 的配置文件的模块导出可以是一个函数，也可以是一个配置对象。其中函数可以接受命令行传递的参数。
-
-如果通过 webpack 的配置文件中的 mode 设置打包模式，那么在项目的各个模块文件中的 process.env.NODE_ENV 字段在打包后生成的文件中都将被替换为字符串:'development 或者 production'。比如在项目的 index.js 入口文件中写代码：
-
-```js
-console.log(process.env.NODE_ENV, '----------------');
-```
-
-在 mode 为 development 模式下，编译后文件的中的代码是：
-
-```js
-console.log('development', '----------------');
-```
-
-在 script 脚本中使用 --mode=development 的效果和在 webpack 配置文件的 mode 字段中设置值是一样的。
 
 
 
@@ -789,7 +772,7 @@ module.exports = {
 
 npm install eslint -D
 
-Npc aslant. --init 问答式选择生产.eslintrc.js文件，同时会安装一些配置预设和插件。
+npx eslint. --init 问答式选择生产.eslintrc.js文件，同时会安装一些配置预设和插件。
 
 以前通过配置loader实现在编译阶段对源代码规范的校验并在不规范的情况下抱错。
 
@@ -817,9 +800,8 @@ module.exports = {
     browser: true,
     es2021: true,
     node: true,
-    commonjs: true,
   },
-  parser: '@babel/eslint-parser',
+  parser: '@babel/eslint-parser',  // 不用这个解析器则是用eslint默认的
   extends: ['plugin:react/recommended', 'airbnb'],
   overrides: [],
   parserOptions: {
@@ -851,6 +833,7 @@ const app = express();
 const webpack = require('webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackOptions = require('./webpack.config');
+
 webpackOptions.mode = 'development';
 const compiler = webpack(webpackOptions);
 app.use(webpackDevMiddleware(compiler, {}));
@@ -899,7 +882,7 @@ module.exports = {
 
 {
     test:/\.css/,
-	use:[
+		use:[
         {loader:'style-loader'},
         'css-loader',
         {
@@ -973,22 +956,23 @@ output:{
 - `url-loader` => `asset/inline` 导出一个资源的 data URI
 
   ```js
+  output:{
+    filename:'bundle.js',
+    path:path.resolve(__dirname,"./build")
+  }
+  
+  
+  {
+    test:/\.(jpg|png|svg|gif|jpeg)$/,
+    type:"asset/inline"  // 不要配置文件打包路径，因为没有输出文件，都在js中以base64表示了
+  }
 
-output:{
-  filename:'bundle.js',
-  path:path.resolve(__dirname,"./build")
-}
 
-
-{
-  test:/\.(jpg|png|svg|gif|jpeg)$/,
-  type:"asset/inline"  // 不要配置文件打包路径，因为没有输出文件，都在js中以base64表示了
-}
-  ```
 
 - asset 在导出一个 data URI 和发送一个单独的文件之间自动选择。之前通过使用 `url-loader`，并且配置资源体积限制实现
 
-  ```js
+  ```
+  
   output:{
       filename:'bundle.js',
       path:path.resolve(__dirname,"./build")
@@ -1006,12 +990,11 @@ output:{
         }
       }
   }
+  ```
 
 
 
-
-  ```diff
-
+```diff
 module.exports = {
 	output:{
 		path:path.resolve(__dirname,'dist')
@@ -1068,7 +1051,9 @@ module.exports = {
     asset: true
   },
 };
-  ```
+```
+
+
 
 ```js
 {
@@ -1180,9 +1165,9 @@ output:{
 - [babel-loader](https://www.npmjs.com/package/babel-loader)使用 Babel 和 webpack 转译 JavaScript 文件,用来读取加载项目源码中的 js 文件
 - [@babel/core](https://www.npmjs.com/package/@babel/core)Babel 编译的核心包,babel-loader 读取的源码传给@babel/core，由@babel/core 将源码转为 AST 语法树，但是它不知道怎么转为代码，它需要将不同的 ast 部分转发给不同插件或者预设取处理
 - [@babel/preset-env](https://www.babeljs.cn/docs/babel-preset-env)
-- [@babel/preset-react](https://www.npmjs.com/package/@babel/preset-react)React 插件的 Babel 预设
-- [@babel/plugin-proposal-decorators](https://babeljs.io/docs/en/babel-plugin-proposal-decorators)把类和对象装饰器编译成 ES5
-- [@babel/plugin-proposal-class-properties](https://babeljs.io/docs/en/babel-plugin-proposal-class-properties)转换静态类属性以及使用属性初始值化语法声明的属性
+- [@babel/preset-react](https://www.npmjs.com/package/@babel/preset-react) React 插件的 Babel 预设
+- [@babel/plugin-proposal-decorators](https://babeljs.io/docs/en/babel-plugin-proposal-decorators) 把类和对象装饰器编译成 ES5
+- [@babel/plugin-proposal-class-properties](https://babeljs.io/docs/en/babel-plugin-proposal-class-properties) 转换静态类属性以及使用属性初始值化语法声明的属性
 
 ```shell
 npm i babel-loader @babel/core @babel/preset-env @babel/preset-react  -D
@@ -2199,8 +2184,6 @@ const sourceCode = `
 
 
 ## webpack 工作流
-
-
 
 ### 调试 webpack
 
