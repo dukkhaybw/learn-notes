@@ -11,8 +11,6 @@ webpack 是 JavaScript 应用程序的静态打包工具。
 - webpack：核心包
 - webpack-cli：命令行工具，主要是在执行 webpack 命令时，解析命令行中设置的一些列参数，加载 webpack 配置文件（默认 webpack.config.js）
 
-webpack5 中配置文件不再必须，有一个默认的配置文件——webpack.config.js。
-
 
 
 ## 浏览器直接使用 ES module
@@ -64,7 +62,7 @@ npx webpack --config  ./xxx/xxx.js
 ## entry
 
 - 入口起点(entry point)指示 webpack 使用哪个模块，来作为构建其内部依赖图(dependency graph) 的开始。进入入口起点后，webpack 会找出有哪些模块和库是入口起点（直接和间接）依赖的
-- 默认值是 `./src/index.js`，但你可以通过在 `webpack configuration` 中配置 `entry` 属性，来指定一个（或多个）不同的入口起点
+- 默认值是 `./src/index.js`，但你可以通过在 `webpack configuration` 中配置 `entry` 属性，来指定一个（或多个）不同src入口起点
 
 ```js
 entry: './src/index.js';
@@ -162,6 +160,10 @@ loader 的几种使用方式：
 
 - copy-webpack-plugin
 
+  注意，该插件只是将指定目录下的文件拷贝一份到打包输出的文件夹中，但是并不将拷贝后的文件自动引入到打包生成的html中。
+  
+  [文档](https://www.webpackjs.com/plugins/copy-webpack-plugin#root)
+  
   ```js
   const CopyWebpackPlugin  = require('copy-webpack-plugin')
   
@@ -172,7 +174,7 @@ loader 的几种使用方式：
                   from:'public',
                   globOptions:{
                       ignore:[
-                          "**/index.html",
+                          "**/index.html",   // 排除public下的index.html
                           "**/.DS_Store",
                           ...
                       ]
@@ -365,7 +367,7 @@ module.exports = function (env, argv) {
 };
 ```
 
-**`--env` 用来设置 webpack 配置文件的函数参数**，并不直接在项目的模块文件中生效
+**`--env` 用来设置 webpack 配置文件导出的函数的参数**，并不直接在项目的模块文件中生效。
 
 在 script 脚本中使用 --env=development 的效果是为 webpack 配置文件默认导出的是函数时，可以在函数的参数中获取到该命令行中设置的参数。例如 script 脚本中：`"build": "webpack --env=development"` 那么下面代码中的 env 就是：`{ WEBPACK_BUNDLE: true, WEBPACK_BUILD: true, development: true }`。argv 的结构则是：`{ env: { WEBPACK_BUNDLE: true, WEBPACK_BUILD: true, development: true } }`，但是因为 mode 默认没有设置时使用的是 production 模式，所以打包出来代码中的 process.env.NODE_ENV 变量的取值仍旧是 production 字符串。
 
@@ -681,143 +683,6 @@ scss：新版本后缀
 node-sass 负责将 scss 或者 sass 编译为 css，原始的 sass 包使用 ruby 写的，本地安装的话需要编译，node-sass 是 node 写的，比较好安装执行。
 
 dart-sass
-
-
-
-## eslint
-
-### 旧版配置
-
-npm install eslint eslint-loader babel-eslint --D
-
-```js
-module: {
-    rules: [
-+      {
-+        test: /\.jsx?$/,
-+        loader: 'eslint-loader',
-+        enforce: 'pre',   //   值：不写  pre前置  post后置 确定针对同一个文件的规则匹配的优先级
-+        options: { fix: true },
-+        exclude: /node_modules/,
-+      }, // 先检查代码风格，在进行编译
-
-+      {
-+        test: /\.jsx?$/,
-+        use: {
-+          loader: 'babel-loader',
-+          options: {
-+            presets: ["@babel/preset-env", '@babel/preset-react'],
-+            plugins: [
-+              ["@babel/plugin-proposal-decorators", { legacy: true }],
-+              ["@babel/plugin-proposal-private-property-in-object", { "loose": true }],
-+              ["@babel/plugin-proposal-private-methods", { "loose": true }],
-+              ["@babel/plugin-proposal-class-properties", { loose: true }],
-+            ],
-+          },
-+        },
-+      },
-    ]
-}
-```
-
-.eslintrc.js：
-
-```js
-module.exports = {
-  root: true, // 为true说明该文件是根配置文件，可以被其他配置文件继承规则，为true是就不能再写extends继承字段了
-  parser: 'babel-eslint', // 代码中有es6以后的写法，默认情况下可能不认识，需要使用babel-eslint识别新语法
-  //指定解析器选项
-  parserOptions: {
-    sourceType: 'module',
-    ecmaVersion: 2015
-  },
-  //指定脚本的运行环境
-  env: {
-    browser: true,
-    node: true
-  },
-  // 启用的规则及其各自的错误级别
-  rules: {
-    indent: 'off', //缩进风格
-    quotes: 'off', //引号类型
-    'no-console': 'error' //禁止使用console
-  }
-};
-```
-
-npm i eslint-config-airbnb eslint-loader eslint eslint-plugin-import eslint-plugin-react eslint-plugin-react-hooks and eslint-plugin-jsx-a11y -D
-
-```js
-module.exports = {
-  // 删除root文件，同时继承airbnb
-  parser: 'babel-eslint',
-  extends: 'airbnb',
-  rules: {
-    semi: 'error',
-    'no-console': 'off',
-    'linebreak-style': 'off',
-    'eol-last': 'off'
-    //"indent":["error",2]
-  },
-  env: {
-    browser: true,
-    node: true
-  }
-};
-```
-
-
-
-### 新版配置
-
-npm install eslint -D
-
-npx eslint. --init 问答式选择生产.eslintrc.js文件，同时会安装一些配置预设和插件。
-
-以前通过配置loader实现在编译阶段对源代码规范的校验并在不规范的情况下抱错。
-
-现在则改为插件的形式。同时原来的解析器babel-eslint已经停止维护了，现在使用@babel/eslint-parser。
-
-```js
-// webpack.config.js
-
-const ESLintPlugin = require('eslint-webpack-plugin');
-
-plugins:[
-  new ESLintPlugin({
-    fix: true,
-  }),
-]
-```
-
-
-
-.eslintrc.js
-
-```js
-module.exports = {
-  env: {
-    browser: true,
-    es2021: true,
-    node: true,
-  },
-  parser: '@babel/eslint-parser',  // 不用这个解析器则是用eslint默认的
-  extends: ['plugin:react/recommended', 'airbnb'],
-  overrides: [],
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-  },
-  plugins: ['react'],
-  rules: {
-    'no-unused-vars': 'error',
-    'no-undef': 'error',
-  },
-};
-
-```
-
-
 
 
 
@@ -1228,9 +1093,146 @@ class @decode Person {}
 
 
 
+## eslint
+
+### 旧版配置
+
+npm install eslint eslint-loader babel-eslint --D
+
+```js
+module: {
+    rules: [
++      {
++        test: /\.jsx?$/,
++        loader: 'eslint-loader',
++        enforce: 'pre',   //   值：不写  pre前置  post后置 确定针对同一个文件的规则匹配的优先级
++        options: { fix: true },
++        exclude: /node_modules/,
++      }, // 先检查代码风格，在进行编译
+
++      {
++        test: /\.jsx?$/,
++        use: {
++          loader: 'babel-loader',
++          options: {
++            presets: ["@babel/preset-env", '@babel/preset-react'],
++            plugins: [
++              ["@babel/plugin-proposal-decorators", { legacy: true }],
++              ["@babel/plugin-proposal-private-property-in-object", { "loose": true }],
++              ["@babel/plugin-proposal-private-methods", { "loose": true }],
++              ["@babel/plugin-proposal-class-properties", { loose: true }],
++            ],
++          },
++        },
++      },
+    ]
+}
+```
+
+.eslintrc.js：
+
+```js
+module.exports = {
+  root: true, // 为true说明该文件是根配置文件，可以被其他配置文件继承规则，为true是就不能再写extends继承字段了
+  parser: 'babel-eslint', // 代码中有es6以后的写法，默认情况下可能不认识，需要使用babel-eslint识别新语法
+  //指定解析器选项
+  parserOptions: {
+    sourceType: 'module',
+    ecmaVersion: 2015
+  },
+  //指定脚本的运行环境
+  env: {
+    browser: true,
+    node: true
+  },
+  // 启用的规则及其各自的错误级别
+  rules: {
+    indent: 'off', //缩进风格
+    quotes: 'off', //引号类型
+    'no-console': 'error' //禁止使用console
+  }
+};
+```
+
+npm i eslint-config-airbnb eslint-loader eslint eslint-plugin-import eslint-plugin-react eslint-plugin-react-hooks and eslint-plugin-jsx-a11y -D
+
+```js
+module.exports = {
+  // 删除root文件，同时继承airbnb
+  parser: 'babel-eslint',
+  extends: 'airbnb',
+  rules: {
+    semi: 'error',
+    'no-console': 'off',
+    'linebreak-style': 'off',
+    'eol-last': 'off'
+    //"indent":["error",2]
+  },
+  env: {
+    browser: true,
+    node: true
+  }
+};
+```
+
+
+
+### 新版配置
+
+npm install eslint -D
+
+npx eslint. --init 问答式选择生产.eslintrc.js文件，同时会安装一些配置预设和插件。
+
+以前通过配置loader实现在编译阶段对源代码规范的校验并在不规范的情况下抱错。
+
+现在则改为插件的形式。同时原来的解析器babel-eslint已经停止维护了，现在使用@babel/eslint-parser。
+
+```js
+// webpack.config.js
+
+const ESLintPlugin = require('eslint-webpack-plugin');
+
+plugins:[
+  new ESLintPlugin({
+    fix: true,
+  }),
+]
+```
+
+
+
+.eslintrc.js
+
+```js
+module.exports = {
+  env: {
+    browser: true,
+    es2021: true,
+    node: true,
+  },
+  parser: '@babel/eslint-parser',  // 不用这个解析器则是用eslint默认的
+  extends: ['plugin:react/recommended', 'airbnb'],
+  overrides: [],
+  parserOptions: {
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+  },
+  plugins: ['react'],
+  rules: {
+    'no-unused-vars': 'error',
+    'no-undef': 'error',
+  },
+};
+
+```
+
+
+
+
+
 ## webpack 原理预备知识
 
-- `Symbol.toStringTag` 是一个内置 symbol，它通常作为对象的属性键使用，对应的属性值应该为字符串类型，这个字符串用来表示该对象的自定义类型标签
+- `Symbol.toStringTag` 是一个内置 symbol，它通常作为对象的属性使用，对应的属性值应该为字符串类型，这个字符串用来表示该对象的自定义类型标签
 - 通常只有内置的 `Object.prototype.toString()` 方法会去读取这个标签并把它包含在自己的返回值里。
 
 ```js
@@ -1314,7 +1316,8 @@ module.exports = 'title';
     return module.exports;
   }
 
-  var exports = {}(() => {
+  var exports = {};
+  (() => {
     let title = require('./src/title.js');
     console.log(title);
   })();
@@ -2185,6 +2188,8 @@ const sourceCode = `
 
 ## webpack 工作流
 
+面试问
+
 ### 调试 webpack
 
 方式一：
@@ -2550,7 +2555,7 @@ module.exports = {
 
 
     Compiler.js:
-
+    
     ```js
     const { SyncHook } = require('tapable');
     const Compilation = require('./Compilation');
@@ -2604,7 +2609,8 @@ module.exports = {
     module.exports = Compiler;
     ```
 
-    
+
+​    
 
     dubugger.js:
 
@@ -2632,7 +2638,8 @@ module.exports = {
     });
     ```
 
-    
+
+​    
 
 compiler和compilation概念辨析：
 
