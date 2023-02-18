@@ -1292,37 +1292,79 @@ module.exports = 'title';
 打包后生成文件：
 
 ```js
-(() => {
-  // modules存放项目除了入口模块之外依赖的所有模块（依赖关系图的生成结果）， key（模块id）是模块对于项目的所在项目根目录的路径，值是函数，函数体内容由模块文件的内容组成
-  var modules = {
-    //不管源码中是模块路径，相对或绝对路径，最后都转为相对于项目根目录的相对路径
-    './src/title.js': (module, exports, require) => {
-      module.exports = 'title';
-    }
-  };
+// modules存放项目除了入口模块之外依赖的所有模块（依赖关系图的生成结果）， key（模块id）是模块对于项目的所在项目根目录的路径，值是函数，函数体内容由模块文件的内容组成
+var modules = {
+  //不管源码中是模块路径，相对或绝对路径，最后都转为相对于项目根目录的相对路径
+  './src/title.js': (module, exports, require) => {
+    module.exports = 'title';
+  }
+};
 
-  // 缓存已经被引入过的模块
-  var cache = {};
+// 缓存已经被引入过的模块
+var cache = {};
 
-  // require方法，相当于自己在浏览器端实现一个require的pollful的方法
-  function require(moduleId) {
-    if (cache[moduleId]) {
-      return cache[moduleId].exports;
+// require方法，相当于自己在浏览器端实现一个require的pollful的方法
+function require(moduleId) {
+  if (cache[moduleId]) {
+    return cache[moduleId].exports;
+  }
+  
+  var module = (cache[moduleId] = {
+    exports: {}
+  });
+  
+  modules[moduleId](module, module.exports, require);
+  return module.exports;
+}
+
+var exports = {};
+
+let title = require('./src/title.js');   // 可以看出整个代码是同步执行的
+console.log(title);
+```
+
+
+
+```js
+var modules = {
+  "./src/sum.js": function (module) {
+    function add(a, b) {
+      return a + b;
     }
-    var module = (cache[moduleId] = {
-      exports: {}
-    });
-    modules[moduleId](module, module.exports, require);
-    return module.exports;
+    module.exports = add;
+  },
+  "./src/title.js": function (module, exports, require) {
+    const add = require("./src/sum.js");
+    console.log(add(1, 2));
+    module.exports = 'title';
+  }
+};
+
+var cache = {};
+
+function require(moduleId) {
+
+  var cachedModule = cache[moduleId];
+
+  if (cachedModule !== undefined) {
+    return cachedModule.exports;
   }
 
-  var exports = {};
-  (() => {
-    let title = require('./src/title.js');
-    console.log(title);
-  })();
-})();
+  var module = cache[moduleId] = {
+    exports: {}
+  };
+
+  modules[moduleId](module, module.exports, require);
+  return module.exports;
+}
+
+
+const title = require("./src/title.js");   
+console.log(title);
+
 ```
+
+
 
 在 webpack 中有两种模块化规范，commonjs 和 esmodule，他们之间可以相会转换和混用。并且在 webpack 打包后都统一使用 commonJS 模块规范。如果对不同模块化规范做兼容。
 
@@ -1341,34 +1383,34 @@ exports.name = 'title_name';
 exports.age = 'title_age';
 
 
-// 打包结果， 基本不用转换和pollfill支持
-(() => {
-  var modules = {
-      // 定义了一个对象，用模块的路径作为key,函数作为值value ，将每一个加载的模块以及模块对应的代码，代码放在一个函数内部  ，然后该函数作为值，而模块的路径对应key 。  在commonjs中并没有将入口文件加入到__webpack_modules__对象内部作为一个属性。而在ES6的中是做了的。可以看下面的ES6打包文件
-    './src/title.js': (module, exports) => {
-      exports.name = 'title_name';
-      exports.age = 'title_age';
-    }
-  };
-  var cache = {};
-  function require(moduleId) {
-    var cachedModule = cache[moduleId];
-    if (cachedModule !== undefined) {
-      return cachedModule.exports;
-    }
-    var module = (cache[moduleId] = {
-      exports: {}
-    });
-    modules[moduleId](module, module.exports, require);
-    return module.exports;
+// 打包结果
+var modules = {
+  // 定义了一个对象，用模块的路径作为key, 函数作为值value ，将每一个加载的模块以及模块对应的代码，代码该函数内部，然后该函数作为值，而模块的路径对应key。 在commonjs中并没有将入口文件加入到__webpack_modules__对象内部作为一个属性。而在ES6的中是做了的。可以看下面的ES6打包文件
+  './src/title.js': (module, exports) => {
+    exports.name = 'title_name';
+    exports.age = 'title_age';
   }
-  var exports = {};
-  (() => {
-    let title = require('./src/title.js');
-    console.log(title.name);
-    console.log(title.age);
-  })();
-})();
+};
+
+var cache = {}; // 一旦整个项目中有一个文件引入了一个模块后，后续该项目中的其他文件再引入相同的文件，则实际上都是同一个导出。
+
+function require(moduleId) {
+  var cachedModule = cache[moduleId];
+  if (cachedModule !== undefined) {
+    return cachedModule.exports;
+  }
+  var module = (cache[moduleId] = {
+    exports: {}
+  });
+  modules[moduleId](module, module.exports, require);
+  return module.exports;
+}
+
+var exports = {};
+
+let title = require('./src/title.js');
+console.log(title.name);
+console.log(title.age);
 ```
 
 
@@ -1385,21 +1427,24 @@ console.log(title.age);
 export default 'title_name'; // 默认导出
 export const age = 'title_age'; // 命名导出
 
-// 打包结果， 基本不用转换和pollfill支持
+// 打包结果
 (() => {
   // 模块定义
   var modules = {
     './src/title.js': (module, exports, require) => {
       // es module转commonjs
+      
+      const _DEFAULT_EXPORT__ = 'title_name';
+      const age = 'title_age';
+      
       require.r(exports); // r函数用于标识exports是一个es module的导出
 
       require.d(exports, {
         //
         default: () => _DEFAULT_EXPORT__,
-        age: () => age // 从这里可以看出esmodule的导出，导出的时变量本身，这不同于commonjs导出的是值或者对象引用
+        age: () => age // 从这里可以看出esmodule的导出，导出的时变量本身，这不同于commonjs导出的是值或者对象引用，而且在定义时，并没有提供对应属性的setter方法，所以导入该模块的其他模块是无法修改该导出变量的值的。 而且该模块中在后续修改了该变量对应的值后，其他模块再次访问导出的变量时，会是最新的值。
       });
-      const _DEFAULT_EXPORT__ = 'title_name';
-      const age = 'title_age';
+      
     }
   };
   
@@ -2215,7 +2260,7 @@ node --inspect-brk ./node_modules/webpack-cli/bin/cli.js
 
 > 然后打开 Chrome 浏览器控制台调试
 
-![image-20230213214843358](./webpack-张仁阳.assets/image-20230213214843358.png)
+<img src="./webpack-张仁阳.assets/image-20230213214843358.png" alt="image-20230213214843358" style="zoom:50%;" />
 
 
 
@@ -2253,10 +2298,10 @@ node --inspect-brk ./node_modules/webpack-cli/bin/cli.js
 vscode 中启动该文件进行调试 debugger.js:
 
 ```js
-const webpack = require('./webpack2');
+const webpack = require('webpack');
 const webpackConfig = require('./webpack.config');
 dubugger;
-const compiler = webpack(webpackConfig);
+const compiler = webpack(webpackConfig);  
 //4.执行Compiler对象的 run 方法开始执行编译
 compiler.run((err, stats) => {
   if (err) {
@@ -2266,7 +2311,7 @@ compiler.run((err, stats) => {
     console.log(
       stats.toJson({
         files: true, // 代表打包后生成的文件
-        assets: true, // 其它是一个代码块到文件的对应关系
+        assets: true, // 其它是一个代码块（chunk）到文件的对应关系
         chunks: true, // 从入口模块出发，找到此入口模块依赖的模块，或者依赖的模块依赖的模块，合在一起组成一个代码块
         modules: true // 打包的模块，项目源码仓库中的每个文件都是一个模块（js文件，jsx文件，图片，html，css等）
       })
@@ -2284,7 +2329,6 @@ webpack 的 loder 的本质就是一个 JavaScript 函数，用于转换或者�
 webpack.config.js:
 
 ```js
-
 module.exports ={
     module:{
         rules:[
@@ -2416,6 +2460,8 @@ module.exports = DonePlugin;
   }
 } */
 ```
+
+
 
 webpack.config.js
 
@@ -2552,11 +2598,12 @@ module.exports = {
     }
     module.exports = webpack;
     ```
-
-
+    
+    
+    
     Compiler.js:
     
-    ```js
+    ````js
     const { SyncHook } = require('tapable');
     const Compilation = require('./Compilation');
     const fs = require('fs');
@@ -2607,14 +2654,208 @@ module.exports = {
     }
     
     module.exports = Compiler;
-    ```
-
-
-​    
-
+    ````
+    
+    
+    
+    
+    
+    Compilation.js:
+    
+    ````js
+    const path = require('path')
+    const fs = require('fs');
+    const parser = require('@babel/parser');
+    const types = require('@babel/types');
+    const traverse = require('@babel/traverse').default;
+    const generator = require('@babel/generator').default;
+    
+    const baseDir = normalizePath(process.cwd());
+    function normalizePath(path) {
+      return path.replace(/\\/g, '/');
+    }
+    
+    class Compilation {
+      constructor(options, compiler) {
+        this.options = options;
+        this.compiler = compiler;
+        this.modules = [];// 这里放置本次编译涉及的所有的模块
+        this.chunks = [];// 本次编译所组装出的代码块
+        this.assets = {};// key是文件名,值是文件内容
+        this.files = [];// 代表本次打包出来的文件
+        this.fileDependencies =new Set();// 本次编译依赖的文件或者说模块
+      }
+      
+      build(callback) {
+        //5.根据配置中的entry找出入口文件
+        let entry = {};
+        if (typeof this.options.entry === 'string') {
+          entry.main = this.options.entry;
+        } else {
+          entry = this.options.entry;
+        }
+        // 
+        for (let entryName in entry) {
+          //   const baseDir = normalizePath(process.cwd());
+          let entryFilePath = path.posix.join(baseDir, entry[entryName]);  // 将entry中的相对地址转为从磁盘根路径出发的绝对地址
+          
+          this.fileDepxendencies.add(entryFilePath);
+          //6.从入口文件出发,调用所有配置的Loader对模块进行编译
+          let entryModule = this.buildModule(entryName, entryFilePath);
+          //this.modules.push(entryModule);
+          //8.根据入口和模块之间的依赖关系，组装成一个个包含多个模块的 Chunk
+          let chunk = {
+            name: entryName,
+            entryModule,
+            modules:this.modules.filter(module=>module.names.includes(entryName))
+          }
+          this.chunks.push(chunk);
+        }
+        
+        //9.再把每个 Chunk 转换成一个单独的文件加入到输出列表
+        this.chunks.forEach(chunk => {
+          const filename = this.options.output.filename.replace('[name]',chunk.name);
+          this.files.push(filename);
+          this.assets[filename] = getSource(chunk);
+        });
+        
+        callback(null, {
+          modules: this.modules,
+          chunks: this.chunks,
+          assets: this.assets,
+          files: this.files,
+        }, this.fileDependencies);
+      }
+      /**
+       * 编译模块
+       * @param {*} name 模块所属的代码块(chunk)的名称，也就是entry的name entry1 entry2
+       * @param {*} modulePath 模块的路径
+       */
+      buildModule(name, modulePath) {
+        //1.读取文件的内容
+        let sourceCode = fs.readFileSync(modulePath, 'utf8');  // 同步读取文件内容
+        let { rules } = this.options.module;
+        //根据规则找到所有的匹配的loader
+        let loaders = [];
+        rules.forEach(rule => {   // 从这段代码逻辑可以看出，针对某个类型的文件会遍历webpack配置文件中的所有rule，命中其中符合test规则的文件，然后用loader进行处理，如果有多个规则都能命中同一个文件，那么都会对前面rule处理过的文件源码进行进一步处理。
+          if (modulePath.match(rule.test)) {
+            loaders.push(...rule.use);
+          }
+        });
+        //调用所有配置的Loader对模块进行转换
+        sourceCode = loaders.reduceRight((sourceCode, loader) => {
+          return require(loader)(sourceCode);
+        }, sourceCode);
+        
+        // 7.再找出该模块依赖的模块，再递归本步骤直到所有入口依赖的文件都经过了本步骤的处理 ， 找出某个模块文件中依赖的其他模块则是通过AST查找获取
+        // 声明当前模块的ID
+        let moduleId = './' + path.posix.relative(baseDir, modulePath);  // relative方法返回一个相对的路径
+        //创建一个模块，ID就是相对于根目录的相对路径，dependencies就是此模块依赖的模块
+        //name是模块所属的代码块的名称, 如果一个模块属于多个代码块，那么name就是一个数组（比如一个模块被多个入口中的其他模块都引用了。）
+        let module = { id: moduleId, dependencies: [], names: [name] };
+        let ast = parser.parse(sourceCode, { sourceType: 'module' });
+        //Visitor是babel插件中的概念，此处没有
+        traverse(ast, {
+          CallExpression:({ node }) =>{
+            if (node.callee.name === 'require') {
+              let depModuleName = node.arguments[0].value; // "./title"
+              let depModulePath;
+              if (depModuleName.startsWith('.')) {
+                //暂时先不考虑node_modules里的模块，先只考虑相对路径
+                const currentDir = path.posix.dirname(modulePath);
+                //要找当前模块所有在的目录下面的相对路径
+                depModulePath = path.posix.join(currentDir, depModuleName);
+                //此绝对路径可能没有后续，需要尝试添加后缀
+                const extensions = this.options.resolve.extensions;
+                depModulePath = tryExtensions(depModulePath, extensions);
+              } else {//如果不是以.开头的话，就是第三方模块
+                depModulePath = require.resolve(depModuleName)
+              }
+              this.fileDependencies.add(depModulePath);
+              //获取依赖的模块的ID,修改语法树，把依赖的模块名换成模块ID
+              let depModuleId = './' + path.posix.relative(baseDir, depModulePath)
+              node.arguments[0] = types.stringLiteral(depModuleId);
+              //把依赖的模块ID和依赖的模块路径放置到当前模块的依赖数组中
+              module.dependencies.push({
+                depModuleId,
+                depModulePath
+              });
+            }
+          }
+        })
+        //使用改造后的ast语法要地重新生成新的源代码
+        let { code } = generator(ast);
+        module._source = code;
+        
+        // 递归当前模块依赖的其他模块
+        module.dependencies.forEach(({ depModuleId, depModulePath }) => {
+          //判断此依赖的模块是否已经打包过了或者说编译 过了
+          let existModule = this.modules.find(module => module.id === depModuleId);
+          if (existModule) {
+            existModule.names.push(name);
+          } else {
+            let depModule = this.buildModule(name, depModulePath);   // 这里的name使用的是第一次传入的那个值，如entry1和entry2
+            this.modules.push(depModule);
+          }
+        });
+        return module;
+      }
+    }
+    
+    function tryExtensions(modulePath,extensions) {
+      if (fs.existsSync(modulePath)) {
+        return modulePath;
+      }
+      for (let i = 0; i < extensions.length; i++){
+        let filePath = modulePath + extensions[i];
+        if (fs.existsSync(filePath)) {
+          return filePath;
+        }
+      }
+      throw new Error(`找不到${modulePath}`);
+    }
+      
+    function getSource(chunk) {
+      return `
+      (() => {
+        var modules = {
+          ${
+            chunk.modules.map((module) => `
+              "${module.id}": module => {
+                ${module._source}
+              }
+            `).join(',')
+          }
+        };
+        var cache = {};
+        function require(moduleId) {
+          var cachedModule = cache[moduleId];
+          if (cachedModule !== undefined) {
+            return cachedModule.exports;
+          }
+          var module = cache[moduleId] = {
+            exports: {}
+          };
+          modules[moduleId](module, module.exports, require);
+          return module.exports;
+        }
+        var exports = {};
+        (() => {
+          ${chunk.entryModule._source}
+        })();
+      })();
+      `;
+    }
+    module.exports = Compilation;
+    ````
+    
+    
+    
+    
+    
+    
     dubugger.js:
-
-
+    
     ```js
     const webpack = require('./webpack');
     const webpackConfig = require('./webpack.config');
@@ -2637,6 +2878,8 @@ module.exports = {
       }
     });
     ```
+    
+    
 
 
 ​    
@@ -2645,7 +2888,7 @@ compiler和compilation概念辨析：
 
 `compiler`实例对象上挂载着webpack环境所有的配置信息，包括loader，plugins，entry等等，`compiler`实例对象是在启动webpack的时候实例化好的，它是全局唯一的，可以理解为webpack实例
 
-`Compiler` 模块是 webpack 的主要引擎，它通过 [CLI](https://www.webpackjs.com/api/cli) 或者 [Node API](https://www.webpackjs.com/api/node) 传递的所有选项创建出一个 compilation 实例。 它扩展（extends）自 `Tapable` 类，用来注册和调用插件。 大多数面向用户的插件会首先在 `Compiler` 上注册。
+`Compiler` 模块是 webpack 的主要引擎，它通过 [CLI](https://www.webpackjs.com/api/cli) 或者 [Node API](https://www.webpackjs.com/api/node) 传递的所有选项创建出一个 compilation 实例。 它扩展（extends）自 `Tapable` 类，**用来注册和调用插件**。 大多数面向用户的插件会首先在 `Compiler` 上注册。
 
 
 
