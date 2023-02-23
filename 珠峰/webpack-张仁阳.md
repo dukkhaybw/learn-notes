@@ -2723,23 +2723,23 @@ module.exports = {
       }
       
       build(callback) {
-        //5.根据配置中的entry找出入口文件
+        // 5.根据配置中的entry找出入口文件
         let entry = {};
         if (typeof this.options.entry === 'string') {
           entry.main = this.options.entry;
         } else {
           entry = this.options.entry;
         }
-        // 
+        
         for (let entryName in entry) {
           //   const baseDir = normalizePath(process.cwd());
           let entryFilePath = path.posix.join(baseDir, entry[entryName]);  // 将entry中的相对地址转为从磁盘根路径出发的绝对地址
           
           this.fileDepxendencies.add(entryFilePath);
-          //6.从入口文件出发,调用所有配置的Loader对模块进行编译
+          // 6.从入口文件出发,调用所有配置的Loader对模块进行编译
           let entryModule = this.buildModule(entryName, entryFilePath);
-          //this.modules.push(entryModule);
-          //8.根据入口和模块之间的依赖关系，组装成一个个包含多个模块的 Chunk
+          // this.modules.push(entryModule);
+          // 8.根据入口和模块之间的依赖关系，组装成一个个包含多个模块的 Chunk
           let chunk = {
             name: entryName,
             entryModule,
@@ -2765,7 +2765,7 @@ module.exports = {
       /**
        * 编译模块
        * @param {*} name 模块所属的代码块(chunk)的名称，也就是entry的name entry1 entry2
-       * @param {*} modulePath 模块的路径
+       * @param {*} modulePath 模块的路径，绝对路径
        */
       buildModule(name, modulePath) {
         //1.读取文件的内容
@@ -2785,7 +2785,7 @@ module.exports = {
         
         // 7.再找出该模块依赖的模块，再递归本步骤直到所有入口依赖的文件都经过了本步骤的处理 ， 找出某个模块文件中依赖的其他模块则是通过AST查找获取
         // 声明当前模块的ID
-        let moduleId = './' + path.posix.relative(baseDir, modulePath);  // relative方法返回一个相对的路径
+        let moduleId = './' + path.posix.relative(baseDir, z);  // relative方法返回一个相对的路径
         //创建一个模块，ID就是相对于根目录的相对路径，dependencies就是此模块依赖的模块
         //name是模块所属的代码块的名称, 如果一个模块属于多个代码块，那么name就是一个数组（比如一个模块被多个入口中的其他模块都引用了。）
         let module = { id: moduleId, dependencies: [], names: [name] };
@@ -2918,74 +2918,328 @@ compilation 对象代表了一次资源版本的构建。它包含了当前的�
 
 
 
-![2020webpackflow](http://img.zhufengpeixun.cn/webpackflow2020.jpg)
+## loader
 
-### 手写 webpack
+loader的细节。
 
-#### webpack.config.js
+- 所谓 loader 只是一个导出为函数的 JavaScript 模块。它接收上一个 loader 产生的结果或者资源文件(resource file)作为入参。也可以用多个 loader 函数组成 loader chain
+- compiler 需要得到最后一个 loader 产生的处理结果。这个处理结果应该是 String 或者 Buffer（被转换为一个 string）
+
+
+
+###  loader执行时机
+
+![webpackflowloader](http://img.zhufengpeixun.cn/webpackflowloader.jpg)
+
+
+
+### loader分类
+
+loader有四种执行时机分类，它们的组合是有顺序的。
+
+- post(后置)
+- inline(内联)
+- normal(正常)
+- pre(前置)
+
+一个loader在被具体配置到webpack之前，是没办法区分它是在具体的哪个时机被调用的。
+
+因为loader配置可以是由多个配置文件合并而来，为了保证执行的时候按我们希望的顺序执行，所以可以给loader区分调用时机。
+
+
+
+如何表示某个loader被放置在这四种执行时机中的哪一种？
+
+1. 通过每个rule规则中，设置enforce配置项的值来解决，`enforce:'pre'|'post'|'normal',`不写默认normal
+2. 或者通过loader 的内联写法实现，`inline-loader1!inline-loader2!${entryFile}`
 
 ```js
+const { runLoaders} = require('./loader-runner');
 const path = require('path');
-const Run1Plugin = require('./plugins/run1-plugin');
-const Run2Plugin = require('./plugins/run2-plugin');
-const DonePlugin = require('./plugins/done-plugin');
-module.exports = {
-  mode: 'development',
-  devtool: false,
-  cache: {
-    type: 'filesystem'
+const fs = require('fs');
+//这是我要使用loader处理的文件
+const entryFile = path.resolve(__dirname, 'src/index.js')
+// loader分类跟loader自己没有关系，跟使用时候的配置有关系
+//eslint-loader中配置的pre  babel-loader=normal
+/**
+ * Auto=Normal
+ * !  noAuto
+ * -! noPreAuto
+ * !! noPrePostAuto
+ */
+let request = `inline-loader1!inline-loader2!${entryFile}`;
+//require(`inline-loader1!inline-loader2!${entryFile}`);
+const rules = [
+  {
+    test: /\.js$/,
+    use:['normal-loader1','normal-loader2']
   },
-  entry: {
-    entry1: './src/entry1.js',
-    entry2: './src/entry2.js' //name就是此模块属于哪个模块 z
+  {
+    test: /\.js$/,
+    enforce:'pre',
+    use:['pre-loader1','pre-loader2']
   },
-  output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: '[name].js'
-  },
-  resolve: {
-    extensions: ['.js', '.jsx', '.ts', '.tsx']
-  },
-  module: {
-    rules: [
-      {
-        test: /\.js$/,
-        use: [
-          //最左则的loader需要返回合法的JS
-          path.resolve(__dirname, 'loaders/loader2.js'),
-          //最右侧的loader拿到的是源代码
-          path.resolve(__dirname, 'loaders/loader1.js')
-        ]
-      }
-    ]
-  },
-  plugins: [
-    //插件的挂载或者说监听是在编译启动前全部挂载的
-    new Run1Plugin(),
-    new Run2Plugin(),
-    new DonePlugin()
-  ]
-};
+  {
+    test: /\.js$/,
+    enforce:'post',
+    use:['post-loader1','post-loader2']
+  }
+]
 ```
 
-#### debugger.js
+
+
+
+
+
+
+### loader的工作
+
+![image-20230219130529675](/Users/wuyi/Desktop/study-note/珠峰/webpack-张仁阳.assets/image-20230219130529675.png)
 
 ```js
-const webpack = require('./webpack');
-const options = require('./webpack.config');
-const compiler = webpack(options);
-compiler.run((err, stats) => {
+const { runLoaders} = require('loader-runner');
+const path = require('path');
+const fs = require('fs');
+//这是我要使用loader处理的文件
+const entryFile = path.resolve(__dirname, 'src/index.js')
+
+let request = `inline-loader1!inline-loader2!${entryFile}`;
+//require(`inline-loader1!inline-loader2!${entryFile}`);
+const rules = [
+  {
+    test: /\.js$/,
+    use:['normal-loader1','normal-loader2']
+  },
+  {
+    test: /\.js$/,
+    enforce:'pre',
+    use:['pre-loader1','pre-loader2']
+  },
+  {
+    test: /\.js$/,
+    enforce:'post',
+    use:['post-loader1','post-loader2']
+  }
+]
+
+let loaders = [];
+
+runLoaders({
+  resource:entryFile,//要处理的资源文件
+  loaders,//资源文件需要经过发些loader的处理
+  readResource:fs.readFilez//读文件用哪个方法
+}, (err, result) => {//finalCallback
   console.log(err);
-  console.log(
-    JSON.stringify(
-      stats.toJson({
-        assets: true, //资源
-        chunks: true, //代码块
-        modules: true //模块
-      }),
-      null,
-      2
-    )
-  );
+  console.log(result.result[0].toString());//转换后的结果
+  //转换前源文件的内容
+  console.log(result.resourceBuffer);
+  console.log(result.resourceBuffer?result.resourceBuffer.toString():null);
 });
 ```
+
+
+
+
+
+
+
+
+
+```js
+const { runLoaders } = require("loader-runner");
+const path = require("path");
+const fs = require("fs");  // webpack-dev-server启开发服务器的时候 memory-fs
+const entryFile = path.resolve(__dirname, "src/index.js");
+//如何配置行内
+let request = `inline-loader1!inline-loader2!${entryFile}`;
+let rules = [
+  {
+    test: /\.js$/,
+    use: ["normal-loader1", "normal-loader2"],
+  },
+  {
+    test: /\.js$/,
+    enforce: "post",
+    use: ["post-loader1", "post-loader2"],
+  },
+  {
+    test: /\.js$/,
+    enforce: "pre",
+    use: ["pre-loader1", "pre-loader2"],
+  },
+];
+let parts = request.split("!");
+let resource = parts.pop(); //弹出最后一个元素 entryFile=src/index.js
+
+let inlineLoaders = parts; //[inline-loader1,inline-loader2]
+let preLoaders = [], postLoaders = [], normalLoaders = [];
+
+for (let i = 0; i < rules.length; i++) {
+  let rule = rules[i];
+  if (rule.test.test(resource)) {
+    if (rule.enforce === "pre") {
+      preLoaders.push(...rule.use);
+    } else if (rule.enforce === "post") {
+      postLoaders.push(...rule.use);
+    } else {
+      normalLoaders.push(...rule.use);
+    }
+  }
+}
+
+let loaders = [
+  ...postLoaders,
+  ...inlineLoaders,
+  ...normalLoaders,
+  ...preLoaders,
+];
+
+let resolveLoader = (loader) => path.resolve(__dirname, "loaders-chain", loader);
+//把loader数组从名称变成绝对路径
+loaders = loaders.map(resolveLoader);
+
+runLoaders(
+  {
+    resource, //你要加载的资源
+    loaders,
+    context: { name: "zhufeng", age: 100 }, //保存一些状态和值
+    readResource: fs.readFile.bind(this),
+  },
+  (err, result) => {
+    console.log(err); //运行错误
+    console.log(result); //运行的结果
+    console.log(
+      result.resourceBuffer ? result.resourceBuffer.toString("utf8") : null
+    ); //读到的原始的文件
+  }
+);
+```
+
+
+
+
+
+### 内联loader的特殊配置
+
+- [loaders/#configuration](https://webpack.js.org/concepts/loaders/#configuration)
+
+| 符号 | 变量                 | 含义                                    |                                                              |
+| :--- | :------------------- | :-------------------------------------- | ------------------------------------------------------------ |
+| `-!` | noPreAutoLoaders     | 不要前置和普通 loader                   | Prefixing with -! will disable all configured preLoaders and loaders but not postLoaders |
+| `!`  | noAutoLoaders        | 不要普通 loader                         | Prefixing with ! will disable all configured normal loaders  |
+| `!!` | noPrePostAutoLoaders | 不要前后置和普通 loader,只要内联 loader | Prefixing with !! will disable all configured loaders (preLoaders, loaders, postLoaders) |
+
+
+
+```js
+let request = `!inline-loader1!inline-loader2!${entryFile}`;
+
+let request = `-!inline-loader1!inline-loader2!${entryFile}`;
+
+let request = `!!inline-loader1!inline-loader2!${entryFile}`;
+```
+
+源码实现：
+
+```diff
+const { runLoaders } = require("./loader-runner");
+const path = require("path");
+const fs = require("fs");//webpack-dev-server启开发服务器的时候 memory-fs
+const entryFile = path.resolve(__dirname, "src/index.js");
+//如何配置行内
+let request = `inline-loader1!inline-loader2!${entryFile}`;
+let rules = [
+  {
+    test: /\.js$/,
+    use: ["normal-loader1", "normal-loader2"],
+  },
+  {
+    test: /\.js$/,
+    enforce: "post",
+    use: ["post-loader1", "post-loader2"],
+  },
+  {
+    test: /\.js$/,
+    enforce: "pre",
+    use: ["pre-loader1", "pre-loader2"],
+  },
+];
++ let parts = request.replace(/^-?!+/,'').split('!');
+let resource = parts.pop();//弹出最后一个元素 entryFile=src/index.js
+let inlineLoaders = parts;//[inline-loader1,inline-loader2]
+let preLoaders = [],postLoaders=[],normalLoaders=[];
+for(let i=0;i<rules.length;i++){
+    let rule = rules[i];
+    if(rule.test.test(resource)){
+        if(rule.enforce==='pre'){
+            preLoaders.push(...rule.use);
+        }else if(rule.enforce==='post'){
+            postLoaders.push(...rule.use);
+        }else{
+            normalLoaders.push(...rule.use);
+        }
+    }
+}
++ let loaders = [];
++ if(request.startsWith('!!')){
++     loaders = [...inlineLoaders];
++     //noPreAutoLoaders
++ }else if(request.startsWith('-!')){
++     loaders = [...postLoaders,...inlineLoaders];
++ }else if(request.startsWith('!')){
++     //noAutoLoaders
++     loaders = [...postLoaders,...inlineLoaders,...preLoaders];
++ }else{
++     loaders = [...postLoaders,...inlineLoaders,...normalLoaders,...preLoaders];
++ }
+let resolveLoader = loader=>path.resolve(__dirname,'loaders-chain',loader)
+//把loader数组从名称变成绝对路径
+loaders= loaders.map(resolveLoader);
+runLoaders({
+    resource,//你要加载的资源
+    loaders,
+    context:{name:'zhufeng',age:100},//保存一些状态和值
+    readResource:fs.readFile.bind(this)
+},(err,result)=>{
+    console.log(err);//运行错误
+    console.log(result);//运行的结果
+    console.log(result.resourceBuffer?result.resourceBuffer.toString('utf8'):null);//读到的原始的文件
+});
+```
+
+
+
+
+
+#### pitch
+
+- 比如 a!b!c!module, 正常调用顺序应该是 c、b、a，但是真正调用顺序是 a(pitch)、b(pitch)、c(pitch)、c、b、a,如果其中任何一个 pitching loader 返回了非空值就相当于在它以及它右边的 loader 已经执行完毕
+- 比如如果 b 返回了字符串"result b", 接下来只有 a 会被系统执行，且 a 的 loader 收到的参数是 result b
+- loader 根据返回值可以分为两种，一种是返回 js 代码（一个 module 的代码，含有类似 module.export 语句）的 loader，还有不能作为最左边 loader 的其他 loader
+- 有时候我们想把两个第一种 loader chain 起来，比如 style-loader!css-loader! 问题是 css-loader 的返回值是一串 js 代码，如果按正常方式写 style-loader 的参数就是一串代码字符串
+- 为了解决这种问题，我们需要在 style-loader 里执行 require(css-loader!resources)
+
+pitch 与 loader 本身方法的执行顺序图
+
+
+
+```
+|- a-loader `pitch`
+  |- b-loader `pitch`
+    |- c-loader `pitch`
+      |- requested module is picked up as a dependency
+    |- c-loader normal execution
+  |- b-loader normal execution
+|- a-loader normal execution
+```
+
+
+
+![image-20230219154119989](/Users/wuyi/Desktop/study-note/珠峰/webpack-张仁阳.assets/image-20230219154119989.png)
+
+
+
+![image-20230219154632771](/Users/wuyi/Desktop/study-note/珠峰/webpack-张仁阳.assets/image-20230219154632771.png)
+
+一旦有某个loader的有pitch，并且被执行后返回不为假值。则并不会进行源文件的读取操作。
