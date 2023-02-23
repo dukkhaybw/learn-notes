@@ -2329,7 +2329,7 @@ webpack 的 loder 的本质就是一个 JavaScript 函数，用于转换或者�
 webpack.config.js:
 
 ```js
-module.exports ={
+module.exports = {
     module:{
         rules:[
             {
@@ -2386,6 +2386,7 @@ class SyncHook {
 }
 
 let hook = new SyncHook();
+
 hook.tap('some name', () => {
   console.log('some name');
 });
@@ -2405,7 +2406,7 @@ hook.call();
 
 ### plugin
 
-在 webpack 中，有非常多这样类似 SyncHook 这种构造函数的**实例属性值**，写插件就是在这些实例属性值的订阅数组中添加一系列的方法。然后在 webpack 开始打包编译之后再各个阶段调用这些实例属性值中订阅好的方法，并执行逻辑。
+在 webpack 中，有非常多类似 SyncHook 这种构造函数的**实例属性值**，写插件就是在这些实例属性值的订阅数组中添加一系列的方法。然后在 webpack 开始打包编译之后在各个阶段调用这些实例属性值中订阅好的方法，并执行逻辑。
 
 webpack 插件的格式是固定的，插件是一个类，需要实例化，实例化后的值有一个原型方法 apply。
 
@@ -2418,7 +2419,7 @@ plugins/run1-plugin.js
 ```js
 class RunPlugin {
   apply(compiler) {
-    //在此插件里可以监听run这个钩子
+    // 在此插件里可以监听run这个钩子
     // compiler上面就有许多的hook类的实例，比如run
     compiler.hooks.run.tap('RunPlugin', () => {
       console.log('run1:开始编译');
@@ -2470,6 +2471,7 @@ const path = require('path');
 const Run1Plugin = require('./plugins/run1-plugin');
 const Run2Plugin = require('./plugins/run2-plugin');
 const DonePlugin = require('./plugins/done-plugin');
+
 module.exports = {
   mode: 'development',
   devtool: false,
@@ -2489,7 +2491,7 @@ module.exports = {
 };
 ```
 
-babel 和 webpack 的关系是什么？ 执行顺序是？ webpack 在编译的时候，如果遇到 js 文件，会调用 babel-loader 进行文件内容的转换 在 babel 转换的时候会使用 babel 插件来转换。
+babel 和 webpack 的关系是什么？ 执行顺序是？ webpack 在编译的时候，如果遇到 js 文件，会调用 babel-loader 进行文件内容的转换在 babel 转换的时候会使用 babel 插件来转换。
 
 
 
@@ -2504,6 +2506,7 @@ const path = require('path');
 const Run1Plugin = require('./plugins/run1-plugin');
 const Run2Plugin = require('./plugins/run2-plugin');
 const DonePlugin = require('./plugins/done-plugin');
+
 module.exports = {
   mode: 'development',
   devtool: false,
@@ -2512,7 +2515,7 @@ module.exports = {
   },
   entry: {
     entry1: './src/entry1.js',
-    entry2:'./src/entry2.js'//name就是此模块属于哪个模块  a
+    entry2:'./src/entry2.js'  // name就是此模块属于哪个模块  a
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -2547,7 +2550,7 @@ module.exports = {
 
 1. **初始化参数：从配置文件和 Shell 语句中读取并合并参数,得出最终的配置对象**
 
-2. **用上一步得到的参数初始化 `Compiler` 对象**
+2. **用上一步得到的配置对象 `Compiler` 对象**
 
 3. **加载(挂载)所有配置的插件，插件是在编译开始之前全部挂载（订阅）好的，等到后面编译过程中触发插件的中各种订阅函数**
 
@@ -2565,14 +2568,46 @@ module.exports = {
 
 10. **在确定好输出内容后，根据配置确定输出的路径和文件名，把文件内容写入到文件系统**
 
-    在以上过程中，Webpack 会在特定的时间点广播出特定的事件，插件在监听到感兴趣的事件后会执行特定的逻辑，并且插件可以调用 Webpack 提供的 API 改变 Webpack 的运行结果
+    在以上过程中，Webpack 会在特定的时间点广播出特定的事件，插件在监听到对应的事件后会执行特定的逻辑，并且插件可以调用 Webpack 提供的 API 改变 Webpack 的运行结果
 
     
 
+    
+    dubugger.js:
+    
+    ```js
+    const webpack = require('./webpack');
+    const webpackConfig = require('./webpack.config');
+    dubugger;
+    const compiler = webpack(webpackConfig);
+    //4.执行`Compiler`对象的 run 方法开始执行编译
+    compiler.run((err, stats) => {
+      if (err) {
+        console.log(err);
+      } else {
+        //stats代表统计结果对象
+        console.log(
+          stats.toJson({
+            files: true, //代表打包后生成的文件
+            assets: true, //其它是一个代码块到文件的对应关系
+            chunks: true, //从入口模块出发，找到此入口模块依赖的模块，或者依赖的模块依赖的模块，合在一起组成一个代码块
+            modules: true //打包的模块
+          })
+        );
+      }
+    });
+    ```
+    
+    
+     
+    
+    
+    
     webpack.js:
-
+    
     ```js
     const Compiler = require("./Compiler");
+    
     function webpack(options) {
       // 1.初始化参数：从配置文件和 Shell 语句中读取并合并参数,得出最终的配置对象
       //argv[0]是Node程序的绝对路径 argv[1] 正在运行的脚本
@@ -2596,6 +2631,7 @@ module.exports = {
       }
       return compiler;
     }
+    
     module.exports = webpack;
     ```
     
@@ -2623,7 +2659,7 @@ module.exports = {
       run(callback) {
         this.hooks.run.call(); // 在编译开始前触发run钩子执行
         
-        // 在编译的过程中会收集所有的依赖的模块或者说文件
+        // 在编译的过程中会收集所有依赖的模块或者说文件
         // stats指的是统计信息 modules chunks  files=bundle assets指的是文件名和文件内容的映射关系
         const onCompiled = (err, stats, fileDependencies) => {
           console.log('stats', stats);
@@ -2853,36 +2889,6 @@ module.exports = {
     
     
     
-    
-    dubugger.js:
-    
-    ```js
-    const webpack = require('./webpack');
-    const webpackConfig = require('./webpack.config');
-    dubugger;
-    const compiler = webpack(webpackConfig);
-    //4.执行`Compiler`对象的 run 方法开始执行编译
-    compiler.run((err, stats) => {
-      if (err) {
-        console.log(err);
-      } else {
-        //stats代表统计结果对象
-        console.log(
-          stats.toJson({
-            files: true, //代表打包后生成的文件
-            assets: true, //其它是一个代码块到文件的对应关系
-            chunks: true, //从入口模块出发，找到此入口模块依赖的模块，或者依赖的模块依赖的模块，合在一起组成一个代码块
-            modules: true //打包的模块
-          })
-        );
-      }
-    });
-    ```
-    
-    
-
-
-​    
 
 compiler和compilation概念辨析：
 
