@@ -319,7 +319,7 @@ lock.json中：
 
 ### 总结
 
-如果本地有package.lock.json文件，但再次安装（npm install）时，会判断package.lock.json文件中包的版本是否在package.json文件中对应包的版本规则范围内，如果在则根据lock文件中包的版本规则走后续下载流程；如果不在，则根据package.json文件中包的版本规则范围，去下载该范围内最新的包的版本，并更新lock文件。
+如果本地有package.lock.json文件，但再次安装（npm install）时，会判断package.lock.json文件中包的版本是否在package.json文件中对应包的版本规则范围内，如果在,则根据lock文件中包的版本规则走后续下载流程；如果不在，则根据package.json文件中包的版本规则范围，去下载该范围内最新的包的版本，并更新lock文件。
 
 引用一张其他开发者的流程图：
 
