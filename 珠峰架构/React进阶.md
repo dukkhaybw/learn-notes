@@ -1,6 +1,6 @@
 # React 进阶
 
-将源码和底层原理分开，说明两者的区别。 Vue、React 乃至 Angular 在代码编写层面越发相似，且在设计层面都在朝着 WebComponents 标准靠近。
+对 React 源码、底层原理及周边生态深入的探究，将源码和底层原理分开，说明两者的区别。 Vue、React 乃至 Angular 在代码编写层面越发相似，且在设计层面都在朝着 WebComponents 标准靠近。
 
 在环境无法提供优质的成长环境时，谨记自己创造途径：深挖一个优质的前端框架吃透它的原理，跟开发团队学习框架的思想，编码规范和学习设计模式。
 
@@ -12,7 +12,9 @@
 
 - 用框架锻炼个人思维和代码思想
 
-架构设计哲学上：
+
+
+React架构设计哲学上：
 
 - 数据驱动视图
 - 组件化
@@ -20,15 +22,21 @@
 - 面向对象
 - fiber
 
+
+
 底层技术选型上：
 
 - jsx
 - 虚拟 DOM
 
+
+
 周边生态上：
 
 - 状态管理
 - 前端路由
+
+
 
 其他方面：
 
@@ -36,17 +44,23 @@
 - 事件系统
 - 在前端引入 hooks 思想
 
-React 知识体系庞大，精密复杂的底层原理与长的知识链路。大厂的 React 面试是最有效用导向的一个学习依据，将大厂面试的逻辑利用充分，将实现面试和应用的双重突破。贴着源码讲原理并不是死磕源码，源码不等于原理。源码是代码，而原理是逻辑，代码繁杂冗长，而原理可以简洁清晰。在一些场景下，源码可以是教具， 但是阅读源码不是抵达原理的唯一途径。
 
-对于体系性较强的知识，创建足够充分的上下文。一些知识难学不是因为它有多么复杂，而是因为理解它需要上下文，如果在正确的上下文中，理解它就是很轻松的事。如果学习上下文是断裂的，那知识点就难以理解。
 
-对于复杂度较高的知识，用现象向原理提问，注意先导知识的学习（先提现象/问题，再挖原理）。
+React 知识体系庞大，有精密复杂的底层原理与长的知识链路。
+
+大厂的 React 面试是最有效用导向的一个学习依据，将大厂面试的逻辑利用充分，将提升实现面试和应用。
+
+**贴着源码讲原理并不是死磕源码，源码不等于原理。源码是代码，而原理是逻辑，代码繁杂冗长，而原理可以简洁清晰。**在一些场景下，源码可以是教具， 但是阅读源码不是抵达原理的唯一途径。
+
+**对于体系性较强的知识，创建足够充分的上下文。**一些知识难学不是因为它有多么复杂，而是因为理解它需要上下文，如果在正确的上下文中，理解它就是很轻松的事。如果学习上下文是断裂的，那知识点就难以理解。
+
+对于复杂度较高的知识，用现象和问题向原理提问，注意先导知识的学习（先提现象/问题，再挖原理）。
 
 结构：
 
 - 基础夯实
 
-  涉及 React 的基本原理和源码
+  涉及 React 的基本原理和源码，基础知识
 
 - 核心原理
 
@@ -60,7 +74,11 @@ React 知识体系庞大，精密复杂的底层原理与长的知识链路。�
 
   性能和设计模式，性能决定用户体验，设计模式决定研发效率。实践经验，行业里推崇的最佳实践
 
+<img src="https://s0.lgstatic.com/i/image/M00/7E/2E/CgqCHl_O8AiAMsLrAAOzA7Lqfa0393.png" alt="Lark20201208-111532.png" data-nodeid="1041">
+
 **学习的本质是重复，重复的结果是记住。**
+
+
 
 ## jsx 代码映射为 DOM
 
@@ -81,9 +99,6 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 class App extends React.Component {
-  constructor(props) {
-    super(props);
-  }
   render() {
     return (
       <div>
@@ -95,6 +110,8 @@ class App extends React.Component {
 
 ReactDOM.render(<App />, document.getElementById("root"));
 ```
+
+
 
 #### jsx 的本质
 
@@ -116,7 +133,11 @@ JSX 在被编译后， 会被变为一个针对 React.createElement( ) 的调用
 
 ![Drawing 0.png](https://s0.lgstatic.com/i/image/M00/5C/73/CgqCHl-BegWAbxNEAAH9HxafvWE988.png)
 
+
+
 **JSX 其实是 React.createElement( ) 这个方法调用的语法糖形式。所以才说 JSX 充分具备 JavaScript 的能力**
+
+
 
 **React 为什么选用 JSX？**既然 JSX 等价于 React.createElement( )调用，那 React 官方为什么不直接引导开发者使用 React.createElement( ) 来创建元素？
 
@@ -125,6 +146,8 @@ JSX 在被编译后， 会被变为一个针对 React.createElement( ) 的调用
 ![Drawing 1.png](https://s0.lgstatic.com/i/image/M00/5C/73/CgqCHl-Beg-AXBihAA4t3S7nxKc532.png)
 
 在实际功能效果一致的前提下，JSX 代码层次分明、嵌套关系清晰；而 React.createElement 代码则给人一种非常混乱的“杂糅感”，这样的代码不仅读起来不友好，写起来也费劲。
+
+
 
 **JSX 映射为虚拟 DOM ：createElement 源码：**
 
@@ -158,8 +181,8 @@ export function createElement(type, config, children){
     }
     self = config.__self === undefined ? null:config.__self;
     source = config.__source === undefined ? null:config.__source;
+    
     // 接着就是要把config里面的属性都一个一个挪到props这个之前声明好的对象中
-
     for(propName in config){
       // 筛选出可以提进props对象中的属性
       if(hashOwnProperty.call(config,propName)) && !RESERVED_PROPS.hasOwnProperty(propsName){
@@ -167,6 +190,7 @@ export function createElement(type, config, children){
       }
     }
   }
+  
   // childrenLength指的是当前元素的子元素的个数，减去的2是type和config两个参数占用的长度
   const  childrenLength = arguments.length - 2;
   // 如果抛去type和config，就只剩下一个参数，一般意味着文本节点或者一个子节点
@@ -244,7 +268,7 @@ React.createElement(
 </ul>;
 ```
 
-React.createElement（格式化数据）的函数体拆解：
+React.createElement（格式化数据）的函数体拆解(在逻辑层面的任务流转)：
 
 ![image-20211129192448727.png](https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/45fb1cb6f7d84fe7a6c3179266037227~tplv-k3u1fbpfcp-watermark.awebp?)
 
@@ -280,7 +304,7 @@ const ReactElement =  function(type,key,ref,self,source,owner,props){
 }
 ```
 
-ReactElement 的代码很短，作用是组装 ReactElement 将传入的参数按照一定的规范组装进**elemnt 对象**中，并将它返回给 React.createElement，最后 React.createElement 又将该 element 对象返回，开发者可以直接获取该 JS 对象。
+ReactElement 的代码很短，作用是组装。ReactElement 将传入的参数按照一定的规范组装进**elemnt 对象**中，并将它返回给 React.createElement，最后 React.createElement 又将该 element 对象返回，开发者可以直接获取该 JS 对象。
 
 ![image-20211129194921900.png](https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/2ef569d5216e464086a0d589a1c4b757~tplv-k3u1fbpfcp-watermark.awebp?)
 
@@ -298,6 +322,8 @@ console.log(AppJSX);
 下图就是上面的 JSX 转为的 ReactElement 实例对象：
 
 ![image-20211129195016842.png](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a034ebf2f99141218e01eec936cae873~tplv-k3u1fbpfcp-watermark.awebp?)
+
+
 
 **这个 React Element 实例对象本质就是一个 Javascript 实例对象。**该 JavaScript 对象就是对 DOM 的描述，其实就是虚拟 DOM（准确地说，是虚拟 DOM 中的一个节点），它还不是真实的 DOM。将虚拟 DOM 转为真实 DOM 则是用过 ReactDOM.render( )方法来实现。
 
@@ -321,6 +347,8 @@ ReactDOM.render(<App />, rootElement);
 
 jsx 语法本质；React 创建一个真实 DOM 的流程；虚拟 DOM 的初步认知。
 
+
+
 ## 生命周期函数变更及逻辑
 
 React 入门教材对 React 生命周期的讲解过于简单粗暴，并不是背下这些生命周期函数就可以。同时也缺少对新旧 React 库中生命周期函数的变化比较和原因分析。
@@ -329,13 +357,15 @@ React16 为什么要修改生命周期函数？
 
 从 React 的基本原理出发，对 React15，16 两版的生命周期函数进行探讨，比对和总结。建立系统而完善的生命周期知识体系。
 
+
+
 生命周期背后的设计思想：“组件”和“虚拟 DOM”
 
 - 虚拟 DOM 是核心算法的基石
 
   虚拟 DOM 在整个 React 工作流中的作用
 
-  组件在初始化时，会通过调用生命周期中的 render 方法，生成虚拟 DOM，然后再通过调用 ReactDOM.render 方法，实现虚拟 DOM 到真实 DOM 的转换。当组件更新时，会再次调用 render 方法生成新的虚拟 DOM，然后借助 diff，定位出两次虚拟 DOM 的差异，从而针对发生变化的真实 DOM 作定向更新。 react 框架核心算法中虚拟 DOM 是基石。
+  组件在初始化时，会通过调用生命周期中的 render 方法，生成虚拟 DOM，然后再通过调用 ReactDOM.render 方法，实现虚拟 DOM 到真实 DOM 的转换。当组件更新时，会再次调用 render 方法生成新的虚拟 DOM，然后借助 diff，定位出两次虚拟 DOM 的差异，从而针对发生变化的真实 DOM 作定向更新。 react 框架核心diff算法中虚拟 DOM 是基石。
 
   ![image-20211129204243978.png](https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/87e29b4c76554decac9e2bc97adb05bb~tplv-k3u1fbpfcp-watermark.awebp?)
 
@@ -351,6 +381,8 @@ render 函数算是生命周期函数中的核心，其中虚拟 DOM 的生成�
 
 可以选择性地省略对 render 之外的任何生命周期方法内容的编写，而 render 函数却坚决不能省略；倘若其他生命周期函数做了点什么，往往都会直接或间接地影响到 render 执行（因为即便是 render 之外的生命周期逻辑，也大部分是在为 render 层面的效果服务）。
 
+
+
 ### React15 中的生命周期函数
 
 ```js
@@ -358,9 +390,9 @@ constructor();
 componentWillReceiveProps();
 shouldComponentUpdate();
 componentWillMount();
+componentDidMount();
 componentWillUpdate();
 componentDidUpdate();
-componentDidMount();
 render();
 componentWillUnmount();
 ```
@@ -369,11 +401,14 @@ componentWillUnmount();
 
 <img src="https://s0.lgstatic.com/i/image/M00/5E/31/Ciqc1F-GZbGAGNcBAAE775qohj8453.png" alt="1.png" style="zoom:50%;" />
 
+
+
 Demo 实例：
 
 ```JSX
 import React from "react";
 import ReactDOM from "react-dom";
+
 // 定义子组件
 class LifeCycle extends React.Component {
   constructor(props) {
@@ -382,18 +417,22 @@ class LifeCycle extends React.Component {
     // state 可以在 constructor 里初始化
     this.state = { text: "子组件的文本" };
   }
+  
   // 初始化渲染时调用
   componentWillMount() {
     console.log("componentWillMount方法执行");
   }
+  
   // 初始化渲染时调用
   componentDidMount() {
     console.log("componentDidMount方法执行");
   }
+  
   // 父组件修改组件的props时会调用
   componentWillReceiveProps(nextProps) {
     console.log("componentWillReceiveProps方法执行");
   }
+  
   // 组件更新时调用
   shouldComponentUpdate(nextProps, nextState) {
     console.log("shouldComponentUpdate方法执行");
@@ -404,20 +443,24 @@ class LifeCycle extends React.Component {
   componentWillUpdate(nextProps, nextState) {
     console.log("componentWillUpdate方法执行");
   }
+  
   // 组件更新后调用
   componentDidUpdate(preProps, preState) {
     console.log("componentDidUpdate方法执行");
   }
+  
   // 组件卸载时调用
   componentWillUnmount() {
     console.log("子组件的componentWillUnmount方法执行");
   }
+  
   // 点击按钮，修改子组件文本内容的方法
   changeText = () => {
     this.setState({
       text: "修改后的子组件文本"
     });
   };
+  
   render() {
     console.log("render方法执行");
     return (
@@ -431,26 +474,29 @@ class LifeCycle extends React.Component {
     );
   }
 }
+
 // 定义 LifeCycle 组件的父组件
 class LifeCycleContainer extends React.Component {
-
   // state 也可以像这样用属性声明的形式初始化
   state = {
     text: "父组件的文本",
     hideChild: false
   };
+  
   // 点击按钮，修改父组件文本的方法
   changeText = () => {
     this.setState({
       text: "修改后的父组件文本"
     });
   };
+  
   // 点击按钮，隐藏（卸载）LifeCycle 组件的方法
   hideChild = () => {
     this.setState({
       hideChild: true
     });
   };
+  
   render() {
     return (
       <div className="fatherContainer">
@@ -465,6 +511,7 @@ class LifeCycleContainer extends React.Component {
     );
   }
 }
+
 ReactDOM.render(<LifeCycleContainer />, document.getElementById("root"));
 ```
 
@@ -472,9 +519,9 @@ ReactDOM.render(<LifeCycleContainer />, document.getElementById("root"));
 
 <img src="https://s0.lgstatic.com/i/image/M00/5E/32/Ciqc1F-GZ1OAWETTAAA3Am2CwU0383.png" alt="3.png" style="zoom:50%;" />
 
-### 挂在阶段
+### 挂载阶段
 
-挂载过程在组件的一生中仅会发生一次，在这个过程中，组件被初始化，然后会被渲染到真实 DOM 里，完成的“首次渲染”。
+挂载过程中，在组件的一生中仅会发生一次，在这个过程中，组件被初始化，然后会被渲染到真实 DOM 里，完成“首次渲染”。
 
 **constructor 方法**
 
@@ -506,7 +553,7 @@ ReactDOM.render(<LifeCycleContainer />, document.getElementById("root"));
 
 对于子组件的 componentWillReceiveProps 生命周期函数，如果父组件导致自身重新渲染，即使传给子组件的 props 没有改变，也会触发子组件的 componentWillReceiveProps 函数执行，如果只想对对应的 props 处理更改，请确保进行当前值与变更值的比较。
 
-在这个生命周期方法里，nextProps 表示的是接收到新 props 内容，而现有的 props （相对于 nextProps 的“旧 props”）我们可以通过 this.props 拿到，由此便能够感知到 props 的变化。
+在这个生命周期方法里，nextProps 表示的是接收到新 props 内容，而现有的 props （相对于 nextProps 的“旧 props”）可以通过 this.props 拿到，由此便能够感知到 props 的变化。
 
 ```js
 // 父组件更新的时候会触发子组件的这个生命周期函数
@@ -552,6 +599,8 @@ render 方法伴随着**对虚拟 DOM 的构建和对比**，过程耗时长，�
 - **组件在父组件中被移除**
 - **组件中设置了 key 属性，父组件在 render 的过程中，发现 key 值和上次不一致时也会销毁组件**
 
+
+
 ### React16 的生命周期函数
 
 理解 React16.3 中的生命周期函数是什么，同时对比新旧两个版本中生命周期函数的差异以及为什么改变生命周期函数和 Fiber 架构。
@@ -571,6 +620,7 @@ React16.4 以后的生命周期函数：
 ```js
 import React from "react";
 import ReactDOM from "react-dom";
+
 // 定义子组件
 class LifeCycle extends React.Component {
   constructor(props) {
@@ -579,6 +629,7 @@ class LifeCycle extends React.Component {
     // state 可以在 constructor 里初始化
     this.state = { text: "子组件的文本" };
   }
+  
   // 初始化/更新时调用
   static getDerivedStateFromProps(props, state) {
     console.log("getDerivedStateFromProps方法执行");
@@ -586,10 +637,12 @@ class LifeCycle extends React.Component {
       fatherText: props.text,
     };
   }
+  
   // 初始化渲染时调用
   componentDidMount() {
     console.log("componentDidMount方法执行");
   }
+  
   // 组件更新时调用
   shouldComponentUpdate(prevProps, nextState) {
     console.log("shouldComponentUpdate方法执行");
@@ -601,21 +654,25 @@ class LifeCycle extends React.Component {
     console.log("getSnapshotBeforeUpdate方法执行");
     return "haha";
   }
+  
   // 组件更新后调用
   componentDidUpdate(preProps, preState, valueFromSnapshot) {
     console.log("componentDidUpdate方法执行");
     console.log("从 getSnapshotBeforeUpdate 获取到的值是", valueFromSnapshot);
   }
+  
   // 组件卸载时调用
   componentWillUnmount() {
     console.log("子组件的componentWillUnmount方法执行");
   }
+  
   // 点击按钮，修改子组件文本内容的方法
   changeText = () => {
     this.setState({
       text: "修改后的子组件文本",
     });
   };
+  
   render() {
     console.log("render方法执行");
     return (
@@ -629,6 +686,7 @@ class LifeCycle extends React.Component {
     );
   }
 }
+
 // 定义 LifeCycle 组件的父组件
 class LifeCycleContainer extends React.Component {
   // state 也可以像这样用属性声明的形式初始化
@@ -636,18 +694,21 @@ class LifeCycleContainer extends React.Component {
     text: "父组件的文本",
     hideChild: false,
   };
+  
   // 点击按钮，修改父组件文本的方法
   changeText = () => {
     this.setState({
       text: "修改后的父组件文本",
     });
   };
+  
   // 点击按钮，隐藏（卸载）LifeCycle 组件的方法
   hideChild = () => {
     this.setState({
       hideChild: true,
     });
   };
+  
   render() {
     return (
       <div className="fatherContainer">
@@ -662,6 +723,7 @@ class LifeCycleContainer extends React.Component {
     );
   }
 }
+ 
 ReactDOM.render(<LifeCycleContainer />, document.getElementById("root"));
 ```
 
@@ -730,6 +792,8 @@ React 团队为了明确该 getDerivedStateFromProps 生命周期函数的用途
 
 React16 以提供特定生命周期函数的形式对这类特定的诉求提供更直接的支持。
 
+
+
 #### getDerivedStateFromProps 函数
 
 调用该方法的注意点：
@@ -746,9 +810,11 @@ React16 以提供特定生命周期函数的形式对这类特定的诉求提供
 
 ![image-20211130111513490.png](https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/614066b3b4c64152874fa09373a8ec99~tplv-k3u1fbpfcp-watermark.awebp?)
 
-- 该函数需要返回一个对象或者 null，React 库需要用该返回值来更新（派生）组件的 state，在确实没有需要使用父组件的 props 派生组件自己的 state 的时候，可以不用使用该生命周期函数 ，同时该返回对象对组件已有的 state 的更新动作并不是覆盖式的更新，而是针对某个属性的定向更新
+- 该函数需要返回一个对象或者 null，React 库需要用该返回值来更新（派生）组件的 state，在确实没有需要使用父组件的 props 派生组件自己的 state 的时候，不用使用该生命周期函数 ，同时该返回对象对组件已有的 state 的更新动作并不是覆盖式的更新，而是针对某个属性的定向更新
 
 ![image-20211130111612016.png](https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/f9f52d80d1514aa286e0e6a1354ba3cd~tplv-k3u1fbpfcp-watermark.awebp?)
+
+
 
 Updating 阶段：
 
@@ -763,6 +829,8 @@ getDerivedStateFromProps 与 componentDidUpdate 一起，这个 getDerivedStateF
 
 getDerivedStateFromProps 作为静态方法，内部拿不到组件实例 this，这就导致开发者无法在该函数中做任何 this.setStae(),this.fetch()等可能产生副作用的操作。**React16 在强制推行只用 getDerivedStateFromProps 来完成 props 到 state 的映射，意在确保生命周期函数的行为更加能预测可控，从根源上帮助开发者避免不合理的开发方式，避免生命周期函数的滥用，也是在为 Fiber 架构铺路。**
 
+
+
 **认识 getSnapshotBeforUpdate 函数：**
 
 getSnapshotBeforUpdate 函数的返回值会作为 componentDidUpdate 函数的第三个参数，**该生命周期函数是在 render 函数执行之后，真实 DOM 更新之前。在该函数中可以获取到更新前的真实 DOM 和更新前后的 state 和 props 信息。**
@@ -771,7 +839,7 @@ getSnapshotBeforUpdate 函数的返回值会作为 componentDidUpdate 函数的�
 
 这个需求的前半截要求我们对比更新前后的数据（感知变化），后半截则需要获取真实的 DOM 信息（获取位置），这时用 getSnapshotBeforeUpdate 来解决就再合适不过。
 
-getSnapshotBeforUpdate 常常与 componentDidUpdate 配合使用。
+getSnapshotBeforUpdate 常常与 componentDidUpdate 配合使用。这个生命周期的设计初衷，是为了“与 componentDidUpdate 一起，涵盖过时的 componentWillUpdate 的所有用例”
 
 ```js
 // 组件更新时调用
@@ -787,15 +855,17 @@ componentDidUpdate(prevProps, prevState, valueFromSnapshot) {
 }
 ```
 
-<img src="/Users/wuyi/Desktop/study-note/珠峰架构/React进阶.assets/image-20221212232753573.png" alt="image-20221212232753573" style="zoom:50%;" />
+<img src="./React进阶.assets/image-20221212232753573.png" alt="image-20221212232753573" style="zoom:50%;" />
 
 那为什么 componentWillUpdata 要被废弃？ 因为 Fiber 架构。
+
+
 
 ### Fiber 架构
 
 **Fiber 会使原本同步的渲染过程变成异步的**
 
-Fiber 是 React16 对 React 核心算法的一次重写。 该架构可以使得原本同步的渲染过程变为异步的。在 React16 之前，每触发一次组件的更新，React 都会构建一个新的虚拟 DOM 树，通过与上一次的虚拟 DOM 树进行 diff，实现对 DOM 的定向更新，这个过程是深度优先的过程，同步渲染的递归调用栈是非常深的，只有最底层的调用返回了，整个渲染过程才会开始逐层返回。 这个漫长且不可打断的更新过程将可能对用户体验造成极大影响。同步渲染开始便会一直占用主线程，直到递归彻底完成，在这个过程当中，浏览器没有办法处理任何渲染之外的任务，会进入一种无法处理用户交互的状态，因此如果渲染时间稍微长一些，页面就可能卡顿或卡死。
+Fiber 是 React16 对 React 核心算法的一次重写。 **该架构可以使得原本同步的渲染过程变为异步的**。在 React16 之前，每触发一次组件的更新，React 都会构建一个新的虚拟 DOM 树，通过与上一次的虚拟 DOM 树进行 diff，实现对 DOM 的定向更新，这个过程是深度优先的过程，同步渲染的递归调用栈是非常深的，只有最底层的调用返回了，整个渲染过程才会开始逐层返回。 这个漫长且不可打断的更新过程将可能对用户体验造成极大影响。同步渲染开始便会一直占用主线程，直到递归彻底完成，在这个过程当中，浏览器没有办法处理任何渲染之外的任务，会进入一种无法处理用户交互的状态，因此如果渲染时间稍微长一些，页面就可能卡顿或卡死。
 
 而 React16 中引入的 Fiber 架构可以解决该问题，Fiber 会将一个大的更新任务拆解为许多小任务，每当执行完一个小任务后，渲染线程都会释放主线程，看看是否有优先级更高的工作要处理，确保不阻塞的情况，进而避免同步渲染带来的卡顿。在这个过程当中，渲染线程可以被打断，实现异步渲染。
 
@@ -805,6 +875,10 @@ Fiber 是 React16 对 React 核心算法的一次重写。 该架构可以使得
 <img src="https://s0.lgstatic.com/i/image/M00/5F/B0/Ciqc1F-Kl0WAO2mzAABxddWHnXI121.png" alt="图片4.png" style="zoom:50%;" />
 
 <img src="https://s0.lgstatic.com/i/image/M00/5F/B0/Ciqc1F-Kl1CAA6pwAADpyi-xSnM494.png" alt="图片5.png" style="zoom:50%;" />
+
+
+
+“同步”变“异步”这个过程，是如何对生命周期构成影响的?
 
 **Fiber 架构的重要特征就是可以被打断的异步渲染模式。**但这个“打断”是有原则的，根据“能否被打断”这一标准，React 16 的生命周期被划分为了 render 和 commit 两个阶段，而 commit 阶段又被细分为了 pre-commit 和 commit。
 
@@ -823,6 +897,8 @@ render 阶段在执行过程中允许被打断，而 commit 阶段则总是同�
 为什么 render 阶段可以被打断而 commit 阶段总是同步执行？
 
 render 阶段的操作对用户来说其实是不可见的，所以打断再重启也是零感知的。而 commit 阶段的操作设计真实 DOM 的渲染，用户可见，所以必须以同步的方式求稳。
+
+
 
 ### 同步渲染变为异步渲染对生命周期函数的影响
 
@@ -844,13 +920,15 @@ render 阶段的操作对用户来说其实是不可见的，所以打断再重�
 
 - 在 Fiber 的异步渲染机制下，使用这些已废弃的函数可能导致非常严重的 bug，假设开发者在 componentWillxxx 函数中发起付款请求，由于 render 阶段的生命周期都可能重复执行，在 componentWillxxx 被打断加上重启多次后，就会发出多个付款请求。 如果开发者在 componentWillxxx 中操作真实的 DOM，那就有可能重复操作真实 DOM。
 
-  结合上面的分析，我们再去思考 getDerivedStateFromProps 为何会在设计层面直接被约束为一个触碰不到 this 的静态方法，其背后的原因也就更加充分了——避免开发者触碰 this，就是在避免各种危险的操作。
+  结合上面的分析，再去思考 getDerivedStateFromProps 为何会在设计层面直接被约束为一个触碰不到 this 的静态方法，其背后的原因也就更加充分了——避免开发者触碰 this，就是在避免各种危险的操作。
 
 - 避免在 componentWillReceiveProps 或者 componentWillUpdate 中调用 setState，从而避免重复渲染死循环。
 
 **总的来说，React 16 改造生命周期的主要动机是为了配合 Fiber 架构带来的异步渲染机制。在这个改造的过程中，React 团队针对生命周期中长期被滥用的部分推行了具有强制性的最佳实践。这一系列的工作做下来，首先是确保了 Fiber 机制下数据和视图的安全性，同时也确保了生命周期方法的行为更加纯粹、可控、可预测。**
 
-现有的生命周期，虽然已经对方法的最佳实践做了强约束，但是仍然无法覆盖所有的“误操作”，其中最为典型的，就是对 getDerivedStateFromProps 的滥用。关于这点，社区的讨论不是很多，但是 [React 团队给出的这篇文章](https://zh-hans.reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html)就帮助大家规避“误操作”来说是绰绰有余的。
+现有的生命周期，虽然已经对方法的最佳实践做了强约束，但是仍然无法覆盖所有的“误操作”，其中最为典型的，就是对 getDerivedStateFromProps 的滥用。关于这点，社区的讨论不是很多，但是 [React 团队给出的这篇文章](https://zh-hans.reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html)帮助大家规避“误操作”。
+
+
 
 ## 数据在组件间的传递
 
@@ -858,13 +936,15 @@ render 阶段的操作对用户来说其实是不可见的，所以打断再重�
 
 ![Drawing 1.png](https://s0.lgstatic.com/i/image/M00/60/F7/Ciqc1F-OmrSAZkEwAAA2ThydXNs410.png)
 
-在 React 中，两个组件之间希望能够产生“耦合”（即 A 组件希望能够通过某种方式影响到 B 组件），这两个组件必须先建立数据上的连接，以实现所谓的“组件间通信”。
+在 React 中， A 组件希望能够通过某种方式影响到 B 组件，这两个组件必须先建立数据上的连接，以实现所谓的“组件间通信”。
+
+
 
 ### 基于 props 的单项数据流
 
 组件从概念上类似于 JavaScript 中的函数，他接受任意的传参（即 props），并返回用于描述页面展示内容的 React 元素。
 
-组件通过修改对方的入参来完成数据通信就是可以实现的，但必须基于单项数据流的前提。
+组件通过修改对方的入参来完成数据通信就是可以实现的，但必须基于**单向数据流**的前提。
 
 单项数据流：当前组件的 state 以 props 的形式传递时，只能传递到组件树中比自己层级更低的组件。
 
@@ -873,6 +953,8 @@ render 阶段的操作对用户来说其实是不可见的，所以打断再重�
 在使用 props 实现多层组件的数据通信时，中间层组件的属性结构和项目代码都会受到污染。
 
 props 是单向的。子组件并不能直接将自己的数据传给父组件，但是 props 的形式可以是多样的，如果父组件传递给子组件的是一个绑定了自身上下文的函数，那么子组件在调用该函数时就可以传参给父组件中的函数。
+
+
 
 ### 发布订阅模式通信
 
@@ -929,6 +1011,8 @@ class EventEmitter {
 //为了处理传入一个事件队列中不存在的函数时，不会意外的移除掉，我们知道 splice 的第一个参数是负数时，会从数组的最后往前找。试想一下，如果传入一个不存在的函数给 off 方法，indexOf 找不到会返回 -1 ，再调用 splice 就会将队列中最后一个函数删除掉了。而使用无符号右移，-1 无符号右移的结果为 4294967295，这个数足够大，不会对原队列造成影响
 ```
 
+
+
 ### Context API
 
 一种组件树全局通信的方式
@@ -943,14 +1027,16 @@ class EventEmitter {
 // 在创建的过程中，我们可以选择性地传入一个 defaultValue
 const myContent = React.createContext(defaultValue)
 
-// 从创建出的 context 对象中，我们可以读取到 Provider 和 Consumer
+// 从创建出的 context 对象中，可以读取到 Provider 和 Consumer
 const {Provider,Consumer} = myContent
 
+// 可以理解为“数据的 Provider（提供者）”
 <Provider value={title: this.state.title, content: this.state.content}>
   <Title />
   <Content />
 </Provider>
 
+// “数据的消费者”，它可以读取 Provider 下发下来的数据
 <Consumer>
   {value => <div>{value.title}</div>}
 </Consumer>
@@ -1032,6 +1118,8 @@ MessageList.childContextTypes = {
 
 新的 Context API 改进了这一点：即便组件的 shouldComponentUpdate 返回 false，它仍然可以“穿透”组件继续向后代组件进行传播，进而确保了数据生产者和数据消费者之间数据的一致性。更好的语义化的声明式写法。
 
+
+
 ### Redux
 
 **Redux 是 JavaScript 状态容器，它提供可预测的状态管理。**
@@ -1092,6 +1180,8 @@ store.dispatch(action)
 ```
 
 <img src="https://s0.lgstatic.com/i/image/M00/81/9F/CgqCHl_Rii2AVvUbAADn4s_6rB8369.png" alt="图片7.png" style="zoom:50%;" />
+
+
 
 ## React Hooks
 
@@ -1376,7 +1466,7 @@ useEffect(callBack, []);
   ```js
   useEffect(() => {
     // 这是回调函数的业务逻辑
-
+  
     // 若 xxx 是一个函数，则 xxx 会在组件每次因 num1、num2、num3 的改变而重新渲染时被触发
     return xxx;
   }, [num1, num2, num3]);
