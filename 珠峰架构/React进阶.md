@@ -1263,6 +1263,8 @@ function DemoFunction(props) {
 - React 作者 Dan 早期特意为类组件和函数组件写过的[一篇非常棒的对比文章](https://overreacted.io/how-are-function-components-different-from-classes/)
 - 函数组件更加契合 React 框架的设计理念
 
+
+
 #### 为什么采用函数式组件
 
 开发者编写声明式的代码，React 库的主要工作是及时的把声明式的代码转为命令式的 DOM 操作，把数据层的描述映射到用户可见的 UI 变化中去，这就意味着从原则上讲，React 中的数据应该总是紧紧的和渲染绑定到一起，而类组件无法做到。
