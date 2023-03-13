@@ -1,6 +1,18 @@
 ## React18.2
 
+ 第一节课：
 
+1. React是什么？
+2. 搭建项目，一比一实现React
+   1. npm init -y
+   2. npm install vite @vitejs/plugin-react  -D
+   3.  写vite配置文件
+
+3. 体验虚拟DOM
+4. 认识jsx
+5. 区分新老babel转换jsx的不同之处
+
+ 
 
 ## JSX及其本质
 
@@ -62,7 +74,7 @@ jsx("h1", {
 // React.createElement=jsx
 ```
 
-新的编译模式后，字节点直接以对象props中的children属性值存在，以前的字节点是作为第3个及其往后参数的方式传入createElement，在createElement中在将他们作为props的children属性的属性值。
+新的编译模式后，子节点直接以对象props中的children属性值存在，以前的字节点是作为第3个及其往后参数的方式传入createElement，在createElement中在将他们作为props的children属性的属性值。
 
 
 
@@ -108,8 +120,6 @@ JSX的编译和后续执行：
 
 包含jsxDEV函数调用的代码在发送到浏览器后，浏览器会根据源码中定义的该jsxDEV方法的代码逻辑进行执行，最后返回一个虚拟DOM。
 
-
-
 ```js
 function ReactElement(type, key, ref, props) {
   return {//这就是React元素，也被称为虚拟DOM
@@ -122,9 +132,7 @@ function ReactElement(type, key, ref, props) {
 }
 ```
 
-
-
-​				
+​			
 
 jsxEDV函数在浏览器中调用后生成的结构														
 
@@ -134,9 +142,9 @@ jsxEDV函数在浏览器中调用后生成的结构
 </h1>
 ```
 
+每个虚拟DOM节点会有一个类型属性——$$typeof
 
-
-![image-20221215221445028](/Users/wuyi/Desktop/study-note/珠峰架构/React18.2.assets/image-20221215221445028.png)
+![image-20230313211759844](C:/Users/shuyi/Desktop/study-notes/%E7%8F%A0%E5%B3%B0%E6%9E%B6%E6%9E%84/React18.2.images/image-20230313211759844.png)
 
 
 
