@@ -6,10 +6,9 @@
 2. 搭建项目，一比一实现React
    1. npm init -y
    2. npm install vite @vitejs/plugin-react  -D
-   3.  写vite配置文件
-
-3. 体验虚拟DOM
-4. 认识jsx
+   3. 写vite配置文件
+3. 认识jsx
+4. 体验虚拟DOM
 5. 区分新老babel转换jsx的不同之处
 
  
@@ -507,9 +506,6 @@ enqueueUpdate(fiber, update2)
 //基于老状态，计算新状态
 processUpdateQueue(fiber);
 console.log(fiber.memoizedState);
-
-
-
 ```
 
 
@@ -793,7 +789,7 @@ export function createHostRootFiber() {
 
 React中表示副作用使用的是二进制数据，在进行diff时，会给fiber节点上的flags或者subtreeFlags进行标记，表示进行何种操作（增删改等）。subtreeFlags表示子节点的操作标记，能进行性能优化。
 
-React的执行分为两个阶段：1. render阶段计算副作用。2.commit阶段修改真实DOM，或者说提交副作用。提交阶段是从根节点开始往树下面遍历，，如果某一级的Fiber节点上的subtreeFlags为二进制数字0的话，表示该节点下的后代节点都没有任何副作用操作，将不再进行该节点下面的深度遍历，从而优化性能。子节点的副作用通过冒泡层层合并后赋值给祖先节点的subtreeFlags属性。
+React的执行分为两个阶段：1. render阶段计算副作用。2.commit阶段修改真实DOM，或者说提交副作用。提交阶段是从根节点开始往树下面遍历，如果某一级的Fiber节点上的subtreeFlags为二进制数字0的话，表示该节点下的后代节点都没有任何副作用操作，将不再进行该节点下面的深度遍历，从而优化性能。子节点的副作用通过冒泡层层合并后赋值给祖先节点的subtreeFlags属性。
 
 ```js
 function bubbleProperties(completedWork) {
