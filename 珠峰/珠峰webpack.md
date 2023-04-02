@@ -7,9 +7,9 @@
 - webpack 优化
 - 能写插件
 
-​ 前端发展过程中，出现了许多提升开发效率的技术，这些技术往往都有各自的文件类型。而浏览器只能识别一些基本的文件类型，如 js，css，html，img，jpg，png 等。如果开发者想用新技术提高开发效率，同时又希望之后的项目能被浏览器解析成功。那么就需要借助打包工具，将各式各样的文件经过打包后转为浏览器能识别的文件格式，以完成开发。
+ 前端发展过程中，出现了许多提升开发效率的技术，这些技术往往都有各自的文件类型。而浏览器只能识别一些基本的文件类型，如 js，css，html，img，jpg，png 等。如果开发者想用新技术提高开发效率，同时又希望之后的项目能被浏览器解析成功。那么就需要借助打包工具，将各式各样的文件经过打包后转为浏览器能识别的文件格式，以完成开发。
 
-![image-20210626205632037](.\typora-user-images\image-20210626205632037.png)
+![image-20210626205632037](..\typora-user-images\image-20210626205632037.png)
 
 ## webpack 基础
 
@@ -102,7 +102,7 @@ module.exports = {
 
 多出口打包结果图
 
-![image-20210626214933122](.\typora-user-images\image-20210626214933122.png)
+![image-20210626214933122](..\typora-user-images\image-20210626214933122.png)
 
 一个 chunk 对应一个 bound（一个 bound 就是一个打包后生成的资源文件）。
 
@@ -164,7 +164,7 @@ webpack4.0 版本可以实现零配置打包，但是打包只有最基本的能
 
 npx 指令：默认启用项目本地 node_modules 下面的.bin 下面的相应的 cmd 文件。webpack.cmd 文件内容：
 
-![image-20210409083952883](.\typora-user-images\image-20210409083952883.png)
+![image-20210409083952883](..\typora-user-images\image-20210409083952883.png)
 
 先判断当前目录下是否有 node.exe 程序，有的话就使用它执行 %~dp0（表示 webpack.cmd 文件所在路径）的上层下的 webpack/bin/webpack.js 文件。没有的话，就是用全局的 node 执行该文件。
 
@@ -190,9 +190,9 @@ webpack 启动后，从项目入口文件 entry 指定的模块出发，开始�
 
 开发环境下和生产环境下 webpack 的配置有许多不同，在 webpack 的配置文件中通过 mode 字段的值来区分是什么环境下进行打包的,webpack 在不同环境下启用不同的内置配置优化。mode 字段的取值可能是三者中的一个：development, production, none
 
-![image-20210915202230172](.\typora-user-images\image-20210915202230172.png)
+![image-20210915202230172](..\typora-user-images\image-20210915202230172.png)
 
-![image-20210915202317068](.\typora-user-images\image-20210915202317068.png)
+![image-20210915202317068](..\typora-user-images\image-20210915202317068.png)
 
 默认的配置文件名：webpack.config.js/webpackfile.js(和 src 在同一级目录)，这个 js 文件的文件内容：
 
@@ -291,7 +291,7 @@ webpack 打包输出的 js 文件的骨架结构：
 //最外层为一个匿名函数自执行，执行时传入一个对象，对象的key为项目文件的路径，value是一个函数
 ```
 
-### **开发优化：**
+### **开发优化**
 
 ### **开发服务器配置：webpack-dev-server**
 
@@ -596,7 +596,7 @@ module:{
 
 另一种写法：
 
-![image-20210916002608007](.\typora-user-images\image-20210916002608007.png)
+![image-20210916002608007](..\typora-user-images\image-20210916002608007.png)
 
 扩展：解决 vscode 不识别类的装饰器语法
 
@@ -734,17 +734,17 @@ module.exoprts = {
 - chunkhash，它根据不同的入口文件（entry）进行依赖文件解析，构建对应的 chunk，生成对应的 hash 值，在生产环境中，一般把一些公共库和程序入口文件区分开，单独进行打包构建，接着采用 chunkhash 的方式生成 hash 值，只要之后不改动公共库中的代码，那么其 hash 值就不会变。
 - contenthash，它只在对应的单个文件内部的内容不变时，该 hash 值就不会变
 
-![image-20210915223618495](.\typora-user-images\image-20210915223618495.png)
+![image-20210915223618495](..\typora-user-images\image-20210915223618495.png)
 
 hash 值的介绍：
 
-![image-20210915225209989](.\typora-user-images\image-20210915225209989.png)
+![image-20210915225209989](..\typora-user-images\image-20210915225209989.png)
 
-![image-20210916000746801](.\typora-user-images\image-20210916000746801.png)
+![image-20210916000746801](..\typora-user-images\image-20210916000746801.png)
 
 chunkhash 可以在不同的插件单独提出的文件中使用。
 
-![image-20210915225626427](.\typora-user-images\image-20210915225626427.png)
+![image-20210915225626427](..\typora-user-images\image-20210915225626427.png)
 
 ### 清除打包生成的目录
 
@@ -806,11 +806,11 @@ module.exports ={
 }
 ```
 
-![image-20210916010952620](.\typora-user-images\image-20210916010952620.png)
+![image-20210916010952620](..\typora-user-images\image-20210916010952620.png)
 
 ## webpack 进阶
 
-​ 在一个产品的前端开发过程中，一般来说会经历本地开发、测试脚本、开发自测、测试环境、预上线环境，然后才能正式的发布。对应每一个环境可能都会有所差异，比如说服务器地址、接口地址、websorket 地址…… 等等。在各个环境切换的时候，就需要不同的配置参数，所以就可以用环境变量和模式，来方便我们管理。
+ 在一个产品的前端开发过程中，一般来说会经历本地开发、测试脚本、开发自测、测试环境、预上线环境，然后才能正式的发布。对应每一个环境可能都会有所差异，比如说服务器地址、接口地址、websorket 地址…… 等等。在各个环境切换的时候，就需要不同的配置参数，所以就可以用环境变量和模式，来方便我们管理。
 
 ### Node 环境变量设置
 

@@ -2,6 +2,10 @@
 
 ## Webpack
 
+在webpack中会将各种各样的文件都看作一个模块，模块之间可能相互依赖。webpack打包所有的这些资源文件，编程一些前端环境(浏览器环境)能识别的一些文件（静态资源），比如js，css，png等。
+
+
+
 ```shell
 npm install webpack webpack-cli --save-dev
 ```
@@ -87,6 +91,9 @@ loader 一般用于转为文件类型，插件则用来执行更为复杂的任�
 
 ## loader
 
+- webpack 只能理解 `JavaScript` 和 `JSON` 文件
+- loader 让 `webpack` 能够去处理其他类型的文件，并将它们转换为有效模块，以供应用程序使用，以及被添加到依赖图中
+
 loader 的几种使用方式：
 
 - import '**style-loader!css-loader!**../css/creatediv.css' （内联式，不推荐）
@@ -105,7 +112,17 @@ loader 的几种使用方式：
 
 
 
+对应规则下面的loader是从右向左执行的，最右侧的loader接收到是对应类型的文件的源码，最左侧的loader一定会返回一个js模块。
+
+
+
+
+
 ## plugin
+
+loader 用于转换某些类型的模块，而插件则可以用于执行范围更广的任务。包括：打包优化，资源管理，注入环境变量
+
+
 
 - clean-webpack-plugin
 
@@ -191,9 +208,9 @@ loader 的几种使用方式：
 
 - 前端开发工作中，一般都会有两套构建环境
 
-- 一套开发时使用，构建结果用于本地开发调试，不进行代码压缩，打印 debug 信息，包含 sourcemap 文件
+- 一套开发时使用，构建结果用于本地开发调试，不进行代码压缩，打印 debug 信息，需要 sourcemap 文件，热更新
 
-- 一套构建后的结果是直接应用于线上的，即代码都是压缩后，运行时不打印 debug 信息，静态文件不包括 sourcemap
+- 一套构建时使用，生成打包文件直接应用于线上的，即代码都是压缩后，运行时不打印 debug 信息，不包括 sourcemap，可能需要分离 CSS 成单独的文件，以便多个页面共享同一个 CSS 文件
 
 - webpack 4.x 版本引入的 [mode](https://webpack.docschina.org/configuration/mode/) 的概念
 
@@ -211,6 +228,7 @@ loader 的几种使用方式：
 ```js
 module.export = {
   mode: 'development', // 等于开启下面的这些配置
+  
   devtool: 'eval',
   cache: true,
   performace: {
@@ -714,6 +732,8 @@ app.listen(3000);
 
 PostCSS 是一个独立的工具，可以脱离 webpack 单独使用（postcss-cli 在命令行单独使用 postcss 时需要安装该插件）。可以通过 JavaScript 来转换样式，css 的转换和适配，自动添加浏览器厂商前缀，css 样式重置，css 单位转换。
 
+还需要结合Browserlist的版本兼容配置文件来使用。 
+
 ```shell
 npm i postcss-loader postcss-preset-env -D
 ```
@@ -836,7 +856,7 @@ output:{
 
 - asset 在导出一个 data URI 和发送一个单独的文件之间自动选择。之前通过使用 `url-loader`，并且配置资源体积限制实现
 
-  ```
+  ```js
   
   output:{
       filename:'bundle.js',
@@ -2599,7 +2619,7 @@ module.exports = {
     ```
     
     
-     
+    
     
     
     
