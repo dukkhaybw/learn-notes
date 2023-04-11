@@ -2,7 +2,7 @@
 
 ## Webpack
 
-在webpack中会将各种各样的文件都看作一个模块，模块之间可能相互依赖。webpack打包所有的这些资源文件，编程一些前端环境(浏览器环境)能识别的一些文件（静态资源），比如js，css，png等。
+在webpack中会将各种各样的文件都看作一个模块，模块之间可能相互依赖。webpack打包所有的这些资源文件编译为一些前端环境(浏览器环境)能识别的一些文件（静态资源），比如js，css，png等。
 
 
 
@@ -27,7 +27,7 @@ webpack 是 JavaScript 应用程序的静态打包工具。
 ES6 模块化语法：
 
 ```js
-index.js:
+// index.js:
 import { sum, mul } from './js/math.js'
 
 console.log(sum(20,30))
@@ -66,7 +66,7 @@ npx webpack --config  ./xxx/xxx.js
 ## entry
 
 - 入口起点(entry point)指示 webpack 使用哪个模块，来作为构建其内部依赖图(dependency graph) 的开始。进入入口起点后，webpack 会找出有哪些模块和库是入口起点（直接和间接）依赖的
-- 默认值是 `./src/index.js`，但你可以通过在 `webpack configuration` 中配置 `entry` 属性，来指定一个（或多个）不同src入口起点
+- 默认值是 `./src/index.js`，但可以通过在 `webpack configuration` 中配置 `entry` 属性，来指定一个（或多个）不同src入口起点
 
 ```js
 entry: './src/index.js';
@@ -83,7 +83,7 @@ entry: {
 - `output` 属性告诉 webpack 在哪里输出它所创建的 bundle，以及如何命名这些文件
 - 主要输出文件的默认值是 `./dist/main.js`，其他生成文件默认放置在 `./dist` 文件夹中。
 
-webpack 本身只能识别 js 和 json 文件，如果引入的有其他类型的文件，webpack 是无法识别的，为此需要使用 loader 加载器来加载这类文件并转为 webpack 可以处理的模块，一般都是 js，并添加到依赖关系图中。
+如果引入的有其他类型的文件，webpack 是无法识别的，为此需要使用 loader 加载器来加载这类文件并转为 webpack 可以处理的模块，一般都是 js，并添加到依赖关系图中。
 
 loader 一般用于转为文件类型，插件则用来执行更为复杂的任务（打包优化，资源管理，注入环境变量...）
 
@@ -110,8 +110,6 @@ loader 的几种使用方式：
 
 - webpack 配置文件中写 loader
 
-
-
 对应规则下面的loader是从右向左执行的，最右侧的loader接收到是对应类型的文件的源码，最左侧的loader一定会返回一个js模块。
 
 
@@ -121,8 +119,6 @@ loader 的几种使用方式：
 ## plugin
 
 loader 用于转换某些类型的模块，而插件则可以用于执行范围更广的任务。包括：打包优化，资源管理，注入环境变量
-
-
 
 - clean-webpack-plugin
 
@@ -150,7 +146,7 @@ loader 用于转换某些类型的模块，而插件则可以用于执行范围�
 
 - html-webpack-plugin
 
-  html-webpack-plugin 插件在调用时如果不传递参数，则该包的内部有一个默认的 ejs 模板可供使用----default_index.ejs
+  html-webpack-plugin 插件在调用时如果不传递模板参数，则该包的内部有一个默认的 ejs 模板可供使用----default_index.ejs
 
   ```ejs
   <!DOCTYPE html>
@@ -312,13 +308,13 @@ module.export = {
 读取变量的两个地方：
 
 - webpack 配置文件被读取时所在的 node 环境，该环境的全局对象上有 process 进程对象
-- 项目的源码文件中，实际运行在浏览器中，浏览器全局对象上没有 process 进程对象，访问则报错
+- 项目的源码文件实际运行在的浏览器环境中，浏览器全局对象上没有 process 进程对象，访问则报错
 
 
 
-1. **`--mode`用来设置模块内（源代码中）的`process.env.NODE_ENV`**
+1. **`--mode`用来间接设置模块内（源代码中）的`process.env.NODE_ENV`**
 
-- 可以在模块内(**项目源文件代码中**)通过`process.env.NODE_ENV`获取该`process.env.NODE_ENV`对应的字符串值（development 或者 production）进行替换，在**编译阶段**做的替换工作，它和 webpack 配置文件中通过进程对象（process）中的环境变量对象(env) 上的 NODE_ENV 是两个完全不同的概念
+- 可以在模块内(**项目源文件代码中**)通过`process.env.NODE_ENV`获取该`process.env.NODE_ENV`对应的字符串值（development 或者 production）进行替换，这是在**编译阶段**做的替换工作，它和 webpack 配置文件中通过进程对象（process）中的环境变量对象(env) 上的 NODE_ENV 是两个完全不同的概念
 
 ```json
 "script":{
@@ -326,7 +322,7 @@ module.export = {
 }
 ```
 
-`webpack --mode=development` => 设置 webpack.config.js 文件中 mode 的值为 development => mode 为开发模式（development ）下时，webpack 内部通过 webpack.definePlugin 插件设置字符串 process.env.NODE_ENV 在项目源码中的代表的实际值为 development， 在编译阶段，当解析到项目源码中有用到 process.env.NODE_ENV 时，直接将它替换为字符串（development） 。 webpack --mode=production 也是一样的原理。
+具体过程：`webpack --mode=development` => 设置 webpack.config.js 文件中 mode 的值为 development => mode 为开发模式（development ）下时，webpack 内部通过 webpack.definePlugin 插件设置字符串 process.env.NODE_ENV 在项目源码中的代表的实际值为 development， 在编译阶段，当解析到项目源码中有用到变量：process.env.NODE_ENV 时，直接将它替换为字符串（development） ，process.env.NODE_ENV字符串除外。 webpack --mode=production 也是一样的原理。
 
 其中通过命令行的--mode 和配置文件中的 mode 取指定环境，都是一个原理，如果两者同时存在，则命令行--mode 的优先级更高。
 
@@ -445,7 +441,7 @@ module.exports = function (env, argv) {
 
 webpack 配置文件中读取的是 node 配置的环境变量，可以通过 cross-env key=value 来设置。 然后在 webpack 配置文件中可以访问到设置的环境变量，然后再用这个环境变量作为 webpack 配置项中的值，从而来改变项目模块内的变量的值或者打包方式。
 
-cross-env 这是的环境变量在项目的模块文件中是无法访问到的。
+cross-env 设置的环境变量在项目的模块文件中是无法访问到的。
 
 例子：
 
@@ -476,7 +472,7 @@ console.log(process.env.FIRST_ENV); //  process.env.FIRST_ENV则直接在打包�
 4. **`DefinePlugin`用来设置模块内(源码中)的全局变量**
 
 - 设置全局变量(全局变量不是`window`),所有模块都能读取到该变量的值
-- 可以在任意模块内通过 `process.env.NODE_ENV` 获取当前的变量
+- 可以在任意模块内通过 `process.env.xxx`等任意字段表示自己设置好的值
 - 但无法在`node环境`(webpack 配置文件中)下获取当前的变量
 - 注意在值为字符串是需要用引号包裹代引号的字符串
 
@@ -544,10 +540,6 @@ plugins: [
   })
 ];
 ```
-
-
-
-webpack 的 mode 默认为`production`， webpack serve 的 mode 默认为 development
 
 webpack 的配置文件的模块导出可以是一个函数，也可以是一个配置对象。其中函数可以接受命令行传递的参数。
 
@@ -740,7 +732,7 @@ npm i postcss-loader postcss-preset-env -D
 
 - [postcss-loader](https://github.com/webpack-contrib/postcss-loader)可以使用 PostCSS 处理 CSS
 - [postcss-preset-env](https://github.com/csstools/postcss-preset-env)把现代的 CSS 转换成大多数浏览器能理解的插件集合
-- PostCSS Preset Env 已经包含了`autoprefixer`和`browsers`选项
+- PostCSS Preset Env 已经包含了`autoprefixer`和`browserlists`选项
 
 postcss 配置文件：
 
@@ -1203,7 +1195,7 @@ npm install eslint -D
 
 npx eslint. --init 问答式选择生产.eslintrc.js文件，同时会安装一些配置预设和插件。
 
-以前通过配置loader实现在编译阶段对源代码规范的校验并在不规范的情况下抱错。
+以前通过配置loader实现在编译阶段对源代码规范的校验并在不规范的情况下报错。
 
 现在则改为插件的形式。同时原来的解析器babel-eslint已经停止维护了，现在使用@babel/eslint-parser。
 
@@ -1329,9 +1321,9 @@ function require(moduleId) {
     return cache[moduleId].exports;
   }
   
-  var module = (cache[moduleId] = {
+  var module = cache[moduleId] = {
     exports: {}
-  });
+  }z;
   
   modules[moduleId](module, module.exports, require);
   return module.exports;
@@ -1523,12 +1515,10 @@ console.log(age);
 
 // title.js
 export default name = 'title_name';
-asd;
 export const age = 'title_age';
 
 // 打包结果
 
-('use strict');
 var modules = {
   './src/title.js': (module, exports, require) => {
     require.r(exports);
@@ -1537,11 +1527,10 @@ var modules = {
     setTimeout(() => {
       age = 'new';
     }, 1000);
-    /*  require.d(exports, {
-           "default": () => (_DEFAULT_EXPORT__),
-           "age": () => (age)
-         }); */
-    exports.age = age;
+    require.d(exports, {
+      "default": () => (_DEFAULT_EXPORT__),
+      "age": () => (age)
+    }); 
   }
 };
 var cache = {};
@@ -1589,7 +1578,7 @@ console.log(_title_0__.age);
 ```js
 // index.js
 import name, { age } from './title';
-console.log(name);
+console.log(name);  // 这里的默认导入实际上就是被导入的commonjs模块的module.exports对象
 console.log(age);
 
 // title.js
@@ -1650,7 +1639,7 @@ module.exports = {
 })();
 ```
 
-在 a 模块中使用 commonjs 的 require 语法加载 b 模块，b 模块使用 ES Module 进行默认导出和命名导出，则在 a 模块中得到的是 b 模块对应的模块对象，其中包含命名导出和 defaulr 默认导出属性。
+在 a 模块中使用 commonjs 的 require 语法加载 b 模块，b 模块使用 ES Module 进行默认导出和命名导出，则在 a 模块中得到的是 b 模块对应的模块对象，其中包含命名导出和 default 默认导出属性。
 
 ```js
 // index.js:
@@ -1664,6 +1653,8 @@ export const age = 'title_age'; // 命名导出
 ```
 
 ![image-20220522184522377](..\typora-user-images\image-20220522184522377.png)
+
+
 
 面试：commonjs 和 es Module 导出的区别？
 
@@ -1730,6 +1721,7 @@ export default 'hello';
 debugger;
 var modules = {}; // 模块定义存放在这个对象中
 var cache = {};
+
 function require(moduleId) {
   var cachedModule = cache[moduleId];
   if (cachedModule !== undefined) {
@@ -1741,6 +1733,7 @@ function require(moduleId) {
   modules[moduleId](module, module.exports, require);
   return module.exports;
 }
+
 require.d = (exports, definition) => {
   for (var key in definition) {
     if (require.o(definition, key) && !require.o(exports, key)) {
@@ -1751,7 +1744,9 @@ require.d = (exports, definition) => {
     }
   }
 };
+
 require.o = (obj, prop) => Object.prototype.hasOwnProperty.call(obj, prop);
+
 require.r = (exports) => {
   if (typeof Symbol !== 'undefined' && Symbol.toStringTag) {
     Object.defineProperty(exports, Symbol.toStringTag, {
@@ -1762,6 +1757,7 @@ require.r = (exports) => {
     value: true
   });
 };
+
 function webpackJsonpCallback([chunkIds, moreModules]) {
   const resolves = [];
   for (let i = 0; i < chunkIds.length; i++) {
@@ -1777,6 +1773,7 @@ function webpackJsonpCallback([chunkIds, moreModules]) {
     resolves.shift()();
   }
 }
+
 //已经安装过的，或者说已经加载好的代码块
 //key是代码块的名字，值是代码块的状态
 //main就是默认代码块的名称 0表示已经加载完成
@@ -1785,6 +1782,7 @@ var installedChunks = {
   //当一个代码块它的值是一个数组的时候表示此代码块对应的JS文件正在加载中
   //'src_hello_js':[resolve,reject,promise]=>0
 };
+
 require.f = {};
 require.p = ''; //publicPath文件访问路径
 require.u = (chunkId) => chunkId + '.js';
@@ -1792,10 +1790,17 @@ require.l = (url) => {
   let script = document.createElement('script');
   script.src = url;
   document.head.appendChild(script);
+  script.onload = ()=>{
+    script.remove()
+  }
 };
+
 //jsonp 通过JSONP的方式加载chunkId对应的JS文件，生成一个promise放到promises数组里
 require.f.j = (chunkId, promises) => {
-  let installedChunkData;
+  let installedChunkData = installedChunks[chunkId];
+  if(installedChunkData===0){
+    return 
+  }
   const promise = new Promise((resolve, reject) => {
     installedChunkData = installedChunks[chunkId] = [resolve, reject];
   });
@@ -1805,13 +1810,17 @@ require.f.j = (chunkId, promises) => {
   const url = require.p + require.u(chunkId);
   require.l(url);
 };
+
 require.e = (chunkId) => {
   let promises = [];
   require.f.j(chunkId, promises);
   return Promise.all(promises);
 };
+
 const chunkLoadingGlobal = (window['webpackChunk_2_bundle'] = []);
+
 chunkLoadingGlobal.push = webpackJsonpCallback;
+
 require
   .e('src_hello_js')
   .then(require.bind(require, './src/hello.js'))
@@ -1821,6 +1830,8 @@ require
 
 //代码块其实就模块的集合
 ```
+
+
 
 ```js
 (self['webpackChunk_2_bundle'] = self['webpackChunk_2_bundle'] || []).push([
@@ -1884,12 +1895,16 @@ JavaScript 的代表 parser 有哪些：
 - AST节点
   - File 文件
   - Program 程序
-  - Literal 字面量 NumericLiteral StringLiteral BooleanLiteral
-  - Identifier 标识符
+  - Literal 字面量，代表一个值， NumericLiteral（数字） StringLiteral（字符串） BooleanLiteral（布尔）
+  - Identifier 标识符，代表一个变量
   - Statement 语句
   - Declaration 声明语句
   - Expression 表达式
   - Class 类
+  - VariableDeclaration 变量声明，一个 VariableDeclaration 中可能存在多个 VariableDeclarator，一行声明多个变量
+  - VariableDeclarator
+  - FunctionDeclaration，函数声明
+  - BlockStatement，块级语句
 
 
 
@@ -1915,6 +1930,7 @@ let ast = esprima.parse(code);
 let indent = 0;
 const padding = () => ' '.repeat(indent);
 
+// 深度优先遍历
 estraverse.traverse(ast, {
   enter(node) {
     console.log(padding() + node.type + '进入');
@@ -1985,9 +2001,9 @@ Program离开
 ### 访问器模式
 
 - 访问者模式 Visitor 对于某个对象或者一组对象，不同的访问者，产生的结果不同，执行操作也不同
-- **Visitor 的对象定义了用于 AST 中获取具体节点的方法**
+- **Visitor 的对象中定义了用于 AST 中获取具体节点的方法**
 - **Visitor 上挂载以节点 `type` 命名的方法，当遍历 AST 的时候，如果匹配上 type，就会执行对应的方法**
-- 说白了 Visitor 就是一个对象，该对象可以提供许多不同的方法，供给不同的访问者调用不同的方法
+- 说白了 Visitor 就是一个对象，该对象可以提供许多不同的方法（这些方法的名字就是AST中不同节点的名字），供给不同的访问者调用不同的方法
 - 插件就是一个访问器对象，每个插件只关注一个 AST 中不同的节点类型，并对这些关注的节点进行操作
 
 
@@ -2020,23 +2036,6 @@ Program离开
 - stop() 结束所有的遍历
 
 每个路径对应一个节点。
-
-
-
-### AST 节点
-
-- File 文件
-- Program 程序
-- Literal 字面量，代表一个值， NumericLiteral（数字） StringLiteral（字符串） BooleanLiteral（布尔）
-- Identifier 标识符，代表一个变量
-- Statement 语句
-- Declaration 声明语句
-- Expression 表达式
-- Class 类
-- VariableDeclaration 变量声明，一个 VariableDeclaration 中可能存在多个 VariableDeclarator，一行声明多个变量
-- VariableDeclarator
-- FunctionDeclaration，函数声明
-- BlockStatement，块级语句
 
 
 
@@ -2168,6 +2167,9 @@ let arrowFunctionPlugin2 = {
           }
         }
       }
+    },
+    FunctionExpression(path,state){
+       console.log(state.age)  // 100   
     }
   }
 };
@@ -2205,15 +2207,13 @@ const sourceCode = `
 	};
 	
 	const minus = (a, b)=>a + b;
+	
 	class Calculator{
 		divide(a, b){
 			return a/b
 		}
 	}
 `
-
-
-
 ```
 
 
@@ -2221,7 +2221,6 @@ const sourceCode = `
 转化后的代码：
 
 ```js
-·
 const sourceCode = `
 	import logger from 'logger'
 	
@@ -2248,6 +2247,10 @@ const sourceCode = `
 	}
 `
 ```
+
+上面这些插件都可以在babel-loader中进行配置后使用。
+
+
 
 
 
@@ -2330,7 +2333,6 @@ compiler.run((err, stats) => {
     //stats代表统计结果对象
     console.log(
       stats.toJson({
-        files: true, // 代表打包后生成的文件
         assets: true, // 其它是一个代码块（chunk）到文件的对应关系
         chunks: true, // 从入口模块出发，找到此入口模块依赖的模块，或者依赖的模块依赖的模块，合在一起组成一个代码块
         modules: true // 打包的模块，项目源码仓库中的每个文件都是一个模块（js文件，jsx文件，图片，html，css等）
@@ -2535,7 +2537,7 @@ module.exports = {
   },
   entry: {
     entry1: './src/entry1.js',
-    entry2:'./src/entry2.js'  // name就是此模块属于哪个模块  a
+    entry2:'./src/entry2.js'  // name就是此模块属于哪个模块
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -2570,7 +2572,7 @@ module.exports = {
 
 1. **初始化参数：从配置文件和 Shell 语句中读取并合并参数,得出最终的配置对象**
 
-2. **用上一步得到的配置对象 `Compiler` 对象**
+2. **用上一步得到的配置对象初始化 `Compiler` 对象**
 
 3. **加载(挂载)所有配置的插件，插件是在编译开始之前全部挂载（订阅）好的，等到后面编译过程中触发插件的中各种订阅函数**
 
@@ -2588,7 +2590,7 @@ module.exports = {
 
 10. **在确定好输出内容后，根据配置确定输出的路径和文件名，把文件内容写入到文件系统**
 
-    在以上过程中，Webpack 会在特定的时间点广播出特定的事件，插件在监听到对应的事件后会执行特定的逻辑，并且插件可以调用 Webpack 提供的 API 改变 Webpack 的运行结果
+    在以上过程中，Webpack 会在特定的时间点广播出特定的事件，插件在监听到对应的事件后会执行特定的逻辑，并且插件可以调用 Webpack 提供的 API 改变 Webpack 的运行结果。
 
     
 
@@ -2784,7 +2786,7 @@ module.exports = {
       }
       /**
        * 编译模块
-       * @param {*} name 模块所属的代码块(chunk)的名称，也就是entry的name entry1 entry2
+       * @param {*} name 模块所属的代码块(chunk)的名称，也就是entry配置项的key entry1 entry2
        * @param {*} modulePath 模块的路径，绝对路径
        */
       buildModule(name, modulePath) {
@@ -2805,7 +2807,7 @@ module.exports = {
         
         // 7.再找出该模块依赖的模块，再递归本步骤直到所有入口依赖的文件都经过了本步骤的处理 ， 找出某个模块文件中依赖的其他模块则是通过AST查找获取
         // 声明当前模块的ID
-        let moduleId = './' + path.posix.relative(baseDir, z);  // relative方法返回一个相对的路径
+        let moduleId = './' + path.posix.relative(baseDir, modulePath);  // relative方法返回一个相对的路径
         //创建一个模块，ID就是相对于根目录的相对路径，dependencies就是此模块依赖的模块
         //name是模块所属的代码块的名称, 如果一个模块属于多个代码块，那么name就是一个数组（比如一个模块被多个入口中的其他模块都引用了。）
         let module = { id: moduleId, dependencies: [], names: [name] };
@@ -2942,7 +2944,7 @@ compilation 对象代表了一次资源版本的构建。它包含了当前的�
 
 loader的细节。
 
-- 所谓 loader 只是一个导出为函数的 JavaScript 模块。它接收上一个 loader 产生的结果或者资源文件(resource file)作为入参。也可以用多个 loader 函数组成 loader chain
+- loader 是一个模块文件导出的函数。它接收上一个 loader 产生的结果或者资源文件(resource file)作为入参。也可以用多个 loader 函数组成 loader chain
 - compiler 需要得到最后一个 loader 产生的处理结果。这个处理结果应该是 String 或者 Buffer（被转换为一个 string）
 
 
@@ -2977,7 +2979,7 @@ loader有四种执行时机分类，它们的组合是有顺序的。
 const { runLoaders} = require('./loader-runner');
 const path = require('path');
 const fs = require('fs');
-//这是我要使用loader处理的文件
+//这是要使用loader处理的文件
 const entryFile = path.resolve(__dirname, 'src/index.js')
 // loader分类跟loader自己没有关系，跟使用时候的配置有关系
 //eslint-loader中配置的pre  babel-loader=normal
@@ -2987,41 +2989,19 @@ const entryFile = path.resolve(__dirname, 'src/index.js')
  * -! noPreAuto
  * !! noPrePostAuto
  */
-let request = `inline-loader1!inline-loader2!${entryFile}`;
-//require(`inline-loader1!inline-loader2!${entryFile}`);
-const rules = [
-  {
-    test: /\.js$/,
-    use:['normal-loader1','normal-loader2']
-  },
-  {
-    test: /\.js$/,
-    enforce:'pre',
-    use:['pre-loader1','pre-loader2']
-  },
-  {
-    test: /\.js$/,
-    enforce:'post',
-    use:['post-loader1','post-loader2']
-  }
-]
 ```
-
-
-
-
 
 
 
 ### loader的工作
 
-![image-20230219130529675](/Users/wuyi/Desktop/study-note/珠峰/webpack-张仁阳.assets/image-20230219130529675.png)
+![image-20230219130529675](./webpack-张仁阳.assets/image-20230219130529675.png)
 
 ```js
 const { runLoaders} = require('loader-runner');
 const path = require('path');
 const fs = require('fs');
-//这是我要使用loader处理的文件
+//这是要使用loader处理的文件
 const entryFile = path.resolve(__dirname, 'src/index.js')
 
 let request = `inline-loader1!inline-loader2!${entryFile}`;
@@ -3057,10 +3037,6 @@ runLoaders({
   console.log(result.resourceBuffer?result.resourceBuffer.toString():null);
 });
 ```
-
-
-
-
 
 
 
@@ -3235,7 +3211,7 @@ runLoaders({
 #### pitch
 
 - 比如 a!b!c!module, 正常调用顺序应该是 c、b、a，但是真正调用顺序是 a(pitch)、b(pitch)、c(pitch)、c、b、a,如果其中任何一个 pitching loader 返回了非空值就相当于在它以及它右边的 loader 已经执行完毕
-- 比如如果 b 返回了字符串"result b", 接下来只有 a 会被系统执行，且 a 的 loader 收到的参数是 result b
+- 比如如果 b的pitch 返回了字符串"result b", 接下来只有 a 会被系统执行，且 a 的 loader 收到的参数是 result b，并且源文件也没有被读取过 
 - loader 根据返回值可以分为两种，一种是返回 js 代码（一个 module 的代码，含有类似 module.export 语句）的 loader，还有不能作为最左边 loader 的其他 loader
 - 有时候我们想把两个第一种 loader chain 起来，比如 style-loader!css-loader! 问题是 css-loader 的返回值是一串 js 代码，如果按正常方式写 style-loader 的参数就是一串代码字符串
 - 为了解决这种问题，我们需要在 style-loader 里执行 require(css-loader!resources)
@@ -3256,10 +3232,216 @@ pitch 与 loader 本身方法的执行顺序图
 
 
 
-![image-20230219154119989](/Users/wuyi/Desktop/study-note/珠峰/webpack-张仁阳.assets/image-20230219154119989.png)
+![image-20230219154119989](.//webpack-张仁阳.assets/image-20230219154119989.png)
 
+ 
 
-
-![image-20230219154632771](/Users/wuyi/Desktop/study-note/珠峰/webpack-张仁阳.assets/image-20230219154632771.png)
+![image-20230219154632771](./webpack-张仁阳.assets/image-20230219154632771.png)
 
 一旦有某个loader的有pitch，并且被执行后返回不为假值。则并不会进行源文件的读取操作。
+
+
+
+
+
+**扩展知识**
+
+runSyncOrAsync既可以是同步也可以是异步。
+
+```js
+function runSyncOrAsync(fn, callback) {
+  let sync = true;
+  global.async=()=> {
+    sync = false;
+    return callback;
+  }
+  fn();
+  if(sync){
+    callback();
+  }
+}
+
+// 这个方法是同步还是异步，取决于fn中的代码逻辑
+// 同步的使用方式：
+function normal() {
+  // 函数体中不能有调用global.async的语句
+  //const callback= global.async();
+  console.log('normal');
+  //setTimeout(callback,3000);
+}
+
+// 异步的使用方式：
+function normal() {
+  const callback= global.async();
+  console.log('normal');
+  setTimeout(callback,3000);
+}
+
+function callback() {
+  console.log('callback');
+}
+
+runSyncOrAsync(normal,callback);
+
+```
+
+
+
+## 插件
+
+### 前置知识
+
+面试的时候手写并发，并发控制，异步机制代码，都可以参考tapable库的这些方法。tapable可以独立使用。
+
+异步任务的并发数控制函数。
+
+例题：
+
+> 请实现如下的函数，可以批量请求数据，所有的URL地址在urls参数中，同时可以通过max参数控制请求的并发度，当所有请求结束之后，需要执行callback回调函数，发请求的函数可以直接使用fetch即可。
+>
+> function sendRequest(urls:string[],max:number,callback:()=>void){ }
+
+
+
+#### 插件核心tapable
+
+webpack插件机制：
+
+- webpack 实现插件机制的大体方式是：
+  - 创建 - webpack 在其内部对象上创建各种钩子；
+  - 注册 - 插件将自己的方法注册到对应钩子上，交给 webpack；
+  - 调用 - webpack 编译过程中，会适时地触发相应钩子，因此也就触发了插件的方法。
+- Webpack 本质上是一种事件流的机制，它的工作流程就是将各个插件串联起来，而实现这一切的核心就是 Tapable，webpack 中最核心的负责编译的 Compiler 和负责创建 bundle 的 Compilation 都是 Tapable 的实例
+- 通过事件和注册和监听，触发 webpack 生命周期中的函数方法
+
+webpack插件钩子（生命周期函数）可视化工具：[wepback-plugin-visualizer](https://www.npmjs.com/package/wepback-plugin-visualizer)
+
+```js
+const {
+  SyncHook,
+  SyncBailHook,
+  SyncWaterfallHook,
+  SyncLoopHook,
+  AsyncParallelHook,
+  AsyncParallelBailHook,
+  AsyncSeriesHook,
+  AsyncSeriesBailHook,
+  AsyncSeriesWaterfallHook,
+} = require("tapable");
+```
+
+
+
+####  tapable 分类
+
+1. ##### 按同步异步分类
+
+   - Hook 类型可以分为`同步Sync`和`异步Async`，异步又分为`并行`(一起开始，全部结束才结束)和`串行`（前一个结束后一个才开始）
+     ![image-20230410195505070](C:/Users/shuyi/Desktop/study-notes/%E7%8F%A0%E5%B3%B0/webpack-%E5%BC%A0%E4%BB%81%E9%98%B3.images/image-20230410195505070.png)
+
+2. **按返回值分类**
+
+   ![image-20230410195529852](C:/Users/shuyi/Desktop/study-notes/%E7%8F%A0%E5%B3%B0/webpack-%E5%BC%A0%E4%BB%81%E9%98%B3.images/image-20230410195529852.png)
+
+   
+
+   - basic：执行每一个事件函数，**串行**，不关心函数的返回值,有 SyncHook、AsyncParallelHook、AsyncSeriesHook
+
+     ![image-20230410200044645](C:/Users/shuyi/Desktop/study-notes/%E7%8F%A0%E5%B3%B0/webpack-%E5%BC%A0%E4%BB%81%E9%98%B3.images/image-20230410200044645.png)
+
+   - waterfall：如果前一个事件函数的结果 `result !== undefined`,则 result 会作为后一个事件函数的第一个参数,有 SyncWaterfallHook，AsyncSeriesWaterfallHook
+
+     ![image-20230410200145319](C:/Users/shuyi/Desktop/study-notes/%E7%8F%A0%E5%B3%B0/webpack-%E5%BC%A0%E4%BB%81%E9%98%B3.images/image-20230410200145319.png)
+
+     ```js
+     const { SyncWaterfallHook } = require('tapable');
+     /**
+      * 形参数组
+      * 形参的名义没有意义
+      */
+     const hook = new SyncWaterfallHook(['name', 'age']);
+     /**
+      * tap的第一个参数是回调函数的名称，但是这个名字只是给程序员看的
+      */
+     hook.tap('1', (name,age) => {
+       console.log(1, name, age);
+       return 'result1'
+     });
+     hook.tap('2', (name,age) => {
+       console.log(2, name, age);
+       return 'result2'
+     });
+     hook.tap('3', (name,age) => {
+       console.log(3,name,age);
+     });
+     hook.call('zhufeng',18);
+     ```
+
+     
+
+   - bail：执行每一个事件函数，遇到第一个钩子的返回值结果 `result !== undefined` ，则不再继续往后执行。有：SyncBailHook、AsyncSeriesBailHook, AsyncParallelBailHook
+
+     ![image-20230410200127561](C:/Users/shuyi/Desktop/study-notes/%E7%8F%A0%E5%B3%B0/webpack-%E5%BC%A0%E4%BB%81%E9%98%B3.images/image-20230410200127561.png)
+
+   - loop：不停的循环执行事件函数，直到所有函数结果 `result === undefined`,有 SyncLoopHook 和 AsyncSeriesLoopHook
+
+     ![image-20230410200204253](C:/Users/shuyi/Desktop/study-notes/%E7%8F%A0%E5%B3%B0/webpack-%E5%BC%A0%E4%BB%81%E9%98%B3.images/image-20230410200204253.png)
+
+     ```js
+     const { SyncLoopHook } = require('tapable');
+     /**
+      * 不停的执行回调函数，直到结果等于undefined
+      */
+     const hook = new SyncLoopHook(['name', 'age']);
+     let counter1 = 0,counter2 = 0,counter3 = 0;
+     
+     hook.tap('1', (name,age) => {
+       console.log(1, 'counter1',counter1);
+       if (++counter1===1) {
+         counter1 = 0;
+         return;
+       }
+       return true;
+     });
+     
+     hook.tap('2', (name,age) => {
+       console.log(2, 'counter2',counter2);
+       if (++counter2===2) {
+         counter2 = 0;
+         return;
+       }
+       return true;
+     });
+     
+     hook.tap('3', (name,age) => {
+       console.log(3, 'counter3',counter3);
+       if (++counter3==3) {
+         counter3 = 0;
+         return;
+       }
+       return true;
+     });
+     hook.call('zhufeng',18);
+     ```
+
+     
+
+
+​     
+
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
