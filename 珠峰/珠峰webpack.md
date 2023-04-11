@@ -66,7 +66,7 @@ module.exports = {
 
 `entry:['./src/index1.js','./src/index2.js']` ：
 
-![image-20210626213637972](.\typora-user-images\image-20210626213637972.png)
+![image-20210626213637972](..\typora-user-images\image-20210626213637972.png)
 
 多入口配置：
 
