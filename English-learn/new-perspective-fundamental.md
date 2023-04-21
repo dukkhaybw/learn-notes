@@ -121,7 +121,7 @@ D.的
 
 **学习贵在坚持**
 
-“Stayhungry; stay foolish.”——JOBS
+“Stay hungry; stay foolish.”——JOBS
 
 强调做事的激情和坚持。要像傻瓜一样地坚持。真正的好东西是聪明人下笨功夫做出来的。需要长期的坚持，坚持观察、思考、总结、验证、运用等。
 
@@ -546,19 +546,19 @@ It is interesting to listen to him.
 
 其他的总称名词有：
 
-![image-20221209195724314](/Users/wuyi/Desktop/study-note/English-learn/new-perspective-fundamental.assets/image-20221209195724314.png)
+![image-20221209195724314](./new-perspective-fundamental.assets/image-20221209195724314.png)
 
 就拿 character 来说吧，很多同学在作文里谈到“特点”时，就喜欢说 characters，殊不知，character 作为“特点”讲时，是一个不可数名词，不 能变成复数的。因为它真正的意思是 the combination of qualities or features that distinguishes one person, group, or thing from another，表 示“使与其他人、群体或事物相区别的性质或特征的集合”，强调的是一 个整体的概念，因而是没有复数形式的。
 
 4. **抽象的名词一般是不可数的（nouns that are abstractions）**
 
-   ![image-20221209200007230](/Users/wuyi/Desktop/study-note/English-learn/new-perspective-fundamental.assets/image-20221209200007230.png)
+   ![image-20221209200007230](./new-perspective-fundamental.assets/image-20221209200007230.png)
 
    要特别注意的是，上面这些名词可以有其他不同的意 思，因而可以转化为可数名词。
 
 5. 表示研究学科（subjects of study），一般作为不可数名 词。
 
-   ![image-20221209200047267](/Users/wuyi/Desktop/study-note/English-learn/new-perspective-fundamental.assets/image-20221209200047267.png)
+   ![image-20221209200047267](./new-perspective-fundamental.assets/image-20221209200047267.png)
 
 #### 不可数名词的度量
 

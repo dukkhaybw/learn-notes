@@ -1,8 +1,19 @@
-## React18.2
+##  React18.2
 
+##  第一节
 
+1. React是什么？
+2. 搭建项目，一比一实现React
+   1. npm init -y
+   2. npm install vite @vitejs/plugin-react  -D
+   3. 写vite配置文件
+3. 认识jsx
+4. 体验虚拟DOM
+5. 区分新老babel转换jsx的不同之处
 
-## JSX及其本质
+ 
+
+### JSX及其本质
 
 **React17后不用再主动引入 React 而直接而使用在文件中 jsx 语法**。因为新版项目中将 jsx不再转为 React.createElement，但是babel转换后的代码在浏览器中的执行结果是一样的——虚拟DOM对象。
 
@@ -62,7 +73,7 @@ jsx("h1", {
 // React.createElement=jsx
 ```
 
-新的编译模式后，字节点直接以对象props中的children属性值存在，以前的字节点是作为第3个及其往后参数的方式传入createElement，在createElement中在将他们作为props的children属性的属性值。
+新的编译模式后，子节点直接以对象props中的children属性值存在，以前的字节点是作为第3个及其往后参数的方式传入createElement，在createElement中在将他们作为props的children属性的属性值。
 
 
 
@@ -108,8 +119,6 @@ JSX的编译和后续执行：
 
 包含jsxDEV函数调用的代码在发送到浏览器后，浏览器会根据源码中定义的该jsxDEV方法的代码逻辑进行执行，最后返回一个虚拟DOM。
 
-
-
 ```js
 function ReactElement(type, key, ref, props) {
   return {//这就是React元素，也被称为虚拟DOM
@@ -122,9 +131,7 @@ function ReactElement(type, key, ref, props) {
 }
 ```
 
-
-
-​				
+​			
 
 jsxEDV函数在浏览器中调用后生成的结构														
 
@@ -134,9 +141,9 @@ jsxEDV函数在浏览器中调用后生成的结构
 </h1>
 ```
 
+每个虚拟DOM节点会有一个类型属性——$$typeof
 
-
-![image-20221215221445028](/Users/wuyi/Desktop/study-note/珠峰架构/React18.2.assets/image-20221215221445028.png)
+![image-20230313211759844](C:/Users/shuyi/Desktop/study-notes/%E7%8F%A0%E5%B3%B0%E6%9E%B6%E6%9E%84/React18.2.images/image-20230313211759844.png)
 
 
 
@@ -145,6 +152,12 @@ jsxEDV函数在浏览器中调用后生成的结构
 
 
 
+
+## 第二节
+
+在编译阶段将编写的jsx经过babel编译后转为jsx(type,config)的方法调用，而前一节就是在jsx这个函数方法，该方法返回一个虚拟DOM（JS对象）。
+
+用React将虚拟DOM变为真实DOM插入已经存在的节点上。
 
 ```jsx
 import { createRoot } from "react-dom/client";
@@ -159,6 +172,7 @@ const element = (
 console.log(element)
 
 const root = createRoot(document.getElementById("root"));
+root.render(element)
 ```
 
 createRoot函数接受真实的DOM节点，然后去创建整个项目的根。根本质就是一个类（ReactDOMRoot）的对象实例，该对象实例上有一个属性（_internalRoot），该属性的值是的FiberRootNode，FiberRootNode对象上有一个属性containerInfo属性的值就是createRoot接受的真实DOM节点。如下图：
@@ -179,9 +193,47 @@ createRoot函数接受真实的DOM节点，然后去创建整个项目的根。�
 
 
 
+**为什么React16引入了Fiber架构？**
+
+React15中中各render过程是不可中断的，这就导致JS可能长时间霸占主线程，导致UI线程无法工作带来的页面卡顿情况。  
+
+**性能瓶颈**
+
+- JS 任务执行时间过长
+
+  - 浏览器刷新频率为 60Hz,大概 16.6 毫秒渲染一次，而 JS 线程和渲染线程是互斥的，所以如果 JS 线程执行任务时间超过 16.6ms 的话，就会导致掉帧，导致卡顿，解决方案就是 React 利用空闲的时间进行更新，同时将一个大任务拆分为可以分段执行的小任务，不影响渲染进行的渲染
+
+  - 把一个耗时任务切分成一个个小任务，分布在每一帧里的方式就叫时间切片 
+    >React16以后的Fiber的Fiber架构已经尽可能的将大任务拆分为小任务了，如果在执行最小粒度的任务时，依旧超过了16.6ms的时长，那么react将无能为力，仍就会出现卡顿的情况。
+    >
+    >这种调度是合作式调度。
+
+**屏幕刷新率**
+
+- 目前大多数设备的屏幕刷新率为 60 次/秒
+- 浏览器渲染动画或页面的每一帧的速率也需要跟设备屏幕的刷新率保持一致
+- 页面是一帧一帧绘制出来的，当每秒绘制的帧数（FPS）达到 60 时，页面是流畅的,小于这个值时，用户会感觉到卡顿
+- 每个帧的预算时间是 16.66 毫秒 (1 秒/60)
+- 1s 60 帧，所以每一帧分到的时间是 1000/60 ≈ 16 ms,所以书写代码时力求不让一帧的工作量超过 16ms
+
+**帧**
+
+- 每个帧的开头包括样式计算、布局和绘制
+- JavaScript 执行 Javascript 引擎和页面渲染引擎在同一个渲染线程,GUI 渲染和 Javascript 执行两者是互斥的
+- 如果某个任务执行时间过长，浏览器会推迟渲染
+
+![image-20230314211155095](C:/Users/shuyi/Desktop/study-notes/%E7%8F%A0%E5%B3%B0%E6%9E%B6%E6%9E%84/React18.2.images/image-20230314211155095.png)
 
 
-## 时间切片
+
+### 时间切片
+
+**requestIdleCallback**
+
+- 希望快速响应用户，让用户觉得够快，不能阻塞用户的交互
+- `requestIdleCallback` 使开发者能够在主事件循环上执行后台和低优先级工作，而不会影响延迟关键事件，如动画和输入响应
+- 正常帧任务完成后没超过 16 ms,说明时间有富余，此时就会执行 `requestIdleCallback` 里注册的任务
+- Reac中自己实现了一个requestIdleCallback，因为原生requestIdleCallback空闲时间不可控且有兼容性问题，里面定义了每帧空闲执行时间为5ms
 
 ![cooperativescheduling2](http://img.zhufengpeixun.cn/cooperativescheduling2.jpg)
 
@@ -251,12 +303,15 @@ createRoot函数接受真实的DOM节点，然后去创建整个项目的根。�
 
 React会将大任务拆分为小任务，如何拆？拆多细？一个任务的代表是什么？
 
-定义：
+- 可以通过某些调度策略合理分配 CPU 资源，从而提高用户的响应速度
+- 通过 Fiber 架构，让调和过程变成可被中断。 适时地让出 CPU 执行权，除了可以让浏览器及时地响应用户的交互
 
-1. Fiber 是一个执行单元，每次执行完一个执行单元, React 就会检查现在还剩多少时间，如果没有时间就将控制权让出去
+fiber定义（fiber是什么）：
+
+1. **Fiber 是一个执行的最小单元**，每次执行完一个执行单元, React 就会检查现在还剩多少时间，如果没有时间就将控制权让出去
    ![fiberflow](http://img.zhufengpeixun.cn/fiberflow.jpg)
-2. Fiber 是一种数据结构
-   - React 目前的做法是使用链表, **每个虚拟节点内部表示为一个`Fiber`**
+2. **Fiber 是一种数据结构**
+   - React 目前的做法是使用**链表, 根据jsx函数执行后返回的具有层级的虚拟DOM对象生成，虚拟DOM中的每个虚拟节点内部表示为一个`Fiber`**
    - 从顶点开始遍历
    - 如果有第一个儿子，先遍历第一个儿子
    - 如果没有第一个儿子，标志着此节点遍历完成
@@ -265,6 +320,12 @@ React会将大任务拆分为小任务，如何拆？拆多细？一个任务的
    - 没有父节点遍历结束
 
 为什么Fiber结构可以进行中断后继续执行？
+
+
+
+其中根Fiber——**HostRootFiber**，对应的真实DOM节点就是项目html中一开始写好的div#root元素。
+
+![image-20230315210732482](C:/Users/shuyi/Desktop/study-notes/%E7%8F%A0%E5%B3%B0%E6%9E%B6%E6%9E%84/React18.2.images/image-20230315210732482.png)
 
 
 
@@ -278,20 +339,80 @@ React会将大任务拆分为小任务，如何拆？拆多细？一个任务的
 
 
 
+
+
 深度优先：
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20190911101457435.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80Mzk0OTUzNQ==,size_16,color_FFFFFF,t_70)
 
 - 深度优先搜索英文缩写为 DFS 即`Depth First Search`
 - 其过程简要来说是对每一个可能的分支路径深入到不能再深入为止，而且每个节点只能访问一次
 - 应用场景
   - React 虚拟 DOM 的构建
-  - React 的 fiber 树构建
+  - React 的 fiber 构建
+
+```js
+let root = {
+  name: "A",
+  children: [
+    {
+      name: "B",
+      children: [{ name: "B1" }, { name: "B2" }],
+    },
+    {
+      name: "C",
+      children: [{ name: "C1" }, { name: "C2" }],
+    },
+  ],
+};
+
+function dfs(node){
+  console.log(node.name)
+  if(node.children?.length){
+    node.children.forEach(childNode=>{
+      dfs(childNode)
+    })
+  }
+}
+```
 
 
 
 广度优先：
 
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20190911114957325.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80Mzk0OTUzNQ==,size_16,color_FFFFFF,t_70)
+
 - 宽度优先搜索算法（又称广度优先搜索），其英文全称是 Breadth First Search
 - 算法首先搜索距离为`k`的所有顶点，然后再去搜索距离为`k+l`的其他顶点
+
+```js
+let root = {
+  name: "A",
+  children: [
+    {
+      name: "B",
+      children: [{ name: "B1" }, { name: "B2" }],
+    },
+    {
+      name: "C",
+      children: [{ name: "C1" }, { name: "C2" }],
+    },
+  ],
+};
+
+function bfs(node){
+	const arr = [node]
+  let current
+  while(current = arr.shift()){
+    console.log(current.name)
+    current.children&&arr.push(...current.children)
+  }
+}
+
+bfs(root)
+```
+
+
 
 
 
@@ -385,9 +506,6 @@ enqueueUpdate(fiber, update2)
 //基于老状态，计算新状态
 processUpdateQueue(fiber);
 console.log(fiber.memoizedState);
-
-
-
 ```
 
 
@@ -671,7 +789,7 @@ export function createHostRootFiber() {
 
 React中表示副作用使用的是二进制数据，在进行diff时，会给fiber节点上的flags或者subtreeFlags进行标记，表示进行何种操作（增删改等）。subtreeFlags表示子节点的操作标记，能进行性能优化。
 
-React的执行分为两个阶段：1. render阶段计算副作用。2.commit阶段修改真实DOM，或者说提交副作用。提交阶段是从根节点开始往树下面遍历，，如果某一级的Fiber节点上的subtreeFlags为二进制数字0的话，表示该节点下的后代节点都没有任何副作用操作，将不再进行该节点下面的深度遍历，从而优化性能。子节点的副作用通过冒泡层层合并后赋值给祖先节点的subtreeFlags属性。
+React的执行分为两个阶段：1. render阶段计算副作用。2.commit阶段修改真实DOM，或者说提交副作用。提交阶段是从根节点开始往树下面遍历，如果某一级的Fiber节点上的subtreeFlags为二进制数字0的话，表示该节点下的后代节点都没有任何副作用操作，将不再进行该节点下面的深度遍历，从而优化性能。子节点的副作用通过冒泡层层合并后赋值给祖先节点的subtreeFlags属性。
 
 ```js
 function bubbleProperties(completedWork) {
