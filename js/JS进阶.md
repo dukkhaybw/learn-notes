@@ -6,7 +6,7 @@
 
 函数式编程中的基本概念。
 
-- 函数式编程（Functional programming）与面向对象编程（Object-oriented programming）和过程式编程（Procedural programming）并列的**编程范式**。
+- 函数式编程（Functional programming）与面向对象编程（Object-oriented programming）和过程式编程（Procedural programming）三种**编程范式**。
 - 最主要的特征是，函数是[第一等公民](https://llh911001.gitbooks.io/mostly-adequate-guide-chinese/content/ch2.html)。
 - 强调将计算过程分解成可复用的函数，典型例子就是`map`方法和`reduce`方法组合而成 [MapReduce 算法](https://zh.wikipedia.org/wiki/MapReduce)。
 - 只有[纯的](https://zh.wikipedia.org/wiki/纯函数)、没有[副作用](https://zh.wikipedia.org/wiki/函数副作用)的函数，才是合格的函数。
@@ -222,21 +222,7 @@ class Functor {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-JS是布兰登·艾克（Brendan Eich）在 95 年用 10 天时间设计出来的。早期JS功能很简单，那时的网站更多是静态的信息展示类网页，那时没有前端这一工种。05年AJAX发布，基于 AJAX，不仅可以开发静态展示的页面，也可以开发动态交互的应用。这时。前端工种开始出现，但那时的JS生态缺少强大的标准库，许多问题需要开发者从0开始自己解决，如兼容性问题，所以后来社区涌现的许多库，以jQuery为代表。JS现在可以用来开发复杂应用的语言。
-
-虽然和十几年前相比较，JavaScript 也加入了很多功能和语法糖，但是它的核心原理并没有太大变化。可即使没有太多本质上的变化，JavaScript 也仍然具有容易入门但难以进阶的问题。
+-----------
 
 
 
@@ -244,10 +230,10 @@ JS是布兰登·艾克（Brendan Eich）在 95 年用 10 天时间设计出来�
 
 1. 随着应用使用者的大规模增加，很多问题产生的**副作用**也会呈现指数级上升，性能、安全等非功能性的问题显露。
 
-   例如：应用中一个小的副作用就会造成大量重复订单问题，这时就要用到纯函数思想中的幂等，来保证任意多次执行结果与一次执行结果相同，避免订单的重复提交。
+   例如：应用中一个小的副作用就会造成大量重复问题，这时就要用到纯函数思想中的幂等，来保证任意多次执行结果与一次执行结果相同，避免订单的重复提交。
 
-2. 在大量访问的情况下，一个很小的资源加载对资源的消耗就是指数级的，能够实现对资源的有效控制，对做业务来说是十分关键的一点。
-   通过函数式 + 响应式编程，就可以通过用户的实时需求动态加载资源，从而能够节省不必要的资源预加载成本。
+2. 在大量访问的情况下，一个很小的资源加载对资源的消耗就是指数级的，能够实现对资源的有效控制，对做业务来说十分关键。
+   **通过函数式 + 响应式编程，可以通过用户的实时需求动态加载资源，从而能够节省不必要的资源预加载成本。**
 
 
 
@@ -257,10 +243,26 @@ JS是布兰登·艾克（Brendan Eich）在 95 年用 10 天时间设计出来�
 
 1. **基于语言的特点来学习**编程模式、数据结构和算法，能更好地理解这些知识的应用。例如：脱离了实际的语言和它解决的问题来解释编程模式，就会高度抽象，显得比较形而上。
 
-   在前端基本都是根据用户的行为来进行响应，响应具体做些什么工作，要通过工具来处理，比如事件处理、状态管理。函数就是这个工具，它的核心就是 IO 输入输出。我们给函数一个输入值（数据结构），它进行处理（算法），然后给我们一个输出值（返回值）。
+   在前端，基本都是根据用户的行为或者网络触发事件来进行响应，响应具体做些什么工作，要通过工具来处理，比如事件处理、状态管理。函数就是这个工具，它的核心就是 IO 输入输出。给函数一个输入值（数据结构），它进行处理（算法），然后给我们一个输出值（返回值）。
+
+   Monad 的核心，就是围绕一个“**值**”来组织各种方法。所以无论是 JavaScript 本身带的 array.map，还是常用的 React.js 里面的 observer、reducer， 其实万变不离其宗，都是在复杂系统、不确定性和混沌中，帮助去行动、感知和响应，解决各种副作用，提高性能的方法和工具。
 
 2. 在学习 JavaScript 的引擎、浏览器和编译原理的过程中，来理解这些数据结构和算法，这样更能理解这门语言的运行机制和原理，起到和专门讲算法的课程相辅相成的作用。
+
 3. 学习每一节课尽量一鼓作气，有些概念即使模糊，硬着头皮看下去也比停顿去深入了解某个点强。
+
+
+
+**如果说在使用函数式编程的时候，考虑的是“生产力”，那在使用面向对象的时候，考虑的更多是“生产关系”。**
+
+JavaScript 中的继承，是基于原型链的继承，更偏向 delegation（委托） 而不是 inheritance（继承）。即使在面向对象设计本身，也是追求多用组合少用继承。所以用JS面向对象编程时，有自己的一些特点来组织生产关系。
+
+
+
+学习JS的模式的痛点：
+
+1. 如果已经学过传统的面向对象语言，那么在学 JavaScript 的时候，很可能**对函数式的理解和运用不够深入**；
+2. 如果一开始就学习 JavaScript，只停留在开发一些简单应用上，可以说**对它的面向对象的理解和运用不会很深入**。
 
 
 
@@ -282,60 +284,49 @@ JS是布兰登·艾克（Brendan Eich）在 95 年用 10 天时间设计出来�
 
 
 
-推荐阅读：
-
-1. JavaScript: The Good Parts
-2. JavaScript: The Definitive Guide
-
-
-
-**如果说在使用函数式编程的时候，考虑的是“生产力”，那在使用面向对象的时候，考虑的更多是“生产关系”。**
-
-JavaScript 中的继承，是基于原型链的继承，更偏向 delegation（委托） 而不是 inheritance（继承）。即使在面向对象设计本身，也是追求多用组合少用继承。所以用JS面向对象编程时，有自己的一些特点来组织生产关系。
-
-
-
-编程语言有两大编程范式（模式）：
-
-1. 面向函数编程
-2. 面向对象编程
-
-
-
-学习JS的模式的痛点：
-
-1. 如果已经学过传统的面向对象语言，那么在学 JavaScript 的时候，很可能**对函数式的理解和运用不够深入**；
-2. 如果一开始就学习 JavaScript，只停留在开发一些简单应用上，可以说**对它的面向对象的理解和运用不会很深入**。
-
 
 
 
 
 ## 函数式编程
 
-从编程范式的角度看 JavaScript，它是**结构化的、事件驱动的动态语言，且支持声明式和指令式两种模式**。JS是一种可以采用不同模式开发应用的语言，而一些语言可能有它的侧模式，比如侧重于使用面向的模式编程等。
+从编程范式的角度看 JavaScript是**结构化的、事件驱动的动态语言，且支持声明式和指令式两种模式**。JS是一种可以采用不同模式开发应用的语言，而一些语言可能有它的侧模式，比如侧重于使用面向的模式编程等。
 
 ![img](https://static001.geekbang.org/resource/image/8b/6d/8b03bea0b1578372311923c81053e26d.jpg?wh=1920x595)
 
 
 
-前端开发中的应用面对的是 UI 客户端，所以应用背后的程序，就需要处理大量的用户和网络触发的事件，并根据事件的状态来做出响应。而函数式和响应式编程的很多思想，正好可以帮助这一目的的实现。
-
-函数的核心就是I/O，给函数一个输入值（数据结构），它进行处理（算法），然后给一个输出值（返回值）。
-
-函数式编程中很重要的概念 Monad的核心，就是**围绕一个“值”来组织各种方法**。
-
 **在函数式编程中，通常会把各种干扰叫做副作用（Side effect）。**
 
+典型的副作用情况：
 
+1. 函数中使用全局的变量，导致一旦全局变量有变，那函数执行的结果就无法预期
+
+2. 函数体中进行IO操作
+
+3. 函数体中进行网络请求
+
+   
+
+减少副作用的两个原则：
+
+1. 函数体中不适用函数外部的变量
+2. 对于传入函数体中的实参，拷贝后再进行使用
+3. 对于函数体要使用的数据，可以通过闭包或者对象冻结的方式进行隐藏或者限制操作
+
+
+
+了解 JavaScript 语言的核心思想，在合适的场景使用这两种编程模式来解决问题。
 
 ![img](https://static001.geekbang.org/resource/image/88/32/88b6eb343cfa28c2499f6395c6c3a032.jpg?wh=1920x815)
 
 
 
-### 函数是什么
+### 函数式编程
 
-一个函数由输入、函数和输出组成，函数是数据集到目标的一种关系，它所做的就是把行为封装起来，从而达到目标。
+一个函数由输入、函数和输出组成，**函数是数据集到目标的一种关系**，它所做的就是把行为封装起来，从而达到目标。
+
+形参:parameter，实参:argument
 
 ![img](https://static001.geekbang.org/resource/image/81/fd/8164fe53b89fc1c1406d3101149b1dfd.jpg?wh=1920x1008)
 
@@ -343,7 +334,7 @@ JavaScript 中的继承，是基于原型链的继承，更偏向 delegation（�
 
 函数已经把算法封装了，函数里相对就是可控的，而比较不可控的是**外部环境**。把不可控的外部环境分为三大类：
 
-1. 函数中最常见的副作用，就是全局变量（global variable）。下面例子中，没法保证这些函数没有改变这个变量的值，也没法保证每次输出的结果是 1。所以从输入开始，这种不确定性就存在了。
+1. 函数中最常见的副作用，就是**全局变量（global variable）**。下面例子中，没法保证这些函数没有改变这个变量的值，也没法保证每次输出的结果是 1。所以从输入开始，这种不确定性就存在了。
 
    ```js
    var x = 1;
@@ -355,9 +346,9 @@ JavaScript 中的继承，是基于原型链的继承，更偏向 delegation（�
    console.log( x );
    ```
 
-2. IO 影响（IO effects），这里的 IO 说的不是前面函数里的参数和返回值，而是类似前端浏览器中的用户行为，比如鼠标和键盘的输入，或者如果是服务器端的 Node 的话，就是文件系统、网络连接以及 stream 的 stdin（标准输入）和 stdout（标准输出）。
+2. IO 影响（IO effects），这里的 IO 说的不是函数里的参数和返回值，而是类似前端浏览器中的用户行为，比如鼠标和键盘的输入，或者如果是服务器端的 Node，就是文件系统、网络连接以及 stream 的 stdin（标准输入）和 stdout（标准输出）。
 
-3. 第三种比较常见的副作用是与网络请求（HTTP request）相关，比如要针对一个用户下单的动作发起一个网络请求，需要先获得用户 ID，再连着用户的 ID 一起发送。如果我们还没获取到用户 ID，就发起下单请求，可能就会收到报错。
+3. 网络请求（HTTP request），比如要针对一个用户下单的动作发起一个网络请求，需要先获得用户 ID，再连着用户的 ID 一起发送。如果还没获取到用户 ID，就发起下单请求，可能就会收到报错。
 
 
 
@@ -367,7 +358,7 @@ JavaScript 中的继承，是基于原型链的继承，更偏向 delegation（�
 
 在函数式编程中，有两个核心概念：纯函数（pure function）和不可变（immutability）。
 
-纯函数：**一个函数的返回结果的变化只依赖其参数，并且执行过程中没有副作用，只要传入的参数一样，那每次执行的结果一定都一样。**纯函数就可以通过减少对外界不确定因素的依赖，来减少副作用。（对内）
+纯函数：**一个函数的返回结果的变化只依赖其参数，并且执行过程中没有副作用，只要传入的参数一样，那每次执行的结果一定都一样。**纯函数就可以通过减少对外界变量的使用，来减少副作用。（对内）
 
 ```js
 var rate = 0.05;   // 放在函数外作为变量时，函数就不是一个纯函数了，因为随着这个变量的变化，计算结果会有所不同。
@@ -390,7 +381,7 @@ calculateGST(100); // return 5
 
 ### 不可变
 
-不可变：在减少程序被外界影响的同时，也减少对外界的影响。如果把一个外部变量作为参数作为输入，在函数里做了改变，作为输出返回。那么这个过程中，可能不知道这种变化会对整个系统造成什么样的结果。 **也就是函数不对外界传入的参数产生影响。**（对外）
+不可变：在减少程序被外部变量影响的同时，也减少对外界的影响。如果把一个外部变量作为参数作为输入，在函数里做了改变，作为输出返回。那么这个过程中，可能不知道这种变化会对整个系统造成什么样的结果。 **也就是函数不对外界传入的参数产生影响。**（对外）
 
 ```js
 const beforeList = [1,2,3,4]
@@ -406,11 +397,9 @@ console.log(beforeList.slice(0,2))
 //[ 1, 2 ]
 ```
 
-数组中的 splice 方法，在对数据进行了处理后，改变了全局中的 beforeList 的值，所以是可变的。而 slice 在执行之后的结果，没有影响全局中的 beforeList 的值，所以它是不可变的。在开发中，如果要保证不可变，就不能用 splice，而用 slice。其他数组方法例子：
+数组中的 splice 方法，在对数据进行了处理后，改变了全局中的 beforeList 的值，所以是可变的。而 slice 在执行之后的结果，没有影响全局中的 beforeList 的值，所以它是不可变的。其他数组方法：
 
 ![img](https://static001.geekbang.org/resource/image/66/ed/668060b8cfdf2dd6569975d96e9ef2ed.jpg?wh=1920x1167)
-
-
 
 可变：就是指对于外部传入的实参，直接进行修改，这样是存在隐患的，因为不确定外部是否会基于原来的那个变量的值进行其他后续操作。
 
@@ -418,13 +407,11 @@ console.log(beforeList.slice(0,2))
 
 如何利用 JavaScript 的核心设计思想和工具解决这些副作用？
 
-函数式编程最核心的地方，就是输入输出和中间的算法，要解决的核心问题就是副作用。而为了解决副作用，需要掌握两个重要的概念，一个是纯函数，一个是不可变。纯函数强调的是自身的稳定性，对结果只影响一次；而不可变强调的是和外界的交互中，尽量减少相互间负面的影响。
+函数式编程最核心的地方，就是输入输出和中间的算法，要解决的核心问题就是副作用（effect）。而为了解决副作用，需要掌握两个重要的概念，一个是纯函数，一个是不可变。**纯函数强调的是自身的稳定性，对结果只影响一次；而不可变强调的是和外界的交互中，尽量减少相互间负面的影响。**
 
 ![img](https://static001.geekbang.org/resource/image/10/cb/10da7a3de6f518c1b3f4c68748e26fcb.jpg?wh=1920x918)
 
-
-
-**纯函数就是在减少程序被外界影响的同时，不可变就是减少对外界的影响。**
+**纯函数就是在减少程序被外界影响，不可变就是减少对外界的影响。**
 
 
 
@@ -436,17 +423,19 @@ console.log(beforeList.slice(0,2))
 
 <img src="https://static001.geekbang.org/resource/image/d2/0f/d243d2785c92e59e77c6dbae579b4a0f.jpg?wh=1920x679" alt="img" style="zoom:33%;" />
 
+
+
 **重用**就是把可以重复使用的功能抽象到一个类里，每次只是创建一个它的实例对象来使用。
 
 可以把通用功能放到抽象类；而一些特定的行为或属性，可以通过继承放到实现类中，这样在继承了基础的父类（parent class）功能的基础上（extend），能够在子类（child class）中作一些改动。但是如果一个程序中，父子的层级过于复杂，如果父类有了问题，就会牵一发动全身，而且抽象的层级过多，也会让代码难以理解。
 
-实际上，在面向对象中，也有组合的概念，就是一个子类不是继承的某个父类，而是通过组合多个类，来形成一个类，而不是强调依靠某种从属关系。所以，在面向对象的编程中，也有“组合”优于“继承”的概念。不过在实际情况下，继承也不是完全不可取的，在开发中，使用哪种思想还是要根据情况具体分析。
+在面向对象中，也有**组合**的概念，就是一个子类不是继承的某个父类，而是通过组合多个类，来形成一个类，而不是强调依靠某种从属关系。所以，在面向对象的编程中，也有“组合”优于“继承”的概念。不过在实际情况下，继承也不是完全不可取的，在开发中，使用哪种思想还是要根据情况具体分析。
 
 
 
 ### 基于原型的继承
 
-JavaScript 中的类和其它面向对象的语言，究竟有什么不同？
+JavaScript 中的类和其它面向对象的语言，有什么不同？
 
 对于传统的面向对象的编程语言来说，比如 Java，一个对象是基于一个类的蓝图来创建的。但是在 JavaScript 中，就没有这种类和对象的拷贝从属关系。实际上，JS 里的对象和类，是构建函数之间原型链接链接的关系。
 
@@ -457,7 +446,6 @@ JavaScript 中的类和其它面向对象的语言，究竟有什么不同？
 
 
 ```js
-
 function Widget(widgetName) {
     this.widgetName= widgetName;
 }
@@ -492,6 +480,8 @@ notice2.display(); // "你好，这是应用B"
 
 
 
+**面向对象编程最核心的点就是服务业务对象，最需要解决的问题就是封装、重用和继承。**在 JavaScript 中，面向对象的特殊性是基于原型链的继承，这种继承更像是“授权”，而不是传统意义的“父子”继承。而且为了解决继承的层级过多的情况，在面向对象中，也有组合优于继承的思想。
+
 
 
 ![img](https://static001.geekbang.org/resource/image/f9/c0/f9173ef0176ecyy13f2d744bf978e8c0.jpg?wh=2000x1125)
@@ -524,15 +514,19 @@ JavaScript 中的常量（const，constant）算不算不可变呢？
 
 
 
-## 闭包、对象管理数据
 
-在 JavaScript 中，值一般被分为两种：**原始类型和对象类型**。
+
+## 用闭包对象管理数据
+
+在不可变的原则下，管理项目中的数据？
+
+在 JavaScript 中，值一般被分为两种：**基本数据类型和引用数据类型**。
 
 原始数据类型本身是不可变的。例如 2 = 2.5 得到的结果会是 invalid，这就证明了不可能改变一个原始类型的值。
 
 
 
-对象数据类型，这类数据像是一种数据结构或容器。那这样的值是可变的。
+对象数据类型，这类数据像是一种**数据结构或容器**。那这样的值是可变的。
 
 目的：**在使用对象类型的值来存储数据的时候，要如何在更新数据的同时做到不可变。**
 
@@ -606,7 +600,7 @@ counter.counting(); // 计数是3
 
 ### 闭包和对象的不同
 
-它们在隐私（privacy）、状态拷贝（state cloning）和性能（performance）上有差别，而这些差别在结构性地处理值的问题上，具有不同的优劣势。
+它们在隐藏性、状态拷贝（state cloning）和性能（performance）上有差别，而这些差别在结构性地处理值的问题上，具有不同的优劣势。
 
 ![img](https://static001.geekbang.org/resource/image/d4/d3/d4b33bdaebd78854338a331c407fc2d3.jpg?wh=1920x733)
 
@@ -614,7 +608,7 @@ counter.counting(); // 计数是3
 
 #### 隐私
 
-在闭包中，除非是通过接口，也就是在外部函数中返回内部函数的方法，不然内部的值是对外不可见的。所以它可以更准确的地控制我们想要暴露或隐藏的属性，以及相关的操作。
+在闭包中，除非是通过接口，也就是在函数中返回的内部函数，不然内部的值是对外不可见的。所以它可以更精确的（细粒度的）地控制想要暴露或隐藏的属性，以及相关的操作。
 
 
 
@@ -626,7 +620,7 @@ counter.counting(); // 计数是3
 
 当拿到的数据是对象类型的数据时，如何遵循不可变原则？
 
-不对原始的对象和数组值做改变，而是拷贝之后，在拷贝的版本上做变更。
+方法是：不对原始的对象和数组值做改变，而是拷贝之后，在拷贝的版本上做变更。
 
 ```js
 // 数组浅拷贝
@@ -700,8 +694,12 @@ greetings2();  // 先生，你好！
 
 **重点关注的是对象和闭包在处理不可变问题上的不同优势。**
 
-- 在属性和方法的隐私方面，闭包天然对属性有保护作用，同时它也可以按需暴露接口，来更精确地获取或重新给状态赋值。但是它和要解决的问题，似乎关系不大。
-- 对象不仅可以轻松做到 props 整体不可变，而且在需要 state 变化时，在拷贝上也更有优势。不过从性能的角度来看，如果拷贝的量不大，也许它们的性能差不多，但如果是一个高频交互的界面，微小的差别可能就会被放大。
+- 在属性和方法的隐藏方面，闭包天然对属性有保护作用，同时它也可以按需暴露接口，来更精确地获取或重新给状态赋值。
+- 对象可以轻松做到 props 整体不可变，而且在需要 state 变化时，在拷贝上也更有优势。不过从性能的角度来看，如果拷贝的量不大，也许它们的性能差不多，但如果是一个高频交互的界面，微小的差别可能就会被放大。
+
+在 React.js 中，它选择使用对象作为 props 和 state 的值类型，能更容易保证属性和状态值的整体不可变；而且面对状态的变化，它也更容易拷贝；在处理高频交互时，它的性能也会更好。而闭包虽然有隐私上的优势和更细粒度的操作，可是在应用交互和状态管理这个场景下，它并没有什么实际的作用。
+
+如果要实现值的绝对不可变应该使用深拷贝，这样对拷贝出来的复杂数据结构进行修改时才能保证不会对原始数据造成影响。
 
 
 
@@ -718,6 +716,8 @@ greetings2();  // 先生，你好！
 
 
 ### 部分应用
+
+![image-20230323101637223](C:/Users/shuyi/Desktop/study-notes/js/JS%E8%BF%9B%E9%98%B6.images/image-20230323101637223.png)
 
 例子：假设orderEventHandler函数需要3个参数才能正常执行，现在已经知道一个参数值，另两个未知。现在希望orderEventHandler函数能被正常执行。
 
@@ -739,7 +739,7 @@ function fetchOrder(data,cb) {
 
 ```js
 function getCurrentOrder(cb) {
-    getCurrentOrder( { order: 12343504 }, cb );
+    fetchOrder( { order: 12343504 }, cb );
 }
 ```
 
@@ -794,6 +794,8 @@ var getCurrentOrder = fetchOrder( { order: CURRENT_ORDER_ID } );
 
 getCurrentOrder( function editOrder(order){ /* .. */ } );
 ```
+
+![image-20230323102828568](C:/Users/shuyi/Desktop/study-notes/js/JS%E8%BF%9B%E9%98%B6.images/image-20230323102828568.png)
 
 
 
@@ -850,7 +852,7 @@ function curry(fn,arity = fn.length){
 
 一个普通的函数通常是在调用点执行时传入参数的，而通过部分应用和柯里化，做到了可以先传入部分已知参数，再在之后的某个时间传入部分参数，这样从时间和空间上，就将一个函数分开了。
 
-这样的好处：比如处理未知，让函数从抽象变具体、让具体的函数每次只专心做好一件事、减少参数数量，还有一个更抽象的好处，就是体现了函数式底层的声明式思想。
+这样的好处：**比如处理未知，让函数从抽象变具体、让具体的函数每次只专心做好一件事、减少参数数量，还有一个更抽象的好处，就是体现了函数式底层的声明式思想。**
 
 
 
@@ -859,6 +861,8 @@ function curry(fn,arity = fn.length){
 部分应用可以减少每次函数调用时需要传入的参数，而柯里化更是把函数调用时需要传入的参数数量，降到了 1。它们实际上都起到了**控制参数数量**的作用。
 
 而在函数式编程中，其实还有很多可以帮助我们处理参数输入的工具。
+
+
 
 ### 其他参数处理工具函数
 
@@ -906,9 +910,7 @@ function unary(fn) {
 promise1.then( action1 ).then( 34 ).then( action3 );
 ```
 
-
-
-函数签名：一般包含了参数及其类型返回值，还有类型可能引发或传回的异常，以及相关的方法在面向对象中的可用性信息（如关键字 public、static 或 prototype）。
+函数签名：**一般包含了参数及其类型返回值，还有类型可能引发或传回的异常，以及相关的方法在面向对象中的可用性信息（如关键字 public、static 或 prototype）**。
 
 在 C 或 C++ 中，会有类似这样的签名，如下所示：
 
@@ -991,6 +993,8 @@ transLogger( "Hello World", lower );     // hello world
 
 重新排序的方式有很多，可以通过解构（destructure），从数组和对象参数中提取值，对变量进行赋值时重新排序；或通过延展操作符把一个对象中的一组值，“延展”成单独的参数来处理；又或者通过 .toString() 和正则表达式解析函数中的参数做处理。
 
+在面对未知、动态和不可控时，函数式编程很重要的一点就是**控制好输入**。可以尽量提高接口的适应性和适配性，增加过滤和转化的能力，以及增加代码的可读性。
+
 
 
 ## 函数抽象化
@@ -1007,7 +1011,9 @@ var isOdd = compose(equalsToOne, remainderOfTwo);
 
 但是，上面这个函数的传参顺序是反直觉的，因为如果按照正常的顺序，应该是先把 remainderByTwo 放在前面来计算余数，然后再执行后面的 equalsToOne。
 
-为什么以这样反直觉的方式传参？因为它是按照传参顺序来排列的。
+为什么以这样反直觉的方式传参？**因为它是按照传参顺序来排列的。**
+
+
 
 ### 组合Compose
 
@@ -1044,7 +1050,7 @@ var equalsTo = (y) => {
 
 
 
-在 dividedBy 和 equalsToOne 的基础上，就可以创建两个 Point-Free 的函数，remainderOfTwo 和 equalsToOne。
+在 dividedBy 和 equalsTo 的基础上，就可以创建两个 Point-Free 的函数，remainderOfTwo 和 equalsToOne。
 
 ```js
 var remainderOfTwo = dividedBy(2);
@@ -1073,15 +1079,11 @@ function compose(...fns) {
 }
 ```
 
-
-
 使用compose工具函数生成isOdd函数
 
 ```js
 var isOdd = compose(equalsToOne, remainderOfTwo);
 ```
-
-
 
 进过componse包装后的函数，在传参时，是后传的实参函数放在外层后被调用。这还是有些反直觉的，因此想要一种更直观的顺序来完成一系列操作。解决方案就是用函数式编程中的**管道**。
 
@@ -1090,6 +1092,12 @@ var isOdd = compose(equalsToOne, remainderOfTwo);
 **管道 Pipeline**
 
 函数式编程中的管道，是另外一种函数的创建方式。这样创建出来的函数的特点是：**一个函数的输出会作为下一个函数的输入，然后按顺序执行。**所以，管道就是以组合反过来的方式来处理的。
+
+管道的概念最早是源于 Unix/Linux，这个概念的创始人道格拉斯·麦克罗伊（Douglas McIlroy）在贝尔实验室的文章中，曾经提到过两个很重要的点：
+
+1. 让每个程序只专注做好一件事。如果有其它新的任务，那么应该重新构建，而不是通过添加新功能使旧程序复杂化。
+
+2. 让每个程序的输出，可以成为另一个程序的输入。
 
 例子：找到当前目录下面所有的 JavaScript 文件。
 
@@ -1136,11 +1144,11 @@ isOdd(2); // 返回 false
 
 ### 转导 Transduction
 
-转导主要为了更好的，更系统的控制数据。React中的reducer就使用到了transducing
+函数式编程中的很多概念，都来自于对复杂、动力系统研究与控制等领域。而转导主要为了更好的，更系统的控制数据。React中的reducer就使用到了transducing。
 
-transduce 和 reducer 的作用以及原理。reducer 最主要的作用其实是解决在使用多个 map、filter、reduce 操作大型数组时，可能会发生的性能问题。
+transduce 和 reducer 的作用以及原理。**reducer 最主要的作用其实是解决在使用多个 map、filter、reduce 操作大型数组时，可能会发生的性能问题。**
 
-通过使用 transducer 和 reducer，就可以优化一系列 map、filter、reduce 操作，使得输入数组只被处理一次并直接产生输出结果，而不需要创建任何中间数组。不用tansducer 或 reducer的例子：
+通过使用 transducer 和 reducer，就可以优化一系列 map、filter、reduce 操作，**使得输入数组只被循环一次并直接产生输出结果，而不需要创建任何中间数组**。不用tansducer 或 reducer的例子：
 
 ```js
 var oldArray = [36, 29, 18, 7, 46, 53];
@@ -1157,9 +1165,7 @@ console.log (newArray); // 返回：[77,97]
 
 ![img](https://static001.geekbang.org/resource/image/aa/45/aa5dbd1ff55485d4c596e77801759545.jpg?wh=1920x1080)
 
-如果使用 reducer 的话，我们对每个值只需要操作一次，就可产出最终的结果。如上图的右半部分所示。
-
-
+如果使用 reducer 的话，对每个值只需要操作一次，就可产出最终的结果。如上图的右半部分所示。
 
 ```js
 const { filterTR, mapTR, composeReducer } = (() => {
@@ -1230,7 +1236,7 @@ console.log(newArray);  // 返回：[77,97]
 
 先将一个函数，比如 isEven 作为输入，放到了一个 transducer （一个经典的高阶函数）里，然后作为输出，我们得到的是一个 isEvenR 的 reducer 函数（即输入一个函数，得到一个新的函数）。
 
-像 double 和 addFive 都具有映射类的功能，所以我们可以通过一个类似 mapReducer 这样的一个 transducer，来把它们转换成 reducer。而像 isEven 和 passSixty 都是筛选类的功能，所以我们可以通过一个类似 filterReducer 这样的一个 transducer，来把它们转换成 reducer。
+像 double 和 addFive 都具有**映射类**的功能，所以可以通过一个类似 mapReducer 这样的一个 transducer，来把它们转换成 reducer。而像 isEven 和 passSixty 都是**筛选类**的功能，所以我们可以通过一个类似 filterReducer 这样的一个 transducer，来把它们转换成 reducer。
 
 composeReducer 用的就是一个类似组合的功能。
 
@@ -1292,9 +1298,9 @@ Array.prototype.filterReduce = function (cb, initValue) {
 
 
 
-## transduce 的原理
+## transduce的原理
 
-通过 JS 中数组自带的功能方法，进一步了解 transduce 的原理。以及由 map 作为 functor 可以引申出的 monad 的概念，如何让函数间更好地进行交互。	
+通过 JS 中数组自带的功能方法，进一步了解 transduce 的原理。以及由 map 作为 functor（函子）可以引申出的 monad 的概念，如何让函数间更好地进行交互。	
 
 
 
@@ -1302,7 +1308,7 @@ Array.prototype.filterReduce = function (cb, initValue) {
 
 函子：是一个带运算工具的**数据类型**或**数据结构值**。例如：在 JavaScript 中，字符串（string）就是一个数据类型，而数组（array）既是一个数据类型也是一个数据结构。
 
-
+<img src="C:/Users/shuyi/Desktop/study-notes/js/JS%E8%BF%9B%E9%98%B6.images/image-20230323154804114.png" alt="image-20230323154804114" style="zoom:67%;" />
 
 这是一段抽象的代码来表示一个字符串的映射函子 stringMap。
 
@@ -1324,29 +1330,35 @@ stringMap( uppercaseLetter, "Hello World!" ); // HELLO WORLD!
 
 过滤器（filter）和断言（predicate）
 
-filter 可以是双向的，可以过滤掉（filter out）不想要的，也可以筛选出（filter in）出不想要的。在函数式编程中，断言就是一个个的筛选条件，所以在过滤器中，经常会使用断言函数。
+filter 可以是双向的，可以过滤掉（filter out）不想要的，也可以筛选出（filter in）出不想要的。
+
+
+
+**断言：一个具有一定筛选功能的函数就可以称为断言。**
+
+在函数式编程中，断言就是一个个的筛选条件，所以在过滤器中，经常会使用断言函数。
 
 ![img](https://static001.geekbang.org/resource/image/92/8e/92dcf58f0fc6c36869183f54d3ae478e.jpeg?wh=1920x1080)
 
 
 
-isOdd是一个用于判断是否时奇数的函数。
+isOdd是一个用于判断是否时奇数的函数，符合断言定义。
 
 ````js
 [1,2,3,4,5].filter( isOdd ); // [1,3,5]
 ````
 
+在 Javascript 中也有自带的 some() 和 every() 断言方法。它们的作用就是可以判断数组中的一组元素是不是都符合判断条件。但是对比 filter() ，它们就显得没有那么“函数式”了，因为它们的返回值只是一个 true 或 false，而没有像 filter 一样返回一组数据作为输出，继续用来进行后续一系列的函数式的操作。
+
 
 
 ### reduce 和缩减器
 
-缩减（reduce）主要的作用就是把列表中的值合成一个值。
+缩减（reduce）主要的作用就是**把列表中的值合成一个值**。
 
 ![img](https://static001.geekbang.org/resource/image/87/21/8741b90f842643350d34077b9c40f721.jpeg?wh=1920x1080)
 
-
-
-函数reduce的功能也可以用映射 map 和过滤 filter 的方法来实现。这是因为 reduce 的初始值可以是一个空数组[]，这样就可以把迭代的结果当成另一个数组了。
+**函数reduce的功能可以用映射 map 和过滤 filter 的方法来实现。**这是因为 reduce 的初始值可以是一个空数组[]，这样就可以把迭代的结果当成另一个数组了。
 
 ```js
 var half = v => v / 2;
@@ -1372,15 +1384,21 @@ var isEven = v => v % 2 == 0;
 ); // [2,4]
 ```
 
-可以发现，这里故意利用了一个副作用。 array.push 是一个非纯函数的方法，它会改变原数组，而不是复制后修改。而如果想完全避免副作用，可以用 concat。但是， concat 虽然遵循的是纯函数、不可变的原则，但是有一点是需要注意的，就是它在面对大量的复制和修改时会产生性能上的问题。所以估计到这里，你也猜到了在上节课中提到的 transducer 的原理了。这里就是故意利用了副作用来提高性能！
+可以发现，这里故意利用了一个副作用。 array.push 是一个非纯函数的方法，它会改变原数组，而不是复制后修改。而如果想完全避免副作用，可以用 concat。但是， concat 虽然遵循的是纯函数、不可变的原则，但是有一点是需要注意的，就是它在面对大量的复制和修改时会产生性能上的问题。这里就是故意利用了副作用来提高性能！
 
-这里严格来将其实并没有副作用，因为在原则上，**做的这些变化都是在函数内部的**，而前面说过，副作用一般多是来自外部。所以在这个例子中，没有必要为了几乎没有负面影响的副作用而牺牲性能。而 transducer 正是利用了副作用，才做到的性能提升。
+这里严格来讲其实并没有副作用，因为在原则上，**做的这些变化都是在函数内部的**，而前面说过，副作用一般多是来自外部。所以在这个例子中，没有必要为了几乎没有负面影响的副作用而牺牲性能。而 transducer 正是利用了副作用，才做到的性能提升。
 
 
 
 ## monad 单子
 
 由 map 作为 functor 引申出的 monad 概念，让函数间更好地进行交互。
+
+> 函子：是一个带运算工具的**数据类型**或**数据结构值**。
+>
+> stringMap( uppercaseLetter, "Hello World!" ); // HELLO WORLD!
+>
+> ["1","2","3","4","5"].map( unary( parseInt ) ); // [1,2,3,4,5]
 
 monad 和 functor 有什么区别呢？函子（functor）其实就是一个值和围绕值的一些功能。array.map 可以被看做是一个 functor，它有一组值，而如 map 这样的方法可以作用于数组里面的每一个值，提供了一个映射的功能。	
 
@@ -1390,9 +1408,27 @@ monad 和 functor 有什么区别呢？函子（functor）其实就是一个值�
 
 ### array 作为 functor
 
-数组就是一种函子，它自带一些功能函数（原型上）。那开发者自己也可以写一个有一些自己定义的方法的函子。
+数组就是一个函子，它自带一些功能函数（原型上，自带的包装对象上）。那开发者自己也可以写一个有一些自己定义的方法的函子。
 
 可以自己写一个带有映射方法的 Just Monad，用它来包装一个值（val）。这个时候，monad 相当于是一个基于值形成的新的数据结构，这个数据结构里有 map 的方法函数。
+
+```js
+function Just(val) {
+  function map(fn) { return Just( fn( val ) ); }
+  return { map };
+}
+
+
+var A = Just( 10 );
+var B = A.map( v => v * 2 ); // 20
+
+A.map(console.log)  // 10 
+b.map(console.log)  // 20 
+```
+
+它的使用方式就类似于 array.map 映射。比如在下面的例子里，用 map 将一个函数 v => v * 2 运用到了 Just monad 封装的值 10 上，它返回的就是 20。
+
+
 
 ```js
 function Just(val) {
@@ -1415,13 +1451,11 @@ console.log(A.log());   // Just(10)
 
 ```
 
-它的使用方式就类似于我们之前看到的 array.map 映射。比如在下面的例子里，我们用 map 将一个函数 v => v * 2 运用到了 Just monad 封装的值 10 上，它返回的就是 20。
-
 
 
 ### chain 作为 bind、flatMap
 
-chain 通常又叫做 flatMap 或 bind，它的作用是 flatten 或 unwrap，也就是说它可以展开被 Just 封装的值 val。你可以使用 chain 将一个函数作用到一个包装的值上，返回一个结果值。如下代码所示：
+chain 通常又叫做 flatMap 或 bind，它的作用是 flatten 或 unwrap，它可以展开被 Just 封装的值 val。可以**使用 chain 将一个函数作用到一个包装的值上**，返回一个结果值。如下代码所示：
 
 ```js
 function Just(val) {
@@ -1438,11 +1472,7 @@ function Just(val) {
 }
 ```
 
-
-
-例子：
-
-用 chain 方法函数把一个加一的函数作为参数运用到 monad A 上，得到了一个 15+1=16 的结果，那么之后返回的就是一个 flatten 或 unwrap 展开的 16 了。
+例子：用 chain 方法函数把一个加一的函数作为参数运用到 monad A 上，得到了一个 15+1=16 的结果，那么之后返回的就是一个 flatten 或 unwrap 展开的 16 了。
 
 ```js
 var A = Just( 15 );
@@ -1454,10 +1484,1230 @@ typeof B;   // "number"
 
 
 
-
-
 ### monoid
 
+函数签名一致性，举个例子如果前一个函数返回了一个字符串，后一个函数接收的输入是数字，那么它们是没办法组合的。所以，compose 函数接收的函数都要符合一致性的 fn :: v -> v 函数签名，也就是函数接收的参数和返回的值类型要一样。
+
+不同的 monad 也可以相互组合。
+
+那么，满足这些类型签名的函数就组成了 monoid。它的概念就是基于之前说到过的 identity 函数。在 TypeScript 中，identity 也是泛型使用中的一个例子。
+
+```ts
+function identity<T>(arg: T): T {
+    return arg;
+}
+
+function identity(v) {
+    return v;
+}
+```
+
+identity 在 monad 中有一个用处，就是如果把 identity 作为一个参数，可以起到检查 inspect 的作用。比如，先用 Just 来封装 15 这个值，然后调用 chain 的方法时，把 identity 作为参数，返回的就是一个 flatten 或 unwrap 展开的 15。所以我们可以看出，它也这里也起到了一个 log 的作用。
+
+```js
+var A = Just( 15 );
+A.chain (identity) // 返回 15
+```
+
+
+
+### applicative
+
+应用函子（applicative），简称 ap。它的作用是**可以把一个封装过的函数应用到一个包装过的值上**。
+
+```js
+function Just(val) {
+
+  function map(fn) { return Just( fn( val ) ); }
+
+  function ap(anotherMonad) { return anotherMonad.map( val ); }
+
+  return { map, ap };
+}
+```
+
+再来看一个例子，可以看到，ap 把 monad B 里的值取出来，通过 monad A 的映射把它应用到了 monad A 上。因为映射接受的值类型是函数，所以这里我们传入的是柯里化的 add 函数，它先通过闭包的记忆功能，记住第一个参数 6，之后再加上传入的 10，最后输出的结果就是 16。
+
+```js
+var A = Just( 6 );
+var B = Just( 10 );
+
+function add(x,y) { return x + y; }
+
+var C = A.map( curry( add ) ).ap( B );
+
+C.chain(identity); // 返回 16
+```
+
+如果把上面几个功能加在一起，其大致实现就如下所示：
+
+```js
+function Just(val) {
+  return { map, chain, ap, log };
+
+  // *********************
+
+  function map(fn) { return Just( fn( val ) ); }
+
+  // aka: bind, flatMap
+  function chain(fn) { return fn( val ); }
+
+  function ap(anotherMonad) { return anotherMonad.map( val ); }
+
+  function log() {
+    return `simpleMonad(${ val })`;
+  }
+}
+```
+
+说到函子和应用函子，在数组中，有一个 array.of 的工厂方法，它的作用是接收一组参数，形成一个新数组。
+
+```js
+var arr = Array.of(1,2,3,4,5); // 返回：[1,2,3,4,5]
+```
+
+在函数式编程中，称实现了 of 工厂方法的函子是 pointed 函子。通过 pointed 函子，可以把一组值放到了一个数组的容器中，之后还可以通过映射函子对每个值做映射。而应用函子，（applicative functor）就是实现了应用方法的 pointed 函子。
+
+另外说到了函子和单子，在函数式编程当中其实还有 either、IO 之类的概念。其中 either 是用来代替比如 if else 或者是 try catch 的条件运算，它的 value 里保存的是一个值；而 IO 可以用来延迟函数的执行，它的 value 里面存储的是一个函数。
+
+
+
+## 动态加载
+
+**从空间的角度来看**，函数式编程中，副作用通常是来自于函数外部，多在输入的过程。
+
+这节讲，**从时间的角度来看**，函数式编程中，异步中的事件引起的副作用，以及要如何管理这种副作用。
+
+
+
+### 处理异步事件中的时间状态
+
+在函数式编程中讨论异步时，经常会说到信任（trustable）和承诺（promise）。
+
+程序中出现异步任务是面临的问题：
+
+有 getUser 和 getOrders 两个函数，都分别通过用户 ID 来获取用户信息和订单信息。如果 getUser 先得到响应的话，那么它就没法获得订单信息。同样地，如果 getOrders 先得到响应的话，那么它就没办法获得用户信息。这两个函数就形成了一个竞争条件（Race Condition）。
+
+```js
+var user;
+
+getUser( userId, function onUser(userProfile){
+    var orders = user ? user.orders : null;
+    user = userProfile;
+    if (orders) {
+        user.orders = orders;
+    }
+} );
+
+getOrders( userId, function onOrders(userOrders){
+    if (!user) {
+        user = {};
+    }
+    user.orders = userOrders;
+} );
+```
+
+**虽然把它们一前一后分开处理就没有办法做到并行，只能串行，而串行所花的总时间一般会高于并行。**
+
+在这里，**时间就是状态**。在同步操作中不需要考虑时间；而在异步中时间就产生了。时间不仅仅是状态，还是最难管理的状态。
+
+在做出承诺和承诺兑现之前就需要时间。所以在 JavaScript 里，解决异步问题的工具就叫承诺（promise）。
+
+下面的代码隐藏了时间的概念：
+
+```js
+var userPromise = getUser( userId );
+var ordersPromise = getOrders( userId );
+
+userPromise.then( function onUser(user){
+    ordersPromise.then( function onOrders(orders){
+        user.orders = orders;
+    } );
+} );
+```
+
+这样是并行获取的用户和订单信息，在处理的时候通过 then 按照同步处理时的先后顺序，来更新订单信息到用户对象上。
+
+
+
+
+
+### 处理循环事件中的时间状态
+
+对于循环和用户事件，也都可以通过隐藏时间的方式来处理异步事件。 通过观察者模式解决，被观察者的状态发生变化时，他会通知观察者。
+
+下面是一个相对抽象的异步循环事件的例子。不过在现实当中，遇到的用户输入，比如鼠标的点击、键盘的输入等等的 DOM 事件也是异步的。
+
+```js
+/* 例如使用RxJS，一个响应式JS的扩展 */
+
+// 懒惰生产者
+var producer = Rx.Observable.create( function onObserve(observer){
+    setInterval( function everySecond(){
+        observer.next( Math.random() );
+    }, 1000 );
+});
+
+// 消费者
+var consumer = producer.map( function triple(v){
+    return v * 3;
+});
+consumer.subscribe( function onValue(v){
+    console.log( v );
+});
+```
+
+
+
+### 处理用户事件中的时间状态
+
+前端处理页面内容的动态加载时使用的一些方法——**动态导入**。
+
+网页上的一个模块从加载到执行的顺序：
+
+1. 加载
+2. 解析
+3. 编译
+4. 执行
+
+如果是动态加载，就是在初始化之后，根据需求再继续加载。
+
+![image-20230324090508696](C:/Users/shuyi/Desktop/study-notes/js/JS%E8%BF%9B%E9%98%B6.images/image-20230324090508696.png)
+
+
+
+动态导入基本可以分成两类，一类是可视时加载（load on visibility），一种是交互时加载（load on interaction）。
+
+可视时加载：经常用在长页面当中，不需要一上来就加载整个页面，而是当用户滑动到了某个部分的时候，再加载相关的内容。
+
+交互时加载：当用户和页面进行交互时，比如点击了某个按钮后，可能产生的加载。
+
+加载过程中的性能指标，在初始化的加载中（页面首次加载）：
+
+1. 首次渲染时间（FCP，First Contentful Paint）
+2. 最大内容渲染时间（LCP，Largest Contentful Paint）
+
+在后续的动态加载中：
+
+1. 首次交互时间（TTI，Time to Interactive）
+
+![image-20230324091022423](C:/Users/shuyi/Desktop/study-notes/js/JS%E8%BF%9B%E9%98%B6.images/image-20230324091022423.png)
+
+通过一些打包工具，比如用 Webpack 先加载核心的组件，渲染主程序，之后根据交互的需要，按需加载某个模块。
+
+对于动态的加载，也有很多三方的库可以支持，其中一个例子就是 React 中的 Suspense。
+
+如果是 Node 服务器端的加载渲染，有Loadable Components 库。
+
+![image-20230324092221613](C:/Users/shuyi/Desktop/study-notes/js/JS%E8%BF%9B%E9%98%B6.images/image-20230324092221613.png)
+
+在使用动态导入前，一般应该先考虑**预加载（pre-load）或预获取（pre-fetch）**。
+
+预加载：在页面开始加载时就提前开始加载后面需要用到的元素；
+
+预获取：在页面的主要功能都加载完成后，再提前加载后面需要用到的素材。
+
+不适合做预加载的情况：要预加载的内容过大，而且用户不一定会使用预加载的内容的时候。这个时候如果你事先加载，一是会使用到用户的网络，占用了用户手机的存储空间；二是也会增加自己的 CDN 和服务器的资源消耗。
+
+页面渲染的两种基础渲染模式。
+
+一种是浏览器渲染，在客户端渲染（CSR，client side rendering）模式下，是先下载 HTML、JS 和 CSS，包括数据，所有的内容都下载完成，然后再开始渲染。
+
+一种是服务器端渲染，服务器端渲染（SSR，server side rendering）模式下，是先让用户能看到一个完整的页面，但是无法交互。只有等相关数据从服务器端加载和 hydrate 后，比如说一个按钮加上了的相关事件处理之后，才能交互，但可能在加载和 hydrate 前点击某个按钮的时候，就会发现某个组件没反应。为此，Google开源了一个叫JSAction 的小工具，它的作用就是先加载一部分轻代码（tiny code），这部分代码可以“记住”用户的行为，然后根据用户的交互来加载组件，等加载完成再让组件执行之前“记住”的用户请求。
+
+![image-20230324093759979](C:/Users/shuyi/Desktop/study-notes/js/JS%E8%BF%9B%E9%98%B6.images/image-20230324093759979.png)
+
+
+
+![image-20230324093954163](C:/Users/shuyi/Desktop/study-notes/js/JS%E8%BF%9B%E9%98%B6.images/image-20230324093954163.png)
+
+
+
+
+
+## 私有和静态属性
+
+JS 的对象构建和面向对象的编程模式。
+
+对象的属性：
+
+1. 私有属性或方法
+2. 静态属性或方法
+3. 公有属性或方法
+4. 静态私有属性或方法
+
+一个对象可以有对外分享的、别人可以获取的公开属性，也有不对外暴露的、别人不可以随便获取的私有属性。静态属性是属于类，而不是单独属于对象的，静态属性也包含公开属性和私有属性。
+
+在ES13后，可以创建私有属性和静态属性的支持，但是在此之前，人们就通过其它方式，试着实现类似的功能。
+
+
+
+### 创建私有属性
+
+当用 JavaScript 创建一个对象时，无论是使用 class、对象字面量还是函数构造式，一般的情况下，在定义了属性和方法后就可以公开调用，并没有任何限制。
+
+```js
+// 示例1：类class
+class WidgetA {
+  constructor() {
+    this.appName =  "天气应用"
+  }
+  getName(){
+    return this.appName;
+  }
+}
+var widget1 = new WidgetA();
+console.log(widget1.appName); // 返回 “天气应用”
+console.log(widget1.getName()); // 返回 “天气应用”
+
+// 示例2：对象字面量
+var WidgetB = {
+  appName : "天气应用",
+  getName : function (){
+    return this.appName;
+  }
+}
+
+console.log(WidgetB.appName); // 返回 “天气应用”
+console.log(WidgetB.getName()); // 返回 “天气应用”
+
+// 示例3：函数构造式
+function WidgetC(){
+  this.appName = "天气应用";
+  this.getName = function (){
+    return "天气应用";
+  };
+}
+
+var widget3 = new WidgetC();
+console.log(widget3.appName); // 返回 “天气应用”
+console.log(widget3.getName()); // 返回 “天气应用”
+```
+
+
+
+**用 # 符号创建私有属性**
+
+最新的ES13 规范，可以通过 # 符号，来定义一个私有的属性。
+
+首先，声明了一个 #appName，在构建者 constructor 里，给它赋值为“天气应用”。这时，当直接调取 appName 时，会看到返回的结果就是未定义的。但如果通过 getName 方法，就可以获取 appName 的值。
+
+```js
+class WidgetD {
+  #appName;
+  constructor(){
+      this.#appName = "天气应用";
+  }
+  getName(){
+    return this.#appName;
+  } 
+}
+
+var widget4 = new WidgetD();
+console.log(widget4.appName); // 返回 undefined
+console.log(widget4.getName()); // 返回 “天气应用”
+```
+
+
+
+**用闭包和 IIFE 创建私有属性**
+
+在对象字面量中创建私有属性。
+
+```js
+// 对象字面量
+var WidgetE;
+
+(function(){
+  var appName = "天气应用";
+  WidgetE = {
+    getName: function(){
+      return appName;
+    }
+  };
+}());
+
+WidgetE.appName; // 返回 undefined
+WidgetE.getName(); // 返回 “天气应用”
+```
+
+
+
+**通过构造函数构造私有属性**
+
+```js
+// 构造函数
+function WidgetF() {
+  var appName = "天气应用";
+  this.getName = function(){
+    return appName;
+  }
+}
+
+var widget6 = new WidgetF();
+console.log(widget6.appName); // 返回 undefined
+console.log(widget6.getName()); // 返回 “天气应用”
+```
+
+这个例子有一个问题，就是每次在创建一个新对象的时候，私有属性都会被重新创建一次，这样就会造成重复工作和冗余内存。解决这个问题的办法就是把通用的属性和功能赋值给 prototype，这样通过同一个构建者创建的对象，可以共享这些隐藏的属性。
+
+
+
+给 WidgetG 的原型赋值了一个函数返回的对象，函数中包含了私有属性，返回的对象中包含了获取属性的方法。这样我们在创建一个 widget7 的对象之后，就能看到它可以获取天气应用支持的机型。
+
+```js
+function WidgetG() {
+  var appName = "天气应用";
+  this.getName = function(){
+    return appName;
+  }
+}
+
+WidgetG.prototype = (function(){
+  var model = "支持安卓";
+  return {
+    getModel: function(){
+      return model;
+    }   
+  }
+}());
+
+var widget7 = new WidgetG();
+console.log(widget7.getName()); // 返回 “天气应用”
+console.log(widget7.getModel()); // 返回 “支持安卓”
+```
+
+
+
+**用 WeakMap 创建私有属性**
+
+ES6引入的Set 和 Map 的数据结构主要用于数据重组和数据储存。
+
+Set 用的是集合的数据结构，Map 用的是字典的数据结构。Map 具有极快的查找速度。而WeakMap，它的特点是只接受对象作为键名，键名是弱引用，键值可以是任意的。
+
+
+
+首先声明了一个 WidgetH变量。接下来，建立一个块级作用域，在这个作用域里，再声明一个 privateProps 的 WeakMap 变量。然后给 WidgetH 赋值一个函数声明，在里面给 WeakMap 的键名设置为 this，键值里面的 appName 为“天气应用”。下一步，基于 WidgetH的 prototype 来创建一个 getName 方法，里面返回了 appName 的值，就可以同时达到对 appName 的封装和通过 getName 在外部对私有属性值的获取。
+
+```js
+var WidgetH;
+{
+  let privateProps = new WeakMap();
+  
+  WidgetH = function(){
+    privateProps.set(this,{appName : "天气应用"});
+  }
+  
+  WidgetH.prototype.getName = function(){
+    return privateProps.get(this).appName;
+  }
+}
+  
+var widget8 = new WidgetH();
+console.log(widget8.appName); // 返回 undefined
+console.log(widget8.getName()); // 返回 “天气应用”
+```
+
+
+
+**用 Symbol 创建私有属性**
+
+```js
+var WidgetI;
+{
+  let privateProps = Symbol();
+  
+  WidgetI = function(){
+    this[privateProps] = {appName : "天气应用"};
+  }
+  
+  WidgetI.prototype.getName = function(){
+    return this[privateProps].appName;
+  }
+}
+  
+var widget9 = new WidgetI();
+console.log(widget9.getName()); // 返回 “天气应用”
+```
+
+
+
+> 用 Symbol 创建私有属性、用 WeakMap 创建私有属性和闭包是不同的。闭包主要利用的是内层函数对外层函数内变量的访问。symbol主要是利用了唯一值的特点，实现私有属性。 而用weakmap，可以对属性存储，避免了用this对属性的获取。并且和map相比，它只能用对象作为键名，键值会随着对象销毁。这样可以避免不同对象用同一个map时之间相互的影响；以及对象销毁了后，map依然存在的问题。
+
+
+
+### 创建静态属性
+
+静态的属性是属于构造函数的属性，而不是构造的对象实例的属性。
+
+
+
+**创建公开静态属性**
+
+通过 static 这个关键词来创建公开的静态属性。静态属性只能作用于 class 本身。
+
+```js
+class WidgetJ {
+  static appName = "天气应用";
+  static getName(){
+    return this.appName;
+  } 
+}
+
+console.log(WidgetJ.appName); // 返回 “天气应用”
+console.log(WidgetJ.getName()); // 返回 “天气应用”
+
+var widget10 = new WidgetJ();
+console.log(widget10.appName); // 返回 undefined
+console.log(widget10.getName()); // 返回 undefined
+```
+
+
+
+**创建私有静态属性**
+
+私有的静态属性，是它不只是供构造者使用的，也是被封装在构建者之内的。用**\# 符号和 static 关键词相加**
+
+```js
+class WidgetM {
+  static #appName = "天气应用";
+  static staticGetName(){
+    return WidgetM.#appName; 
+  }
+  instanceGetName(){
+    return WidgetM.#appName; 
+  }
+}
+
+console.log(WidgetM.staticGetName()); // 返回 “天气应用”
+
+var widget13 = new WidgetM();
+console.log(widget13.instanceGetName()); // 返回 “天气应用”
+```
+
+**从单个对象延伸到对象间的“生产关系”，来进一步理解面向对象的编程模式。**
+
+
+
+
+
+## 继承、委托和组合
+
+一个面向对象的核心思想：**组合优于继承**
+
+无论是继承还是组合，都只是方式、方法，它们要解决的核心问题就是如何让代码更加容易复用。
+
+![image-20230324104825095](C:/Users/shuyi/Desktop/study-notes/js/JS%E8%BF%9B%E9%98%B6.images/image-20230324104825095.png)
+
+JS中是通过哪些方法来解决代码复用，以及在使用不同的方法时，它们各自解决了什么问题、又引起了什么问题。以在实际项目中选择合适的方法解决实际问题。
+
+### 继承
+
+继承（Inheritance）和多态（Polymorphism）。继承是用来在父类的基础上创建一个子类，来继承父类的属性和方法。多态则允许在子类里面调用父类的构建者，并且覆盖父类里的方法。
+
+在 JavaScript 里如何通过构建函数来做继承。
+
+继承：
+
+ES6以后可以通过 extends 的方式来做继承。
+
+```js
+class Widget {
+  appName = "核心微件";
+  getName () {
+    return this.appName;
+  }
+}
+
+class Calendar extends Widget {}
+
+var calendar = new Calendar();
+console.log(calendar.hasOwnProperty("appName")); // 返回 true
+console.log(calendar.getName()); // 返回 "核心微件"
+
+calendar.appName = "日历应用"
+console.log(typeof calendar.getName); // 返回 function
+console.log(calendar.getName()); // 返回 “日历应用”
+```
+
+
+
+多态：
+
+ES6以后可以通过super 在子类构建者里面调用父类的构建者，并且覆盖父类里的属性。
+
+```js
+class Widget {
+  constructor() {
+    this.appName = "核心微件";
+  }
+  
+  getName () {
+    return this.appName;
+  }
+}
+
+class Calendar extends Widget {
+  constructor(){
+    super();
+    this.appName = "日历应用";
+  }
+}
+
+var calendar = new Calendar();
+console.log(calendar.hasOwnProperty("appName")); // 返回 true
+console.log(calendar.getName()); // 返回 "日历应用"
+console.log(typeof calendar.getName); // 返回 function
+console.log(calendar.getName()); // 返回 “日历应用”
+```
+
+
+
+
+
+### 授权
+
+> **`Object.create()`** 方法用于创建一个新对象，使用现有的对象来作为新创建对象的原型（prototype）。
+>
+> ```
+> const newObj = Object.create(proto, propertiesObject)   // 一个新对象，带着指定的原型对象及其属性。
+> ```
+>
+> proto：
+>
+> 新创建对象的原型对象。
+>
+> `propertiesObject` 可选：
+>
+> 如果该参数被指定且不为 [`undefined`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/undefined)，则该传入对象的自有可枚举属性（即其自身定义的属性，而不是其原型链上的枚举属性）将为新创建的对象添加指定的属性值和对应的属性描述符。这些属性对应于 [`Object.defineProperties()`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperties) 的第二个参数。
+
+
+
+授权（Delegation），这里的授权不是领导（父类）给下属（子类）授权，而是作为个体对象可以授权给一个平台或者他人来一起做一件事。
+
+**如何通过授权做到重用？**
+
+通过原型本身来做授权。从 ES5 开始，JavaScript 就支持了 Object.create() 的方法。例子：
+
+```js
+var Widget = {
+  setCity : function(City) {this.city = City; },
+  outputCity : function() {return this.city;}
+};
+
+var Weather = Object.create(Widget);
+
+Weather.setWeather = function (City, Tempreture) {
+  this.setCity(City);
+  this.tempreture = Tempreture;
+};
+
+Weather.outputWeather = function() {
+  console.log(this.outputCity()+ ", " + this.tempreture);
+}
+
+var weatherApp1 = Object.create(Weather);
+var weatherApp2 = Object.create(Weather);
+
+weatherApp1.setWeather("北京","26度");
+weatherApp2.setWeather("南京","28度");
+
+weatherApp1.outputWeather(); // 北京, 26度
+weatherApp2.outputWeather(); // 南京, 28度
+```
+
+创建的 Weather 天气预报这个对象，授权给了 Widget，让 Widget 在得到授权的情况下，帮助 Weather 来设定城市和返回城市。Widget 对象在这里更像是一个平台，它在得到 Weather 的授权后为 Weather 赋能。而 Weather 对象可以在这个基础上，专注于实现自己的属性和方法，并且产出 weatherApp1 和 weatherApp2 的实例。
+
+当然也有开发者认为 class 的方式没有什么反直觉的，那授权同样可以通过 class 来实现。比如果想在上一讲提到过的集合（Set）和字典（Map）的基础上，加上计数的功能，可以通过继承 Set 来实现。但是也可以反之，在把部分功能授权给 Map 的基础上，自己专注实现一些类似 Set 的 API 接口。
+
+```js
+class SetLikeMap {
+    // 初始化字典
+    constructor() { this.map = new Map(); }
+    // 自定义集合接口
+    count(key) { /*...*/ }
+    add(key) { /*...*/ }
+    delete(key) { /*...*/ }
+    // 迭代返回字典中的键
+    [Symbol.iterator]() { return this.map.keys(); }
+    // 部分功能授权给字典
+    keys() { return this.map.keys(); }
+    values() { return this.map.values(); }
+    entries() { return this.map.entries(); }
+}
+```
+
+
+
+### 组合
+
+当然上面说的授权，广义上其实就是一种组合。但是这种组合更像是“个体和平台的合作”；而另一种组合更像是“团队内部的合作”，它也有很多的应用和实现方式。
+
+![image-20230324114856471](C:/Users/shuyi/Desktop/study-notes/js/JS%E8%BF%9B%E9%98%B6.images/image-20230324114856471.png)
+
+
+
+**如何通过借用做到重用？**
+
+在 JavaScript 中，函数有自带的 apply 和 call 功能。我们可以通过 apply 或 call 来“借用”一个功能。这种方式，也叫隐性混入（Implicit mixin）。
+
+```js
+function argumentSlice() {
+    var args = [].slice.call(arguments, 1, 3);
+    return args;
+}
+
+// example
+argumentSlice(1, 2, 3, 4, 5, 6); // returns [2,3]
+```
+
+
+
+
+
+**如何通过拷贝赋予重用？**
+
+把其他对象的属性和方法拷贝到自己的身上。这种方式也叫显性混入（Explicit mixin）。
+
+> `Object.assign(target, ...sources)` 方法将所有[可枚举](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/propertyIsEnumerable)（`Object.propertyIsEnumerable()` 返回 true）的[自有](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwnProperty)（`Object.hasOwnProperty()` 返回 true）属性从一个或多个源对象复制到目标对象，返回修改后的对象。
+>
+> target：
+>
+> 目标对象，接收源对象属性的对象，也是修改后的返回值。
+>
+> sources：
+>
+> 源对象，包含将被合并的属性。
+
+
+
+## this绑定
+
+在 JavaScript 中，this 是在运行时而不是编写时绑定的。所以要正确地使用它，需要考虑到函数调用时的执行上下文。
+
+
+
+**默认绑定**
+
+```js
+function aLogger() {
+    console.log( this.a );
+}
+var a = 2;
+aLogger(); // 2
+```
+
+这种默认的绑定只在非 strict mode 的情况下是可以的。所以如果在 strict mode 下，这种默认的的绑定是不可以的，则会返回 TypeError: this is undefined。
+
+
+
+**隐式绑定**
+
+```js
+function aLogger() {
+    console.log( this.a );
+}
+
+var obj = {
+    a: 3,
+    logger: aLogger
+};
+
+var a = 2;
+
+obj.logger(); // 3
+```
+
+隐式绑定也有它的问题，就是当我们把对象里的方法赋值给一个全局变量时，这种绑定就消失了。
+
+```js
+function logger() {
+    console.log( this.a );
+}
+
+var obj = {
+    a: 3,
+    logger: logger
+};
+
+var a = 2;
+
+var objLogger = obj.logger; 
+
+objLogger(); // 2
+```
+
+
+
+**显式绑定**
+
+使用的是 call 或者 apply。
+
+```js
+function logger() {
+    console.log( this.a );
+}
+
+var obj = {
+    a: 3
+};
+
+logger.call( obj ); // 3
+```
+
+这种显式绑定也不能完全解决问题，它也会产生一些副作用，比如在通过 wrapper 包装的 new String，new Boolean 或 new Number 的时候，这种绑定就会消失。
+
+
+
+**硬性绑定**
+
+用bind 来绑定，通过这种方式，无论后续怎么调用 hardBinding 函数，logger 都会把 obj 当做 this 来获取它的 a 属性的值。
+
+```js
+function logger() {
+    console.log( this.a );
+}
+
+var obj = {
+    a: 3
+};
+
+var hardBinding = logger.bind( obj );
+
+setTimeout( hardBinding, 1000 ); // 3
+
+hardBinding.call( window ); // 3
+```
+
+
+
+**new**
+
+使用 new 创建一个新的实例的时候，这时函数体中的this就指向新的对象。
+
+```js
+function logger(a) {
+    this.a = a;
+    console.log( this.a );
+}
+
+var loggerA = new logger( 2 ); // 2
+```
+
+
+
+硬性绑定和new绑定的对比，**new优先级大于hard binding**。
+
+在 bind 中是有一个逻辑判断的，它会看新的实例是不是通过 new 来创建的，如果是，那么 this 就绑定到新的实例上。
+
+```js
+this instanceof fNOP && oThis ? this : oThis
+// ... and:
+fNOP.prototype = this.prototype;
+fBound.prototype = new fNOP();
+```
+
+
+
+```js
+function logger(a) {
+    this.a = a;
+}
+
+var obj1 = {};
+
+var hardBinding = logger.bind( obj1 );
+
+hardBinding( 2 );
+
+console.log( obj1.a ); // 2
+
+var obj2 = new hardBinding( 3 );
+
+console.log( obj1.a ); // 2
+console.log( obj2.a ); // 3
+```
+
+
+
+> function.bind(thisArg[, arg1[, arg2[, ...]]])
+>
+> **`bind()`** 方法创建一个新的函数，在 `bind()` 被调用时，这个新函数的 `this` 被指定为 `bind()` 的第一个参数，而其余参数将作为新函数的参数，供调用时使用。
+>
+> 
+>
+> thisArg
+>
+> 调用绑定函数时作为 `this` 参数传递给目标函数的值。如果使用[`new`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/new)运算符构造绑定函数，则忽略该值。当使用 `bind` 在 `setTimeout` 中创建一个函数（作为回调提供）时，作为 `thisArg` 传递的任何原始值都将转换为 `object`。如果 `bind` 函数的参数列表为空，或者`thisArg`是`null`或`undefined`，执行作用域的 `this` 将被视为新函数的 `thisArg`。
+
+
+
+bind polyfill：
+
+```js
+// 我的，没有考虑到new调用的情况
+Function.prototype.myBind(newThis,...argsOutter){
+  const self = this
+	return function (...argsInner){
+    newThis.temFn = self
+    const result = newThis.temFn(...argsOutter,...argsInner)
+    delete newThis.temFn
+    return result
+  }
+}
+
+
+Function.prototype.mybind = function (context) {
+  let that = this
+  let args = Array.prototype.slice.call(arguments, 1)
+  function fBind() { // 执行bind函数
+    let bindargs = Array.prototype.slice.call(arguments)
+    return that.apply(this instanceof fBind ? this : context, args.concat(bindargs))
+  }
+  function Fn(){} // 两个类的原型并未公用，而是通过原型链的方式找到该原型方法
+  Fn.prototype = this.prototype
+  fBind.prototype = new Fn()
+  return fBind
+}
+```
+
+
+
+call polyfill：
+
+```js
+Function.prototype.mycall = function (context,...args) {
+  context = context == undefined ? window : new Object(context)
+  context.fn = this
+  let r = context.fn(...args) // 执行函数fun，并传入参数
+  delete context.fn
+  return r
+}
+```
+
+
+
+用 new 的好处是可以帮助忽略 hard binding，同时可以预设函数的实参。用 bind 的好处是任何 this 之后的实参，都可以当做是默认的实参，实现部分应用或者函数柯里化。
+
+```js
+function fullFunc (x, y, z) {
+  return x + y + z;
+}
+
+const partialFunc = fullFunc.bind(this, 1, 2);
+partialFunc(9); // 12
+```
+
+
+
+**软性绑定**
+
+可以在 global 或 undefined 的情况下，将 this 绑定到一个默认的 obj 上。
+
+```js
+if (!Function.prototype.softBind) {
+    Function.prototype.softBind = function(obj) {
+        var fn = this,
+            curried = [].slice.call( arguments, 1 ),
+            bound = function bound() {
+                return fn.apply(
+                    (!this ||
+                        (typeof window !== "undefined" &&
+                            this === window) ||
+                        (typeof global !== "undefined" &&
+                            this === global)
+                    ) ? obj : this,
+                    curried.concat.apply( curried, arguments )
+                );
+            };
+        bound.prototype = Object.create( fn.prototype );
+        return bound;
+    };
+}
+```
+
+
+
+```js
+function logger() {
+   console.log("name: " + this.name);
+}
+var obj1 = { name: "obj1" },
+    obj2 = { name: "obj2" },
+    obj3 = { name: "obj3" }；
+
+var logger1 = logger.softBind( obj1 );
+logger1(); // name: obj1
+
+obj2.logger = logger.softBind( obj1 );
+obj2.logger(); // name: obj2   
+
+logger1.call( obj3 ); // name: obj3   
+
+setTimeout( obj2.logger, 1000 ); // name: obj1
+```
+
+
+
+**箭头函数**
+
+当使用箭头函数的时候，this 是在词法域里面的，而不是根据函数执行时的上下文。
+
+```js
+function logger() {
+    return (a) => {
+        console.log( this.a );
+    };
+}
+
+var obj1 = {
+    a: 2
+};
+
+var obj2 = {
+    a: 3
+};
+
+var logger1 = logger.call( obj1 );
+
+logger1.call( obj2 ); // 2
+```
+
+
+
+
+
+## 数据类型
+
+JavaScript 当中有8种类型的值。
+
+两大类：原始类型（Primitive Type）和对象类型（Object Type）。
+
+原始数据类型：数字、布尔、字符串、BigInt、null、undefined，symbol，这些数据类型的值都是不可变的（immutable）。
+
+对象数据类型：对象，对象的值是可变的（mutable）。对象再细分的话，包含数组（array）、函数（function）、Date、RegExp，Map 和 Set。
+
+![img](https://static001.geekbang.org/resource/image/28/ca/28869dbc9aed7fe8120490938e87c3ca.jpg?wh=1920x934)
+
+
+
+通过不同类型在实际应用时会出现的各种问题，来进一步了解它们的原理和使用方法。
+
+
+
+### number 数字
+
+为什么 0.1+0.2 不等于 0.3？
+
+![img](https://static001.geekbang.org/resource/image/40/dd/40c923b035bbc4873d348e13b7c58cdd.png?wh=1269x204)
+
+JavaScript 中的数字类型包括了两类：浮点数和整数。
+
+JavaScript 所采用的IEEE 754 是**二进制浮点数**算术标准。这个标准里规定了 4 种浮点数算术方式：单精确度、双精确度、延伸单精确度与延伸双精确度。JavaScript 在这里选择的是双精确度（64 位）这种方式，通常也叫 double 或者 float64 类型。
+
+这种方式有 64 位比特。其中包含了 1 个比特的符号位（sign）、11 个比特的有偏指数（exponent）、还有 52 个比特的小数部分（fraction）。
+
+因为把十进制转化为二进制的算法是用十进制的小数乘以 2 直到没有了小数为止，所以十进制下的有些小数无法被精确地表示成二进制小数。而既然这里的浮点数是二进制，因此小数就会存在精度丢失的问题。
+
+而且当使用加减法的时候，由于需要先对齐（也就是把指数对齐，过程中产生移位），再计算，所以这个精度会进一步丢失。并且根据 JavaScript 引擎实际返回的小数点后的位数，可能会出现第三次丢失。这样下来，最后的结果就和实际相加减的数有偏离。
+
+
+
+**如何解决浮点数精度问题？**
+
+通常对于这个问题的处理，是通过按比例放大再缩小。例子：假如要设置一个 19.99 元的商品，我们可以把它先变成 1999，这样就可以做加法计算，之后再缩小。
+
+```js
+var priceBigInt = 1999n;
+var priceStr = String(priceBigInt);
+var priceYuan = `￥${priceStr.slice(0,-2)}.${priceStr.slice(-2)}`;
+console.log(priceYuan);
+```
+
+
+
+1. 在 IEEE 754 中，NaN 虽然代表的是“不是数字”的意思，但是如果我们用 typeof NaN 来获取，会发现它返回的是 number。
+2. 原始类型有个特点，就是两个数据的数值一样，会被当做是等同的。而对象类型则相反，即使两个数据的数值一样，也会被当做是不同的数值，每一个数值都有一个唯一的身份。
+3. `NaN === NaN // 返回 false`
+4. JavaScript 中会通过 isNaN 来判断一个值是不是数字，但是当我们输入一个字符串，它也会被当做是一个数字。因为在这个过程中，“0”这个字符串被转换成了数字。 `isNaN("0") // 返回 false`
+
+
+
+**如何判断一个值是不是数字？**
+
+通过判断值的类型，并加上一个 isFinite 这种方式来判断。isFinite 是 JavaScript 中的一个内置函数，通过它，可以过滤掉 NaN 和 Infinity。
+
+```js
+isFinite(NaN)  // false
+isFinite(Infinity)  // false
+```
+
+该全局 **`isFinite()`** 函数用来判断被传入的参数值是否为一个有限数值（finite number）。**在必要情况下，参数会首先转为一个数值。**可以用这个方法来判定一个数字是否是有限数字。`isFinite` 方法检测它参数的数值。如果参数是 `NaN`，正无穷大或者负无穷大，会返回`false`，其他返回 `true`。
+
+
+
+```js
+var isNum = function isNum(value){
+  return typeof value === 'number' && isFinite(value);
+}
+```
+
+
+
+### string 字符串
+
+**原始类型的数据除了 undefined 和 null 以外，都有内置的包装对象（object wrapper）。**
+
+```js
+var str = new String("hello");
+str.length // 返回 5;
+typeof str // 返回 'object'
+
+
+
+var str = "hello";
+str.length // 返回 5
+typeof str // 返回 'string'
+```
+
+即使不用 constructor 这种方式，也仍然可以用字面量的方式来获取字符串的长度（length）。在这个过程中，同样可以看到长度结果的返回。而且，当再用 typeof 来获取它的类型时，收到的结果仍然是字符串，而不是对象。
+
+这是因为在使用 length 这个方法的时候，JavaScript 引擎临时创建了一个字符串的包装对象。当这个字符串计算出长度后，这个对象也就消失了。所以当再回过头来看 str 的类型时，返回的是字符串而不是对象。
+
+
+
+### boolean 布尔
+
+![img](https://static001.geekbang.org/resource/image/6b/cf/6bfc21c7f4f9cbef5934e0303aa761cf.png?wh=2152x966)
+
+### null
+
+用 typeof 来获取 null 的种类时，返回的结果是’object’，也就是说它是属于对象类型。这是一个 bug，但是也并非完全没有逻辑的 bug，因为 null 实际是一个空的对象指针。
+
+如何判断一个值是不是 null?
+
+不用 typeof，而是直接将值和null做严格比较。除了 null 以外，另外一个和它类似的是 undefined。如果说 null 代表值是空对象，undefined 代表的就是没有值。但是当对比它们的值时，它们却是相等的；另外严格比较它们的数据类型的时候，又会发现它们是不同的。
+
+```js
+null == undefined // 返回 true
+null === undefined // 返回 false
+```
+
+
+
+**什么时候用 undefined，什么时候用 null 呢？**
+
+通常是不用 undefined 的，而是把它作为系统的返回值或系统异常。比如当声明了一个变量，但是没有赋值的情况下，结果就是 undefined。而当想特意定义一个空的对象的时候，可以用 null。
+
+
+
+### 对象类型
+
+对象类型的问题，更多是在不同场景下、不同的使用方式所体现出的优劣势。
+
+要创建一个对象，既可以通过字面量也可以通过 constructor 的模式，如果进一步基于一个对象创建实例，并且用到面向对象编程模式中提到的 Object.create() 的话，这样的情况下，没法用 instanceOf 来判断新的实例属于哪个对象。因为这里的两个对象间更像是授权而不是继承的关系，之间没有从属关系，所以返回的是错误。而通过经典的基于原型的继承方式创建的实例，则可以通过 instanceOf 获取这种从属关系。
+
+```js
+// 方式1：字面量
+var objA = {name: "Object A"};
+var objB = Object.create(objA);
+console.log(objB instanceof objA); // 返回 类型错误
+
+// 方式2：constructor
+var objA = new Object();
+objA.name = "Object A";
+var objB = Object.create(objA);
+console.log(objB instanceof objA); // 返回 类型错误
+
+// 经典的基于原型的继承
+var objA = function() {
+  /* more code here */
+}
+objB = new objA();
+console.log(objB instanceof objA); // 返回 true
+```
+
+![img](https://static001.geekbang.org/resource/image/45/f1/454d216041d28e5f8f09f11011e99bf1.png?wh=2864x2160)
+
+
+
+**如何识别一个数组？**
+
+当用 typeof 来获取对象和数组的种类时，返回的都是 object。
+
+ES5的isArray
+
+```js
+if (myVal && 
+    typeof myVal === "object" && 
+    typeof myVal.length === "number" &&
+    !(myVal.propertyIsEnumerable("length"))) {
+    console.log("yes");
+}
+
+
+
+if (typeof Array.isArray === 'undefined') {
+  Array.isArray = function (arg) {
+    return Object.prototype.toString.call(arg) === "[object Array]";
+  };
+}
+```
+
+
+
+**function**
+
+函数在 JavaScript 中主要有两种写法，表达式和声明式。
+
+**声明式函数**
+
+什么是声明，都有哪些形式的声明。
+
+![img](https://static001.geekbang.org/resource/image/e0/7c/e00f5742d4bf592e80226a0920a7cf7c.jpg?wh=1920x670)
+
+
+
+声明式函数最大的好处就是可以用于函数提升 hoisting。可以说，除了有特殊需求会用到表达式以外，声明式就是默认的写法，下面是一个声明式函数的抽象语法树 AST（abstract syntax tree）。
+
+![img](https://static001.geekbang.org/resource/image/2c/1a/2c6e4ea7f4b03cb21fc2ce8a120c671a.jpeg?wh=1920x1080)
+
+
+
+```js
+function a = {} // 声明式
+```
+
+
+
+**表达式**
+
+```js
+var a = function() {} // 表达式
+var a = () => {}; // 表达式-箭头函数
+```
+
+
+
+**如何将一个值从一种类型转换到另外一种类型呢？**
+
+可以用到强制多态 coercion。强制多态一般分为两种方式：一种是通过显性 explicit 的；另外一种是通过隐性 implicit 的。
+
+可以通过显式 explicit，将一个字符串转化成为一个数字。
+
+```js
+var a = 42;
+var b = a + ""; // implicit coercion
+var c = String(a); // explicit coercion
+```
+
+在ECMAScript 的官方文档中，有相关的运行时的判断条件，实际浏览器会通过类似以下的算法来判断对应的处理。
+
+![img](https://static001.geekbang.org/resource/image/72/f4/72bd21d5830b893639ee69014922cef4.jpg?wh=2748x1204)
+
+
+
+![image-20230324173951556](C:/Users/shuyi/Desktop/study-notes/js/JS%E8%BF%9B%E9%98%B6.images/image-20230324173951556.png)
 
 
 
@@ -1465,38 +2715,106 @@ typeof B;   // "number"
 
 
 
+## 闭包原理
+
+函数有函数作用域和函数的生命周期，函数体中定义的变量一般都只存在在这个生命周期时间段内。但是闭包可以突破这个生命周期的时间和空间上的限制。
+
+从JS的编译原理和堆栈内存角度解释闭包。
+
+
+
+### 静态和动态作用域
+
+静态作用域，取决于变量和函数**在何处声明**，并在它执行之前，进行词法分析后就确定了。所以静态作用域又被称为**词法作用域**（lexical scope）。
+
+动态作用域，函数的作用域是在函数调用的时候才决定的，所以取决于在何处调用。
+
+JS代码的作用域是在编译过程中通过分析它在何处声明来确定的，属于静态（词法）作用域。
+
+
+
+函数的作用域在代码编译的阶段的定义，以及它在执行阶段的生命周期。
+
+
+
+**代码编译**
+
+一段代码从编译到执行的过程总览：
+
+![img](https://static001.geekbang.org/resource/image/40/4f/40a1aabd02f6dd648d5a857d4fdf214f.jpeg?wh=1920x1080)
+
+
+
+1. 初始化执行环境
+2. 读取到一段JS代码
+3. 词法分析，语法分析
+4. 解释器根据AST生成中间字节码
+5. 解释器执行中间字节码
+6. 热点代码监控
+7. 编译器优化热点代码
+8. 编译器优化反优化热点代码
+
+
+
+存放程序数据的栈空间和堆空间：
+
+**栈空间**：一种线性且内存连续的数据结构，用来管理JS中作用之间的调用关系。
+
+在栈空间中，存放的数据有：
+
+1. 基本数据类型的值
+2. 引用数据类型的数据在堆内存中的内存地址
+3. 函数执行状态
+4. this值
+5. outer
+
+
+
+**堆空间**：一种树形内存空间不连续的数据类型。用于存储应用类型的数据。
 
 
 
 
 
+示例代码：
+
+```js
+var base = 0;
+var scope = "global";
+function addOne () {
+    var base = 1;
+    return base +1;
+}
+
+function displayVal () {
+    var base = 2;
+    var scope = "local"
+    increment = addOne();
+    return base + increment;
+}
+```
+
+
+
+**分词或词法分析**（tokenizing/lexing）：JS代码字符串被拆分成段，一个变量或者函数的作用域就是在这个阶段被确定的。
+
+![image-20230325193444593](C:/Users/shuyi/Desktop/study-notes/js/JS%E8%BF%9B%E9%98%B6.images/image-20230325193444593.png)
+
+**语法分析**：解析（parsing）词法分析后的一段段的代码，被转换成一个抽象语法树（AST, Abstract Syntax Tree）
+
+语法树的顶端有一个父节点：var 变量的声明。在这个父节点的下面，有两个子节点：一个子节点是标识符 base；另外一个子节点就是等号的赋值表达。等号赋值表达的节点下面，还有一个子节点就是数字表面量 0。
+
+![image-20230325193837095](C:/Users/shuyi/Desktop/study-notes/js/JS%E8%BF%9B%E9%98%B6.images/image-20230325193837095.png)
+
+
+
+**作用域开始工作**：在词法分析后，JavaScript 引擎会在做语法分析的**同时**，更新全局作用域。
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+根据流程图中的红色虚线框部分所示，在词法分析后，JavaScript 引擎会在做语法分析的同时，更新全局作用域和创建局部作用域。在这个代码例子中，全局作用域里增加了 base 和 scope 变量，displayVal 里有 base、scope 和 increment 变量，而 addOne 里有 base 变量。
 
 
 

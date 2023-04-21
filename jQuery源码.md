@@ -667,12 +667,12 @@ jQuery 项目结构和模块功能：
   })
 
   1.$(document)
-  2.$(‘<div>’)
-  3.$(‘div’)
-  4.$(‘#test’)
+  2.$('<div>')
+  3.$('div')
+  4.$('#test')
   5.$(function(){})
   6.$("input:radio", document.forms[0]);
-  7.$(‘input’, $(‘div’))
+  7.$('input', $('div'))
   8.$()
   9.$("<div>", {
            "class": "test",
