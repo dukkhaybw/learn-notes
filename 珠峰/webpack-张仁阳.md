@@ -65,7 +65,7 @@ npx webpack --config  ./xxx/xxx.js
 
 ## entry
 
-- 入口起点(entry point)指示 webpack 使用哪个模块，来作为构建其内部依赖图(dependency graph) 的开始。进入入口起点后，webpack 会找出有哪些模块和库是入口起点（直接和间接）依赖的
+- 入口起点(entry point)告诉webpack 使用哪个模块，来作为构建其内部依赖图(dependency graph) 的开始。进入入口起点后，webpack 会找出有哪些模块和库是入口起点（直接和间接）依赖的
 - 默认值是 `./src/index.js`，但可以通过在 `webpack configuration` 中配置 `entry` 属性，来指定一个（或多个）不同src入口起点
 
 ```js
@@ -314,7 +314,7 @@ module.export = {
 
 1. **`--mode`用来间接设置模块内（源代码中）的`process.env.NODE_ENV`**
 
-- 可以在模块内(**项目源文件代码中**)通过`process.env.NODE_ENV`获取该`process.env.NODE_ENV`对应的字符串值（development 或者 production）进行替换，这是在**编译阶段**做的替换工作，它和 webpack 配置文件中通过进程对象（process）中的环境变量对象(env) 上的 NODE_ENV 是两个完全不同的概念
+- 可以在模块内(**项目源文件代码中**)通过`process.env.NODE_ENV`获取该`process.env.NODE_ENV`对应的字符串值（development 或者 production）并进行替换，这是在**编译阶段**做的替换工作，它和 webpack 配置文件中通过进程对象（process）中的环境变量对象(env) 上的 NODE_ENV 是两个完全不同的概念
 
 ```json
 "script":{
@@ -331,7 +331,7 @@ module.export = {
 2. **`--env`用来设置 webpack 配置文件的函数参数**
 
 - 无法在模块内通过`process.env.NODE_ENV`访问
-- 可以在 webpack 配置文件中通过**函数**获取当前环境变量
+- 可以在 webpack 配置文件中通过配置文件导出的**函数**获取当前环境变量
 
 ```json
 "script":{
@@ -432,9 +432,9 @@ module.exports = function (env, argv) {
 ```json
 "scripts": {
 
-  "build": "set NODE_ENV=development webpack ",  // windows下的写法。webpack 配置文件中访问 process.env.NODE_ENV ，则它的值就为development
+  "build": "set NODE_ENV=development webpack",  // windows下的写法。webpack 配置文件中访问 process.env.NODE_ENV ，则它的值就为development
 
-  "build": "cross-env NODE_ENV=development webpack "  // 解决操作系统层面的命令兼容性包
+  "build": "cross-env NODE_ENV=development webpack"  // 解决操作系统层面的命令兼容性包
 
 },
 ```
@@ -491,10 +491,10 @@ plugins:[
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+
 module.exports = function (env, argv) {
   return {
     mode: 'production',
-    // entry:'./src/index.js'
     entry: {
       main: './src/index.js'
     },
@@ -560,11 +560,34 @@ postcss-normalize
 
 Browserlist 可以编写的字段：
 
-![image-20210917211144929](..\typora-user-images\image-20210917211144929.png)
+- defaults : Browserslist的默认浏览器 (> 0.5%,last 2 versions, Firefox ESR, not dead)。
+- 5%:通过全局使用情况统计信息选择的浏览器版本。 >=，<和<=工作过
+  - 5% in Us:使用美国使用情况统计信息。它接受两个字母的国家/地区代码。
+  - \>5%in alt-As:使用亚洲地区使用情况统计信息，有关所有区域代码的列表，请参见aniuse-lite/data/reqions
+  - \>5%in my stats:使用自定义用法数据
+  - \>5% in browserslist-config-mycompany stats :使用 来自的自定义使用情况数据browserslist-onfig-mycompany/browserslist-stats,json.
+  - cover 99.5%:提供覆盖率的最受欢迎的浏览器
+  - cover 99.5%in us:与上述相同，但国家/地区代码由两个字母组成
+  - cover 99.5%in my stats:使用自定义用法数据
+- dead:24个月内没有官方支持或更新的浏览器，现在是E 10 Mob 11 BlackBerry 10Blackery7，Samsung 4和OperaMobile 12.1.
+- last 2versions:每个浏览器的最后2个版本。
+  - last 2 Chrome versions:最近2个版本的Chrome浏览器
+  - last2 major versions或last 2 ios major versions:最近2个主要版本的所有次要/补丁版本
+- not ie<= 8:排除先前查询选择的浏览器。
+- browserslist config:在Browserslist配置中定义的浏览器。在差异服务中很有用，可用于修改用户的配置。
 
-![image-20210917211240022](..\typora-user-images\image-20210917211240022.png)
 
-![image-20210917211320884](..\typora-user-images\image-20210917211320884.png)
+
+可以编写类似于这样的配置:
+>\> 1%
+>last 2 versions
+>not dead
+
+那么之后，这些工具会根据配置来获取相关的浏览器信息，以方便决定是否需要进行兼容性的支持:
+
+- 条件查询使用的是caniuse-lite的工具，这个工具的数据来自于caniuse的网站上;
+
+
 
 直接使用 browserslist 命令行工具查询根据条件匹配到的浏览器：
 
@@ -660,7 +683,7 @@ devServer:{
 
 
 
-css-loader 的配置
+## css-loader 配置
 
 ```js
 {
@@ -1034,7 +1057,6 @@ output:{
 
 ## JS 兼容性处理
 
-- Babel 是一个编译 JavaScript 的平台,可以把 ES6/ES7,React 的 JSX 转义为 ES5
 - Babel 默认只转换新的最新 ES 语法,比如箭头函数
 
 让 babel 能转换其他新语法需要借助包或者 babel 插件
@@ -1094,7 +1116,7 @@ console.log(person)  // PI还是3.14
 function decode(target,key,descriptor){
 
 }
-// 写法一：
+// 写法一：  legacy（传奇）:true 表示老的规则,可以这么写
 @decode
 class Person {}
 
@@ -1102,6 +1124,8 @@ class Person {}
 class @decode Person {}
 
 ```
+
+loose：true表示可以以obj.xxx的方式给对象添加属性，为false的话表示babel最后以object.defineProperty的方式给对象添加属性。
 
 
 
@@ -1166,7 +1190,7 @@ module.exports = {
 };
 ```
 
-npm i eslint-config-airbnb eslint-loader eslint eslint-plugin-import eslint-plugin-react eslint-plugin-react-hooks and eslint-plugin-jsx-a11y -D
+npm i  eslint-config-airbnb  eslint-loader  eslint eslint-plugin-import  eslint-plugin-react  eslint-plugin-react-hooks  eslint-plugin-jsx-a11y -D
 
 ```js
 module.exports = {
@@ -1304,7 +1328,7 @@ module.exports = 'title';
 打包后生成文件：
 
 ```js
-// modules存放项目除了入口模块之外依赖的所有模块（依赖关系图的生成结果）， key（模块id）是模块对于项目的所在项目根目录的路径，值是函数，函数体内容由模块文件的内容组成
+// modules存放项目除了入口模块之外依赖的所有模块（依赖关系图的生成结果）， key（模块id）是模块对于项目的所在根目录的路径，值是函数，函数体内容由模块文件的内容组成
 var modules = {
   //不管源码中是模块路径，相对或绝对路径，最后都转为相对于项目根目录的相对路径
   './src/title.js': (module, exports, require) => {
@@ -1337,43 +1361,50 @@ console.log(title);
 
 
 
+当index.js中引入两个依赖文件test1.js和test2.js时的打包结果：
+
 ```js
-var modules = {
-  "./src/sum.js": function (module) {
-    function add(a, b) {
-      return a + b;
-    }
-    module.exports = add;
+var webpackModules = {
+  "./src/test/test1.js": (module, unusedWebpackExports, webpackRequire) => {
+    module = webpackRequire.nmd(module);
+    module.export = "test1";
   },
-  "./src/title.js": function (module, exports, require) {
-    const add = require("./src/sum.js");
-    console.log(add(1, 2));
-    module.exports = 'title';
-  }
+  
+  "./src/test/test2.js": (module, unusedWebpackExports, webpackRequire) => {
+    module = webpackRequire.nmd(module);
+    module.export = "test2";
+  },
 };
 
-var cache = {};
+var webpackModuleCache = {};
 
-function require(moduleId) {
-
-  var cachedModule = cache[moduleId];
-
+function webpackRequire(moduleId) {
+  var cachedModule = webpackModuleCache[moduleId];
   if (cachedModule !== undefined) {
     return cachedModule.exports;
   }
-
-  var module = cache[moduleId] = {
-    exports: {}
-  };
-
-  modules[moduleId](module, module.exports, require);
+  var module = (webpackModuleCache[moduleId] = {
+    id: moduleId,
+    loaded: false,
+    exports: {},
+  });
+  webpackModules[moduleId](module, module.exports, webpackRequire);
+  module.loaded = true;
   return module.exports;
 }
 
+webpackRequire.nmd = (module) => {
+  module.paths = [];
+  if (!module.children) module.children = [];
+  return module;
+};
 
-const title = require("./src/title.js");   
-console.log(title);
+var webpackExports = {};
 
+const test1 = webpackRequire("./src/test/test1.js");
+const test2 = webpackRequire("./src/test/test2.js");
+console.log(test1);
+console.log(test2);
 ```
 
 
@@ -1452,7 +1483,6 @@ export const age = 'title_age'; // 命名导出
       require.r(exports); // r函数用于标识exports是一个es module的导出
 
       require.d(exports, {
-        //
         default: () => _DEFAULT_EXPORT__,
         age: () => age // 从这里可以看出esmodule的导出，导出的时变量本身，这不同于commonjs导出的是值或者对象引用，而且在定义时，并没有提供对应属性的setter方法，所以导入该模块的其他模块是无法修改该导出变量的值的。 而且该模块中在后续修改了该变量对应的值后，其他模块再次访问导出的变量时，会是最新的值。
       });
@@ -1478,7 +1508,7 @@ export const age = 'title_age'; // 命名导出
   require.d = (exports, definition) => {
     for (var key in definition) {
       if (require.o(definition, key) && !require.o(exports, key)) {
-        Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+        Object.defineProperty(exports, key, { enumerable: true, get: definition[key]   // 只定义了getter
       }
     }
   };
