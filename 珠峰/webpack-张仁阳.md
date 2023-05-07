@@ -4772,11 +4772,6 @@ import('./three');
 
 
 
-## 代码分割
-
-
-
- 
 
 
 
@@ -4785,8 +4780,729 @@ import('./three');
 
 
 
+## Rollup
+
+webpack打包的特点：
+
+1. 打包后的代码会待用webpack自生的逻辑代码，且体积打
+2. 打包速度慢，且配置可以很多样复杂
+3. 开发JS类库不适合使用webpack来进行打包
 
 
+
+### 先导
+
+rollup是专门用于打包开发的JS类库，支持打包生成umd/commonjs/es的js代码，学习rollup为vite打基础。vite开发时用的是esbuild（也是一个打包工具，用Go语言写的）打包；上线时使用的是rollup打包，而且vite内部的插件机制也是复用rollup的插件机制。
+
+rollup插件和vite插件可以复用，vite插件是一个简化版的rollup插件，webpack使用的是commonjs规范，rullup使用的是ESM规范吗 webpack和rollup都会支持esm 和commonjs 但是打包出来的结果 webpack只能是commonjs，rollup可以打包出commonjs也可以打包出esm。rollup自带支持Tree-shaking，本质是消除无用的js代码，只处理函数和顶层的import/export变量
+
+
+
+- amd：`Asynchronous Module Definition`异步模块定义
+- ES6 module：es6提出了新的模块化方案
+- `IIFE(Immediately Invoked Function Expression)`：立即执行函数表达式，声明一个函数，声明完了立即执行
+- UMD：`Universal Module Definition`，通用模块定义
+- `cjs`：nodejs采用的模块化标准，commonjs使用方法`require`来引入模块,这里`require()`接收的参数是模块名或者是模块文件的路径
+
+
+
+```shell
+npm i  @rollup/plugin-commonjs @rollup/plugin-node-resolve @rollup/plugin-typescript lodash rollup  postcss rollup-plugin-postcss rollup-plugin-terser tslib typescript rollup-plugin-serve rollup-plugin-livereload -D
+```
+
+
+
+rollup配置文件
+
+rollup.config.js：
+
+```js
+export default {
+  input:'./src/main.js',
+  output:{
+   file: 'dist/bundle.cjs.js',//输出的文件路径和文件名
+    format: 'cjs',//五种输出的格式 amd/es/iife/umd/cjs
+    name: 'libName',//当format格式为iife和umd的时候必须提供变量名
+  }
+}
+```
+
+
+
+### 引入Babel
+
+```shell
+npm install @rollup/plugin-babel @babel/core @babel/preset-env -D
+```
+
+
+
+```js
+import babel from '@rollup/plugin-babel';
+
+export default {
+	// ...
+  plugins: [
+    babel({
+      exclude: /node_modules/
+    })
+  ]
+}
+```
+
+
+
+.babelrc
+
+```
+{
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "modules": false
+      }
+    ]
+  ]
+}
+```
+
+
+
+
+
+### 使用第三方npm模块
+
+rollup.js编译源码中的模块引用默认只支持 ES6+的模块方式`import/export`。大量的npm模块是基于CommonJS模块方式，这就导致了大量 npm 模块不能直接编译使用。所以辅助rollup.js编译支持 npm模块和CommonJS模块方式的插件就应运而生。
+
+- rollup-plugin-node-resolve 插件允许加载第三方模块
+- @rollup/plugin-commons 插件将它们转换为ES6版本
+
+```shell
+npm install @rollup/plugin-node-resolve @rollup/plugin-commonjs -D
+```
+
+
+
+```js
+import resolve from '@rollup/plugin-node-resolve'
+import commonjs from '@rollup/plugin-commonjs'
+
+export default {
+  input: './src/main',
+  output: {
+    file: './dist/bundle.js',
+    format: 'cjs',
+    name: 'bundleName'
+  },
+  plugins: [
+    resolve(),
+    commonjs(),
+  ],
+}
+
+```
+
+
+
+
+
+### 支持CDN 
+
+第三方库通过cdn引入，不直接出现在打包后的源码中。
+
+src/main.js:
+
+```js
+import _ from 'lodash';
+import $ from 'jquery';
+console.log(_.concat([1,2,3],4,5));
+console.log($);
+export default 'main';
+```
+
+
+
+index.html:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+  </head>
+
+  <body>
+    <script src="https://cdn.jsdelivr.net/npm/lodash/lodash.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery/jquery.min.js"></script>
+    <script src="bundle.js"></script>   引入打包后的js文件
+  </body>
+
+</html>
+```
+
+
+
+rollup.config.js:
+
+```diff
+import babel from 'rollup-plugin-babel';
+import resolve from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
+export default {
+    input:'src/main.js',
+    output:{
+        file:'dist/bundle.cjs.js',//输出文件的路径和名称
++       format:'iife',// 使用iife
++       name:'bundleName',//当format为iife和umd时必须提供，将作为全局变量挂在window下
++       globals:{
++           lodash:'_', //告诉rollup全局变量_即是lodash
++           jquery:'$' // $即是jquery
++       }
+    },
+    plugins:[
+        babel({
+            exclude:"node_modules/**"
+        }),
+        resolve(),
+        commonjs()
+    ],
++   external:['lodash','jquery']
+}
+```
+
+
+
+打包生成文件的内容：
+
+![image-20230506210020159](C:/Users/shuyi/Desktop/study-notes/%E7%8F%A0%E5%B3%B0/webpack-%E5%BC%A0%E4%BB%81%E9%98%B3.images/image-20230506210020159.png)
+
+
+
+
+
+### 支持TS
+
+```shell
+npm install @rollup/plugin-typescript -D
+
+npx tsc --init
+```
+
+
+
+rollup.config.js
+
+```js
+import typescript from '@rollup/plugin-typescript';
+
+export default {
+  input: 'src/main.ts',
+  output: {
+    file: 'dist/bundle.js',
+    format: 'cjs',
+  },
+  plugins: [
+    typescript(),
+  ]
+}
+```
+
+
+
+
+
+### 支持压缩
+
+```js
+import { terser } from 'rollup-plugin-terser';
+
+export default {
+	// ...
+  plugins: [
+    terser()
+  ]
+}
+```
+
+
+
+
+
+### 支持CSS
+
+本质也是在head中加入style标签。
+
+```js
+import postcss from 'rollup-plugin-postcss';
+
+export default {
+	// ...
+  plugins: [
+    postcss()
+  ]
+}
+```
+
+
+
+
+
+### 支持开发服务器
+
+
+
+```json
+"scripts": {
+  "build": "rollup --config",
+  "dev": "rollup --config -w",
+  // "build": "rollup --config rollup.config.build.js",
+  // "dev": "rollup --config rollup.config.dev.js -w"
+},
+```
+
+
+
+```js
+import serve from 'rollup-plugin-serve';
+
+export default {
+  // ...
+  plugins: [
+    serve({
+      open: true,
+      port: 8080,
+      contentBase: './dist'
+    })
+  ]
+}
+```
+
+
+
+### 热更新
+
+```js
+import livereload from 'rollup-plugin-livereload'
+
+export default {
+  // ...
+  plugins: [
+    livereload(),
+  ]
+}
+```
+
+
+
+
+
+### Rollup原理
+
+
+
+#### **前置知识**
+
+rollup 使用了 `acorn` 和 `magic-string` 两个库。
+
+[magic-string](https://link.juejin.cn/?target=https%3A%2F%2Fwww.npmjs.com%2Fpackage%2Fmagic-string)是一个操作字符串和生成source-map的工具,`magic-string` 是 rollup 作者写的。下面是 github 上的示例：
+
+```js
+var MagicString = require('magic-string');
+var magicString = new MagicString('export var name = "beijing"');
+//类似于截取字符串
+console.log(magicString.snip(0,6).toString()); // export
+//从开始到结束删除字符串(索引永远是基于原始的字符串，而非改变后的)
+console.log(magicString.remove(0,7).toString()); // var name = "beijing"
+
+//很多模块，把它们打包在一个文件里，需要把很多文件的源代码合并在一起
+let bundleString = new MagicString.Bundle();
+bundleString.addSource({
+    content:'var a = 1;',
+    separator:'\n'
+});
+bundleString.addSource({
+    content:'var b = 2;',
+    separator:'\n'
+});
+/* let str = '';
+str += 'var a = 1;\n'
+str += 'var b = 2;\n'
+console.log(str); */
+console.log(bundleString.toString());
+// var a = 1;
+// var b = 2;
+```
+
+
+
+#### **AST**
+
+[astexplorer](https://astexplorer.net/)
+
+使用 JavaScript 编写的 JavaScript 解析器：
+
+- [Esprima](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fjquery%2Fesprima)
+- [Acorn](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fternjs%2Facorn)
+
+上面两个解析出来的AST都符合 [The Estree Spec](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.comb%2Festree%2Festree) 规范。
+
+rollup和Webpack 解析代码用的是 Acorn。
+
+- [UglifyJS 2](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fmishoo%2FUglifyJS2)：一个 JavaScript 代码压缩器，其实它自带了一个代码解析器，也可以输出 AST，但是它的功能更多还是用于压缩代码
+- [Shift](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fshapesecurity%2Fshift-parser-js)
+
+
+
+- Parse(解析) 将源代码转换成抽象语法树，树上有很多的estree节点
+- Transform(转换) 对抽象语法树进行转换
+- Generate(代码生成) 将上一步经过转换过的抽象语法树生成新的代码
+
+![1d821a22ff221e924731a6d8c8a654c4](https://img.zhufengpeixun.com/1d821a22ff221e924731a6d8c8a654c4)
+
+
+
+
+
+一个使用Acorn解析JavaScript代码并输出函数名的例子：
+
+```js
+const acorn = require("acorn");
+
+const code = `
+  function add(x, y) {
+    return x + y;
+  }
+  
+  let result = add(1, 2);
+  console.log(result);
+`;
+
+const ast = acorn.parse(code, {
+  ecmaVersion: 2021
+});
+
+console.log(ast)
+
+ast.body.forEach(node => {
+  if (node.type === 'FunctionDeclaration') {
+    console.log(`Function name: ${node.id.name}`);
+  }
+});
+```
+
+打印内容：
+
+```
+Node {
+  type: 'Program',
+  start: 0,
+  end: 98,
+  body: [
+    Node {
+      type: 'FunctionDeclaration',
+      start: 3,
+      end: 45,
+      id: [Node],
+      expression: false,
+      generator: false,
+      async: false,
+      params: [Array],
+      body: [Node]
+    },
+    Node {
+      type: 'VariableDeclaration',
+      start: 51,
+      end: 74,
+      declarations: [Array],
+      kind: 'let'
+    },
+    Node {
+      type: 'ExpressionStatement',
+      start: 77,
+      end: 97,
+      expression: [Node]
+    }
+  ],
+  sourceType: 'script'
+}
+Function name: add
+```
+
+
+
+
+
+
+
+```js
+const acorn = require("acorn");
+
+const code = `import $ from "jquery"`;
+
+const ast = acorn.parse(code, {
+  ecmaVersion: 2021,
+  sourceType: "module",
+});
+
+console.dir(ast);
+
+ast.body.forEach((node) => {
+  if (node.type === "FunctionDeclaration") {
+    console.log(`Function name: ${node.id.name}`);
+  }
+});
+```
+
+打印内容：
+
+```
+Node {
+  type: 'Program',
+  start: 0,
+  end: 22,
+  body: [
+    Node {
+      type: 'ImportDeclaration',
+      start: 0,
+      end: 22,
+      specifiers: [Array],
+      source: [Node]
+    }
+  ],
+  sourceType: 'module'
+}
+```
+
+
+
+
+
+```js
+const acorn = require("acorn");
+const sourceCode = `import $ from "jquery"`;
+const ast = acorn.parse(sourceCode, {
+  locations: false,
+  ranges: true,
+  sourceType: "module",
+  ecmaVersion: 8,
+});
+//遍历语法树
+ast.body.forEach((statement) => {
+  walk(statement, {
+    enter(node) {
+      console.log("进入" + node.type);
+    },
+    leave(node) {
+      console.log("离开" + node.type);
+    },
+  });
+});
+
+function walk(astNode, { enter, leave }) {
+  visit(astNode, null, enter, leave);
+}
+function visit(node, parent, enter, leave) {
+  if (enter) {
+    enter(node, parent);
+  }
+  const keys = Object.keys(node).filter((key) => typeof node[key] === "object");
+  keys.forEach((key) => {
+    let value = node[key];
+    if (Array.isArray(value)) {
+      value.forEach((val) => {
+        if (val.type) {
+          visit(val, node, enter, leave);
+        }
+      });
+    } else {
+      visit(value, node, enter, leave);
+    }
+  });
+  if (leave) {
+    leave(node, parent);
+  }
+}
+```
+
+打印：
+
+```
+进入ImportDeclaration
+进入ImportDefaultSpecifier
+进入Identifier
+离开Identifier
+离开ImportDefaultSpecifier
+进入Literal
+离开Literal
+离开ImportDeclaration
+```
+
+
+
+![d39f73349c0580b4bfe6aa106ef0b1ae](https://img.zhufengpeixun.com/d39f73349c0580b4bfe6aa106ef0b1ae)
+
+
+
+
+
+#### **实现**
+
+启动文件：
+
+```js
+const path = require('path');
+const rollup = require('./lib/rollup')
+
+const entry = path.resolve(__dirname,'./src/main.js')
+const output = path.resolve(__dirname,'./dist/bundle.js')
+
+rollup(entry,output)
+```
+
+
+
+rollup本质是一个方法。rollup中的Bundle实例类比于webpack中的Compiler实例。rollup中每个文件也对应一个模块，webpack中也如此。
+
+rollup.js文件内容：
+
+```js
+const Bundle = require('./bundle.js')
+
+function rollup(entry,output){
+  // entry和output分别是打包入口文件和出口文件的绝对路径
+  // 使用rollup打包时，会创建一个统筹全局的bundle实例对象，调用它的build方法进行打包编译工作
+  const bundle = new Bundle({entry});
+  bundle.build(output)
+}
+
+module.exports = rollup
+```
+
+
+
+
+
+bundle.js:
+
+```js
+const path = require('path');
+const fs = require('fs');
+const MagicString = require('magic-string');
+const Module = require('./module.js');
+
+class Bundle{
+  constructor(options){
+    this.entryPath = path.resolve(options.entry)   // 不管是相对路径还是绝对路径，都统一改为绝对路径
+  }
+  
+  build(output){
+    const entryModule = this.fetchModule(this.entryPath)
+    
+    this.statements = entryModule.expandAllStatements()  //该文件源码对应的AST中所有节点组成的数组，将它们节点的_source属性对应的代码字符串拼接起来就能生成新的源代码
+    
+    const {code} = this.generate()
+    fs.writeFileSync(output, code)
+  }
+  
+  fetchModule(importee){
+    let route = importee;
+    if(route){
+      const code = fs.readFileSync(route,'uft8') // 读取原文件内容
+      // 每个文件都对应着一个模块，即一个module实例对象
+      const module = new Module({
+        code,
+        path: route,
+        bundle: this
+      })
+      
+      return module
+    }
+  }
+  
+  generate(){
+    let bundle = new MagicString.Bundle()
+    this.statements.forEach(statement=>{  // 把每个ast节点对应的源码都添加到bundle实例中
+      const source = statement._source.clone()
+      bundle.addSource({
+        content:source,
+        separator:'\n'
+      })
+    })
+    return {code: bundle.toString()}
+  }
+}
+```
+
+
+
+
+
+module.js：
+
+```js
+const MagicString = require('magic-string')
+const { parse } = require('acorn')
+const analyse = require('./ast/analyse')
+
+// 每个文件对应的模块对象上都有该文件的源码包装过的MagicString实例，该源码文件所在的路径，该源码文件属于哪个bundle
+// 同时每个模块上都有自己的源码对应的ast，同时，每个ast上的节点对象上也有三个属性：_included，_module，_source
+// _source：存放着该ast节点对应的源码字符串
+// _module：存放着该ast节点所属的源码文件生成的模块实例对象
+// _included: 表示这条语句默认不包括在输出的结果
+class Module{
+  constructor({code,path,bundle}){
+    this.code = new MagicString(code);  // 将模块的源代码包装为MagicString，方便后期操作
+    this.path = path;
+    this.bundle = bundle;
+    this.ast = parse(code,{
+      ecmaVersion:8,
+      sourceType:'module'
+    })
+    analyse(this.ast, this.code, this)
+  }
+  
+  expandAllStatements(){
+    let allStatements = [];
+    this.ast.body.forEach(statement=>{
+      let statements = this.expandAllStatement(statement)
+      allStatements.push(...statements)
+    })
+    return allStatements
+  }
+  
+  expandAllStatement(statement){
+    statement._included = true
+    let result = []
+    result.push(statement)
+    return result 
+  }
+}
+```
+
+
+
+
+
+ast/analyse.js:
+
+```js
+
+function analyse(ast,code,module){
+  ast.body.forEach((statement)=>{
+    Object.defineProperties(statement,{
+      _included: {value: false,writable: true},
+      _module: {value: module},
+      _source: {value: code.snip(statement.start,statement.end)}
+    })
+  })
+}
+
+module.exports = analyse
+```
 
 
 
