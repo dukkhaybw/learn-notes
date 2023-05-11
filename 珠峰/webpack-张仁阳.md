@@ -65,8 +65,9 @@ npx webpack --config  ./xxx/xxx.js
 
 ## entry
 
-- 入口起点(entry point)告诉webpack 使用哪个模块，来作为构建其内部依赖图(dependency graph) 的开始。进入入口起点后，webpack 会找出有哪些模块和库是入口起点（直接和间接）依赖的
+- 入口(entry point)告诉webpack 使用哪个模块，来作为构建其内部依赖图(dependency graph) 的开始。进入入口后，webpack 会找出有哪些模块和库是入口起点（直接和间接）依赖的
 - 默认值是 `./src/index.js`，但可以通过在 `webpack configuration` 中配置 `entry` 属性，来指定一个（或多个）不同src入口起点
+- webpack的配置文件中的entry中配置的相对路径会以脚本命令执行时所在的路径作为基准路径。
 
 ```js
 entry: './src/index.js';
@@ -81,7 +82,12 @@ entry: {
 ## output
 
 - `output` 属性告诉 webpack 在哪里输出它所创建的 bundle，以及如何命名这些文件
-- 主要输出文件的默认值是 `./dist/main.js`，其他生成文件默认放置在 `./dist` 文件夹中。
+
+- 而output中的path路径则是一个绝对路径，具体打包后生成的打包文件夹在哪里取决于path的值。
+
+- 如果不配置output中的path选项，则该项的默认值是：process.cwd()，而不是'./dist'这种相对路径或者 path.resolve(__dirname, "dist")。
+
+  
 
 如果引入的有其他类型的文件，webpack 是无法识别的，为此需要使用 loader 加载器来加载这类文件并转为 webpack 可以处理的模块，一般都是 js，并添加到依赖关系图中。
 
@@ -5163,7 +5169,433 @@ rollup和Webpack 解析代码用的是 Acorn。
 
 ![1d821a22ff221e924731a6d8c8a654c4](https://img.zhufengpeixun.com/1d821a22ff221e924731a6d8c8a654c4)
 
+Acorn的解析API：
 
+- **ecmaVersion**，设置要解析的 JavaScript 的 ECMA 版本，默认是 ES7。
+- **sourceType**，这个配置项有两个值：`module` 和 `script`，默认是 `script`。
+  主要是严格模式和 `import/export` 的区别。ES6 中的模块是严格模式，也就是无须添加 `use strict`。通常浏览器中使用的 script 是没有 `import/export` 语法的。
+- **locations**，默认值是 `false`，设置为 `true` 之后会在 AST 的节点中携带多一个 `loc` 对象来表示当前的开始和结束的行数和列数。
+- **onComment**，传入一个回调函数，每当解析到代码中的注释时会触发，可以获取当年注释内容，参数列表是：`[block, text, start, end]`。`block` 表示是否是块注释，`text` 是注释内容，`start` 和 `end` 是注释开始和结束的位置。
+
+
+
+使用acorn分析进行词法分析结果API：const tokens = [...acorn.tokenizer(code, options)]。
+
+词法分析例子：
+
+```js
+const acorn = require("acorn");
+
+const code = `
+import { name } from "hello.js";
+console.log(name);
+`;
+
+const tokens = [...acorn.tokenizer(code)];
+
+console.log(tokens);
+
+```
+
+打印结果：
+
+```
+[
+  Token {
+    type: TokenType {
+      label: 'import',
+      keyword: 'import',
+      beforeExpr: false,
+      startsExpr: true,
+      isLoop: false,
+      isAssign: false,
+      prefix: false,
+      postfix: false,
+      binop: null,
+      updateContext: null
+    },
+    value: 'import',
+    start: 1,
+    end: 7
+  },
+  Token {
+    type: TokenType {
+      label: '{',
+      keyword: undefined,
+      beforeExpr: true,
+      startsExpr: true,
+      isLoop: false,
+      isAssign: false,
+      prefix: false,
+      postfix: false,
+      binop: null,
+      updateContext: [Function (anonymous)]
+    },
+    value: undefined,
+    start: 8,
+    end: 9
+  },
+  Token {
+    type: TokenType {
+      label: 'name',
+      keyword: undefined,
+      beforeExpr: false,
+      startsExpr: true,
+      isLoop: false,
+      isAssign: false,
+      prefix: false,
+      postfix: false,
+      binop: null,
+      updateContext: [Function (anonymous)]
+    },
+    value: 'name',
+    start: 10,
+    end: 14
+  },
+  Token {
+    type: TokenType {
+      label: '}',
+      keyword: undefined,
+      beforeExpr: false,
+      startsExpr: false,
+      isLoop: false,
+      isAssign: false,
+      prefix: false,
+      postfix: false,
+      binop: null,
+      updateContext: [Function (anonymous)]
+    },
+    value: undefined,
+    start: 15,
+    end: 16
+  },
+  Token {
+    type: TokenType {
+      label: 'name',
+      keyword: undefined,
+      beforeExpr: false,
+      startsExpr: true,
+      isLoop: false,
+      isAssign: false,
+      prefix: false,
+      postfix: false,
+      binop: null,
+      updateContext: [Function (anonymous)]
+    },
+    value: 'from',
+    start: 17,
+    end: 21
+  },
+  Token {
+    type: TokenType {
+      label: 'string',
+      keyword: undefined,
+      beforeExpr: false,
+      startsExpr: true,
+      isLoop: false,
+      isAssign: false,
+      prefix: false,
+      postfix: false,
+      binop: null,
+      updateContext: null
+    },
+    value: 'hello.js',
+    start: 22,
+    end: 32
+  },
+  Token {
+    type: TokenType {
+      label: ';',
+      keyword: undefined,
+      beforeExpr: true,
+      startsExpr: false,
+      isLoop: false,
+      isAssign: false,
+      prefix: false,
+      postfix: false,
+      binop: null,
+      updateContext: null
+    },
+    value: undefined,
+    start: 32,
+    end: 33
+  },
+  Token {
+    type: TokenType {
+      label: 'name',
+      keyword: undefined,
+      beforeExpr: false,
+      startsExpr: true,
+      isLoop: false,
+      isAssign: false,
+      prefix: false,
+      postfix: false,
+      binop: null,
+      updateContext: [Function (anonymous)]
+    },
+    value: 'console',
+    start: 34,
+    end: 41
+  },
+  Token {
+    type: TokenType {
+      label: '.',
+      keyword: undefined,
+      beforeExpr: false,
+      startsExpr: false,
+      isLoop: false,
+      isAssign: false,
+      prefix: false,
+      postfix: false,
+      binop: null,
+      updateContext: null
+    },
+    value: undefined,
+    start: 41,
+    end: 42
+  },
+  Token {
+    type: TokenType {
+      label: 'name',
+      keyword: undefined,
+      beforeExpr: false,
+      startsExpr: true,
+      isLoop: false,
+      isAssign: false,
+      prefix: false,
+      postfix: false,
+      binop: null,
+      updateContext: [Function (anonymous)]
+    },
+    value: 'log',
+    start: 42,
+    end: 45
+  },
+  Token {
+    type: TokenType {
+      label: '(',
+      keyword: undefined,
+      beforeExpr: true,
+      startsExpr: true,
+      isLoop: false,
+      isAssign: false,
+      prefix: false,
+      postfix: false,
+      binop: null,
+      updateContext: [Function (anonymous)]
+    },
+    value: undefined,
+    start: 45,
+    end: 46
+  },
+  Token {
+    type: TokenType {
+      label: 'name',
+      keyword: undefined,
+      beforeExpr: false,
+      startsExpr: true,
+      isLoop: false,
+      isAssign: false,
+      prefix: false,
+      postfix: false,
+      binop: null,
+      updateContext: [Function (anonymous)]
+    },
+    value: 'name',
+    start: 46,
+    end: 50
+  },
+  Token {
+    type: TokenType {
+      label: ')',
+      keyword: undefined,
+      beforeExpr: false,
+      startsExpr: false,
+      isLoop: false,
+      isAssign: false,
+      prefix: false,
+      postfix: false,
+      binop: null,
+      updateContext: [Function (anonymous)]
+    },
+    value: undefined,
+    start: 50,
+    end: 51
+  },
+  Token {
+    type: TokenType {
+      label: ';',
+      keyword: undefined,
+      beforeExpr: true,
+      startsExpr: false,
+      isLoop: false,
+      isAssign: false,
+      prefix: false,
+      postfix: false,
+      binop: null,
+      updateContext: null
+    },
+    value: undefined,
+    start: 51,
+    end: 52
+  }
+]
+```
+
+
+
+ATS节点：
+
+符合[The Estree Spec](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Festree%2Festree)规范的AST节点用 `Node` 对象来标识，`Node` 对象应该符合这样的接口：
+
+```js
+interface Position {
+    line: number; // >= 1
+    column: number; // >= 0
+}
+
+interface SourceLocation {
+    source: string | null;
+    start: Position;
+    end: Position;
+}
+
+interface Node {
+    type: string;   // type 字段表示不同的节点类型
+    loc: SourceLocation | null;  // loc 字段表示源码的位置信息
+}
+```
+
+
+
+AST节点类型：
+
+1. **Identifier**，标识符，写 JS 时自定义的名称，如变量名，函数名，属性名，都归为标识符。相应的接口是这样的：
+
+   ```ts
+   interface Identifier <: Expression, Pattern {
+       type: "Identifier";
+       name: string;
+   }
+   ```
+
+2. **Literal**，字面量，代表了一个值
+
+   ```ts
+   interface Literal <: Expression {
+       type: "Literal";
+       value: string | boolean | null | number | RegExp;
+   }
+   ```
+
+3. **RegExpLiteral**，正则字面量，解析正则表达式的内容。
+
+   ```ts
+   interface RegExpLiteral <: Literal {
+     regex: {
+       pattern: string;
+       flags: string;  
+     };
+   }
+   ```
+
+4. **Programs**，根节点，代表了一棵完整的程序代码树。
+
+   ```ts
+   interface Program <: Node {
+       type: "Program";
+       body: [ Statement ];  // body 属性是一个数组，包含了多个 Statement（即语句）节点。
+   }
+   ```
+
+5. **Functions**，函数声明或者函数表达式节点。
+
+   ```ts
+   interface Function <: Node {
+       id: Identifier | null;  // 函数名
+       params: [ Pattern ];  // 一个数组，表示函数的参数
+       body: BlockStatement; // 一个块语句
+   }
+   ```
+
+   不会找到 `type: "Function"` 的节点的，但是你可以找到 `type: "FunctionDeclaration"` 和 `type: "FunctionExpression"`，因为函数要么以声明语句出现，要么以函数表达式出现，都是节点类型的组合类型。
+
+   > 根据这两个接口的定义，一个实现了`Function`接口的对象应该具有以下属性和方法：
+   >
+   > 1. `id`: 一个可选的`Identifier`对象，表示函数的名称（如果存在）。
+   > 2. `params`: 一个由`Pattern`类型元素组成的数组，表示函数的参数列表。
+   > 3. `body`: 一个`BlockStatement`对象，表示函数的主体语句块。
+   >
+   > 注意，这里的`Identifier`和`Pattern`都是其他接口，因此一个实现了`Function`接口的对象，还必须同时实现这两个接口。
+   >
+   > 例如，以下是一个实现了`Function`接口的对象的示例代码：
+   >
+   > ```ts
+   > const myFunc: Function = {
+   >   id: {
+   >     type: "Identifier",
+   >     name: "myFunc"
+   >   },
+   >   params: [
+   >     {
+   >       type: "Identifier",
+   >       name: "arg1"
+   >     },
+   >     {
+   >       type: "Identifier",
+   >       name: "arg2"
+   >     }
+   >   ],
+   >   body: {
+   >     type: "BlockStatement",
+   >     body: [
+   >       {
+   >         type: "ExpressionStatement",
+   >         expression: {
+   >           type: "CallExpression",
+   >           callee: {
+   >             type: "Identifier",
+   >             name: "console.log"
+   >           },
+   >           arguments: [
+   >             {
+   >               type: "BinaryExpression",
+   >               operator: "+",
+   >               left: {
+   >                 type: "Identifier",
+   >                 name: "arg1"
+   >               },
+   >               right: {
+   >                 type: "Identifier",
+   >                 name: "arg2"
+   >               }
+   >             }
+   >           ]
+   >         }
+   >       }
+   >     ]
+   >   }
+   > };
+   > ```
+   >
+   > 这个示例中的`myFunc`对象实现了`Function`接口，具有`id`、`params`和`body`三个属性，分别对应函数的名称、参数和主体。其中，`id`是一个`Identifier`对象，`params`是一个包含两个`Identifier`对象的数组，`body`是一个包含一个`ExpressionStatement`对象的`BlockStatement`对象。
+
+   
+
+
+
+扩展：
+
+> ```ts
+> interface RegExpLiteral <: Literal {
+>   regex: {
+>     pattern: string;
+>     flags: string;
+>   };
+> }
+> ```
+>
+> 在TypeScript中，`<:`符号表示继承关系。在这个例子中，`RegExpLiteral`是一个接口(interface)，它继承自另一个接口`Literal`。继承使得`RegExpLiteral`可以拥有`Literal`中定义的所有属性和方法，并且可以在`RegExpLiteral`中添加新的属性和方法。因此，这个语句的意思是，`RegExpLiteral`是一个继承自`Literal`的接口。
 
 
 
