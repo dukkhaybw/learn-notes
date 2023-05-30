@@ -17,7 +17,7 @@ webpack 是 JavaScript 应用程序的静态打包工具。
 
 
 
-## 浏览器直接使用 ES module
+## 浏览器直接使用ES module
 
 ```html
 <script src="./src/index.js" type="module"></script>
@@ -45,7 +45,7 @@ export const mul =(num1,num2)=>{
 }
 ```
 
-**证明 ES6 的模块化语法是需要发起网络请求：**
+**ES6 的模块化语法是需要发起网络请求：**
 
 ![image-20220310071821033](..\typora-user-images\image-20220310071821033.png)
 
@@ -53,7 +53,7 @@ export const mul =(num1,num2)=>{
 
 ![image-20220310072112724](..\typora-user-images\image-20220310072112724.png)
 
-在上面，直接使用 file 协议打开本地的 index.html 文件，产生跨域请求。说明 ES6 的 import 语法是需要发起网络请求的。
+在上面，直接使用 file 协议打开本地的 index.html 文件，产生跨域请求。说明ES6 的 import 语法是需要发起网络请求的。
 
 ```
 npx webpack --entry ./src/main.js --output-path ./build
@@ -67,7 +67,7 @@ npx webpack --config  ./xxx/xxx.js
 
 - 入口(entry point)告诉webpack 使用哪个模块，来作为构建其内部依赖图(dependency graph) 的开始。进入入口后，webpack 会找出有哪些模块和库是入口起点（直接和间接）依赖的
 - 默认值是 `./src/index.js`，但可以通过在 `webpack configuration` 中配置 `entry` 属性，来指定一个（或多个）不同src入口起点
-- webpack的配置文件中的entry中配置的相对路径会以脚本命令执行时所在的路径作为基准路径。
+- webpack的配置文件中的entry中配置的相对路径会以脚本命令执行时所在的路径（process.cwd()）作为基准路径。
 
 ```js
 entry: './src/index.js';
@@ -83,15 +83,10 @@ entry: {
 
 - `output` 属性告诉 webpack 在哪里输出它所创建的 bundle，以及如何命名这些文件
 
-- 而output中的path路径则是一个绝对路径，具体打包后生成的打包文件夹在哪里取决于path的值。
+- output中的path路径则是一个绝对路径，具体打包后生成的打包文件夹在哪里取决于path的值。
 
 - 如果不配置output中的path选项，则该项的默认值是：process.cwd()，而不是'./dist'这种相对路径或者 path.resolve(__dirname, "dist")。
 
-  
-
-如果引入的有其他类型的文件，webpack 是无法识别的，为此需要使用 loader 加载器来加载这类文件并转为 webpack 可以处理的模块，一般都是 js，并添加到依赖关系图中。
-
-loader 一般用于转为文件类型，插件则用来执行更为复杂的任务（打包优化，资源管理，注入环境变量...）
 
 
 
@@ -124,7 +119,7 @@ loader 的几种使用方式：
 
 ## plugin
 
-loader 用于转换某些类型的模块，而插件则可以用于执行范围更广的任务。包括：打包优化，资源管理，注入环境变量
+插件可以用于执行范围更广的任务。包括：打包优化，资源管理，注入环境变量
 
 - clean-webpack-plugin
 
@@ -208,8 +203,6 @@ loader 用于转换某些类型的模块，而插件则可以用于执行范围�
 
 ## 模式(mode)
 
-- 前端开发工作中，一般都会有两套构建环境
-
 - 一套开发时使用，构建结果用于本地开发调试，不进行代码压缩，打印 debug 信息，需要 sourcemap 文件，热更新
 
 - 一套构建时使用，生成打包文件直接应用于线上的，即代码都是压缩后，运行时不打印 debug 信息，不包括 sourcemap，可能需要分离 CSS 成单独的文件，以便多个页面共享同一个 CSS 文件
@@ -272,8 +265,8 @@ module.export = {
 module.export = {
   mode: 'production', // 等于开启下面的这些配置
 
-  devtool: 'eval',
-  cache: true,
+  devtool: false,
+  cache: false,
   performace: {
     hints: 'warning'
   },
@@ -299,13 +292,15 @@ module.export = {
     plugins: [
       new webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify('production')
-      })
+      }),
+      new TerserPlugin(/*...*/),
+      // ...
     ]
   }
 };
 ```
 
-![image-20211004195304621](..\typora-user-images\image-20211004195304621.png)
+
 
 
 
@@ -314,7 +309,7 @@ module.export = {
 读取变量的两个地方：
 
 - webpack 配置文件被读取时所在的 node 环境，该环境的全局对象上有 process 进程对象
-- 项目的源码文件实际运行在的浏览器环境中，浏览器全局对象上没有 process 进程对象，访问则报错
+- 项目的源码文件实际运行所在的浏览器环境中，浏览器全局对象上没有 process 进程对象，访问则报错
 
 
 
@@ -390,38 +385,6 @@ module.exports = function (env, argv) {
 **`--env` 用来设置 webpack 配置文件导出的函数的参数**，并不直接在项目的模块文件中生效。
 
 在 script 脚本中使用 --env=development 的效果是为 webpack 配置文件默认导出的是函数时，可以在函数的参数中获取到该命令行中设置的参数。例如 script 脚本中：`"build": "webpack --env=development"` 那么下面代码中的 env 就是：`{ WEBPACK_BUNDLE: true, WEBPACK_BUILD: true, development: true }`。argv 的结构则是：`{ env: { WEBPACK_BUNDLE: true, WEBPACK_BUILD: true, development: true } }`，但是因为 mode 默认没有设置时使用的是 production 模式，所以打包出来代码中的 process.env.NODE_ENV 变量的取值仍旧是 production 字符串。
-
-```js
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-
-module.exports = function (env, argv) {
-  console.log(env);
-  console.log(argv);
-  return {
-    // mode: 'production',
-    entry: './src/index.js',
-    output: {
-      path: path.resolve(__dirname, './dist'),
-      filename: 'main.js'
-    },
-    module: {
-      rules: [
-        {
-          test: /\.css$/,
-          use: ['style-loader', 'css-loader']
-        }
-      ]
-    },
-    plugins: [
-      new HtmlWebpackPlugin({
-        template: './public/index.html',
-        filename: 'index.html'
-      })
-    ]
-  };
-};
-```
 
 
 
@@ -752,15 +715,9 @@ bg{
 
 
 
-node-sass  sass-loader
-
-sass：老版后缀
-
-scss：新版本后缀
+node-sass  sass-loader；sass：老版后缀；scss：新版本后缀
 
 node-sass 负责将 scss 或者 sass 编译为 css，原始的 sass 包使用 ruby 写的，本地安装的话需要编译，node-sass 是 node 写的，比较好安装执行。
-
-dart-sass
 
 
 
@@ -777,7 +734,6 @@ const webpack = require('webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackOptions = require('./webpack.config');
 
-webpackOptions.mode = 'development';
 const compiler = webpack(webpackOptions);
 app.use(webpackDevMiddleware(compiler, {}));
 app.listen(3000);
@@ -911,9 +867,9 @@ output:{
   {
     test:/\.(jpg|png|svg|gif|jpeg)$/,
     type:"asset/resource",
-      generator:{
-        filename:"img/[name].[hash:6][ext]"   //img会是图片资源打包后存放了目录
-      }
+    generator:{
+      filename:"img/[name].[hash:6][ext]"   //img会是图片资源打包后存放了目录
+    }
   }
 
 
@@ -946,14 +902,14 @@ output:{
   {
     test:/\.(jpg|png|svg|gif|jpeg)$/,
     type:"asset",
-      generator:{
-        filename:"img/[name].[hash:6][ext]"
-      },
-      parser:{
-        dataUrlCondition:{
-          maxSize: 100 *1024   // 小于该体积（100kb）则打包为base64
-        }
+    generator:{
+      filename:"img/[name].[hash:6][ext]"
+    },
+    parser:{
+      dataUrlCondition:{
+        maxSize: 10 *1024   // 小于该体积（10kb）则打包为base64
       }
+    }
   }
   ```
 
@@ -968,21 +924,6 @@ module.exports = {
 	}
     module:{
         rules: [
-            {
-                test: /\.js$/,
-                use: [
-                    {
-                        loader: 'babel-loader',
-                        options: {
-                            presets: [
-                                "@babel/preset-react"
-                            ]
-                        },
-
-                    }
-                ],
-                exclude:/node_modules/
-            },
 +           {
 +               test: /\.png$/,
 +               type: 'asset/resource',   // file-loader
@@ -1106,20 +1047,6 @@ import png from './assets/images/logo.png?time=2022-8-21';
 
 
 
-## 清除打包目录
-
-在较为新版本的 webaack 中可以不再使用 clear-webpack-plugin 插件来清楚打包生成的目录。可以通过下面的方式来指定：
-
-```js
-output:{
-    path:path.resolve(__dirname,'dist')
-    filename:'main.js',
-    clean:true  // +++++++++++++++++++++++++++
-}
-```
-
-
-
 ## JS 兼容性处理
 
 - Babel 默认只转换新的最新 ES 语法,比如箭头函数
@@ -1163,7 +1090,6 @@ npm i @babel/plugin-proposal-decorators @babel/plugin-proposal-class-properties 
 装饰器的写法：
 
 ```js
-
 function readonly(target,key,descriptor){
     descriptor.writable = false
 }
@@ -1200,7 +1126,7 @@ loose：true表示可以以obj.xxx的方式给对象添加属性，为false的�
 
 npm install eslint eslint-loader babel-eslint --D
 
-```js
+```diff
 module: {
     rules: [
 +      {
@@ -1210,22 +1136,6 @@ module: {
 +        options: { fix: true },
 +        exclude: /node_modules/,
 +      }, // 先检查代码风格，在进行编译
-
-+      {
-+        test: /\.jsx?$/,
-+        use: {
-+          loader: 'babel-loader',
-+          options: {
-+            presets: ["@babel/preset-env", '@babel/preset-react'],
-+            plugins: [
-+              ["@babel/plugin-proposal-decorators", { legacy: true }],
-+              ["@babel/plugin-proposal-private-property-in-object", { "loose": true }],
-+              ["@babel/plugin-proposal-private-methods", { "loose": true }],
-+              ["@babel/plugin-proposal-class-properties", { loose: true }],
-+            ],
-+          },
-+        },
-+      },
     ]
 }
 ```
@@ -1356,17 +1266,17 @@ webpack.config.js
 ```js
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+
 module.exports = {
   mode: 'development',
   devtool: false,
   entry: './src/index.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'main.js'
+    filename: 'main.js'，
+    clean:true
   },
   plugins: [
-    new CleanWebpackPlugin({ cleanOnceBeforeBuildPatterns: ['**/*'] }),
     new HtmlWebpackPlugin({
       template: './src/index.html',
       filename: 'index.html'
@@ -1404,7 +1314,7 @@ var modules = {
 // 缓存已经被引入过的模块
 var cache = {};
 
-// require方法，相当于自己在浏览器端实现一个require的pollful的方法
+// require方法，相当于webpack在浏览器端实现一个require的pollful的方法
 function require(moduleId) {
   if (cache[moduleId]) {
     return cache[moduleId].exports;
@@ -1474,9 +1384,7 @@ console.log(test2);
 
 
 
-在 webpack 中有两种模块化规范，commonjs 和 esmodule，他们之间可以相会转换和混用。并且在 webpack 打包后都统一使用 commonJS 模块规范。如果对不同模块化规范做兼容。
-
-
+在 webpack 中有两种模块化规范，commonjs 和 esmodule，他们之间可以相会转换和混用。并且在 webpack 打包后都统一使用 commonJS 模块规范。
 
 ### common.js 加载 common.js
 
@@ -1493,7 +1401,7 @@ exports.age = 'title_age';
 
 // 打包结果
 var modules = {
-  // 定义了一个对象，用模块的路径作为key, 函数作为值value ，将每一个加载的模块以及模块对应的代码，代码该函数内部，然后该函数作为值，而模块的路径对应key。 在commonjs中并没有将入口文件加入到__webpack_modules__对象内部作为一个属性。而在ES6的中是做了的。可以看下面的ES6打包文件
+  // 定义了一个对象，用模块的路径作为key, 函数作为值value ，将每一个加载的模块以及模块对应的代码，添加到该函数内部，然后该函数作为值，而模块的路径对应key。 在commonjs中并没有将入口文件加入到__webpack_modules__对象内部作为一个属性。而在ES6的中是做了。可以看下面的ES6打包文件
   './src/title.js': (module, exports) => {
     exports.name = 'title_name';
     exports.age = 'title_age';
@@ -1549,7 +1457,7 @@ export const age = 'title_age'; // 命名导出
 
       require.d(exports, {
         default: () => _DEFAULT_EXPORT__,
-        age: () => age // 从这里可以看出esmodule的导出，导出的时变量本身，这不同于commonjs导出的是值或者对象引用，而且在定义时，并没有提供对应属性的setter方法，所以导入该模块的其他模块是无法修改该导出变量的值的。 而且该模块中在后续修改了该变量对应的值后，其他模块再次访问导出的变量时，会是最新的值。
+        age: () => age // 从这里可以看出esmodule的导出，导出的是变量本身，这不同于commonjs导出的是值或者对象引用，而且在定义时，并没有提供对应属性的setter方法，所以导入该模块的其他模块是无法修改该导出变量的值的。 而且该模块中在后续修改了该变量对应的值后，其他模块再次访问导出的变量时，会是最新的值。
       });
       
     }
@@ -1619,16 +1527,20 @@ var modules = {
     require.r(exports);
     let _DEFAULT_EXPORT__ = 'title_name';
     let age = 'title_age';
+    
     setTimeout(() => {
       age = 'new';
     }, 1000);
+    
     require.d(exports, {
       "default": () => (_DEFAULT_EXPORT__),
       "age": () => (age)
     }); 
   }
 };
+
 var cache = {};
+
 function require(moduleId) {
   var cachedModule = cache[moduleId];
   if (cachedModule !== undefined) {
@@ -1732,7 +1644,7 @@ module.exports = {
   var exports = {};
   
   (() => {
-    //只要打包前的模块是一个es module,那么就会调用require.r方法进行处理
+    //只要打包前的模块是一个es module,那么就会调用require.r方法进行标识
     require.r(exports);
     var _title_0__ = require('./src/title.js');
     var _title_0___default = require.n(_title_0__);
@@ -2091,7 +2003,7 @@ Program离开
 - [@babel/traverse](https://www.npmjs.com/package/babel-traverse)用于对 AST 的遍历，维护了整棵树的状态，并且负责替换、移除和添加节点
 - [@babel/generate](https://github.com/babel/babel/tree/master/packages/@babel/generate) 可以把 AST 生成源码，同时生成 sourcemap
 
-- [@babel/types](https://github.com/babel/babel/tree/master/packages/babel-types) 用于 AST 节点的工具库, 它包含了构造节点、验证节点类型以及变换 AST 节点的方法
+- [@babel/types](https://github.com/babel/babel/tree/master/packages/babel-types) 用于 AST 节点的工具库, 它包含了构造节点、验证节点类型以及变换 AST 节点的方法，帮助修改语法树
 - [@babel/template](https://www.npmjs.com/package/@babel/template)可以简化 AST 的创建逻辑，快速创建结点
 - [@babel/code-frame](https://www.npmjs.com/package/@babel/code-frame)可以打印代码位置
 - [@babel/core](https://www.npmjs.com/package/@babel/core) Babel 的编译器，核心 API 都在这里面，比如常见的 transform、parse,并实现了插件功能
@@ -2111,7 +2023,7 @@ Program离开
 
 - 访问者模式 Visitor 对于某个对象或者一组对象，不同的访问者，产生的结果不同，执行操作也不同
 - **Visitor 的对象中定义了用于 AST 中获取具体节点的方法**
-- **Visitor 上挂载以节点 `type` 命名的方法，当遍历 AST 的时候，如果匹配上 type，就会执行对应的方法**
+- **Visitor 上挂载以节点的 `type` 命名的方法，当遍历 AST 的时候，如果匹配上 type，就会执行对应的方法**
 - 说白了 Visitor 就是一个对象，该对象可以提供许多不同的方法（这些方法的名字就是AST中不同节点的名字），供给不同的访问者调用不同的方法
 - 插件就是一个访问器对象，每个插件只关注一个 AST 中不同的节点类型，并对这些关注的节点进行操作
 
@@ -2119,7 +2031,7 @@ Program离开
 
 ### path
 
-语法树上的每个节点会对应一个路径
+语法树上的每个节点会对应一个路径（path和node一一对应）。
 
 [path](https://github.com/babel/babel/blob/main/packages/babel-traverse/src/path/index.ts)
 
@@ -2173,7 +2085,7 @@ scope 对象上的属性或者方法：
 ```js
 const core = require('@babel/core');
 const types = require('@babel/types');
-const arrowFunctionPlugin = require('babel-plugin-transform-es2015-arrow-functions');
+const arrowFunctionPlugin = require("@babel/plugin-transform-arrow-functions").default;
 
 let arrowFunctionPlugin2 = {
   visitor: {
@@ -2325,7 +2237,10 @@ const sourceCode = `
 	}
 `
 const result = core.transform(sourceCode,{
-  plugins: [autoTrackerPlugin({name:'logger'})]
+  plugins: [autoTrackerPlugin({
+    name:'logger',
+  	whiteList:['sum']  // 中针对叫这个函数的名的函数添加数据埋点
+  })]
 });
 console.log(result.code);
 ```
@@ -2357,8 +2272,8 @@ const autoTrackerPlugin = (options) => {
               if (importedModuleName === options.name) {
                 const specifierPath = path.get('specifiers.0');
                 if (specifierPath.isImportDefaultSpecifier()//默认导入 import logger from 'logger'
-                  || specifierPath.isImportSpecifier()//普通导入 import {logger} from 'logger'
-                 ||specifierPath.ImportNamespaceSpecifier()) {//命名空间导入  import * as logger from
+                    || specifierPath.isImportSpecifier()//普通导入 import {logger} from 'logger'
+                    ||specifierPath.ImportNamespaceSpecifier()) {//命名空间导入  import * as logger from
                   loggerId = specifierPath.node.local.name;
                 }
                 path.stop();//不再遍历了，跳过后续的所有的查找和遍历
@@ -2367,7 +2282,7 @@ const autoTrackerPlugin = (options) => {
           });
           //如果loggerId在遍历完了以后还是undefined。说明源码中没有主动引入logger
           if (!loggerId) {
-            //  import xx from 'logger'
+            //  import xx from 'logger' , 构建一个抽象语法树节点
             loggerId = importModule.addDefault(path, options.name, {
               nameHint:path.scope.generateUid(options.name)
             });
@@ -2380,17 +2295,18 @@ const autoTrackerPlugin = (options) => {
       },
       "FunctionDeclaration|FunctionExpression|ArrowFunctionExpression|ClassMethod"(path,state) {
         const { node } = path;
+        // 白名单
         if (node.id&&options.whiteLists.includes(node.id.name)) {
           ///如果它的body已经是一个语句块了，直接在块的开始添加方法调用即可
-        if (types.isBlockStatement(node.body)) {
-          node.body.body.unshift(state.loggerNode);
-        } else {
-          const newNode = types.blockStatement([
-            state.loggerNode,
-            types.expressionStatement(node.body)
-          ]);
-          path.get('body').replaceWith(newNode);
-        }
+          if (types.isBlockStatement(node.body)) {
+            node.body.body.unshift(state.loggerNode);
+          } else {
+            const newNode = types.blockStatement([
+              state.loggerNode,
+              types.expressionStatement(node.body)
+            ]);
+            path.get('body').replaceWith(newNode);
+          }
         }
       }
     }
@@ -2398,8 +2314,6 @@ const autoTrackerPlugin = (options) => {
 }
 module.exports = autoTrackerPlugin;
 ```
-
-先学习 
 
 转化后的代码：
 
@@ -2431,15 +2345,32 @@ const sourceCode = `
 `
 ```
 
+数据埋点中的babel插件再这里导出的是一个函数，该函数返回一个对象。前面的对象都是直接一个节点类型名作为该对象的方法来编写插件具体内容的，但是现在该对象编写的方式是以下这种：
+
+```js
+{
+  visitor: {
+    Program: {
+      enter(path,state){
+        // ...
+      }
+    }
+  }
+}
+```
+
+
+
 上面这些插件都可以在babel-loader中进行配置后使用。
 
 
 
-模拟eslint：
+### 模拟eslint
 
 ```js
 function eslintPlugin({fix}) {
   return {
+    // 遍历语法树之前执行该pre函数
     pre(file) {
       file.set('errors',[]);
     },
@@ -2448,8 +2379,8 @@ function eslintPlugin({fix}) {
         const { node } = path;
         const errors = state.file.get('errors');
         if (node.callee.object && node.callee.object.name === 'console') {
-          Error.stackTraceLimit = 0;
-          errors.push(path.buildCodeFrameError(`代码中不能出现console.log语句`),Error);
+          Error.stackTraceLimit = 0;  // 设置调用栈的长度
+          errors.push(path.buildCodeFrameError(`代码中不能出现console.log语句`),Error); // 构建代码错误
           if (fix) {
             path.parentPath.remove();
           }
@@ -2466,7 +2397,7 @@ module.exports = eslintPlugin;
 
 
 
-模拟代码压缩：
+### 代码压缩
 
 uglifyPlugin.js
 
@@ -2494,7 +2425,7 @@ module.exports = uglifyPlugin;
 
 
 
-按需加载：
+### 按需加载
 
 以lodash为例子，babel-plugin-import，且这个库只支持antd，antd-mobile，lodash，materia-ui。
 
@@ -2628,7 +2559,7 @@ const path = require("path");
 module.exports = {
   mode: "development",
   entry: "./src/index.js",
-  output: {
+  output: { 
     path: path.resolve("dist"),
     filename: "bundle.js",
   },
@@ -2680,6 +2611,20 @@ module.exports = {
 - [transform-runtime](https://www.npmjs.com/package/babel-plugin-transform-runtime) Babel 默认只转换新的 JavaScript 语法，而不转换新的 API。例如，Iterator、Generator、Set、Maps、Proxy、Reflect、Symbol、Promise 等全局对象，以及一些定义在全局对象上的方法（比如 Object.assign）都不会转译,启用插件 `babel-plugin-transform-runtime` 后，Babel 就会使用 babel-runtime 下的工具函数
 - [ast-spec](https://github.com/babel/babylon/blob/master/ast/spec.md)
 - [babel-handbook](https://github.com/jamiebuilds/babel-handbook/blob/master/translations/zh-Hans/README.md)
+
+
+
+扩展：使用babel中的types库和template库创建ast节点的差别。
+
+当有一个非常复杂或者源码非常多的一个代码段需要创建，那么types库只能一个个一层层的创建然后再一个个一层层的组合。 而template库可以基于源代码字符串快速创建其对应的抽象语法树。
+
+```js
+const template = require('@babel/template')
+let astNode = template.statement('xxx')({
+  xxx:`源码部分`
+})
+
+```
 
 
 
@@ -2763,7 +2708,7 @@ compiler.run((err, stats) => {
     console.log(
       stats.toJson({
         assets: true, // 其它是一个代码块（chunk）到文件的对应关系
-        chunks: true, // 从入口模块出发，找到此入口模块依赖的模块，或者依赖的模块依赖的模块，合在一起组成一个代码块
+        chunks: true, // 从入口模块出发，找到此入口模块依赖的模块，或者依赖的模块依赖的模块，合在一起组成一个代码块，懒加载模块及其依赖也是一个chunk
         modules: true // 打包的模块，项目源码仓库中的每个文件都是一个模块（js文件，jsx文件，图片，html，css等）
       })
     );
@@ -2838,7 +2783,7 @@ index.js是项目的入口文件。
 })();
 ```
 
-从中可以看到，在源文件的源码中，引入其他模块文件时，使用的都是从该模块文件出发到目标文件的相对路径。但是打包后生成的文件中，所有源码中的模块导入语句中的路径都变成了以项目根目录为统一出发点的相对路径。
+从中可以看到，在源文件的源码中，引入其他模块文件时，使用的都是从该模块文件出发到目标文件的相对路径，**但是**打包后生成的文件中，所有源码中的模块导入语句中的路径都变成了以项目根目录为统一出发点的相对路径。
 
 
 
@@ -2855,8 +2800,8 @@ module.exports = {
             {
                 test:/\.xxx$/,
                 use:[
-                    path.resolve(__dirname,'loaders/loder1.js')
-                    path.resolve(__dirname,'loaders/loder2.js')
+                    path.resolve(__dirname,'loaders/loader1.js')
+                    path.resolve(__dirname,'loaders/loader2.js')
                 ]
             }
         ]
@@ -2892,7 +2837,7 @@ module.exports = loader2;
 ### tapable
 
 - tapable 是一个类似于 Node.js 中的 EventEmitter 的库，但更专注于自定义事件的触发和处理
-- webpack 通过 tapable 将实现与流程解耦，所有具体实现通过插件的形式存在
+- webpack 通过 tapable 将 实现 与 流程 解耦，所有具体实现通过插件的形式存在
 
 ```js
 class SyncHook {
@@ -3146,7 +3091,7 @@ module.exports = {
       
       const finalOptions = { ...options, ...shellOptions };  // 这里就体现的shell中设置参数的权重更高的原因
       
-      //2.用上一步得到的参数初始化 `Compiler` 对象，单例的
+      //2.用上一步得到的参数初始化 `Compiler` 对象，单例的，compiler实例对象管理着整个打包过程
       const compiler = new Compiler(finalOptions);
       
       //3.加载所有配置的插件  plugins这就是插件类的实例组成的数组
@@ -3264,7 +3209,7 @@ module.exports = {
           // 6.从入口文件出发,调用所有配置的Loader对模块进行编译
           let entryModule = this.buildModule(entryName, entryFilePath);
           // this.modules.push(entryModule);
-          // 8.根据入口和模块之间的依赖关系，组装成一个个包含多个模块的 Chunk
+          // 8.根据入口和模块之间的依赖关系，  Chunk
           let chunk = {
             name: entryName,
             entryModule,
@@ -3277,7 +3222,7 @@ module.exports = {
         this.chunks.forEach(chunk => {
           const filename = this.options.output.filename.replace('[name]',chunk.name);
           this.files.push(filename);
-          this.assets[filename] = getSource(chunk);
+          this.assets[filename] = getSource(chunk);  
         });
         
         callback(null, {
@@ -3350,7 +3295,7 @@ module.exports = {
         
         // 递归当前模块依赖的其他模块
         module.dependencies.forEach(({ depModuleId, depModulePath }) => {
-          //判断此依赖的模块是否已经打包过了或者说编译 过了
+          //判断此依赖的模块是否已经打包过了或者说编译过了
           let existModule = this.modules.find(module => module.id === depModuleId);
           if (existModule) {
             existModule.names.push(name);
@@ -3382,7 +3327,7 @@ module.exports = {
         var modules = {
           ${
             chunk.modules.map((module) => `
-              "${module.id}": module => {
+              "${module.id}": (module, exports, require) => {
                 ${module._source}
               }
             `).join(',')
@@ -3444,8 +3389,6 @@ compilation 对象代表了一次资源版本的构建。它包含了当前的�
 
 
 ## loader
-
-loader的细节。
 
 - loader 是一个模块文件导出的函数。它接收上一个 loader 产生的结果或者资源文件(resource file)作为入参。也可以用多个 loader 函数组成 loader chain
 - compiler 需要得到最后一个 loader 产生的处理结果。这个处理结果应该是 String 或者 Buffer（被转换为一个 string）
@@ -3740,92 +3683,6 @@ runSyncOrAsync(normal,callback);
 
 
 
-**loader扩展：**
-
-webpack配置文件中：
-
-```js
-const path = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const loader1 = require("./loaders/loader1");
-const loader2 = require("./loaders/loader2");
-const loader3 = require("./loaders/loader3");
-const loader4 = require("./loaders/loader4");
-
-module.exports = {
-  mode: "development",
-  devtool: false,
-  entry: "./src/index.js",
-  output: {
-    path: path.resolve(__dirname, "dist"),
-    filename: "main.js",
-    clean: true,
-  },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: "./src/index.html",
-      filename: "index.html",
-    }),
-  ],
-  module: {
-    rules: [
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        use: [loader3, loader4],
-      },
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        use: [loader1, loader2],
-      },
-    ],
-  },
-};
-
-```
-
-对应的loader内容：
-
-```js
-function loadern(sourceCode) {
-  console.log("loadern0000000000000000000000000000000");
-  return sourceCode;
-}
-
-module.exports = loadern;
-// 上面的n表示1~4
-```
-
-当针对统一个类型的文件进行打包时，如果有多个规则都能命中同一个类型的文件。那么loader 的执行将是越往下的写的规则中的loader越先执行。（前提是没有设置规则的优先级enforce字段的值和特殊配置）
-
-![image-20230501161310674](C:/Users/shuyi/Desktop/study-notes/%E7%8F%A0%E5%B3%B0/webpack-%E5%BC%A0%E4%BB%81%E9%98%B3.images/image-20230501161310674.png)
-
-
-
-![image-20230501161353594](C:/Users/shuyi/Desktop/study-notes/%E7%8F%A0%E5%B3%B0/webpack-%E5%BC%A0%E4%BB%81%E9%98%B3.images/image-20230501161353594.png)
-
-
-
-对应的源码是：
-
-```js
-//1.读取文件的内容
-let sourceCode = fs.readFileSync(modulePath, 'utf8');  // 同步读取文件内容
-let { rules=[] } = this.options.module;
-//根据规则找到所有的匹配的loader
-let loaders = [];
-rules.forEach(rule => {   // 从这段代码逻辑可以看出，针对某个类型的文件会遍历webpack配置文件中的所有rule，命中其中符合test规则的文件，然后用loader进行处理，如果有多个规则都能命中同一个文件，那么都会对前面rule处理过的文件源码进行进一步处理。
-  if (modulePath.match(rule.test)) {
-    loaders.push(...rule.use);
-  }
-});
-//调用所有配置的Loader对模块进行转换   
-sourceCode = loaders.reduceRight((sourceCode, loader) => {
-  return require(loader)(sourceCode);
-}, sourceCode);
-```
-
 
 
 ### babel-loader
@@ -3849,6 +3706,7 @@ webpack.config.js:
     
     modules:[path.resolve(__dirname,'loaders'),'node_modules']  // 方式三
   },
+
   use:{
     loader:path.resolve(__dirname,'/loaders/babel-loader.js'),  // 方式一
     
@@ -3861,8 +3719,6 @@ webpack.config.js:
   }
 }
 ```
-
-
 
 
 
@@ -3890,9 +3746,10 @@ function loader(source,ast,inputSourceMap) {
     sourceMaps: true,// 当前转换babel的时候要生成sourcemap
     inputSourceMap// 接收上一个份sourcemap
   }
-  babel.transformAsync(source, babelOptions).then(({ code }) => {
+  // transformAsyncAst
+  babel.transformAsync(source, babelOptions).then(({ code，ast, map }) => {
     // 在loader执行完成后才让调用callback表示本loader 已经完成了，才能继续向下执行下一个loader或者后续的编译
-    callback(null, code);
+    callback(null, code, ast, map);
     // this.callback(null,code);
   });
 }
@@ -3986,7 +3843,7 @@ request=[
 ```js
 const less = require('less');
 function loader(source) {
-  // 该loader函数中的this就是由loader-runner库绑定的，李米娜有一些方法和属性
+  // 该loader函数中的this就是由loader-runner库绑定的，里面有一些方法和属性
   let callback = this.async();
   less.render(source, { filename: this.resource }, (err, output) => {
     callback(err,`module.exports = ${JSON.stringify(output.css)}`);
@@ -4079,9 +3936,246 @@ runLoaders({
 
 
 
-**实现：**
+**loader的运行流程**
 
-每个loader导出的函数中的this都是由loader-runner这个库绑定的。 
+![img](https://static.zhufengpeixun.com/loaderflow1_1661312752787.jpg)
+
+
+
+**实现**
+
+- [LoaderRunner.js](https://github.com/webpack/loader-runner/blob/v2.4.0/lib/LoaderRunner.js)
+- [NormalModuleFactory.js](https://github.com/webpack/webpack/blob/v4.39.3/lib/NormalModuleFactory.js#L180)
+- [NormalModule.js](https://github.com/webpack/webpack/blob/v4.39.3/lib/NormalModule.js#L292)
+
+
+
+![img](https://img.zhufengpeixun.com/3f34c35da4cc3049ed2c414abbae9b99)
+
+
+
+![img](https://img.zhufengpeixun.com/72bd5f659d64616ea7990c5de87bfe21)
+
+
+
+
+
+每个loader导出的函数中的this都是由loader-runner这个库绑定的。
+
+```js
+/**
+ * 根据loader的绝对路径创建loader对象
+ * @param {*} loaderAbsPath 
+ */
+function createLoaderObject(loaderAbsPath) {
+  const normal = require(loaderAbsPath);
+  const pitch = normal.pitch;
+  //如果设置normal.raw属性为true的话，那么loader的normal函数参数就是一个Buffer,否则就是一个字符串
+  const raw = normal.raw;
+  return {
+    path: loaderAbsPath,
+    normal,
+    pitch,
+    raw,
+    data: {},//每个loader都有一个自已的自定久对象，可以有用来保存和传递数据
+    pitchExecuted: false,//表示此loader的pitch已经执行过了
+    normalExecuted:false//表示此loader的normal函数已经执行过了
+  }
+}
+/**
+ * 转换loader的参数
+ * @param {*} args 参数
+ * @param {*} raw 布尔值，表示loader想要字符串还是想要Buffer
+ */
+function convertArgs(args,raw) {
+  if (raw && !Buffer.isBuffer(args[0])) {
+    args[0] = Buffer.from(args[0]);
+  } else if (!raw && Buffer.isBuffer(args[0])) {
+    args[0] = args[0].toString();
+  }
+}
+function iterateNormalLoaders(processOptions,loaderContext,args,pitchingCallback) {
+  if (loaderContext.loaderIndex<0) {
+    return pitchingCallback(null,args)
+  }
+  let currentLoader = loaderContext.loaders[loaderContext.loaderIndex];
+  if (currentLoader.normalExecuted) {
+    loaderContext.loaderIndex--;
+    return iterateNormalLoaders(
+      processOptions,loaderContext,args,pitchingCallback
+    )
+  }
+  let fn = currentLoader.normal;//就是loader里的normal函数
+  currentLoader.normalExecuted = true;
+  convertArgs(args, currentLoader.raw);
+  //要以同步或者异步的方式执行fn
+  runSyncOrAsync(fn, loaderContext, args, (err,...returnArgs) => {
+    if (err) pitchingCallback(err);
+    return iterateNormalLoaders(
+      processOptions,
+      loaderContext,
+      returnArgs,
+      pitchingCallback
+    );
+  });
+
+}
+function runSyncOrAsync(fn,loaderContext,args,runCallback) {
+  let isSync = true;//默认fn的的执行是同步
+  let isDone = false;//表示当前的函数是否已经完成了
+  loaderContext.callback = (err, ...args) => {
+    if(isDone) {
+			throw new Error("callback(): The callback was already called.");
+    }
+    isDone = true;
+    //callback 是不是要判断下isSync的值啊 
+    runCallback(err,...args);
+  }
+  loaderContext.async = () => {
+    isSync = false;
+    return loaderContext.callback
+  }
+  let result = fn.apply(loaderContext, args);
+  //如果当前的执行是同步的话
+  if (isSync) {
+    isDone = true;
+    runCallback(null, result);
+  }
+  //如果是异步，不会立刻调用runCallback,需要你在loader的内部手工触发callback,然后执行runCallback
+}
+function processResource(processOptions, loaderContext, pitchingCallback) {
+  processOptions.readResource(loaderContext.resource, (err,resourceBuffer) => {
+    processOptions.resourceBuffer = resourceBuffer;//要加载的资源的二进制数组 Buffer
+    loaderContext.loaderIndex--;
+    iterateNormalLoaders(
+      processOptions,
+      loaderContext,
+      [resourceBuffer],
+      pitchingCallback
+    );
+  });
+}
+function iteratePitchingLoaders(processOptions, loaderContext, pitchingCallback) {
+  if (loaderContext.loaderIndex>=loaderContext.loaders.length) {
+    return processResource(processOptions, loaderContext, pitchingCallback);
+  }
+  //获取当前索引对应的loader对象
+  let currentLoader = loaderContext.loaders[loaderContext.loaderIndex];
+  if (currentLoader.pitchExecuted) {
+    loaderContext.loaderIndex++;
+     return iteratePitchingLoaders(
+      processOptions, loaderContext, pitchingCallback
+    );
+  }
+  //因为我们要保证一个loader pitch或者说normal只走一次
+  //获取当前loader对应的pitch函数
+  let fn = currentLoader.pitch;
+  currentLoader.pitchExecuted = true;
+  if (!fn) {
+    return iteratePitchingLoaders(
+      processOptions, loaderContext, pitchingCallback
+    );
+  }
+  runSyncOrAsync(fn, loaderContext, [
+    loaderContext.remainingRequest,
+    loaderContext.previousRequest,
+    loaderContext.data
+  ], (err, ...returnArgs) => {
+    //判断pitch方法的返回值有没有，如果有则跳过后面的loader,返回头执行前一个loader
+    if (returnArgs.length>0&&returnArgs.some(item=>item)) {
+      loaderContext.loaderIndex--;
+      iterateNormalLoaders(processOptions,loaderContext,args,pitchingCallback);
+    } else {
+      return iteratePitchingLoaders(
+        processOptions, loaderContext, pitchingCallback
+      );
+    }
+  });
+}
+
+function runLoaders(options, finalCallback) {
+  //resource要处理的资源，或者说要编译的模块路径
+  //loaders处理此路径的loaders
+  //context指的是loader函数在执行的时候this指针
+  //readResource读取文件的方法fs.readFile
+  const { resource, loaders = [], context = {}, readResource } = options;
+  //loaders现在是一个loader模块的绝对路径，转成一个对象
+  const loaderObjects = loaders.map(createLoaderObject);
+  const loaderContext = context;//这个对象就是loader执行的时候的this指针
+  loaderContext.resource = resource;//加载的模块
+  loaderContext.readResource = readResource;//读取文件的方法
+  loaderContext.loaders = loaderObjects;//存放loaders对象数组
+  loaderContext.loaderIndex = 0;//当前正在处理的loader的索引
+  loaderContext.callback = null;//可以手工调用此方法向后执行下一个loader
+  loaderContext.async = null;//可以把loader运行从同步变为异步,并返回this.callback
+  //代表整个请求
+  Object.defineProperty(loaderContext, 'request', {
+    get() {
+      //把loader的绝对路径和要加载的资源的绝对路径用!拼在一起
+      return loaderContext.loaders.map(loader => loader.path)
+        .concat(loaderContext.resource)
+       .join('!')
+    }
+  });
+  
+  Object.defineProperty(loaderContext, 'remainingRequest', {
+    get() {
+      //把loader的绝对路径和要加载的资源的绝对路径用!拼在一起
+      return loaderContext.loaders
+        .slice(loaderContext.loaderIndex+1)
+        .map(loader => loader.path)
+        .concat(loaderContext.resource)
+       .join('!')
+    }
+  });
+  
+  Object.defineProperty(loaderContext, 'currentRequest', {
+    get() {
+      //把loader的绝对路径和要加载的资源的绝对路径用!拼在一起
+      return loaderContext.loaders
+        .slice(loaderContext.loaderIndex)
+        .map(loader => loader.path)
+        .concat(loaderContext.resource)
+       .join('!')
+    }
+  });
+  
+  Object.defineProperty(loaderContext, 'previousRequest', {
+    get() {
+      //把loader的绝对路径和要加载的资源的绝对路径用!拼在一起
+      return loaderContext.loaders
+        .slice(0,loaderContext.loaderIndex)
+        .map(loader => loader.path)
+       .join('!')
+    }
+  });
+  
+  Object.defineProperty(loaderContext, 'data', {
+    get() {
+      return loaderContext.loaders[loaderContext.loaderIndex].data;
+    }
+  });
+  
+  const processOptions = {
+    readResource,//fs.readFile
+    resourceBuffer:null//要读取的资源的源代码，它是一个Buffer,就二进制字节数组
+  }
+  iteratePitchingLoaders(
+    processOptions,
+    loaderContext,
+    (err,result) => {//pitchingCallback
+      finalCallback(
+        err, {
+          result,//是最终处理的结果 ,其实就是最左则的loader的normal 返回值
+          resourceBuffer:processOptions.resourceBuffer
+        } 
+      );
+    }
+  )
+}
+
+exports.runLoaders = runLoaders;
+```
 
 
 
@@ -4111,7 +4205,7 @@ webpack插件机制：
   - 创建 - webpack 在其内部对象上创建各种钩子；
   - 注册 - 插件将自己的方法注册到对应钩子上，交给 webpack；
   - 调用 - webpack 编译过程中，会适时地触发相应钩子，因此也就触发了插件的方法。
-- Webpack 本质上是一种事件流的机制，它的工作流程就是将各个插件串联起来，而实现这一切的核心就是 Tapable，webpack 中最核心的负责编译的 Compiler 和负责创建 bundle 的 Compilation 都是 Tapable 的实例
+- Webpack 本质上是一种事件流的机制，它的工作流程会将各个插件串联起来，而实现这一切的核心就是 Tapable，webpack 中最核心的负责编译的 Compiler 和负责创建 bundle 的 Compilation 都是 Tapable 的实例
 - 通过事件和注册和监听，触发 webpack 生命周期中的函数方法
 
 webpack插件钩子（生命周期函数）可视化工具：[wepback-plugin-visualizer](https://www.npmjs.com/package/wepback-plugin-visualizer)
@@ -4225,6 +4319,96 @@ const {
      ```
 
      
+
+### 插件
+
+插件向第三方开发者提供了 webpack 引擎中完整的能力。使用阶段式的构建回调，开发者可以引入它们自己的行为到 webpack 构建流程中。webpack 内部也是通过大量内部插件实现的，插件几乎能够任意更改 webpack 编译结果。
+
+
+
+在webpack中，不同类型的实例对象很多，对象上的钩子也有很多。
+
+webpack内部可以加载插件的常用对象：
+
+| 对象                                                         | 钩子                                                         |
+| :----------------------------------------------------------- | :----------------------------------------------------------- |
+| [Compiler](https://github.com/webpack/webpack/blob/v4.39.3/lib/Compiler.js) | run,compile,compilation,make,emit,done...                    |
+| [Compilation](https://github.com/webpack/webpack/blob/v4.39.3/lib/Compilation.js) | buildModule,normalModuleLoader,succeedModule,finishModules,seal,optimize,after-seal... |
+| [Module Factory](https://github.com/webpack/webpack/blob/master/lib/ModuleFactory.js) | beforeResolver,afterResolver,module,parser...                |
+| Module                                                       |                                                              |
+| [Parser](https://github.com/webpack/webpack/blob/master/lib/Parser.js) | program,statement,call,expression...                         |
+| [Template](https://github.com/webpack/webpack/blob/master/lib/Template.js) | hash,bootstrap,localVars,render...                           |
+
+[Compiler](https://github.com/webpack/webpack/blob/v4.39.3/lib/Compiler.js)(编译器对象)
+
+- run：开启编译
+- compile：开始编译
+- compilation：开始创建一次新的编译
+- make：构建
+- emit：准备输出结果
+- done：完成编译
+
+[Compilation](https://github.com/webpack/webpack/blob/v4.39.3/lib/Compilation.js)（编译器对象），每当开启一次新的编译就创建一个新的compilation
+
+- buildModule：构建模块
+- normalModuleLoader：加载普通模块
+- succeedModule：成功编译一个模块
+- finishModules：所有模块都编译完成
+- seal：封装代码块
+- optimize：优化
+- after-seal：封装完成
+
+[Module Factory](https://github.com/webpack/webpack/blob/master/lib/ModuleFactory.js)  （模块工厂）
+
+- beforeResolver：解析之前（解析：拿到对应模块的需要被那些loader处理的loader文件的路径和该模块资源本身）
+- afterResolver：解析后（解析：拿到对应模块的需要被那些loader处理的loader文件的路径和该模块资源本身）
+- module：创建模块
+- parser：通过语法树解析模块依赖 
+
+[Parser](https://github.com/webpack/webpack/blob/master/lib/Parser.js) （解析语法树）
+
+遍历语法树时遇到下面这些节点就触发这些节点名函数
+
+- program
+- statement
+- call
+- expression
+
+[Template](https://github.com/webpack/webpack/blob/master/lib/Template.js)，根据模板生成最后的源代码
+
+- hash
+- bootstrap
+- localVars
+- render
+
+
+
+**创建插件**
+
+- 插件是一个类
+- 类上有一个apply的实例方法
+- apply的参数是compiler
+
+```js
+class DonePlugin {
+  constructor(options) {
+    this.options = options;
+  }
+  apply(compiler) {
+		// ...
+  }
+}
+module.exports = DonePlugin;
+```
+
+
+
+在插件开发中最重要的两个资源就是`compiler`和`compilation`对象。理解它们的角色是扩展 webpack 引擎重要的第一步。
+
+- compiler 对象代表了完整的 webpack 环境配置。这个对象在启动 webpack 时被一次性建立，并配置好所有可操作的设置，包括 options，loader 和 plugin。当在 webpack 环境中应用一个插件时，插件将收到此 compiler 对象的引用。可以使用它来访问 webpack 的主环境。
+- compilation 对象代表了一次资源版本构建。当运行 webpack 开发环境中间件时，每当检测到一个文件变化，就会创建一个新的 compilation，从而生成一组新的编译资源。一个 compilation 对象表现了当前的模块资源、编译生成资源、变化的文件、以及被跟踪依赖的状态信息。compilation 对象也提供了很多关键时机的回调，以供插件做自定义处理时选择使用。
+
+
 
 
 
@@ -4371,17 +4555,9 @@ module.exports = {
   },
   module: {
     rules: [
-      { test: /\.txt$/, use: 'raw-loader' },
 +      { test: /\.css$/, use: [MiniCssExtractPlugin.loader, 'css-loader'] },
 +      { test: /\.less$/, use: [MiniCssExtractPlugin.loader, 'css-loader', 'less-loader'] },
 +      { test: /\.scss$/, use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'] },
-       {
-        test: /\.(jpg|png|gif|bmp|svg)$/,
-        type:'asset/resource',
-        generator:{
-          filename:'images/[hash][ext]'
-        }
-      }
     ]
   },
   plugins: [
@@ -4408,7 +4584,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 + const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = {
-+  mode: 'none',   // 如果mode是production,会自动启用压缩插件,如果配置为none表示不会启用压缩插件
++  mode: 'none',   // 如果mode是production,会自动启用压缩插件,如果配置为none表示不会启用压缩插件，但可以自己配
   devtool: false,
   entry: './src/index.js',
 +  // js文件的压缩
@@ -4482,6 +4658,7 @@ module.exports = {
 
 - 打包后输出的文件名和后缀
 - hash一般是结合CDN缓存来使用，通过webpack构建之后，生成对应文件名自动带上对应的MD5值。如果文件内容改变的话，那么对应文件哈希值也会改变，对应的HTML引用的URL地址也会改变，触发CDN服务器从源服务器上拉取对应数据，进而更新本地缓存。
+- 如果webpack打包时任何文件都没有变动，则本次打包的hash和上一次的hash一样
 
 指纹占位符
 
@@ -4596,7 +4773,7 @@ module.exports = {
 
 
 
-可以开发一个插件，将打包后的文件自动推送到CDN服务器上。
+打包后的内容上传到自己的服务器后，CDN服务器并不会主动请求我们的服务器以更新最新的资源文件，但可以开发一个插件，将打包后的文件自动推送到CDN服务器上。
 
 
 
@@ -4608,43 +4785,54 @@ module.exports = {
 function createHash(){
    return  require('crypto').createHash('md5');
 }
+
+// 两个入口文件
 let entry = {
-    entry1:'entry1',
+    entry1:'entry1', 
     entry2:'entry2'
 }
+
+// 两个文件内部的具体内容
 let entry1 = 'require depModule1';//模块entry1
 let entry2 = 'require depModule2';//模块entry2
 
+// 两个入口文件分别依赖的模块文件中的内容
 let depModule1 = 'depModule1';//模块depModule1
 let depModule2 = 'depModule2';//模块depModule2
+
 //如果都使用hash的话，因为这是工程级别的，即每次修改任何一个文件，所有文件名的hash至都将改变。所以一旦修改了任何一个文件，整个项目的文件缓存都将失效
 let hash =  createHash()
-.update(entry1)
-.update(entry2)
-.update(depModule1)
-.update(depModule2)
+.update('entry1ID')    // 并不是使用的模块文件中的内容生成hash，而是使用的模块的id名字来生成hash，一旦有文件变化，这个模块ID就会变化
+.update('entry2ID')
+.update('depModule1ID')
+.update('depModule2ID')
 .digest('hex');
 console.log('hash',hash)
+
 //chunkhash根据不同的入口文件(Entry)进行依赖文件解析、构建对应的chunk，生成对应的哈希值。
-//在生产环境里把一些公共库和程序入口文件区分开，单独打包构建，接着我们采用chunkhash的方式生成哈希值，那么只要我们不改动公共库的代码，就可以保证其哈希值不会受影响
+//在生产环境里把一些公共库和程序入口文件区分开，单独打包构建，接着采用chunkhash的方式生成哈希值，那么只要不改动公共库的代码，就可以保证其哈希值不会受影响
 let entry1ChunkHash = createHash()
-.update(entry1)
-.update(depModule1).digest('hex');;
+.update('entry1ID')
+.update('depModule1ID').digest('hex');;
 console.log('entry1ChunkHash',entry1ChunkHash);
 
 let entry2ChunkHash = createHash()
-.update(entry2)
-.update(depModule2).digest('hex');;
+.update('entry2ID')
+.update('depModule2ID').digest('hex');;
 console.log('entry2ChunkHash',entry2ChunkHash);
 
-let entry1File = entry1+depModule1;
+
 let entry1ContentHash = createHash()
-.update(entry1File).digest('hex');;
+	.update(entry1)
+	.update(depModule1)
+  .digest('hex');;
 console.log('entry1ContentHash',entry1ContentHash);
 
 let entry2File = entry2+depModule2;
 let entry2ContentHash = createHash()
-.update(entry2File).digest('hex');;
+	.update(entry2)
+	.update(depModule2)
+	.digest('hex');;
 console.log('entry2ContentHash',entry2ContentHash);
 ```
 
@@ -4668,7 +4856,7 @@ class HashPlugin{
                 compilation.hash= fullhash;//output.filename [fullhash]
                 for(let chunk of compilation.chunks){
                     console.log('chunk.hash',chunk.hash);
-                    chunk.renderedHash = 'chunkHash';//可以改变chunkhash
+                    chunk.renderedHash = 'chunkHash';//可以改变chunkhash  renderedHash就是chunkhash
                     console.log('chunk.contentHash',chunk.contentHash);
                     chunk.contentHash= { javascript: 'javascriptContentHash','css/mini-extract':'cssContentHash' }
                 }
@@ -4691,7 +4879,7 @@ module.exports = HashPlugin;
 
 - module: 每一个文件(js,css,jpg,字体等)其实都可以看成一个 module
 - chunk: webpack打包最终的代码块，代码块会生成文件，一个文件对应一个chunk
-- 在webpack5之前，没有从entry打包的chunk文件（通过import方法动态导入的模块），都会以1、2、3...的文件命名方式输出,删除某些些文件可能会导致缓存失效
+- 在webpack5之前，没有根据entry配置打包的chunk文件（通过import方法动态导入的模块），都会以1、2、3...的文件命名方式输出,删除某些文件可能会导致缓存失效
 - 在生产模式下，默认启用这些功能chunkIds: "deterministic", moduleIds: "deterministic"，此算法采用`确定性`的方式将短数字 ID(3 或 4 个字符)短hash值分配给 modules 和 chunks
 - chunkId设置为deterministic，则output中chunkFilename里的[name]会被替换成确定性短数字ID
 - 虽然chunkId不变(不管值是deterministic | natural | named)，但更改chunk内容，chunkhash还是会改变的
@@ -4772,6 +4960,57 @@ import('./three');
 
 
 
+## 代码分割
+
+
+
+### **方式一**
+
+通过配置entry为多个入口实现代码分割，每个入口和它的依赖都会生成一个代码块而生成单独的文件
+
+这种方式的不足：
+
+1. 不够灵活，一个入口对应一个代码块，对应一个文件，不能将核心的应用程序进行拆分
+2. 如果入口 chunks 之间包含重复的模块(如：lodash)，那些重复模块都会被引入到各自生成的文件中
+
+```js
+{
+  entry: {
+    entry1: "./src/entry1.js",
+    entry2: "./src/entry2.js",
+  },
+}
+```
+
+entry1.js和entry.js代码：
+
+```js
+const title = require("./title");
+console.log(title);
+```
+
+title.js:
+
+```js
+module.exports = "title";
+```
+
+打包生成两个文件entry1.js和entry2.js，它们内部都有以下代码段：
+
+```js
+  var webpackModules = {
+    "./src/title.js": (module) => {
+      module.exports = "title";
+    },
+  };
+```
+
+html中：
+
+```html
+<script defer src="entry1.js"></script>
+<script defer src="entry2.js"></script>
+```
 
 
 
@@ -4779,10 +5018,1085 @@ import('./three');
 
 
 
+### **方式二**
+
+动态导入和懒加载。
+
+import()是一个JS语法，webpack在打包编译的时候，如果遇到import语法会把它转换成require.e，require.e是通过动态创建script标签实现的。
+
+
+
+- 用户当前需要用什么功能就只加载这个功能对应的代码，也就是所谓的按需加载，在给单页应用做按需加载优化时
+- 一般采用以下原则：
+  - 对网站功能进行划分，每一类一个chunk
+  - 对于首次打开页面需要的功能直接加载，尽快展示给用户,某些依赖大量代码的功能点可以按需加载
+  - 被分割出去的代码需要一个按需加载的时机、
+
+
+
+webpack.config.js：
+
+```js
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+
+module.exports = {
+  output: {
+    clean: true,
+  },
+  mode: "development",
+  devtool: false,
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: "./src/index.html",
+    }),
+  ],
+};
+
+```
+
+
+
+video.js
+
+```js
+module.exports = "video";
+```
+
+index.js
+
+```js
+document.getElementById("btn").addEventListener("click", function () {
+  import("./video").then((result) => {
+    console.log(result);
+  });
+});
+```
+
+index.html
+
+```html
+<button id="play">播放</button>
+```
+
+以上面的代码打包后，生成文件放到浏览器中运行时，浏览器先请求html文件，html文件内容有如下代码段：
+
+```html
+<script defer src="main.js"></script></head>
+<body>
+  <div id="btn">按钮</div>
+</body>
+```
+
+这会再去请求main.js文件，该文件请求回来后进行执行，给button绑定上click事件，但是因为没有触发该点击事件，所以不会自动的去加载对应的懒加载文件，当点击后才会发起网络请求并加载对应的文件。
+
+点击按钮前的网络面板请求面板如下：
+
+![image-20230522224854354](C:/Users/shuyi/Desktop/study-notes/%E7%8F%A0%E5%B3%B0/webpack-%E5%BC%A0%E4%BB%81%E9%98%B3.images/image-20230522224854354.png)
+
+点击按钮后，网络面板如下：
+
+![image-20230522224927703](C:/Users/shuyi/Desktop/study-notes/%E7%8F%A0%E5%B3%B0/webpack-%E5%BC%A0%E4%BB%81%E9%98%B3.images/image-20230522224927703.png)
+
+
+
+**与方式二相关的preload和prefetch**
+
+import(/** webpackPreload:true  */ "./video")中的魔法注释要生效，必须配置一个插件才行。`@vue/preload-webpack-plugin `。
+
+
+
+为了能尽快的加载需要的文件（比如加载完主要文件后，自动去加载一些懒加载文件，不用点击按钮再加载那些懒加载文件），这是就需要使用prefetch或者preload解决方案了。具体如下：
+
+```shell
+npm install @vue/preload-webpack-plugin -D
+```
+
+以前的就包名叫： webpackpreload-webpack-plugin。@vue/preload-webpack-plugin则是新包名。
+
+**preload**
+
+- preload通常用于本页面要用到的关键资源，包括关键js、字体、css文件
+- preload将会把资源得下载顺序权重提高，使得关键数据提前下载好,优化页面打开速度
+- 在资源上添加预先加载的注释，你指明该模块需要立即被使用
+- 一个资源的加载的优先级被分为五个级别,分别是
+  - Highest 最高
+  - High 高
+  - Medium 中等
+  - Low 低
+  - Lowest 最低
+- 未作preload或者prefetch处理的异步/延迟/插入的脚本（无论在什么位置）在网络优先级中是 `Low`
+- [link-rel-prefetch-preload-in-webpack](https://medium.com/webpack/link-rel-prefetch-preload-in-webpack-51a52358f84c)
+- [Support for webpackPrefetch and webpackPreload](https://github.com/jantimon/html-webpack-plugin/issues/1317)
+- [preload-webpack-plugin](https://www.npmjs.com/package/@vue/preload-webpack-plugin)
+- [webpackpreload-webpack-plugin](https://www.npmjs.com/package/webpackpreload-webpack-plugin)
+- [ImportPlugin.js](https://github.com/webpack/webpack/blob/c181294865dca01b28e6e316636fef5f2aad4eb6/lib/dependencies/ImportParserPlugin.js#L108-L121)
+
+![prefetchpreload](http://img.zhufengpeixun.cn/prefetchpreload.png)
+
+
+
+webpack.config.js：
+
+```diff
+const HtmlWebpackPlugin = require("html-webpack-plugin");
++ const PreloadWebpackPlugin = require("@vue/preload-webpack-plugin");
+
+module.exports = {
+  output: {
+    clean: true,
+  },
+  mode: "development",
+  devtool: false,
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: "./src/index.html",
+    }),
++    new PreloadWebpackPlugin(),
+  ],
+};
+```
+
+
+
+index.js：
+
+```js
+document.getElementById("btn").addEventListener("click", function () {
+  import(/** webpackPreload:true  */ "./video").then((result) => {   // 多了webpack魔法注释
+    console.log(result);
+  });
+});
+```
+
+
+
+其他的video.js，html模板文件都没变。
+
+执行打包操作后生成的html文件中有如下代码段：
+
+```html
+<head>
+	<script defer src="main.js"></script>
+  <link href="src_video_js.js" rel="preload" as="script"></link>  // 多出了这行预加载代码，这就是那个插件的原理
+</head>
+
+<body>
+  <div id="btn">按钮</div>
+</body>
+```
+
+
+
+项目在浏览器中打开后，网络面板的情况：
+
+![image-20230522230333865](C:/Users/shuyi/Desktop/study-notes/%E7%8F%A0%E5%B3%B0/webpack-%E5%BC%A0%E4%BB%81%E9%98%B3.images/image-20230522230333865.png)
+
+可以看到，在没有点击按钮的情况下，懒加载文件就被预先加载到本地了，但是按钮的点击事件并没有执行，控制台并没有打印内容，当点击按钮后，没有再发起网络情况，而直接打印了懒加载文件的内容。这就加速的资源文件的获取速度，实现的想要的目的。
+
+
+
+**自行实现@vue/preload-webpack-plugin插件，完全一摸一样的实现。该插件不会去读取import函数中编写的魔法注释，只要是import方法加载的模块，都会自动加上其对应`<link href="moduleID.js" rel="preload" as="script">`**
+
+```js
+/**
+ * 原理和思路
+ * 此插件会查找本项目中所有的异步代码块，
+ * 把这些异步代码块对应的JS文件都添加一个link标签, <link href="moduleID.js" rel="preload" as="script">
+ */
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+
+class PreloadWebpackPlugin {
+  constructor() {}
+  apply(compiler) {
+    // 监听compilation钩子，获取compilation对象
+    compiler.hooks.compilation.tap(
+      "PreloadWebpackPlugin",
+      function (compilation) {
+        // 获取HtmlWebpackPlugin向compilation添加的钩子,alterAssetTags
+        HtmlWebpackPlugin.getHooks(compilation).alterAssetTags.tap(
+          "PreloadWebpackPlugin",
+          (htmlData) => {
+            const { chunks } = compilation;
+            const files = chunks
+              .filter((chunk) => !chunk.canBeInitial())
+              .reduce((files, chunk) => {
+                return files.add(...chunk.files);
+              }, new Set());
+            files.forEach((file) => {
+              htmlData.assetTags.styles.unshift({
+                tagName: "link",
+                attributes: {
+                  rel: "preload",
+                  href: file,
+                },
+              });
+            });
+          }
+        );
+      }
+    );
+  }
+}
+
+module.exports = PreloadWebpackPlugin;
+```
+
+从插件的源码可以得到preload的原理是在webpack打包阶段就将所有的异步加载的文件，生成一一对应的`<link href="moduleID.js" rel="preload" as="script">`，然后直接添加到head标签中。当浏览器一加载到index.html中，在解析link标签时就会直接去阻塞加载并执行对应的脚本文件。
+
+preload不是webpack原生支持的，必须安装对应的插件，并且该插件不会根据webpack魔法注释来设置指定脚本的preload，而是直接将项目中所有的异步加载脚本都preload，所以需要慎用。
+
+
+
+**prefetch(预先拉取)**
+
+- prefetch 跟 preload 不同，它的作用是告诉浏览器未来可能会使用到的某个资源，浏览器就会在**闲时**去加载对应的资源，若能预测到用户的行为，比如懒加载，点击到其它页面等则相当于提前预加载了需要的资源
+- prefetch魔法注释是webpack原生就支持的，不需要配置任何插件，而且webpack对于`/* webpackPrefetch:true  */`魔法注释是能识别的，只有加了`/* webpackPrefetch:true  */`的脚本才会有prefetch的效果
+- prefetch的原理是，在打包的脚本中动态的为需要prefetch的脚本创建link标签`<link rel="prefetch" as="script" href="url/moduleID">`并添加到head中，并不是在webpack打包阶段就创建并加入到index.html中
+
+
+
+**prefetch实例**
+
+index.js:
+
+```js
+document.getElementById("btn").addEventListener("click", function () {
+  // 一个有prefetch魔法注释，一个没有
+  import(/* webpackPrefetch:true  */ "./video").then((result) => {
+    console.log(result);
+  });
+  import("./title").then((result) => {  
+    console.log(result);
+  });
+});
+```
+
+title.js和video.js：
+
+```js
+export default "title";
+
+
+export default "video.js";
+```
+
+index.html:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="btn">按钮</div>
+  </body>
+</html>
+```
+
+webpack.config.js：
+
+```js
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+
+module.exports = {
+  output: {
+    clean: true,
+  },
+  mode: "development",
+  devtool: false,
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: "./src/index.html",
+    }),
+  ],
+};
+
+```
+
+
+
+打包后生成结果：
+
+![image-20230523103333835](C:/Users/shuyi/Desktop/study-notes/%E7%8F%A0%E5%B3%B0/webpack-%E5%BC%A0%E4%BB%81%E9%98%B3.images/image-20230523103333835.png)
+
+index.html：
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  	<script defer src="main.js"></script>
+  </head>
+  <body>
+    <div id="btn">按钮</div>
+  </body>
+</html>
+
+```
+
+
+
+main.js:
+
+```js
+var webpackModules = {};
+var webpackModuleCache = {};
+function webpackRequire(moduleId) {
+  var cachedModule = webpackModuleCache[moduleId];
+  if (cachedModule !== undefined) {
+    return cachedModule.exports;
+  }
+  var module = (webpackModuleCache[moduleId] = {
+    exports: {},
+  });
+  webpackModules[moduleId](module, module.exports, webpackRequire);
+  return module.exports;
+}
+webpackRequire.m = webpackModules;
+
+var deferred = [];
+webpackRequire.O = (result, chunkIds, fn, priority) => {
+  if (chunkIds) {
+    priority = priority || 0;
+    for (var i = deferred.length; i > 0 && deferred[i - 1][2] > priority; i--)
+      deferred[i] = deferred[i - 1];
+    deferred[i] = [chunkIds, fn, priority];
+    return;
+  }
+  var notFulfilled = Infinity;
+  for (var i = 0; i < deferred.length; i++) {
+    var [chunkIds, fn, priority] = deferred[i];
+    var fulfilled = true;
+    for (var j = 0; j < chunkIds.length; j++) {
+      if (
+        (priority & (1 === 0) || notFulfilled >= priority) &&
+        Object.keys(webpackRequire.O).every((key) =>
+          webpackRequire.O[key](chunkIds[j])
+        )
+      ) {
+        chunkIds.splice(j--, 1);
+      } else {
+        fulfilled = false;
+        if (priority < notFulfilled) notFulfilled = priority;
+      }
+    }
+    if (fulfilled) {
+      deferred.splice(i--, 1);
+      var r = fn();
+      if (r !== undefined) result = r;
+    }
+  }
+  return result;
+};
+
+webpackRequire.F = {};
+webpackRequire.E = (chunkId) => {
+  Object.keys(webpackRequire.F).map((key) => {
+    webpackRequire.F[key](chunkId);
+  });
+};
+
+var getProto = Object.getPrototypeOf
+  ? (obj) => Object.getPrototypeOf(obj)
+  : (obj) => obj.proto;
+var leafPrototypes;
+webpackRequire.t = function (value, mode) {
+  if (mode & 1) value = this(value);
+  if (mode & 8) return value;
+  if (typeof value === "object" && value) {
+    if (mode & 4 && value.esmodule) return value;
+    if (mode & 16 && typeof value.then === "function") return value;
+  }
+  var ns = Object.create(null);
+  webpackRequire.r(ns);
+  var def = {};
+  leafPrototypes = leafPrototypes || [
+    null,
+    getProto({}),
+    getProto([]),
+    getProto(getProto),
+  ];
+  for (
+    var current = mode & 2 && value;
+    typeof current == "object" && !~leafPrototypes.indexOf(current);
+    current = getProto(current)
+  ) {
+    Object.getOwnPropertyNames(current).forEach(
+      (key) => (def[key] = () => value[key])
+    );
+  }
+  def["default"] = () => value;
+  webpackRequire.d(ns, def);
+  return ns;
+};
+
+webpackRequire.d = (exports, definition) => {
+  for (var key in definition) {
+    if (webpackRequire.o(definition, key) && !webpackRequire.o(exports, key)) {
+      Object.defineProperty(exports, key, {
+        enumerable: true,
+        get: definition[key],
+      });
+    }
+  }
+};
+
+webpackRequire.f = {};
+webpackRequire.e = (chunkId) => {
+  return Promise.all(
+    Object.keys(webpackRequire.f).reduce((promises, key) => {
+      webpackRequire.f[key](chunkId, promises);
+      return promises;
+    }, [])
+  );
+};
+
+webpackRequire.u = (chunkId) => {
+  return "" + chunkId + ".js";
+};
+
+webpackRequire.g = (function () {
+  if (typeof globalThis === "object") return globalThis;
+  try {
+    return this || new Function("return this")();
+  } catch (e) {
+    if (typeof window === "object") return window;
+  }
+})();
+
+webpackRequire.o = (obj, prop) =>
+  Object.prototype.hasOwnProperty.call(obj, prop);
+
+var inProgress = {};
+var dataWebpackPrefix = "01split:";
+webpackRequire.l = (url, done, key, chunkId) => {
+  if (inProgress[url]) {
+    inProgress[url].push(done);
+    return;
+  }
+  var script, needAttach;
+  if (key !== undefined) {
+    var scripts = document.getElementsByTagName("script");
+    for (var i = 0; i < scripts.length; i++) {
+      var s = scripts[i];
+      if (
+        s.getAttribute("src") == url ||
+        s.getAttribute("data-webpack") == dataWebpackPrefix + key
+      ) {
+        script = s;
+        break;
+      }
+    }
+  }
+  if (!script) {
+    needAttach = true;
+    script = document.createElement("script");
+    script.charset = "utf-8";
+    script.timeout = 120;
+    if (webpackRequire.nc) {
+      script.setAttribute("nonce", webpackRequire.nc);
+    }
+    script.setAttribute("data-webpack", dataWebpackPrefix + key);
+    script.src = url;
+  }
+  inProgress[url] = [done];
+  var onScriptComplete = (prev, event) => {
+    script.onerror = script.onload = null;
+    clearTimeout(timeout);
+    var doneFns = inProgress[url];
+    delete inProgress[url];
+    script.parentNode && script.parentNode.removeChild(script);
+    doneFns && doneFns.forEach((fn) => fn(event));
+    if (prev) return prev(event);
+  };
+  var timeout = setTimeout(
+    onScriptComplete.bind(null, undefined, {
+      type: "timeout",
+      target: script,
+    }),
+    120000
+  );
+  script.onerror = onScriptComplete.bind(null, script.onerror);
+  script.onload = onScriptComplete.bind(null, script.onload);
+  needAttach && document.head.appendChild(script);
+};
+
+webpackRequire.r = (exports) => {
+  if (typeof Symbol !== "undefined" && Symbol.toStringTag) {
+    Object.defineProperty(exports, Symbol.toStringTag, {
+      value: "Module",
+    });
+  }
+  Object.defineProperty(exports, "esmodule", {
+    value: true,
+  });
+};
+
+var scriptUrl;
+if (webpackRequire.g.importScripts) scriptUrl = webpackRequire.g.location + "";
+var document = webpackRequire.g.document;
+if (!scriptUrl && document) {
+  if (document.currentScript) scriptUrl = document.currentScript.src;
+  if (!scriptUrl) {
+    var scripts = document.getElementsByTagName("script");
+    if (scripts.length) {
+      var i = scripts.length - 1;
+      while (i > -1 && !scriptUrl) scriptUrl = scripts[i--].src;
+    }
+  }
+}
+if (!scriptUrl)
+  throw new Error("Automatic publicPath is not supported in this browser");
+scriptUrl = scriptUrl
+  .replace(/#.*$/, "")
+  .replace(/\?.*$/, "")
+  .replace(/\/[^\/]+$/, "/");
+webpackRequire.p = scriptUrl;
+
+var installedChunks = {
+  main: 0,
+};
+webpackRequire.f.j = (chunkId, promises) => {
+  var installedChunkData = webpackRequire.o(installedChunks, chunkId)
+    ? installedChunks[chunkId]
+    : undefined;
+  if (installedChunkData !== 0) {
+    if (installedChunkData) {
+      promises.push(installedChunkData[2]);
+    } else {
+      if (true) {
+        var promise = new Promise(
+          (resolve, reject) =>
+            (installedChunkData = installedChunks[chunkId] = [resolve, reject])
+        );
+        promises.push((installedChunkData[2] = promise));
+        var url = webpackRequire.p + webpackRequire.u(chunkId);
+        var error = new Error();
+        var loadingEnded = (event) => {
+          if (webpackRequire.o(installedChunks, chunkId)) {
+            installedChunkData = installedChunks[chunkId];
+            if (installedChunkData !== 0) installedChunks[chunkId] = undefined;
+            if (installedChunkData) {
+              var errorType =
+                event && (event.type === "load" ? "missing" : event.type);
+              var realSrc = event && event.target && event.target.src;
+              error.message =
+                "Loading chunk " +
+                chunkId +
+                " failed.\n(" +
+                errorType +
+                ": " +
+                realSrc +
+                ")";
+              error.name = "ChunkLoadError";
+              error.type = errorType;
+              error.request = realSrc;
+              installedChunkData[1](error);
+            }
+          }
+        };
+        webpackRequire.l(url, loadingEnded, "chunk-" + chunkId, chunkId);
+      }
+    }
+  }
+};
+webpackRequire.F.j = (chunkId) => {
+  if (
+    (!webpackRequire.o(installedChunks, chunkId) ||
+      installedChunks[chunkId] === undefined) &&
+    true
+  ) {
+    installedChunks[chunkId] = null;
+    var link = document.createElement("link");
+    if (webpackRequire.nc) {
+      link.setAttribute("nonce", webpackRequire.nc);
+    }
+    link.rel = "prefetch";
+    link.as = "script";
+    link.href = webpackRequire.p + webpackRequire.u(chunkId);
+    document.head.appendChild(link);
+  }
+};
+webpackRequire.O.j = (chunkId) => installedChunks[chunkId] === 0;
+var webpackJsonpCallback = (parentChunkLoadingFunction, data) => {
+  var [chunkIds, moreModules, runtime] = data;
+  var moduleId,
+    chunkId,
+    i = 0;
+  if (chunkIds.some((id) => installedChunks[id] !== 0)) {
+    for (moduleId in moreModules) {
+      if (webpackRequire.o(moreModules, moduleId)) {
+        webpackRequire.m[moduleId] = moreModules[moduleId];
+      }
+    }
+    if (runtime) var result = runtime(webpackRequire);
+  }
+  if (parentChunkLoadingFunction) parentChunkLoadingFunction(data);
+  for (; i < chunkIds.length; i++) {
+    chunkId = chunkIds[i];
+    if (
+      webpackRequire.o(installedChunks, chunkId) &&
+      installedChunks[chunkId]
+    ) {
+      installedChunks[chunkId][0]();
+    }
+    installedChunks[chunkId] = 0;
+  }
+  return webpackRequire.O(result);
+};
+var chunkLoadingGlobal = (self["webpackChunk_01split"] =
+  self["webpackChunk_01split"] || []);
+chunkLoadingGlobal.forEach(webpackJsonpCallback.bind(null, 0));
+chunkLoadingGlobal.push = webpackJsonpCallback.bind(
+  null,
+  chunkLoadingGlobal.push.bind(chunkLoadingGlobal)
+);
+
+webpackRequire.O(
+  0,
+  ["main"],
+  () => {
+    webpackRequire.E("src_video_js");
+  },
+  5
+);
+
+var webpackExports = {};
+document.getElementById("btn").addEventListener("click", function () {
+  webpackRequire
+    .e("src_video_js")
+    .then(webpackRequire.t.bind(webpackRequire, "./src/video.js", 23))
+    .then((result) => {
+      console.log(result);
+    });
+  webpackRequire
+    .e("src_title_js")
+    .then(webpackRequire.bind(webpackRequire, "./src/title.js"))
+    .then((result) => {
+      console.log(result);
+    });
+});
+webpackExports = webpackRequire.O(webpackExports);
+```
+
+
+
+其中main.js中有段代码如下：
+
+```js
+webpackRequire.F.j = (chunkId) => {
+  if (
+    (!webpackRequire.o(installedChunks, chunkId) ||
+      installedChunks[chunkId] === undefined) &&
+    true
+  ) {
+    installedChunks[chunkId] = null;
+    var link = document.createElement("link");  
+    if (webpackRequire.nc) {
+      link.setAttribute("nonce", webpackRequire.nc);
+    }
+    link.rel = "prefetch";  // ++++++++++++++++++++++++++++
+    link.as = "script";     // ++++++++++++++++++++++++++++
+    link.href = webpackRequire.p + webpackRequire.u(chunkId);
+    document.head.appendChild(link);
+  }
+};
+```
+
+从这段代码就能看出prefetch的工作原理和preload的不同了。
+
+当打开index.html时，网络面板的情况：
+
+![image-20230523104427230](C:/Users/shuyi/Desktop/study-notes/%E7%8F%A0%E5%B3%B0/webpack-%E5%BC%A0%E4%BB%81%E9%98%B3.images/image-20230523104427230.png)
+
+当点击按钮后，网络面板的情况：
+
+![image-20230523104535086](C:/Users/shuyi/Desktop/study-notes/%E7%8F%A0%E5%B3%B0/webpack-%E5%BC%A0%E4%BB%81%E9%98%B3.images/image-20230523104535086.png)
+
+video.js因为prefetch而直接走本地缓存了，而title.js因为没有配置prefetch，所以走的是网络请求。
 
 
 
 
+
+**prefetch和preload混用的情况**
+
+![image-20230523110716387](C:/Users/shuyi/Desktop/study-notes/%E7%8F%A0%E5%B3%B0/webpack-%E5%BC%A0%E4%BB%81%E9%98%B3.images/image-20230523110716387.png)
+
+![image-20230523111357293](C:/Users/shuyi/Desktop/study-notes/%E7%8F%A0%E5%B3%B0/webpack-%E5%BC%A0%E4%BB%81%E9%98%B3.images/image-20230523111357293.png)
+
+
+
+对于@vue/preload-webpack-plugin插件，即使配置了preload的魔法注释也不会生效，默认还是将全部懒加载的模块都设置为preload。这样所有懒加载资源优先级都提高了很多，存在隐患。（如果想一个script脚本设置为preload，预先拉取，他的优先级是非常高的，它应该和main.js并行加载，所以说不可能把插件preload脚本的的动作放在main.js里面执行时加载，只能把这个工作交给html-webpack-plugin,动态的向html文件里插入链接）。
+
+
+
+为了解决preload无法生效的问题，自己写了一个插件：webpackpreload-webpack-plugin。
+
+```js
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const WebpackPreloadWebpackPlugin = require("webpackpreload-webpack-plugin");
+
+module.exports = {
+  output: {
+    clean: true,
+  },
+  mode: "development",
+  devtool: false,
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: "./src/index.html",
+    }),
+    new WebpackPreloadWebpackPlugin(),
+  ],
+};
+```
+
+
+
+webpackpreload-webpack-plugin：
+
+```js
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+class WebpackpreloadWebpackPlugin {
+  apply(compiler) {
+    compiler.hooks.compilation.tap('PreloadWebpackPlugin', (compilation) => {
+      HtmlWebpackPlugin.getHooks(compilation).alterAssetTags.tap('PreloadWebpackPlugin', (htmlData) => {
+        const { publicPath, assetTags } = htmlData;
+        const { entrypoints, moduleGraph, chunkGraph } = compilation;
+        for (const entrypoint of entrypoints) {
+          // webpack内部已经识别好魔法注释中的prefetch和preload了，并将preload放置在getChildrenByOrders方法的返回值中了
+          const preloaded = entrypoint[1].getChildrenByOrders(moduleGraph, chunkGraph).preload; // is ChunkGroup[] | undefined
+          if (!preloaded) return;
+          const chunks = new Set();
+          for (const group of preloaded) {
+            for (const chunk of group.chunks) chunks.add(chunk);
+          }
+          const files = new Set()
+          for (const chunk of chunks) {
+            for (const file of chunk.files) files.add(file);
+          }
+          const links = [];
+          for (const file of files) {
+            links.push({
+              tagName: 'link',
+              attributes: {
+                rel: 'preload',
+                href: `${publicPath}${file}`
+              }
+            });
+          }
+          assetTags.styles.unshift(...links);
+        }
+      });
+    });
+  }
+}
+module.exports = WebpackpreloadWebpackPlugin;
+```
+
+webpack获取到源代码后，将源代码转为语法数进行遍历，遍历时捕获import节点，识别魔法注释。
+
+plugins\ImportPlugin.js：
+
+```js
+class ImportPlugin {
+	apply(compiler) {
+		compiler.hooks.compilation.tap(
+			"ImportPlugin",
+			(compilation, { normalModuleFactory }) => {
+				normalModuleFactory.hooks.parser
+					.for("javascript/auto")
+					.tap("ImportPlugin", (parser) => {
+						parser.hooks.importCall.tap("ImportParserPlugin", expr => {
+							const { options } = parser.parseCommentOptions(expr.range);
+							console.log(options);
+						});
+					});
+			}
+		);
+	}
+}
+module.exports = ImportPlugin;
+```
+
+这个webpack插件的作用是为了解析JavaScript源代码中的import语句，并且提取出注释中的选项信息。
+
+具体来说，该插件在Webpack编译过程中的"compilation"阶段，注册了一个钩子函数用于处理普通模块工厂(normalModuleFactory)中的JavaScript模块。当解析JavaScript源代码时，该插件会在import调用的语法树节点中注册一个钩子函数，用于解析注释中的选项信息，并将其输出到控制台中。
+
+因此，这个插件的作用并不是修改代码的行为，而是提供了一种在Webpack编译过程中对代码进行静态分析的方式，以便于进行代码构建和优化。
+
+
+
+### 方式三
+
+**提取公共代码** 
+
+- [split-chunks-plugin](https://webpack.js.org/plugins/split-chunks-plugin)
+- [split-chunks-plugin](https://webpack.docschina.org/plugins/split-chunks-plugin/)
+- [common-chunk-and-vendor-chunk](https://github.com/webpack/webpack/tree/master/examples/common-chunk-and-vendor-chunk)
+- 配置单页应用，配置多页应用
+
+
+
+为什么需要提取公共代码
+
+- 大网站有多个页面，每个页面由于采用相同技术栈和样式代码，会包含很多公共代码，如果都包含进来会有问题
+- 相同的资源被重复的加载，浪费用户的流量和服务器的成本；
+- 每个页面需要加载的资源太大，导致网页首屏加载缓慢，影响用户体验。
+- 如果能把公共代码抽离成单独文件进行加载能进行优化，可以减少网络传输流量，降低服务器成本
+
+
+
+如何提取
+
+- 基础类库，方便长期缓存
+- 页面之间的公用代码
+- 各个页面单独生成文件
+
+
+
+module chunk bundle
+
+- module：就是js的模块化（一个文件就是一个模块），webpack支持commonJS、ES6等模块化规范
+- chunk: chunk是webpack根据功能拆分出来的，包含三种情况
+  - 项目入口（entry）
+  - 通过import()动态引入的代码
+  - 通过splitChunks拆分出来的代码
+- bundle：bundle是webpack打包之后的各个文件，一般就是和chunk是一对一的关系，bundle就是对chunk进行编译压缩打包等处理之后的产出
+
+
+
+![image-20230523223616658](C:/Users/shuyi/Desktop/study-notes/%E7%8F%A0%E5%B3%B0/webpack-%E5%BC%A0%E4%BB%81%E9%98%B3.images/image-20230523223616658.png)
+
+**默认值**
+
+默认情况下，它只会影响到按需加载的 chunks，因为修改 initial chunks 会影响到项目的 HTML 文件中的脚本标签。
+
+webpack 将根据以下条件自动拆分 chunks：
+
+- 新的 chunk 可以被共享，或者模块来自于 `node_modules` 文件夹
+- 新的 chunk 体积大于 20kb（在进行 min+gz 之前的体积）
+- 当按需加载 chunks 时，并行请求的最大数量小于或等于 30
+- 当加载初始化页面时，并发请求的最大数量小于或等于 30
+
+当尝试满足最后两个条件时，最好使用较大的 chunks。
+
+
+
+webpack.config.js默认值：
+
+```js
+module.exports = {
+  //...
+  entry: {
+    page1: './src/page1.js',
+    page2: './src/page2.js',
+    page3: './src/page3.js'
+  }, 
+  optimization: {
+    splitChunks: {
+      chunks: 'async',
+      minSize: 20000,
+      minRemainingSize: 0,
+      minChunks: 1,
+      maxAsyncRequests: 30,
+      maxInitialRequests: 30,
+      enforceSizeThreshold: 50000,
+      cacheGroups: {  // 缓存组 ， 当一个模块命中多个缓存组的规则时，则根据priority的值进行拆包
+        defaultVendors: {
+          test: /[\\/]node_modules[\\/]/,
+          priority: -10,  // 越大，优先级高
+          reuseExistingChunk: true,
+        },
+        default: {
+          minChunks: 2,  // 这里如果配置了，则这里的minChunks会覆盖外层的minChunks
+          priority: -20,  
+          reuseExistingChunk: true,
+        },
+        // .. 其他自定义规则即拆包名字
+      },
+    },
+    //把运行时当成一个代码块进行单独提取
+    //runtime 为了让打包后的代码在浏览器里能运行 要模拟一个require方法 这个就叫运行时
+    //可以把runtimeChunk设置为true就可以把运行时代码块单独提取，实现长期缓存
+    //因为运行时代码只是一个工具代码，跟业务无关，不管你的业务如何写，它始终不变
+    runtimeChunk: true
+  },
+   plugins: [
+    new HtmlWebpackPlugin({
+      template: './src/index.html',
+      filename: 'page1.html',
+      chunks: ['page1']// 把page1和page1分拆出去的代码块生成的文件插入此模块
+    }),
+    new HtmlWebpackPlugin({
+      template: './src/index.html',
+      filename: 'page2.html',
+      chunks: ['page2']
+    }),
+    new HtmlWebpackPlugin({
+      template: './src/index.html',
+      filename: 'page3.html',
+      chunks: ['page3']
+    }),
+    new webpackPreloadWebpackPlugin(),
+    new ImportPlugin(),
+    new AssetWebpackPlugin()
+  ]
+};
+```
+
+![image-20230523231023734](C:/Users/shuyi/Desktop/study-notes/%E7%8F%A0%E5%B3%B0/webpack-%E5%BC%A0%E4%BB%81%E9%98%B3.images/image-20230523231023734.png)
+
+
+
+```js
+{
+  optimization: {
+    //指定代码块的分割方式 表示选择哪些代码块进行分割，async(异步import) initial(同步) all（全部）
+    splitChunks: {
+      chunks: 'all',
+      //表示分割出去的代码块最小的体积 0就是不限制分割出去的代码块的体积
+      minSize: 0,
+      //加载入口文件时，并行请求的最大数量 默认为5
+      maxInitialRequests: 5,//一个chunk最多拆成5个包
+      // page1 module1 module2 jquery
+      //按需加载文件时，并行请求的最大数量 默认为3
+      maxAsyncRequests: 3,
+      //表示在提取公共代码的时候，一个模块被多少个入口用入才会进行提取
+      //minChunks: 2,
+      //在以前是没有cacheGroups这个概念
+      //默认情况下有二个缓存组 defaultVendors default
+
+      cacheGroups: {
+        defaultVendors: false,
+        default: false,
+        xxx: {
+          minChunks: 1,//按这个条件，如果一个模块被 引用了1次以上，就需要被 提取到单独的代码块中
+          //需要把index.js提到到common代码块中，提取了以后main里就要删除index.js模块
+          //最终会有两个代码块 1个是空的main,一个是包括index.js的common
+          //重用现在的代码块 false 不重用
+          //本来我要提取分割index.js,那么新分割出去的代码块里只有一个index.js
+          //但是发现在现在main里也刚好有我想提取的代码块，直接把main当成分割出去代码复用
+          reuseExistingChunk: true//如果能重用，就不会再生成一个新的common代码块了，直接重用main.js
+          // reuseExistingChunk表示如果当前的代码包含已经被从主bundle中分割出去的模块，它将会被重用，而不会生成一个新的代码块
+        }
+        //第三方
+        //覆盖默认缓存组，因为我们有两个默认缓存组 defaultVendors,default
+        /*  defaultVendors: {
+           test: /node_modules/,//如果模块的路径里有node_modules的话就属于这个vendor缓存组
+           priority: -10
+         },
+         default: {
+           minChunks: 2,
+           priority: -20
+         } */
+      }
+  }
+}
+```
+
+
+
+```js
+{
+    optimization: {
+        splitChunks: {
+            // 表示选择哪些 chunks 进行分割，可选值有：async，initial和all
+            chunks: 'all',
+            // 表示新分离出的chunk必须大于等于minSize，默认为30000，约30kb。
+            minSize: 0,//默认值是20000,生成的代码块的最小尺寸
+            cacheGroups: {
+                defaultVendors: {
+                    test: /[\\/]node_modules[\\/]/, //条件
+                    priority: -10 ///优先级，一个chunk很可能满足多个缓存组，会被抽取到优先级高的缓存组中,为了能够让自定义缓存组有更高的优先级(默认0),默认缓存组的priority属性为负值.
+                },
+                default: {
+                    minChunks: 2,////被多少模块共享,在分割之前模块的被引用次数
+                    priority: -20
+                },
+            },
+        },
+    },
+}
+```
+
+打包生成情况：
+
+```js
+//入口代码块
+page1.js
+page2.js
+page3.js
+//异步加载代码块
+src_asyncModule1_js.js
+//defaultVendors缓存组对应的代码块
+defaultVendors-node_modules_jquery_dist_jquery_js.js
+defaultVendors-node_modules_lodash_lodash_js.js
+//default代缓存组对应的代码块
+default-src_module1_js.js
+default-src_module2_js.js
+```
+
+
+
+模拟过程：
+
+```js
+let page1Chunk= {
+    name:'page1',
+    modules:['A','B','C','lodash']
+}
+
+let page2Chunk = {
+    name:'page2',
+    module:['C','D','E','lodash']
+}
+
+let  cacheGroups= {
+    vendor: {
+      test: /lodash/,
+    },
+    default: {
+      minChunks: 2,
+    }
+};
+
+let vendorChunk = {
+    name:`vendor~node_modules_lodash_js`,
+    modules:['lodash']
+}
+let defaultChunk = {
+    name:`default~page1~page2`,
+    modules:['C']
+}
+```
+
+
+
+
+
+**工作流程**
+
+1. SplitChunksPlugi先尝试把`minChunks`规则的模块抽取到单独的`Chunk`中
+2. 判断该Chunk是否满足`maxInitialRequests`配置项的要求
+3. 判断体积是否满足`minSize`的大小，如果小于`minSize`则不分包，如果大于`minSize`判断是否超过`maxSize`,如果大于`maxSize`则继续拆分成更小的包
+
+
+
+[maxInitialRequest](http://www.zhufengpeixun.com/front/html/103.13.splitChunks.html)：用于设置 Initial Chunk 最大并行请求数。
+
+[maxAsyncRequests](http://www.zhufengpeixun.com/front/html/103.13.splitChunks.html)：用于设置 Async Chunk 最大并行请求数。
+
+请求数是指加载一个`Chunk`时所需要加载的所有的分包数量,包括`Initial Chunk`，但不包括`Async Chunk`和`runtimeChunk`
 
 
 
@@ -4790,7 +6104,7 @@ import('./three');
 
 webpack打包的特点：
 
-1. 打包后的代码会待用webpack自生的逻辑代码，且体积打
+1. 打包后的代码会带有webpack自身的逻辑代码，且体积大
 2. 打包速度慢，且配置可以很多样复杂
 3. 开发JS类库不适合使用webpack来进行打包
 
@@ -4800,7 +6114,7 @@ webpack打包的特点：
 
 rollup是专门用于打包开发的JS类库，支持打包生成umd/commonjs/es的js代码，学习rollup为vite打基础。vite开发时用的是esbuild（也是一个打包工具，用Go语言写的）打包；上线时使用的是rollup打包，而且vite内部的插件机制也是复用rollup的插件机制。
 
-rollup插件和vite插件可以复用，vite插件是一个简化版的rollup插件，webpack使用的是commonjs规范，rullup使用的是ESM规范吗 webpack和rollup都会支持esm 和commonjs 但是打包出来的结果 webpack只能是commonjs，rollup可以打包出commonjs也可以打包出esm。rollup自带支持Tree-shaking，本质是消除无用的js代码，只处理函数和顶层的import/export变量
+rollup插件和vite插件可以复用，vite插件是一个简化版的rollup插件，webpack使用的是commonjs规范，rullup使用的是ESM规范吗？ webpack和rollup都会支持esm 和commonjs 但是打包出来的结果 webpack只能是commonjs，rollup可以打包出commonjs也可以打包出esm。rollup自带支持Tree-shaking，本质是消除无用的js代码，只处理函数和顶层的import/export变量
 
 
 
@@ -4813,7 +6127,17 @@ rollup插件和vite插件可以复用，vite插件是一个简化版的rollup插
 
 
 ```shell
-npm i  @rollup/plugin-commonjs @rollup/plugin-node-resolve @rollup/plugin-typescript lodash rollup  postcss rollup-plugin-postcss rollup-plugin-terser tslib typescript rollup-plugin-serve rollup-plugin-livereload -D
+npm i @rollup/plugin-commonjs @rollup/plugin-node-resolve @rollup/plugin-typescript lodash rollup  postcss rollup-plugin-postcss rollup-plugin-terser tslib typescript rollup-plugin-serve rollup-plugin-livereload -D
+```
+
+
+
+```json
+{
+  "script":{
+    "build":"rollup --config"
+  }
+}
 ```
 
 
@@ -4826,9 +6150,9 @@ rollup.config.js：
 export default {
   input:'./src/main.js',
   output:{
-   file: 'dist/bundle.cjs.js',//输出的文件路径和文件名
+    file: 'dist/bundle.cjs.js',//输出的文件路径和文件名
     format: 'cjs',//五种输出的格式 amd/es/iife/umd/cjs
-    name: 'libName',//当format格式为iife和umd的时候必须提供变量名
+    name: 'libName',//当format格式为iife和umd的时候必须提供变量名，该变量名会挂载到全局对象上。
   }
 }
 ```
@@ -4875,13 +6199,15 @@ export default {
 
 
 
+要让rollup的tree-shaking生效，必须使用esmodule模块化规范编写代码，只处理函数和顶层的import/export变量，并有作用域提升的效果。
+
 
 
 ### 使用第三方npm模块
 
 rollup.js编译源码中的模块引用默认只支持 ES6+的模块方式`import/export`。大量的npm模块是基于CommonJS模块方式，这就导致了大量 npm 模块不能直接编译使用。所以辅助rollup.js编译支持 npm模块和CommonJS模块方式的插件就应运而生。
 
-- rollup-plugin-node-resolve 插件允许加载第三方模块
+- @rollup-plugin-node-resolve 插件允许加载第三方模块（node_modules中的库）
 - @rollup/plugin-commons 插件将它们转换为ES6版本
 
 ```shell
@@ -4908,8 +6234,6 @@ export default {
 }
 
 ```
-
-
 
 
 
@@ -4962,8 +6286,8 @@ export default {
     input:'src/main.js',
     output:{
         file:'dist/bundle.cjs.js',//输出文件的路径和名称
-+       format:'iife',// 使用iife
-+       name:'bundleName',//当format为iife和umd时必须提供，将作为全局变量挂在window下
+        format:'iife',// 使用iife
+        name:'bundleName',//当format为iife和umd时必须提供，将作为全局变量挂在window下
 +       globals:{
 +           lodash:'_', //告诉rollup全局变量_即是lodash
 +           jquery:'$' // $即是jquery
@@ -5062,12 +6386,14 @@ export default {
 
 
 ```json
-"scripts": {
-  "build": "rollup --config",
-  "dev": "rollup --config -w",
-  // "build": "rollup --config rollup.config.build.js",
-  // "dev": "rollup --config rollup.config.dev.js -w"
-},
+{
+  "scripts": {
+    "build": "rollup --config",
+    "dev": "rollup --config -w",
+    // "build": "rollup --config rollup.config.build.js",
+    // "dev": "rollup --config rollup.config.dev.js -w"
+	},
+}
 ```
 
 
@@ -5108,8 +6434,6 @@ export default {
 
 ### Rollup原理
 
-
-
 #### **前置知识**
 
 rollup 使用了 `acorn` 和 `magic-string` 两个库。
@@ -5120,6 +6444,8 @@ rollup 使用了 `acorn` 和 `magic-string` 两个库。
 var MagicString = require('magic-string');
 var magicString = new MagicString('export var name = "beijing"');
 //类似于截取字符串
+//裁剪出原始字符串开始和结束之间所有的内容
+//返回一个克隆后的MagicString的实例
 console.log(magicString.snip(0,6).toString()); // export
 //从开始到结束删除字符串(索引永远是基于原始的字符串，而非改变后的)
 console.log(magicString.remove(0,7).toString()); // var name = "beijing"
@@ -5134,10 +6460,12 @@ bundleString.addSource({
     content:'var b = 2;',
     separator:'\n'
 });
-/* let str = '';
+/* 
+let str = '';
 str += 'var a = 1;\n'
 str += 'var b = 2;\n'
-console.log(str); */
+console.log(str); 
+*/
 console.log(bundleString.toString());
 // var a = 1;
 // var b = 2;
@@ -5154,7 +6482,7 @@ console.log(bundleString.toString());
 - [Esprima](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fjquery%2Fesprima)
 - [Acorn](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fternjs%2Facorn)
 
-上面两个解析出来的AST都符合 [The Estree Spec](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.comb%2Festree%2Festree) 规范。
+上面两个解析出来的AST都符合 [The Estree Spec](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.comb%2Festree%2Festree) 规范，本质是一个带有层级的js对象。
 
 rollup和Webpack 解析代码用的是 Acorn。
 
@@ -5175,11 +6503,12 @@ Acorn的解析API：
 - **sourceType**，这个配置项有两个值：`module` 和 `script`，默认是 `script`。
   主要是严格模式和 `import/export` 的区别。ES6 中的模块是严格模式，也就是无须添加 `use strict`。通常浏览器中使用的 script 是没有 `import/export` 语法的。
 - **locations**，默认值是 `false`，设置为 `true` 之后会在 AST 的节点中携带多一个 `loc` 对象来表示当前的开始和结束的行数和列数。
-- **onComment**，传入一个回调函数，每当解析到代码中的注释时会触发，可以获取当年注释内容，参数列表是：`[block, text, start, end]`。`block` 表示是否是块注释，`text` 是注释内容，`start` 和 `end` 是注释开始和结束的位置。
+- **ranges**，显示范围
+- **onComment**，传入一个回调函数，每当解析到代码中的注释时会触发，可以获取注释内容，参数列表是：`[block, text, start, end]`。`block` 表示是否是块注释，`text` 是注释内容，`start` 和 `end` 是注释开始和结束的位置。
 
 
 
-使用acorn分析进行词法分析结果API：const tokens = [...acorn.tokenizer(code, options)]。
+使用acorn进行词法分析结果API：const tokens = [...acorn.tokenizer(code, options)]。
 
 词法分析例子：
 
@@ -5268,177 +6597,8 @@ console.log(tokens);
     value: undefined,
     start: 15,
     end: 16
-  },
-  Token {
-    type: TokenType {
-      label: 'name',
-      keyword: undefined,
-      beforeExpr: false,
-      startsExpr: true,
-      isLoop: false,
-      isAssign: false,
-      prefix: false,
-      postfix: false,
-      binop: null,
-      updateContext: [Function (anonymous)]
-    },
-    value: 'from',
-    start: 17,
-    end: 21
-  },
-  Token {
-    type: TokenType {
-      label: 'string',
-      keyword: undefined,
-      beforeExpr: false,
-      startsExpr: true,
-      isLoop: false,
-      isAssign: false,
-      prefix: false,
-      postfix: false,
-      binop: null,
-      updateContext: null
-    },
-    value: 'hello.js',
-    start: 22,
-    end: 32
-  },
-  Token {
-    type: TokenType {
-      label: ';',
-      keyword: undefined,
-      beforeExpr: true,
-      startsExpr: false,
-      isLoop: false,
-      isAssign: false,
-      prefix: false,
-      postfix: false,
-      binop: null,
-      updateContext: null
-    },
-    value: undefined,
-    start: 32,
-    end: 33
-  },
-  Token {
-    type: TokenType {
-      label: 'name',
-      keyword: undefined,
-      beforeExpr: false,
-      startsExpr: true,
-      isLoop: false,
-      isAssign: false,
-      prefix: false,
-      postfix: false,
-      binop: null,
-      updateContext: [Function (anonymous)]
-    },
-    value: 'console',
-    start: 34,
-    end: 41
-  },
-  Token {
-    type: TokenType {
-      label: '.',
-      keyword: undefined,
-      beforeExpr: false,
-      startsExpr: false,
-      isLoop: false,
-      isAssign: false,
-      prefix: false,
-      postfix: false,
-      binop: null,
-      updateContext: null
-    },
-    value: undefined,
-    start: 41,
-    end: 42
-  },
-  Token {
-    type: TokenType {
-      label: 'name',
-      keyword: undefined,
-      beforeExpr: false,
-      startsExpr: true,
-      isLoop: false,
-      isAssign: false,
-      prefix: false,
-      postfix: false,
-      binop: null,
-      updateContext: [Function (anonymous)]
-    },
-    value: 'log',
-    start: 42,
-    end: 45
-  },
-  Token {
-    type: TokenType {
-      label: '(',
-      keyword: undefined,
-      beforeExpr: true,
-      startsExpr: true,
-      isLoop: false,
-      isAssign: false,
-      prefix: false,
-      postfix: false,
-      binop: null,
-      updateContext: [Function (anonymous)]
-    },
-    value: undefined,
-    start: 45,
-    end: 46
-  },
-  Token {
-    type: TokenType {
-      label: 'name',
-      keyword: undefined,
-      beforeExpr: false,
-      startsExpr: true,
-      isLoop: false,
-      isAssign: false,
-      prefix: false,
-      postfix: false,
-      binop: null,
-      updateContext: [Function (anonymous)]
-    },
-    value: 'name',
-    start: 46,
-    end: 50
-  },
-  Token {
-    type: TokenType {
-      label: ')',
-      keyword: undefined,
-      beforeExpr: false,
-      startsExpr: false,
-      isLoop: false,
-      isAssign: false,
-      prefix: false,
-      postfix: false,
-      binop: null,
-      updateContext: [Function (anonymous)]
-    },
-    value: undefined,
-    start: 50,
-    end: 51
-  },
-  Token {
-    type: TokenType {
-      label: ';',
-      keyword: undefined,
-      beforeExpr: true,
-      startsExpr: false,
-      isLoop: false,
-      isAssign: false,
-      prefix: false,
-      postfix: false,
-      binop: null,
-      updateContext: null
-    },
-    value: undefined,
-    start: 51,
-    end: 52
   }
+	// ...
 ]
 ```
 
@@ -5582,8 +6742,6 @@ AST节点类型：
 
    
 
-
-
 扩展：
 
 > ```ts
@@ -5692,20 +6850,38 @@ ast.body.forEach((node) => {
 打印内容：
 
 ```
-Node {
-  type: 'Program',
-  start: 0,
-  end: 22,
-  body: [
-    Node {
-      type: 'ImportDeclaration',
-      start: 0,
-      end: 22,
-      specifiers: [Array],
-      source: [Node]
+{
+  "type": "Program",
+  "start": 0,
+  "end": 22,
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "start": 0,
+      "end": 22,
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "start": 7,
+          "end": 8,
+          "local": {
+            "type": "Identifier",
+            "start": 7,
+            "end": 8,
+            "name": "$"
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "start": 14,
+        "end": 22,
+        "value": "jquery",
+        "raw": "\"jquery\""
+      }
     }
   ],
-  sourceType: 'module'
+  "sourceType": "module"
 }
 ```
 
@@ -5741,6 +6917,7 @@ function visit(node, parent, enter, leave) {
   if (enter) {
     enter(node, parent);
   }
+  // 深度优先遍历
   const keys = Object.keys(node).filter((key) => typeof node[key] === "object");
   keys.forEach((key) => {
     let value = node[key];
@@ -5754,6 +6931,7 @@ function visit(node, parent, enter, leave) {
       visit(value, node, enter, leave);
     }
   });
+  
   if (leave) {
     leave(node, parent);
   }
@@ -5781,6 +6959,93 @@ function visit(node, parent, enter, leave) {
 
 
 
+**作用域**
+
+```js
+class Scope {
+  constructor(options = {}) {
+    //作用域的名称
+    this.name = options.name;
+    //父作用域
+    this.parent = options.parent;
+    //此作用中定义的变量
+    this.names = options.names || [];
+  }
+  add(name) {
+    this.names.push(name);
+  }
+  findDefiningScope(name) {
+    if (this.names.includes(name)) {
+      return this;
+    } else if (this.parent) {
+      return this.parent.findDefiningScope(name);
+    } else {
+      return null;
+    }
+  }
+}
+module.exports = Scope;
+
+
+
+var a = 1;
+function one() {
+  var b = 2;
+  function two() {
+    var c = 3;
+    console.log(a, b, c);
+  }
+}
+let globalScope = new Scope({
+  name: 'global',
+  names: ['a'],
+  parent: null
+})
+let oneScope = new Scope({
+  name: 'oneScope',
+  names: ['b'],
+  parent: globalScope
+})
+let twoScope = new Scope({
+  name: 'twoScope',
+  names: ['c'],
+  parent: oneScope
+})
+console.log(
+  twoScope.findDefiningScope('a').name,
+  twoScope.findDefiningScope('b').name,
+  twoScope.findDefiningScope('c').name,
+  twoScope.findDefiningScope('d')
+);
+```
+
+
+
+#### 目录结构
+
+- [rollup代码仓库地址](https://gitee.com/zhufengpeixun/rollup)
+
+```js
+├── package.json
+├── README.md
+├── src
+    ├── ast
+    │   ├── analyse.js // 分析AST节点的作用域和依赖项
+    │   ├── Scope.js // 有些语句会创建新的作用域实例
+    │   └── walk.js // 提供了递归遍历AST语法树的功能
+    ├── Bundle// 打包工具，在打包的时候会生成一个Bundle实例，并收集其它模块，最后把所有代码打包在一起输出
+    │   └── index.js 
+    ├── Module// 每个文件都是一个模块
+    │   └── index.js
+    ├── rollup.js // 打包的入口模块
+    └── utils
+        ├── map-helpers.js
+        ├── object.js
+        └── promise.js
+```
+
+
+
 #### **实现**
 
 启动文件：
@@ -5797,7 +7062,7 @@ rollup(entry,output)
 
 
 
-rollup本质是一个方法。rollup中的Bundle实例类比于webpack中的Compiler实例。rollup中每个文件也对应一个模块，webpack中也如此。
+rollup本质是一个方法，rollup中的Bundle实例类比于webpack中的Compiler实例。rollup中每个文件也对应一个模块，webpack中也如此。
 
 rollup.js文件内容：
 
@@ -5829,6 +7094,7 @@ const Module = require('./module.js');
 class Bundle{
   constructor(options){
     this.entryPath = path.resolve(options.entry)   // 不管是相对路径还是绝对路径，都统一改为绝对路径
+    this.modules=new Set()
   }
   
   build(output){
@@ -5850,7 +7116,7 @@ class Bundle{
         path: route,
         bundle: this
       })
-      
+      this.modules.add(module)
       return module
     }
   }
@@ -5889,7 +7155,7 @@ class Module{
   constructor({code,path,bundle}){
     this.code = new MagicString(code);  // 将模块的源代码包装为MagicString，方便后期操作
     this.path = path;
-    this.bundle = bundle;
+    this.bundle = bundle; // 该模块术语哪个bundle
     this.ast = parse(code,{
       ecmaVersion:8,
       sourceType:'module'
@@ -5935,6 +7201,454 @@ function analyse(ast,code,module){
 
 module.exports = analyse
 ```
+
+
+
+#### 实现tree-shaking
+
+每个文件模块实例对象上的属性及说明：
+
+```js
+const MagicString = require('magic-string');
+const { parse } = require('acorn')
+const analyse = require('./ast/analyse');
+const { hasOwnProperty } = require('./utils');
+const SYSTEM_VARS = ['console', 'log'];
+class Module {
+  constructor({ code, path, bundle }) {
+    this.code = new MagicString(code);
+    this.path = path;
+    this.bundle = bundle;
+    //先获取语法树
+    this.ast = parse(code, {
+      ecmaVersion: 8,
+      sourceType: 'module'
+    });
+    //存放本模块内导入了哪些变量 main.js中导入了name和age变量
+    this.imports = {};
+    //存放本模块中导出了哪些变量 msg.js导出了name和age两个变量
+    this.exports = {};
+    //存放本模块的顶级变量的定义语义是哪条
+    //只存放本模块内定义的顶级变量
+    this.definitions = {}
+    //存放变量修改语句
+    this.modifications = {};
+    //重命名的变量
+    this.canonicalNames = {};
+    //分析语法树
+    analyse(this.ast, this.code, this);
+  }
+  expandAllStatements() {
+    let allStatements = [];
+    this.ast.body.forEach(statement => {
+      if (statement.type === 'ImportDeclaration') return;
+      //默认情况下我们不包括所有的变量声明语句
+      if (statement.type === 'VariableDeclaration') return;
+      let statements = this.expandStatement(statement);
+      allStatements.push(...statements);
+    });
+    return allStatements;
+  }
+  expandStatement(statement) {
+    statement._included = true;
+    let result = [];
+    //找到此语句使用到的变量，把这些变量的定义语句取出来，放到result数组里
+    //var name = 'zhufeng';
+    const _dependsOn = Object.keys(statement._dependsOn);
+    _dependsOn.forEach(name => {
+      //找到此变量的定义语句，添加到结果里
+      let definitions = this.define(name);
+      result.push(...definitions);
+    });
+    //console.log(name);
+    result.push(statement);
+    //还要找到此语句定义的变量，把此变量对应的修改语句也包括进来
+    //name += 'jiagou' name += '2'
+    const defines = Object.keys(statement._defines);
+    defines.forEach(name => {
+      //找到此变量的修改语句
+      const modifications = hasOwnProperty(this.modifications, name) && this.modifications[name];
+      if (modifications) {
+        modifications.forEach(modification => {
+          //为了避免同一行代码在结果 里输出二次
+          if (!modification._included) {
+            let statements = this.expandStatement(modification);
+            result.push(...statements);
+          }
+        });
+      }
+    });
+    return result;
+  }
+  define(name) {
+    //区分此变量是函数内自己声明的，还是外部导入的
+    if (hasOwnProperty(this.imports, name)) {
+      //获取是从哪个模块引入的哪个变量
+      const { source, importName } = this.imports[name];
+      //获取导入的模块 source相对于当前模块路径的相对路径 path是当前模块的绝对路径
+      const importedModule = this.bundle.fetchModule(source, this.path);
+      const { localName } = importedModule.exports[importName];//msg.js exports[name]
+      return importedModule.define(localName);
+    } else {
+      //如果非导入模块，是本地模块的话,获取 此变量的变量定义语句
+      let statement = this.definitions[name];
+      if (statement) {
+        if (statement._included) {
+          return [];
+        } else {
+          return this.expandStatement(statement);
+        }
+      } else {
+        if (SYSTEM_VARS.includes(name)) {
+          return [];
+        } else {
+          throw new Error(`变量${name}既没有从外部导入，也没有在当前的模块内声明!`);
+        }
+      }
+    }
+  }
+  rename(name, replacement) {
+    this.canonicalNames[name] = replacement;
+  }
+  getCanonicalName(name) {
+    return this.canonicalNames[name] || name;
+  }
+}
+module.exports = Module;
+```
+
+
+
+lib\ast\analyse.js
+
+- 第1个循环 找出导入导出的变量
+- 第2个循环 找出定义和依赖的变量
+
+```js
+const walk = require('./walk');
+const Scope = require('./scope');
+const { hasOwnProperty } = require('../utils');
+/**
+ * 分析模块对应的AST语法树
+ * @param {*} ast 语法树
+ * @param {*} code 源代码
+ * @param {*} module 模块实例
+ */
+function analyse(ast, code, module) {
+  //开始第1轮循环 找出本模块导出导出了哪些变量  不会递归遍历
+  ast.body.forEach((statement) => {
+    Object.defineProperties(statement, {
+      _included: { value: false, writable: true },//表示这条语句默认不包括在输出结果里
+      _module: { value: module },//指向它自己的模块
+      //这是这个语句自己对应的源码
+      _source: { value: code.snip(statement.start, statement.end) },
+      _dependsOn: { value: {} },//依赖的变量
+      _defines: { value: {} },//存放本语句定义了哪些变量
+      _modifies: { value: {} }//存放本语句修改哪些变量
+    });
+    //找出导入了哪些变量?
+    if (statement.type === 'ImportDeclaration') {
+      //获取导入的模块的相对路径
+      let source = statement.source.value;//./msg
+      statement.specifiers.forEach(specifier => {
+        let importName = specifier.imported.name;//导入的变量名
+        let localName = specifier.local.name;//当前模块的变量名
+        //我当前模块内导入的变量名localName来自于source模块导出的importName变量
+        module.imports[localName] = { source, importName }
+      });
+    } else if (statement.type === 'ExportNamedDeclaration') {
+      const declaration = statement.declaration;
+      if (declaration && declaration.type === 'VariableDeclaration') {
+        const declarations = declaration.declarations;
+        declarations.forEach(variableDeclarator => {//var a=1,b=2,c=3;
+          const localName = variableDeclarator.id.name;
+          const exportName = localName;//age age
+          module.exports[exportName] = { localName }
+        });
+      }
+    }
+  });
+  //开始第2轮循环 创建作用域链 ，递归遍历语法树
+  //需要知道本模块内用到了哪些变量，用到的变量留 下，没用到不管理了
+  //我还得知道这个变量是局部变量，还是全局变量
+  //一上来创建顶级作用域
+  let currentScope = new Scope({ name: '模块内的顶级作用域' });
+  ast.body.forEach(statement => {
+    function addToScope(name, isBlockDeclaration) {//是否块级变量
+      currentScope.add(name, isBlockDeclaration);//把此变量名添加到当前作用域的变量数组中
+      //如果说当前的作用域没有父作用域了，说它就是顶级作用域，那此变量就是顶级变量
+      if (!currentScope.parent ||
+          //如果当前的作用域(BlockStatement)是块级作用域，并且变量声明不是块级声明，是var
+          (currentScope.isBlock && !isBlockDeclaration)
+         ) {
+        //表示此语句定义了一个顶级变量 IfStatement._defines['age']=true
+        statement._defines[name] = true;
+        //此顶级变量的定义语句就是这条语句
+        module.definitions[name] = statement;
+      }
+    }
+    function checkForReads(node) {
+      if (node.type === 'Identifier') {
+        //表示当前这个语句依赖了node.name这个变量
+        statement._dependsOn[node.name] = true;
+      }
+    }
+    function checkForWrites(node) {
+      function addNode(node) {
+        const { name } = node;//name age
+        statement._modifies[name] = true;//表示此语句修改了name这个变量
+        //module.modifications对象 属性是变量名 值是一个修改语句组成的数组
+        if (!hasOwnProperty(module.modifications, name)) {
+          module.modifications[name] = [];
+        }
+        //存放此变量对应的所有的修改语句
+        module.modifications[name].push(statement);
+      }
+      if (node.type === 'AssignmentExpression') {
+        addNode(node.left);
+      } else if (node.type === 'UpdateExpression') {
+        addNode(node.argument);
+      }
+    }
+    walk(statement, {
+      enter(node) {
+        checkForReads(node);
+        checkForWrites(node);
+        let newScope;
+        switch (node.type) {
+          case 'FunctionDeclaration':
+          case 'ArrowFunctionDeclaration':
+            addToScope(node.id.name);//把函数名添加到当前的作用域变量中
+            const names = node.params.map(param => param.name);
+            newScope = new Scope({
+              name: node.id.name,
+              parent: currentScope,//当创建新的作用域的时候，父作用域就是当前作用域
+              names,
+              isBlock: false//函数创建的不是一个块级作用域
+            });
+            break;
+          case 'VariableDeclaration':
+            node.declarations.forEach(declaration => {
+              if (node.kind === 'let' || node.kind === 'const') {
+                addToScope(declaration.id.name, true);
+              } else {
+                addToScope(declaration.id.name);
+              }
+            });
+            break;
+          case 'BlockStatement':
+            newScope = new Scope({ parent: currentScope, isBlock: true });
+            break;
+          default:
+            break;
+        }
+        if (newScope) {
+          Object.defineProperty(node, '_scope', { value: newScope });
+          currentScope = newScope;
+        }
+      },
+      leave(node) {
+        //如果当前节点有有_scope,说明它前节点创建了一个新的作用域，离开此节点的时候，要退出到父作用域
+        if (Object.hasOwnProperty(node, '_scope')) {
+          currentScope = currentScope.parent;
+        }
+      }
+    });
+  });
+}
+module.exports = analyse;
+```
+
+
+
+walk.js:
+
+```js
+
+function walk(astNode, { enter, leave }) {
+  visit(astNode, null, enter, leave);
+}
+function visit(node, parent, enter, leave) {
+  if (enter) {
+    enter(node, parent);
+  }
+  const keys = Object.keys(node).filter(key => typeof node[key] === 'object')
+  keys.forEach(key => {
+    let value = node[key];
+    if (Array.isArray(value)) {
+      value.forEach(val => {
+        visit(val, node, enter, leave)
+      });
+    } else if (value && value.type) {
+      visit(value, node, enter, leave);
+    }
+  });
+  if (leave) {
+    leave(node, parent);
+  }
+}
+module.exports = walk;
+```
+
+
+
+### rollup插件
+
+- `Rollup`是一个`JavaScript`模块打包器，可以将**小块代码**编译成**大块复杂**的代码，例如`library`或应用程序。
+
+启动脚本：
+
+debugger.js
+
+```js
+import { rollup, watch } from 'rollup';
+import inputOptions from './rollup.config.js'
+  ; (async function () {
+    //打包阶段 
+    const bundle = await rollup(inputOptions);
+    //生成阶段
+    await bundle.generate(inputOptions.output);
+    //写入阶段
+    await bundle.write(inputOptions.output);
+    /* 
+    const watcher = watch(inputOptions);
+    watcher.on('event', event => {
+      console.log(event);
+    });
+    setTimeout(() => {
+      watcher.close();
+    }, 1000); */
+    //关闭阶段
+    await bundle.close();
+  })();
+```
+
+rollup.config.js
+
+```js
+export default {
+  input: "./src/index.js",
+  output: {
+    dir: 'dist',
+  }
+}
+```
+
+package.json
+
+```json
+{
+  "type":"module",
+  "script":{
+    "build":"rollup -c"
+  }
+}
+```
+
+
+
+**插件**
+
+- [Rollup 插件](https://rollupjs.org/guide/en/#plugins-overview)是一个对象或者一个函数返回一个对象，该对象具有的属性或者方法（其实就是rollup的钩子函数）将在下面介绍。
+- [插件列表](https://github.com/rollup/awesome)
+
+
+
+**插件规范**
+
+- 应该有一个清晰的名称，带有`rollup-plugin-prefix`
+- 在package.json中包含插件关键字
+- 插件应该经过测试。推荐mocha或ava，它们支持开箱即用的Promise
+- 尽可能使用异步方法。
+- 如果合适的话，确保插件输出正确的`sourcemap`
+- 如果插件使用“虚拟模块”（例如，用于辅助功能），请在模块ID前面加上`\0`。这会阻止其他插件尝试处理它
+
+
+
+**插件对象属性**
+
+- name，插件的名称，用于错误消息和警告，值为字符串。
+- 回调函数，与构建过程交互
+  - 钩子是在构建的不同阶段被调用的函数
+  - 钩子可以影响构建的运行方式，提供关于构建的信息，或者在构建完成后修改构建
+  - 有不同种类的钩子
+    - `async` 钩子可以返回解析为相同类型值的`Promise`；否则，钩子将被标记为`sync`（默认async）
+    - `first` 如果有几个插件实现了这个钩子，钩子会按顺序运行，直到钩子返回一个`非null`或未定义的值
+    - `sequential` 如果几个插件实现了这个钩子，那么它们都将按照指定的插件顺序运行。如果一个钩子是异步的，那么这种类型的后续钩子将等待当前钩子被解析
+    - `parallel` 如果多个插件实现了这个钩子，那么它们都将按照指定的插件顺序运行。如果一个钩子是异步的，那么这类后续钩子将并行运行，而不是等待当前钩子
+  - `Build Hooks`在构建阶段运行，该阶段由`rollup.rollup(inputOptions)`触发
+  - 它们主要负责在`rollup`处理输入文件之前定位、提供和转换输入文件
+  - 构建阶段的第一个钩子是`options`，最后一个钩子总是`buildEnd`
+  - 如果出现生成错误，将在此之后调用`closeBundle`
+
+
+
+plugins\rollup-plugin-build.js
+
+```js
+function build(pluginOptions) {
+  return {
+    name: 'build',//插件的名字
+    /**
+     *  acorn, acornInjectPlugins, cache, context, experimentalCacheExpiry, external, inlineDynamicImports, input, makeAbsoluteExternalsRelative, manualChunks, maxParallelFileOps, maxParallelFileReads, moduleContext, onwarn, perf, plugins, preserveEntrySignatures, preserveModules, preserveSymlinks, shimMissingExports, strictDeprecations, treeshake, watch
+     */
+    async options(inputOptions) {
+      console.log('options');
+      //此钩子一般不使用 因为它是在汇总配置之前执行的
+      return { ...inputOptions };
+    },
+    async buildStart(inputOptions) {
+      //如果你想读取所有的插件的配置内容的汇总，需要buildStart
+      console.log('buildStart');
+      //inputOptions.input = ['./src/index2.js']
+    },
+    async resolveId(source, importer) {
+      console.log('resolveId', source);
+    },
+    async load(id) {
+      console.log('load');
+    },
+    async shouldTransformCachedModule({ id, code }) {
+      console.log('shouldTransformCachedModule', id);
+      return false;//每次从缓存在加载都需要重新转换
+    },
+    async transform(code, id) {
+      console.log('transform');
+    },
+    async moduleParsed(moduleInfo) {
+      console.log('moduleInfo');
+    },
+    async resolveDynamicImport(specifier, importer) {
+      console.log('resolveDynamicImport', specifier, importer);
+      //return { id: 'C:/aproject/webpack202208/13.rollup/src/msg.js' };
+    },
+    async buildEnd() {
+      console.log('buildEnd');
+    }
+  }
+}
+
+export default build;
+```
+
+
+
+rollup.config.js
+
+```diff
++import build from './plugins/rollup-plugin-build.js';
+export default {
+  input: "./src/index.js",
+  output: [{
+    dir: 'dist',
+  }],
+  plugins: [
++   build()
+  ]
+}
+```
+
+
 
 
 
