@@ -1,3 +1,105 @@
+## 函数式编程
+
+日常开发时写一些业务处理函数的这个过程并不叫函数式编程。但是函数式编程中一定涉及函数，函数式编程是一种编程范式，强调使用**函数之间的组合**，处理数据。将运算过程抽象成函数可以复用。
+
+
+
+常见的编程范式有:
+
+- 面向过程编程 (Procedural Programming) PP: 按照步骤来实现，将程序分解为过程和函数。这些过程和函数按顺序执行来完成任务，基本就是现阶段开发业务的一个流程，几乎不涉及函数式编程。**开发者能详细的控制每一行代码的逻辑**。
+
+- 面向对象编程(Object-Oriented Programming) 0OP:将程序分解为对象，每个对象都有自己的状态（属性）和行为（方法）。而方法是对属性进行的修改，更复杂的功能则通过创建多种对象，然后对象之间配合实现业务。面向对象的核心是 (类，实例，继承，封装，多态)，JS是单继承的。
+
+- 函数式编程(Functional Programming) FP:使用函数来组合和处理数据，描述数据之间的映射。函数指的并不是编程语言中的函数，指的是数学意义上的函数 y=f(x)输入映射输出
+
+  一个函数f接收一个参数x，并根据x计算返回一个结果y。
+
+
+
+面向过程编程：
+
+```js
+const arr = [1,2,3,4,5]
+
+let sum = 0 
+for(let index=0;index<arr.length;index++){
+  sum += arr[index]
+}
+
+
+// 并不是说将上面的代码封装到一个函数中就是在进行函数式编程了
+function sum(arr){
+  let sum = 0 
+  for(let index=0;index<arr.length;index++){
+    sum += arr[index]
+  }
+  return sum
+}
+```
+
+
+
+面向对象编程：
+
+```js
+const arr = [1,2,3,4,5]
+
+class Sum{
+  constructor(){
+    this.sum = 0  // 维护的状态
+  }
+  add(arr){  // 维护的方法
+    for(let index=0;index<arr.length;index++){
+      this.sum += arr[index]
+    }
+  }
+}
+
+const sum = new Sum()
+sum.add(arr)
+console.log(sum.sum)
+```
+
+
+
+函数式编程：
+
+```js
+// 使用函数与函数的组合
+const arr = [1,2,3,4,5]
+const sum = arr.reduce((prev,current)=>prev+current,0)
+```
+
+
+
+根据函数编程的思想，在编写一个函数时，往往要接收另一个或者一些函数作为参数，然后内部会调用那些函数执行逻辑。Vue3中的所有响应式API都是函数式编程思想的体现。
+
+
+
+**函数式编程的优势**
+
+- 可维护性:函数式编程的程序通常更加简洁和可读，因为它们避免了状态变化和副作用。
+- 可测试性:由于函数式编程程序通常是**无副作用（输入相同输出就一定相同，不会改变函数外的任何变量，不调用输出语句之类的函数）**的，所以可以很容易地对其进行单元测试。
+- 并发性:函数式编程程序通常是无副作用的，所以可以很容易地并行地执行
+- 扩展性:函数式编程程序通常是纯函数，可以很容易地组合和重用。
+- 可靠性:函数式编程程序通常是无副作用的，所以可以很容易地预测其行为。
+
+Vue3 也开始拥抱函数式编程，函数式编程可以抛弃 this，打包过程中更好的利用 tree-shaking过滤无用的代码
+
+纯函数可以对相同的输入的执行结果进行缓存，只要输入一样，则可以直接采用上一次输入相同的结果。
+
+
+
+**函数是一等公民**
+
+> First-class Function (头等函数) 当一门编程语言的函数可以被当作变量一样用时，则称这门语言拥有头等函数
+
+- 函数可以存储在变量中
+- 函数可以作为参数
+- 函数可以作为返回值
+
+
+
 ## promise 和异步编程
 
 异步函数发展流程
@@ -30,13 +132,30 @@
 
 
 
+```js
+Array.prototype.reduce = function reduce(callback,initialValue){
+  for(let index=0;index<this.length;index++){
+    if(initialValue===undefined){
+      initialValue = this[index]
+      initialValue = callback(initialValue,this[index+1],index+1,this)
+      index++
+    }else{
+      initialValue = callback(initialValue,this[index],index,this)
+    }
+  }
+  return initialValue
+}
+```
+
+
+
 #### 高阶函数的应用
 
 例如，现在项目中有一个核心方法。它的业务逻辑已经非常完善了。但是某个开发者想自己在执行这个核心代码逻辑之前做点自己的逻辑，核心代码执行之后再做自己的逻辑。原有的方式是：
 
 **作用一：可以在原来核心代码逻辑的前面和后面分别增加自己的代码。但是这样做的不足：别人在调取这段核心代码时也会执行到自己添加的代码（破坏了原有函数）。——面向切片编程（AOP）**
 
-在 Vue 中就用了 AOP 思想对数组原型上的方法进行额外逻辑捕获。
+在 Vue2 中就用了 AOP 思想对数组原型上的方法进行额外逻辑捕获。
 
 1. 扩展方法，基于原来的代码进行一系列扩展而不破坏原函数
 
@@ -69,6 +188,8 @@ Function.prototype.after = function (callback) {
   };
 };
 ```
+
+
 
 react 的 setState 中就用到了事务，也就是在 setState 函数执行前做一些事，执行后再做一些事。等同于 before 和 after。
 
@@ -165,6 +286,74 @@ let r1 = sum(1, 2)(3)(4, 5, 6)(7); // 缩小了函数的范围
 ```
 
 
+
+3. 缓存
+
+   ```js  
+   const _ = require('lodash')
+   function exec(a,b){
+     console.log('打印语句')  // 该代码只执行了一次
+     return a + b
+   }
+   
+   let memoizedExec = _.memoize(exec)  // 默认只要第一个实参相同，就能命中缓存结果并直接返回
+   memoizedExec(1,2)  // 3
+   memoizedExec(1,2)  // 3 
+   memoizedExec(1,3)  // 还是3
+   ```
+
+
+   ```js
+   const _ = require('lodash')
+   function exec(a,b){
+     console.log('打印语句')  // 该代码只执行了一次
+     return a + b
+   }
+   
+   const resolver = (...args)=>{  // 返回一个给memoize使用的缓存key ，每次执行memoizedExec时都会调用这个函数
+     console.log('resolver')
+     return JSON.stringify(args)
+   }
+   
+   let memoizedExec = _.memoize(exec,resolver)  
+   memoizedExec(1,2)  // 3
+   memoizedExec(1,2)  // 3 
+   memoizedExec(1,3)  // 4
+   
+   /**
+   resolver
+   打印语句
+   3
+   
+   resolver
+   3
+   
+   resolver
+   4
+   */
+   ```
+
+   
+
+   **memoize实现：**
+
+
+   ```js
+   function memoize(callback,resolver=(...args)=>args[0]){
+     const cache = new Map()
+     return function memoizedCallback(...args){
+       const cacheKey = resolver(...args)
+       if(cache.has(cacheKey)){
+         return cache.get(cacheKey)
+       }
+       const result = callback()
+       cache.set(cacheKey,result)
+       return result
+     }
+   }
+   ```
+
+   
 
 
 
@@ -276,6 +465,243 @@ function currying(callback){
 
 
 
+### 纯函数
+
+相同的输入永远会得到相同的输出，而且没有任何的**副作用**。(不会对外部环境产生影响并且不依赖于外部状态)。
+
+```js
+// 纯函数
+function sum(a, b) {
+  return a + b; // 相同的输入得到相同的输出
+}
+
+
+// 非纯函数
+let count = 0;
+function counter() {
+  count++; // 依赖外部状态，多次调用返回结果不同
+  return count;
+}
+
+let date = new Date();            
+function getTime() {
+  // 不同时间调用，返回值不同
+  return date.toLocaleTimeString();
+}
+```
+
+
+
+
+
+常见副作用:
+
+- 对全局变量或静态变量的修改
+- 对外部资源的访问(如文件、数据库、网络 http 请求)
+- 对系统状态的修改(环境变量)
+- 对共享内存的修改
+- DOM 访问，打印/log 等
+
+副作用是的方法通用性降低，让代码难以理解和预测，测试困难，导致静态问题（并发操作）等
+
+
+
+
+
+### 函数柯里化
+
+```js
+function curry(fn){
+  let argsLength = fn.length
+  let argsArr = []
+  return function curried(...args){
+    if(argsArr.length >= argsLength) return fn(...argsArr)
+    argsArr.push(...args)
+    return curried
+  }
+}
+```
+
+
+
+
+
+```js
+function sum1(a,b,c){ // 多参数的函数
+    return a + b + c;
+}
+ sum1(1,2,3);
+
+function sum2(x,y){
+  return function c(z){
+    return x + y + z
+  }
+}
+
+sum2(1,2)(3); 
+// 函数柯里化的要求就是必须转成单参数的传入 (1)(2)(3)  标准的柯里化
+// 偏函数 就是先固定一些参数，之后传入其它的函数(1,2)(3)
+
+// 在开发的时候 一般不区分偏函数和柯里化(1)(2)(3)  (1,2)(3)
+// 转化成了单一的函数之后，会让函数粒度变的更低 （控制的更精准）
+
+function sum3(x){
+  return function(y){
+    return function (z){
+
+    }
+  }
+}
+let sum31 = sum3(1); // 可以通过一个范围较大的函数，衍生出小函数，可以通过组合来使用
+sum3(2)(3)
+
+
+function isType(typing,val){
+  return Object.prototype.toString.call(val) === `[object ${typing}]`
+}
+// 固定的参数希望缓存起来，可以利用柯里化来实现
+console.log(isType('String','abc'))
+console.log(isType('String',123))
+console.log(isType('String',true))
+
+
+
+const _ = require('lodash');
+
+const curriedIsType =  _.curry(isType)
+
+const isString = curriedIsType('String')
+console.log(isString('123'))
+console.log(isString(123))
+
+
+function sum(a,b,c){ // 多参数的函数
+  return a + b + c;
+}
+// 柯里化的实现， （分批传入参数）， 将多参数转化成细粒度函数，转化后还可以组合， 可以实现部分参数的缓存
+function curry(func){ // 高阶函数
+  const curried = (...args)=>{
+    if( args.length < func.length){ // 传递的参数 不满足函数
+      return (...other)=>curried(...args,...other)
+    }
+    return func(...args)
+  }
+  return curried
+}
+
+const curriedSum =  curry(sum)
+console.log(curriedSum(1,2)(3))// 如果执行的参数没有达到函数的参数 此时会返回一个新函数来继续等待接受剩余的参数
+
+// 组合 compose 组合函数 （redux compose， koa express 组合函数）  1） 处理请求参数 2） 看用户是否权限  3） 响应内容
+
+function double(n){ // 纯函数
+  return n* 2
+}
+function toFixed(n){
+  return n.toFixed(2)
+}
+function addPrefix(n){
+  return '£' + n
+}
+// addPrefix(toFiexd(double(10000))) // 洋葱模型
+// double(10000) | toFiexd | addPrefix  过滤器的用法 管道 （滤网）  vue2 filter
+
+// 组合
+function flowRight(...fns){
+  if(fns.length == 1){ // 只有一个函数就不组合了
+    return fns[0]
+  }
+  // 最终reduce返回的是一个函数
+  return fns.reduceRight((a,b)=> (...args)=> b(a(...args)) )
+}
+// double -> a 从right开始
+// toFiexd -> b 
+
+// a -> (...args)=> toFiexd(double(...args))
+// b -> addPrefix
+
+// addPrefix( toFiexd(double(1000)))
+const composed = flowRight(addPrefix,toFixed,double)// Pointed Free
+const r = composed(10000)
+console.log(r)
+```
+
+
+
+### 函数组合
+
+针对同一批参数，需要依次进行一些列的处理，最后生成所需的数据。
+
+```js
+function flowRight(...fns){
+   if(fns.length == 1){ // 只有一个函数就不组合了
+    return fns[0]
+  }
+  
+  return function composedRight(...args){
+    return fns.reduceRight((args,current)=>{
+      return current(...args)
+    },args)
+  }
+}
+
+function double(n){ // 纯函数
+  return n* 2
+}
+function toFixed(n){
+  return n.toFixed(2)
+}
+function addPrefix(n){
+  return '£' + n
+}
+addPrefix(toFiexd(double(10000))) // 洋葱模型
+
+
+const _ = require('lodash');
+const composed = _.flowRight(addPrefix,toFixed,double)
+composed(10000)
+```
+
+
+
+函数柯里化和组合应用：
+
+```js
+const _ = require('lodash'); // 工具库
+
+// 'click button' -> 'CLICK_BUTTON'  目的
+
+const str = 'click button'
+let pp1 = _.split(str, ' ')
+let pp2 = _.join(pp1, '_')
+let pp3 = _.toUpper(pp2)
+
+
+// 组合的要求必须是一个参数的入参， 柯里化
+
+// 函数式编程是组合后传递数据拿到结果 
+const splitByType = _.curry((sep,str)=>  _.split(str, sep))
+const joinByType = _.curry((sep,str)=>  _.join(str, sep))
+
+const composed = _.flowRight(_.toUpper,joinByType('_'),splitByType(' '))
+console.log(composed(str),'curry + compose')
+
+const lodash = require('lodash/fp'); // 会自动将内部的方法柯里化， 都给你处理成参数先行的特点
+
+const composedFn1 = _.flowRight(lodash.toUpper,lodash.join('_'),lodash.split(' '))
+console.log(composedFn1(str))
+
+// redux + compose
+
+// 小结：函数式编程的基本 纯函数、柯里化、组合来进行数据的处理。 可以将一些复杂的运算逻辑抽象成函数。 可以复用
+```
+
+
+
+
+
+
+
 ### 异步串行
 
 ```js
@@ -295,6 +721,32 @@ fs.readFile('./name.txt', 'utf8', function (err, data) {
 
 ### 异步并发
 
+```js
+const fs = require('fs');
+const path = require('path');
+
+// 通过哨兵变量 来解决这类问题。 
+let times = 0;
+function print(key,value){
+    person[key] = value;
+    if(++times === 2){
+      console.log(person)
+    }
+}
+
+// node中的回调第一个参数永远是error。 error-first
+fs.readFile(path.resolve(__dirname, 'name.txt'), 'utf8', function (err, name) {
+    print('name', name)
+})
+fs.readFile(path.resolve(__dirname, 'age.txt'), 'utf8', function (err, age) {
+    print('age', age)
+})
+
+// 异步并发，最终需要一起获得到结果
+```
+
+
+
 **异步代码是无法通过 try catch 捕获异步任务中的错误**，所以在 node 中的异步回调函数内部处理错误并作为回调函数的第一个参数返回。
 
 ```js
@@ -309,12 +761,15 @@ function after(times, callback) {
     }
   };
 }
+
 let out = after(2, (data) => {
   console.log(data);
 });
+
 fs.readFile(path.resolve(__dirname, 'age.txt'), 'utf8', function (err, data) {
   out('age', data);
 });
+
 fs.readFile(path.resolve(__dirname, 'name.txt'), 'utf8', function (err, data) {
   out('name', data);
 });
