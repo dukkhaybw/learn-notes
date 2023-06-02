@@ -900,8 +900,6 @@ Promise 本身还是基于回调函数实现异步的。
   // 先打印executor，再打印123
   ```
 
-  
-
 - 每个 promise 实例有可能是三种状态中的一种：pending（默认状态）, fulfilled 或 rejected
 
 - resolve 和 reject 可以改变 promise 实例对象的状态 pending=> fulfilled 或者 pending => rejected
@@ -918,9 +916,11 @@ Promise 本身还是基于回调函数实现异步的。
 
 - then 方法同步执行的时候，会首先判断 onFulfilled 函数和 onRejected 函数是否传值，没传则用默认值
 
-- then 方法执行时会先判断该方法的 promise 实例对象的 state 是否不为 pending，如果不是，则根据 state 的状态立即开启一个微任务执行 onFulfilled 函数或者 onRejected 函数，并将实例上的 this.value 或者 this.reason 传给对应的回调函数并且该回调函数会作为微任务加入微任务队列
+- then 方法执行时会先判断该方法的 promise 实例对象的 state 是否不为 pending，如果不是，则根据 state 的状态立即开启一个**微任务**执行 onFulfilled 函数或者 onRejected 函数，并将实例上的 this.value 或者 this.reason 传给对应的回调函数并且该回调函数会作为微任务加入微任务队列
 
 - 如果 then 方法执行时，对应的 promises 实例的状态仍是 pending，则将对应的 onFulfilled 函数和 onRejected 函数订阅到 promise 实例的对应属性上存放起来
+
+- then方法执行后，返回一个新的promise
 
 - onFulfilled 函数和 onRejected 函数是有返回值的，返回值的不同情况： 非 promise 实例数据，抛出错误，promise 实例
 
@@ -1136,6 +1136,8 @@ function readFile(...args) {
   // })
 }
 ```
+
+
 
 #### resolve 和 reject
 
