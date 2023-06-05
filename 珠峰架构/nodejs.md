@@ -1,39 +1,34 @@
 ## 函数式编程
 
-日常开发时写一些业务处理函数的这个过程并不叫函数式编程。但是函数式编程中一定涉及函数，函数式编程是一种编程范式，强调使用**函数之间的组合**，处理数据。将运算过程抽象成函数可以复用。
-
-
+目前自己在日常开发时写一些业务处理函数的这个过程并不是函数式编程。但是函数式编程中一定涉及函数，函数式编程是一种编程范式，强调使用**函数之间的组合**，处理数据。将运算过程抽象成函数可以复用。
 
 常见的编程范式有:
 
 - 面向过程编程 (Procedural Programming) PP: 按照步骤来实现，将程序分解为过程和函数。这些过程和函数按顺序执行来完成任务，基本就是现阶段开发业务的一个流程，几乎不涉及函数式编程。**开发者能详细的控制每一行代码的逻辑**。流水账式的编写代码。
 
-- 面向对象编程(Object-Oriented Programming) 0OP:将程序分解为对象，每个对象都有自己的状态（属性）和行为（方法）。而方法是对属性进行的修改，更复杂的功能则通过创建多种对象，然后对象之间配合实现业务。面向对象的核心是 (类，实例，继承，封装，多态)，JS是单继承的，如果继承层级关系多了容易混乱。
+- 面向对象编程(Object-Oriented Programming) 0OP:将程序分解为对象，每个对象都有自己的状态（属性）和行为（方法）。而方法是对属性进行的修改，更复杂的功能则通过创建多种对象，然后对象之间配合实现业务。面向对象的核心是 (类，实例，继承，封装，多态)，JS 是单继承的，如果继承层级关系多了容易混乱。
 
 - 函数式编程(Functional Programming) FP:使用函数来组合和处理数据，描述数据之间的映射。函数指的并不是编程语言中的函数，指的是数学意义上的函数 y=f(x)输入映射输出
 
-  一个函数f接收一个参数x，并根据x计算返回一个结果y。
-
-
+  一个函数 f 接收一个参数 x，并根据 x 计算返回一个结果 y。
 
 面向过程编程：
 
 ```js
-const arr = [1,2,3,4,5]
+const arr = [1, 2, 3, 4, 5];
 
-let sum = 0 
-for(let index=0;index<arr.length;index++){
-  sum += arr[index]
+let sum = 0;
+for (let index = 0; index < arr.length; index++) {
+  sum += arr[index];
 }
 
-
 // 并不是说将上面的代码封装到一个函数中就是在进行函数式编程了
-function sum(arr){
-  let sum = 0 
-  for(let index=0;index<arr.length;index++){
-    sum += arr[index]
+function sum(arr) {
+  let sum = 0;
+  for (let index = 0; index < arr.length; index++) {
+    sum += arr[index];
   }
-  return sum
+  return sum;
 }
 ```
 
@@ -42,22 +37,23 @@ function sum(arr){
 面向对象编程：
 
 ```js
-const arr = [1,2,3,4,5]
+const arr = [1, 2, 3, 4, 5];
 
-class Sum{
-  constructor(){
-    this.sum = 0  // 维护的状态
+class Sum {
+  constructor() {
+    this.sum = 0; // 维护的状态
   }
-  add(arr){  // 维护的方法
-    for(let index=0;index<arr.length;index++){
-      this.sum += arr[index]
+  add(arr) {
+    // 维护的方法
+    for (let index = 0; index < arr.length; index++) {
+      this.sum += arr[index];
     }
   }
 }
 
-const sum = new Sum()
-sum.add(arr)
-console.log(sum.sum)
+const sum = new Sum();
+sum.add(arr);
+console.log(sum.sum);
 ```
 
 
@@ -66,13 +62,11 @@ console.log(sum.sum)
 
 ```js
 // 使用函数与函数的组合
-const arr = [1,2,3,4,5]
-const sum = arr.reduce((prev,current)=>prev+current,0)
+const arr = [1, 2, 3, 4, 5];
+const sum = arr.reduce((prev, current) => prev + current, 0);
 ```
 
-
-
-根据函数编程的思想，在编写一个函数时，往往要接收另一个或者一些函数作为参数，然后内部会调用那些函数执行逻辑。Vue3中的所有响应式API都是函数式编程思想的体现。
+根据函数编程的思想，在编写一个函数时，往往要接收另一个或者一些函数作为参数，然后内部会调用那些函数执行逻辑。Vue3 中的所有响应式 API 都是函数式编程思想的体现。
 
 
 
@@ -84,7 +78,7 @@ const sum = arr.reduce((prev,current)=>prev+current,0)
 - 扩展性:函数式编程程序通常是纯函数，可以很容易地组合和重用。
 - 可靠性:函数式编程程序通常是无副作用的，所以可以很容易地预测其行为。
 
-Vue3 也开始拥抱函数式编程，函数式编程可以抛弃 this，打包过程中更好的利用 tree-shaking过滤无用的代码
+Vue3 也开始拥抱函数式编程，函数式编程可以抛弃 this，打包过程中更好的利用 tree-shaking 过滤无用的代码
 
 纯函数可以对相同的输入的执行结果进行缓存，只要输入一样，则可以直接采用上一次输入相同的结果。
 
@@ -99,10 +93,6 @@ Vue3 也开始拥抱函数式编程，函数式编程可以抛弃 this，打包�
 - 函数可以作为返回值
 
 
-
-## promise 和异步编程
-
-异步函数发展流程
 
 ### 高阶函数
 
@@ -130,24 +120,20 @@ Vue3 也开始拥抱函数式编程，函数式编程可以抛弃 this，打包�
    }
    ```
 
-
-
 ```js
-Array.prototype.reduce = function reduce(callback,initialValue){
-  for(let index=0;index<this.length;index++){
-    if(initialValue===undefined){
-      initialValue = this[index]
-      initialValue = callback(initialValue,this[index+1],index+1,this)
-      index++
-    }else{
-      initialValue = callback(initialValue,this[index],index,this)
+Array.prototype.reduce = function reduce(callback, initialValue) {
+  for (let index = 0; index < this.length; index++) {
+    if (initialValue === undefined) {
+      initialValue = this[index];
+      initialValue = callback(initialValue, this[index + 1], index + 1, this);
+      index++;
+    } else {
+      initialValue = callback(initialValue, this[index], index, this);
     }
   }
-  return initialValue
-}
+  return initialValue;
+};
 ```
-
-
 
 #### 高阶函数的应用
 
@@ -189,11 +175,9 @@ Function.prototype.after = function (callback) {
 };
 ```
 
-
-
 react 的 setState 中就用到了事务，也就是在 setState 函数执行前做一些事，执行后再做一些事。等同于 before 和 after。
 
- react 事务：
+react 事务：
 
 ```js
 function perform(fn, wrappers) {
@@ -209,13 +193,9 @@ function perform(fn, wrappers) {
 
 <img src="..\typora-user-images\image-20211113222412658.png" alt="image-20211113222412658" style="zoom: 67%;" />
 
-
-
 <img src="..\typora-user-images\image-20211113222830481.png" alt="image-20211113222830481" style="zoom:67%;" />
 
 **AOP:主要作用就是将一些跟核心业务逻辑模块无关的功能抽离，其实就是给原函数增加一层，不影响原函数内部的逻辑。**
-
-
 
 **作用二：形成闭包保存变量**
 
@@ -282,43 +262,40 @@ let r1 = sum(1, 2)(3)(4, 5, 6)(7); // 缩小了函数的范围
 // 反柯里化 放大函数的范围
 // Object.prototype.toString.call(val) -> toString()
 // 高阶函数的两种功能，1) 可以扩展功能, 2) 预制参数
-
 ```
-
-
 
 3. 缓存
 
-   ```js  
-   const _ = require('lodash')
-   function exec(a,b){
-     console.log('打印语句')  // 该代码只执行了一次
-     return a + b
+   ```js
+   const _ = require('lodash');
+   function exec(a, b) {
+     console.log('打印语句'); // 该代码只执行了一次
+     return a + b;
    }
    
-   let memoizedExec = _.memoize(exec)  // 默认只要第一个实参相同，就能命中缓存结果并直接返回
-   memoizedExec(1,2)  // 3
-   memoizedExec(1,2)  // 3 
-   memoizedExec(1,3)  // 还是3
+   let memoizedExec = _.memoize(exec); // 默认只要第一个实参相同，就能命中缓存结果并直接返回
+   memoizedExec(1, 2); // 3
+   memoizedExec(1, 2); // 3
+   memoizedExec(1, 3); // 还是3
    ```
 
-
    ```js
-   const _ = require('lodash')
-   function exec(a,b){
-     console.log('打印语句')  // 该代码只执行了一次
-     return a + b
+   const _ = require('lodash');
+   function exec(a, b) {
+     console.log('打印语句'); // 该代码只执行了一次
+     return a + b;
    }
    
-   const resolver = (...args)=>{  // 返回一个给memoize使用的缓存key ，每次执行memoizedExec时都会调用这个函数
-     console.log('resolver')
-     return JSON.stringify(args)
-   }
+   const resolver = (...args) => {
+     // 返回一个给memoize使用的缓存key ，每次执行memoizedExec时都会调用这个函数
+     console.log('resolver');
+     return JSON.stringify(args);
+   };
    
-   let memoizedExec = _.memoize(exec,resolver)  
-   memoizedExec(1,2)  // 3
-   memoizedExec(1,2)  // 3 
-   memoizedExec(1,3)  // 4
+   let memoizedExec = _.memoize(exec, resolver);
+   memoizedExec(1, 2); // 3
+   memoizedExec(1, 2); // 3
+   memoizedExec(1, 3); // 4
    
    /**
    resolver
@@ -333,83 +310,74 @@ let r1 = sum(1, 2)(3)(4, 5, 6)(7); // 缩小了函数的范围
    */
    ```
 
-   
-
-   **memoize实现：**
-
+   **memoize 实现：**
 
    ```js
-   function memoize(callback,resolver=(...args)=>args[0]){
-     const cache = new Map()
-     return function memoizedCallback(...args){
-       const cacheKey = resolver(...args)
-       if(cache.has(cacheKey)){
-         return cache.get(cacheKey)
+   function memoize(callback, resolver = (...args) => args[0]) {
+     const cache = new Map();
+     return function memoizedCallback(...args) {
+       const cacheKey = resolver(...args);
+       if (cache.has(cacheKey)) {
+         return cache.get(cacheKey);
        }
-       const result = callback()
-       cache.set(cacheKey,result)
-       return result
-     }
+       const result = callback();
+       cache.set(cacheKey, result);
+       return result;
+     };
    }
    ```
-
-   
-
-
 
 扩展：判断数据类型
 
 1. typeof 可以判断基础类型 typeof null == ’object‘ （缺陷就是只能判断基础类型），不能判断 null
 
-   > 面试题：为什么typeof null 返回 ‘object’ ？
+   > 面试题：为什么 typeof null 返回 ‘object’ ？
    >
    > 在 JS 的最初版本中，使用的是 32 位系统，为了性能考虑，在判断数据类型时，使用**低位存储的二进制数据进行变量类型信息的判断**，000 开头代表是对象，然而 null 表示为全零，所以将它错误的判断为 object 。虽然现在的内部类型判断代码已经改变了，但是对于这个 Bug 却是一直流传下来。
    >
-   > | 数据类型     | 机器码标识     |
-   > | ------------ | -------------- |
-   > | 对象(Object) | 000            |
-   > | 整数         | 1              |
-   > | 浮点数       | 010            |
-   > | 字符串       | 100            |
-   > | 布尔         | 110            |
-   > | `undefined`  | -2^31(即全为1) |
-   > | `null`       | 全为0          |
+   > | 数据类型     | 机器码标识      |
+   > | ------------ | --------------- |
+   > | 对象(Object) | 000             |
+   > | 整数         | 1               |
+   > | 浮点数       | 010             |
+   > | 字符串       | 100             |
+   > | 布尔         | 110             |
+   > | `undefined`  | -2^31(即全为 1) |
+   > | `null`       | 全为 0          |
 
 2. Object.prototype.toString.call 比较严格（知道数据的类型，但无法细分谁是谁的实例）
 
    > ```js
-   > Object.prototype.toString.call(undefined)       //  '[object Undefined]'
-   > 
-   > Object.prototype.toString.call(new Date)        // '[object Date]'
-   > 
-   > Object.prototype.toString.call(1)      // '[object Number]'
-   > 
-   > Object.prototype.toString.call('as')      // '[object String]'
-   > 
-   > Object.prototype.toString.call(/123/)      // '[object RegExp]'
-   > 
-   > Object.prototype.toString.call(function fn(){})       // '[object Function]'
-   > 
-   > Object.prototype.toString.call(Symbol())     //  '[object Symbol]'
-   > 
-   > Object.prototype.toString.call(true)        // '[object Boolean]'
-   > 
-   > Object.prototype.toString.call(null)        // '[object Null]'
-   > 
-   > Object.prototype.toString.call({})          //  '[object Object]'
-   > 
-   > Object.prototype.toString.call(new Set())       //  '[object Set]'
-   > 
-   > Object.prototype.toString.call(new WeakMap())      // '[object WeakMap]'
+   > Object.prototype.toString.call(undefined); //  '[object Undefined]'
+   >
+   > Object.prototype.toString.call(new Date()); // '[object Date]'
+   >
+   > Object.prototype.toString.call(1); // '[object Number]'
+   >
+   > Object.prototype.toString.call('as'); // '[object String]'
+   >
+   > Object.prototype.toString.call(/123/); // '[object RegExp]'
+   >
+   > Object.prototype.toString.call(function fn() {}); // '[object Function]'
+   >
+   > Object.prototype.toString.call(Symbol()); //  '[object Symbol]'
+   >
+   > Object.prototype.toString.call(true); // '[object Boolean]'
+   >
+   > Object.prototype.toString.call(null); // '[object Null]'
+   >
+   > Object.prototype.toString.call({}); //  '[object Object]'
+   >
+   > Object.prototype.toString.call(new Set()); //  '[object Set]'
+   >
+   > Object.prototype.toString.call(new WeakMap()); // '[object WeakMap]'
    > ```
 
 3. instanceof xxx 是 Xxx 的实例
 
-   > ({})instanceof Object       // true
+   > ({})instanceof Object // true
 
 4. constructor 找到对应实例的构造函数
-
-
 
 **柯里化**（JavaScript 设计模式一书中有实现）
 
@@ -442,24 +410,20 @@ let test = sum.fun(6);
 console.log(test(1)(2)(3)(4)(5)(6));
 ```
 
-
-
 ```js
-function currying(callback){
-  let arr = []
-  
-  return function (...args){
-    if(args.length===0){
-      callback.call(this,...arr)
-    }else{
-      arr.push(...args)
-      return arugments.callee
+function currying(callback) {
+  let arr = [];
+
+  return function (...args) {
+    if (args.length === 0) {
+      callback.call(this, ...arr);
+    } else {
+      arr.push(...args);
+      return arugments.callee;
     }
-  }
+  };
 }
 ```
-
-
 
 反柯里化使用 call 在增大函数的调用范围。
 
@@ -475,7 +439,6 @@ function sum(a, b) {
   return a + b; // 相同的输入得到相同的输出
 }
 
-
 // 非纯函数
 let count = 0;
 function counter() {
@@ -483,14 +446,12 @@ function counter() {
   return count;
 }
 
-let date = new Date();            
+let date = new Date();
 function getTime() {
   // 不同时间调用，返回值不同
   return date.toLocaleTimeString();
 }
 ```
-
-
 
 常见副作用:
 
@@ -504,163 +465,158 @@ function getTime() {
 
 
 
-
-
 ### 函数柯里化
 
 ```js
-function curry(fn){
-  let argsLength = fn.length
-  let argsArr = []
-  return function curried(...args){
-    if(argsArr.length >= argsLength) return fn(...argsArr)
-    argsArr.push(...args)
-    return curried
-  }
+function curry(fn) {
+  let argsLength = fn.length;
+  let argsArr = [];
+  return function curried(...args) {
+    if (argsArr.length >= argsLength) return fn(...argsArr);
+    argsArr.push(...args);
+    return curried;
+  };
 }
 ```
 
-
-
-
-
 ```js
-function sum1(a,b,c){ // 多参数的函数
-    return a + b + c;
+function sum1(a, b, c) {
+  // 多参数的函数
+  return a + b + c;
 }
- sum1(1,2,3);
+sum1(1, 2, 3);
 
-function sum2(x,y){
-  return function c(z){
-    return x + y + z
-  }
+function sum2(x, y) {
+  return function c(z) {
+    return x + y + z;
+  };
 }
 
-sum2(1,2)(3); 
+sum2(1, 2)(3);
 // 函数柯里化的要求就是必须转成单参数的传入 (1)(2)(3)  标准的柯里化
 // 偏函数 就是先固定一些参数，之后传入其它的函数(1,2)(3)
 
 // 在开发的时候 一般不区分偏函数和柯里化(1)(2)(3)  (1,2)(3)
 // 转化成了单一的函数之后，会让函数粒度变的更低 （控制的更精准）
 
-function sum3(x){
-  return function(y){
-    return function (z){
-
-    }
-  }
+function sum3(x) {
+  return function (y) {
+    return function (z) {};
+  };
 }
 let sum31 = sum3(1); // 可以通过一个范围较大的函数，衍生出小函数，可以通过组合来使用
-sum3(2)(3)
+sum3(2)(3);
 
-
-function isType(typing,val){
-  return Object.prototype.toString.call(val) === `[object ${typing}]`
+function isType(typing, val) {
+  return Object.prototype.toString.call(val) === `[object ${typing}]`;
 }
 // 固定的参数希望缓存起来，可以利用柯里化来实现
-console.log(isType('String','abc'))
-console.log(isType('String',123))
-console.log(isType('String',true))
-
-
+console.log(isType('String', 'abc'));
+console.log(isType('String', 123));
+console.log(isType('String', true));
 
 const _ = require('lodash');
 
-const curriedIsType =  _.curry(isType)
+const curriedIsType = _.curry(isType);
 
-const isString = curriedIsType('String')
-console.log(isString('123'))
-console.log(isString(123))
+const isString = curriedIsType('String');
+console.log(isString('123'));
+console.log(isString(123));
 
-
-function sum(a,b,c){ // 多参数的函数
+function sum(a, b, c) {
+  // 多参数的函数
   return a + b + c;
 }
 // 柯里化的实现， （分批传入参数）， 将多参数转化成细粒度函数，转化后还可以组合， 可以实现部分参数的缓存
-function curry(func){ // 高阶函数
-  const curried = (...args)=>{
-    if( args.length < func.length){ // 传递的参数 不满足函数
-      return (...other)=>curried(...args,...other)
+function curry(func) {
+  // 高阶函数
+  const curried = (...args) => {
+    if (args.length < func.length) {
+      // 传递的参数 不满足函数
+      return (...other) => curried(...args, ...other);
     }
-    return func(...args)
-  }
-  return curried
+    return func(...args);
+  };
+  return curried;
 }
 
-const curriedSum =  curry(sum)
-console.log(curriedSum(1,2)(3))// 如果执行的参数没有达到函数的参数 此时会返回一个新函数来继续等待接受剩余的参数
+const curriedSum = curry(sum);
+console.log(curriedSum(1, 2)(3)); // 如果执行的参数没有达到函数的参数 此时会返回一个新函数来继续等待接受剩余的参数
 
 // 组合 compose 组合函数 （redux compose， koa express 组合函数）  1） 处理请求参数 2） 看用户是否权限  3） 响应内容
 
-function double(n){ // 纯函数
-  return n* 2
+function double(n) {
+  // 纯函数
+  return n * 2;
 }
-function toFixed(n){
-  return n.toFixed(2)
+function toFixed(n) {
+  return n.toFixed(2);
 }
-function addPrefix(n){
-  return '£' + n
+function addPrefix(n) {
+  return '£' + n;
 }
 // addPrefix(toFiexd(double(10000))) // 洋葱模型
 // double(10000) | toFiexd | addPrefix  过滤器的用法 管道 （滤网）  vue2 filter
 
 // 组合
-function flowRight(...fns){
-  if(fns.length == 1){ // 只有一个函数就不组合了
-    return fns[0]
+function flowRight(...fns) {
+  if (fns.length == 1) {
+    // 只有一个函数就不组合了
+    return fns[0];
   }
   // 最终reduce返回的是一个函数
-  return fns.reduceRight((a,b)=> (...args)=> b(a(...args)) )
+  return fns.reduceRight(
+    (a, b) =>
+      (...args) =>
+        b(a(...args))
+  );
 }
 // double -> a 从right开始
-// toFiexd -> b 
+// toFiexd -> b
 
 // a -> (...args)=> toFiexd(double(...args))
 // b -> addPrefix
 
 // addPrefix( toFiexd(double(1000)))
-const composed = flowRight(addPrefix,toFixed,double)// Pointed Free
-const r = composed(10000)
-console.log(r)
+const composed = flowRight(addPrefix, toFixed, double); // Pointed Free
+const r = composed(10000);
+console.log(r);
 ```
-
-
 
 ### 函数组合
 
 针对同一批参数，需要依次进行一些列的处理，最后生成所需的数据。
 
 ```js
-function flowRight(...fns){
-   if(fns.length == 1){ // 只有一个函数就不组合了
-    return fns[0]
+function flowRight(...fns) {
+  if (fns.length == 1) {
+    // 只有一个函数就不组合了
+    return fns[0];
   }
-  
-  return function composedRight(...args){
-    return fns.reduceRight((args,current)=>{
-      return current(...args)
-    },args)
-  }
+
+  return function composedRight(...args) {
+    return fns.reduceRight((args, current) => {
+      return current(...args);
+    }, args);
+  };
 }
 
-function double(n){ // 纯函数
-  return n* 2
+function double(n) {
+  // 纯函数
+  return n * 2;
 }
-function toFixed(n){
-  return n.toFixed(2)
+function toFixed(n) {
+  return n.toFixed(2);
 }
-function addPrefix(n){
-  return '£' + n
+function addPrefix(n) {
+  return '£' + n;
 }
-addPrefix(toFiexd(double(10000))) // 洋葱模型
-
+addPrefix(toFiexd(double(10000))); // 洋葱模型
 
 const _ = require('lodash');
-const composed = _.flowRight(addPrefix,toFixed,double)
-composed(10000)
+const composed = _.flowRight(addPrefix, toFixed, double);
+composed(10000);
 ```
-
-
 
 函数柯里化和组合应用：
 
@@ -669,36 +625,29 @@ const _ = require('lodash'); // 工具库
 
 // 'click button' -> 'CLICK_BUTTON'  目的
 
-const str = 'click button'
-let pp1 = _.split(str, ' ')
-let pp2 = _.join(pp1, '_')
-let pp3 = _.toUpper(pp2)
-
+const str = 'click button';
+let pp1 = _.split(str, ' ');
+let pp2 = _.join(pp1, '_');
+let pp3 = _.toUpper(pp2);
 
 // 组合的要求必须是一个参数的入参， 柯里化
 
-// 函数式编程是组合后传递数据拿到结果 
-const splitByType = _.curry((sep,str)=>  _.split(str, sep))
-const joinByType = _.curry((sep,str)=>  _.join(str, sep))
+// 函数式编程是组合后传递数据拿到结果
+const splitByType = _.curry((sep, str) => _.split(str, sep));
+const joinByType = _.curry((sep, str) => _.join(str, sep));
 
-const composed = _.flowRight(_.toUpper,joinByType('_'),splitByType(' '))
-console.log(composed(str),'curry + compose')
+const composed = _.flowRight(_.toUpper, joinByType('_'), splitByType(' '));
+console.log(composed(str), 'curry + compose');
 
 const lodash = require('lodash/fp'); // 会自动将内部的方法柯里化， 都给你处理成参数先行的特点
 
-const composedFn1 = _.flowRight(lodash.toUpper,lodash.join('_'),lodash.split(' '))
-console.log(composedFn1(str))
+const composedFn1 = _.flowRight(lodash.toUpper, lodash.join('_'), lodash.split(' '));
+console.log(composedFn1(str));
 
 // redux + compose
 
 // 小结：函数式编程的基本 纯函数、柯里化、组合来进行数据的处理。 可以将一些复杂的运算逻辑抽象成函数。 可以复用
 ```
-
-
-
-
-
-
 
 ### 异步串行
 
@@ -715,35 +664,31 @@ fs.readFile('./name.txt', 'utf8', function (err, data) {
 });
 ```
 
-
-
 ### 异步并发
 
 ```js
 const fs = require('fs');
 const path = require('path');
 
-// 通过哨兵变量 来解决这类问题。 
+// 通过哨兵变量 来解决这类问题。
 let times = 0;
-function print(key,value){
-    person[key] = value;
-    if(++times === 2){
-      console.log(person)
-    }
+function print(key, value) {
+  person[key] = value;
+  if (++times === 2) {
+    console.log(person);
+  }
 }
 
 // node中的回调第一个参数永远是error。 error-first
 fs.readFile(path.resolve(__dirname, 'name.txt'), 'utf8', function (err, name) {
-    print('name', name)
-})
+  print('name', name);
+});
 fs.readFile(path.resolve(__dirname, 'age.txt'), 'utf8', function (err, age) {
-    print('age', age)
-})
+  print('age', age);
+});
 
 // 异步并发，最终需要一起获得到结果
 ```
-
-
 
 **异步代码是无法通过 try catch 捕获异步任务中的错误**，所以在 node 中的异步回调函数内部处理错误并作为回调函数的第一个参数返回。
 
@@ -772,8 +717,6 @@ fs.readFile(path.resolve(__dirname, 'name.txt'), 'utf8', function (err, data) {
   out('name', data);
 });
 ```
-
-
 
 ### 发布订阅模式
 
@@ -819,8 +762,6 @@ fs.readFile(path.resolve(__dirname, './age.txt'), 'utf-8', function (err, data) 
 // vue2 中属性@xxx="fn" 都是发布订阅  this.emit()
 // 视图更新就是观察者模式
 ```
-
-
 
 ### 观察者模式
 
@@ -890,11 +831,11 @@ Promise 本身还是基于回调函数实现异步的。
 - 创建 promise 实例时传入的回调函数是同步回调(executor)，且该回调函数接受两个函数：resolve 和 reject 作为参数
 
   ```js
-  const pro1 = new Promise((resolve,reject)=>{
-    console.log('executor')
-  })
-  
-  console.log('123') 
+  const pro1 = new Promise((resolve, reject) => {
+    console.log('executor');
+  });
+
+  console.log('123');
   // 先打印executor，再打印123
   ```
 
@@ -902,7 +843,7 @@ Promise 本身还是基于回调函数实现异步的。
 
 - resolve 和 reject 可以改变 promise 实例对象的状态 pending=> fulfilled 或者 pending => rejected
 
-- resolve和reject函数可以接受一个javascript中的数据，也可以是一个新的Promise
+- resolve 和 reject 函数可以接受一个 javascript 中的数据，也可以是一个新的 Promise
 
 - executor 函数执行报错时，调用 reject 函数
 
@@ -918,97 +859,89 @@ Promise 本身还是基于回调函数实现异步的。
 
 - 如果 then 方法执行时，对应的 promises 实例的状态仍是 pending，则将对应的 onFulfilled 函数和 onRejected 函数订阅到 promise 实例的对应属性上存放起来
 
-- then方法执行后，返回一个新的promise
+- then 方法执行后，返回一个新的 promise
 
 - onFulfilled 函数和 onRejected 函数是两个异步执行的任务，原生中是微任务
 
-- 如果onFulfilled 函数和 onRejected 函数运行时报错，则使用错误结果作为promise2失败的原因
+- 如果 onFulfilled 函数和 onRejected 函数运行时报错，则使用错误结果作为 promise2 失败的原因
 
 - onFulfilled 函数和 onRejected 函数是有返回值的，返回值的不同情况： 非 promise 实例数据，抛出错误，promise 实例
 
-  **分析onFulfilled 函数和 onRejected 函数返回值——x 与promise2的成功态和失败态的关系**：
-  
-  - 其中需要考虑x可能时其他库实现的promise实例
-  
-  - 如果x和promise2是同一个promise2对象，则调用promise2的reject并报错
-  
+  **分析 onFulfilled 函数和 onRejected 函数返回值——x 与 promise2 的成功态和失败态的关系**：
+
+  - 其中需要考虑 x 可能时其他库实现的 promise 实例
+
+  - 如果 x 和 promise2 是同一个 promise2 对象，则调用 promise2 的 reject 并报错
+
     ```js
-    const promise2 = new Promise(()=>{
-    	resolve()
-    }).then(data=>{
-    	return promise2  // 这个返回值就是x
-    })
-    
-    promise2.then(()=>{},(err)=>{
-        console.log(err)
-    })
+    const promise2 = new Promise(() => {
+      resolve();
+    }).then((data) => {
+      return promise2; // 这个返回值就是x
+    });
+
+    promise2.then(
+      () => {},
+      (err) => {
+        console.log(err);
+      }
+    );
     ```
-  
-  - 如果x是promise实例，这步都需要考虑其他库实现的promise
-  
-    - 判断x是否为promise的条件，x是一个对象或者函数，而且还需要有then方法
-  
-    - 如果x是一个promise实例，则取出它的then方法存入一个变量中
-  
-    - 如果取then方法时报错，则需要捕获错误并执行reject(err)
-  
+
+  - 如果 x 是 promise 实例，这步都需要考虑其他库实现的 promise
+
+    - 判断 x 是否为 promise 的条件，x 是一个对象或者函数，而且还需要有 then 方法
+
+    - 如果 x 是一个 promise 实例，则取出它的 then 方法存入一个变量中
+
+    - 如果取 then 方法时报错，则需要捕获错误并执行 reject(err)
+
       ```js
       // 其他库如果这么写，取then的时候就会报错
-      let promise = {}
-      Object.defineProperty(promise,'then',{
-          get(){
-             return throw new Error('错误')
-          }
-      })
+      let promise = {};
+      Object.defineProperty(promise, 'then', {
+        get() {
+          return throw new Error('错误');
+        }
+      });
       ```
-  
-      
-  
-    - then还必须是一个函数
-  
+
+    - then 还必须是一个函数
+
       ```js
-      new Promise((resolve)=>{
-          resolve(123)
-      }).then((data)=>{
-          return {
-              then:'abc'   //这个return返回值符合promisea+规范，但是它的then不是一个方法，所以不能看作一个promise实例
-          }
-      })
+      new Promise((resolve) => {
+        resolve(123);
+      }).then((data) => {
+        return {
+          then: 'abc' //这个return返回值符合promisea+规范，但是它的then不是一个方法，所以不能看作一个promise实例
+        };
+      });
       ```
-  
-    - 当x是一个promise实例的时候，会调用它的then方法，该方法绑定x为this，且接受resolvePromise和rejectPromise两个回调函数，但是这两个回调函数只能被调用一次
-  
+
+    - 当 x 是一个 promise 实例的时候，会调用它的 then 方法，该方法绑定 x 为 this，且接受 resolvePromise 和 rejectPromise 两个回调函数，但是这两个回调函数只能被调用一次
+
       ```js
-      let otherPromise = {  // 假设这是别人的promise库生成的实例对象
-          then(resolvePromise,rejectPromise){
-              resolvePromise()  // 当我自己实现的promise中将resolvePromise传给这个otherPromise实例的then方法后，这里多次调用的它，但我的实现中必须避免这种多次调用的情况
-              resolvePromise()
-              resolvePromise()
-          }
-      }
-      
-      let p = new Promise((resolve,reject)=>{
-          resolve()
-      })
-      
-      let p2 = p.then(()=>{
-          return otherPromise
-      })
+      let otherPromise = {
+        // 假设这是别人的promise库生成的实例对象
+        then(resolvePromise, rejectPromise) {
+          resolvePromise(); // 当我自己实现的promise中将resolvePromise传给这个otherPromise实例的then方法后，这里多次调用的它，但我的实现中必须避免这种多次调用的情况
+          resolvePromise();
+          resolvePromise();
+        }
+      };
+
+      let p = new Promise((resolve, reject) => {
+        resolve();
+      });
+
+      let p2 = p.then(() => {
+        return otherPromise;
+      });
       ```
-  
-      
-  
-    
-  
-    
-  
-    - 如果x是一个函数或者对象，但是没有then方法，则也证明x不是promise，这是直接调用promise2的resolve(x)
-  
-  - 如果x不是promise实例，则直接调用promise2的resolve(x)
-  
-  
-  
-  
+
+    - 如果 x 是一个函数或者对象，但是没有 then 方法，则也证明 x 不是 promise，这是直接调用 promise2 的 resolve(x)
+
+  - 如果 x 不是 promise 实例，则直接调用 promise2 的 resolve(x)
 
 ```js
 // 1.默认三个状态
@@ -1090,7 +1023,7 @@ class Promise {
       reject(e);
     }
   }
-  
+
   then(onFulfilled, onRejected) {
     // 4.调用then的时候来判断成功还是失败
     onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : (v) => v;
@@ -1181,7 +1114,6 @@ Promise.resolve = function (value) {
   });
 };
 
-
 module.exports = Promise;
 ```
 
@@ -1219,8 +1151,6 @@ function readFile(...args) {
 }
 ```
 
-
-
 #### resolve 和 reject
 
 注意点：
@@ -1228,8 +1158,6 @@ function readFile(...args) {
 Promise.resolve 在传参为另一个 promise 的时候，则会有等待的效果，取用解析后的结果继续向下执行。
 
 Promise.reject 则在传参为另一个 promise 的时候，则不会有等待的效果。
-
-
 
 针对注意点的使用案例：
 
@@ -1315,8 +1243,6 @@ Promise.reject = function (reason){
 }
 ```
 
-
-
 #### catch
 
 注意点：
@@ -1330,8 +1256,6 @@ class Promise {
   }
 }
 ```
-
-
 
 #### finally
 
@@ -1377,8 +1301,6 @@ Promise.prototype.finally = function (finalCallback) {
   );
 };
 ```
-
-
 
 #### all（异步并发）
 
@@ -1426,29 +1348,25 @@ Promise.all = function (promises) {
 };
 ```
 
-
-
 ```js
-Promise.all = function(promises){
-  return new Promise((resolve,reject)=>{
-    let resultArr = []
-    let len = promises.length
-    
-    promises.forEach((promiseItem,index)=>{   
-      Promise.resolve(promiseItem).then((data)=>{
-        resultArr[index] = data
-        if(index+1 === len){
-          resolve(resultArr)
+Promise.all = function (promises) {
+  return new Promise((resolve, reject) => {
+    let resultArr = [];
+    let len = promises.length;
+
+    promises.forEach((promiseItem, index) => {
+      Promise.resolve(promiseItem).then((data) => {
+        resultArr[index] = data;
+        if (index + 1 === len) {
+          resolve(resultArr);
         }
-      },reject)
-    })
-  })
-}
+      }, reject);
+    });
+  });
+};
 
 // 这种写法上的缺陷，针对后面这个数组 [promise1,promise2,2,3,4]  因为后面几项不是promise实例，当forEach循环到后面几项时，具体是最后一项时，会直接触发Promise.resolve()的then方法，这是index+1 直接就等于len，直接触发外出promise实例的resolve，而这时resultArr中的每一项并不一定都有对应的值。
 ```
-
-
 
 #### race
 
@@ -1464,64 +1382,62 @@ Promise.race = function (iterable) {
 };
 ```
 
-race的应用：处理超时请求。
+race 的应用：处理超时请求。
 
 ```js
 // 不使用promise.race的方法
 
-let abort
-new Promise((resolve,reject)=>{
-    abort = reject
-    setTimeout(()=>{
-        resolve('data')  // 这个请求要1秒才能回来
-    },1000)
-}).then((data)=>{
-    console.log(data)
-},err=>{
-    console.log(err)
-})
+let abort;
+new Promise((resolve, reject) => {
+  abort = reject;
+  setTimeout(() => {
+    resolve('data'); // 这个请求要1秒才能回来
+  }, 1000);
+}).then(
+  (data) => {
+    console.log(data);
+  },
+  (err) => {
+    console.log(err);
+  }
+);
 
-setTimeout(()=>{
-    abort('超时')  // 但是设置的最大请求时长的500ms
-},500)
+setTimeout(() => {
+  abort('超时'); // 但是设置的最大请求时长的500ms
+}, 500);
 ```
-
-
 
 ```js
 // 使用race处理超时情况
 function withAbort(userPromise) {
-    // 包装后返回的是一个promise，而且可以决定不采用用户的promise的结果
-    // Promise.race([我内置的promise比用户的快，userPromise])
-    let abort
-    const internalPromise = new Promise((resolve, reject) => {
-        abort = reject; // 将内容的reject方法作为终止方法
-    })
-    let p = Promise.race([internalPromise, userPromise])
-    p.abort = abort
-    return p
+  // 包装后返回的是一个promise，而且可以决定不采用用户的promise的结果
+  // Promise.race([我内置的promise比用户的快，userPromise])
+  let abort;
+  const internalPromise = new Promise((resolve, reject) => {
+    abort = reject; // 将内容的reject方法作为终止方法
+  });
+  let p = Promise.race([internalPromise, userPromise]);
+  p.abort = abort;
+  return p;
 }
 let p = new Promise((resolve, reject) => {
-    // abort= reject
-    setTimeout(() => { // 模拟的请求
-        resolve('ok')
-    }, 3000)
-})
+  // abort= reject
+  setTimeout(() => {
+    // 模拟的请求
+    resolve('ok');
+  }, 3000);
+});
 p = withAbort(p); // 没有终止promise执行，只是不采用他的结果了
 setTimeout(() => {
-    p.abort('超时')
-}, 500)
-// 如果这个请求超过500ms了 结果就不要了 
+  p.abort('超时');
+}, 500);
+// 如果这个请求超过500ms了 结果就不要了
 p.then((data) => {
-    console.log(data)
-}).catch(err => {
-    console.log(err, '失败')
-})
+  console.log(data);
+}).catch((err) => {
+  console.log(err, '失败');
+});
 ```
-
-
-
-
 
 #### allSettled
 
@@ -1670,7 +1586,7 @@ Promise 串行通过 then 链解决，并行通过 Promise.all 来解决。如�
 
    自己实现迭代方法：
 
-   ```js
+   ````js
    let likeArray = {
        0:1,
        1:2,
@@ -1691,70 +1607,29 @@ Promise 串行通过 then 链解决，并行通过 Promise.all 来解决。如�
 
 
    ```js
-// 类数组转化成数组： length，索引，迭代方法
+   // 类数组转化成数组： length，索引，迭代方法
+   ````
 
-let likeArray = {
-  // 内部迭代的时候会根据done的返回结果来继续调用next
-  0: 1,
-  1: 2,
-  2: 3,
-  length: 3,
-  get [Symbol.toStringTag]() {
-    return 'likeArray';
-  }
-};
-// Symbol 可以创建一个独一无二的值， 而且这个Symbol还可以实现“元编程” 可以改变js的原有的实现、底层机制
-console.log(likeArray.toString()); // [object likeArray]
+let likeArray = { // 内部迭代的时候会根据 done 的返回结果来继续调用 next 0: 1, 1: 2, 2: 3, length: 3, get [Symbol.toStringTag]() { return 'likeArray'; } }; // Symbol 可以创建一个独一无二的值， 而且这个 Symbol 还可以实现“元编程” 可以改变 js 的原有的实现、底层机制 console.log(likeArray.toString()); // [object likeArray]
 
-let likeArray = {
-  // 内部迭代的时候会根据done的返回结果来继续调用next
-  0: 1,
-  1: 2,
-  2: 3,
-  length: 3,
-  [Symbol.iterator]() {
-    // 要求返回值 而且标识是否迭代完成 {done:false/true,value:结果}
-    let that = this; // 当前的类数组
-    let index = 0;
-    return {
-      // 自己模拟了一个迭代器
-      next() {
-        return {
-          value: that[index],
-          done: index++ === that.length
-        };
-      }
-    };
-  }
-};
+let likeArray = { // 内部迭代的时候会根据 done 的返回结果来继续调用 next 0: 1, 1: 2, 2: 3, length: 3, [Symbol.iterator]() { // 要求返回值 而且标识是否迭代完成 {done:false/true,value:结果} let that = this; // 当前的类数组 let index = 0; return { // 自己模拟了一个迭代器 next() { return { value: that[index], done: index++ === that.length }; } }; } };
 
-let likeArray = {
-  0: 1,
-  1: 2,
-  2: 3,
-  length: 3,
-  [Symbol.iterator]: function* () {
-    let index = 0;
-    let len = this.length;
-    while (index !== len) {
-      yield this[index++];
-    }
-  }
-};
-   ```
+let likeArray = { 0: 1, 1: 2, 2: 3, length: 3, [Symbol.iterator]: function\* () { let index = 0; let len = this.length; while (index !== len) { yield this[index++]; } } };
+
+````
 
 ```js
 function* read() {
-  try {
-    let a = yield 'vue';
-    consloe.log(a);
-    let b = yield 'vite';
-    consloe.log(b);
-    let c = yield 'node';
-    consloe.log(c);
-  } catch (error) {
-    console.log(error);
-  }
+try {
+ let a = yield 'vue';
+ consloe.log(a);
+ let b = yield 'vite';
+ consloe.log(b);
+ let c = yield 'node';
+ consloe.log(c);
+} catch (error) {
+ console.log(error);
+}
 }
 
 let it = read(); // 生成一个迭代器  （协程）
@@ -1762,7 +1637,7 @@ it.next(); // 遇到yield 语句就暂停协程的执行，而执行父协程
 it.next('a'); // 父协程启动read子协程的执行，并将参数作为yield语句的返回值传入子协程
 it.throw('b'); // 父协程将错误抛给子协程去捕获
 it.next('c');
-```
+````
 
 yield 产出的结果可以等结果产出后再调用 next 开启子协程的继续执行。
 
@@ -1800,8 +1675,6 @@ if (!done) {
     });
 }
 ```
-
-
 
 ### CO 库
 
@@ -1844,8 +1717,6 @@ co(read())
     console.log(err);
   });
 ```
-
-
 
 ### 实现 generator 函数(状态机)
 
@@ -1938,8 +1809,6 @@ console.log(it.next('ccc'));
 ```
 
 整个 genertator 构造器函数的实现就是依靠的状态机，给函数提供闭包中的一个上下文，上下文中有一些列的标识或方法去修改该上下文中的标识，根据标识不同走不同逻辑。
-
-
 
 ### async + await
 
@@ -2053,6 +1922,8 @@ function _read() {
 //1) async 方法会变成一个promise
 ```
 
+
+
 ## 浏览器中的事件环
 
 ![image-20220714211548498](..\typora-user-images\image-20220714211548498.png)
@@ -2074,6 +1945,8 @@ function _read() {
 
 本轮同步代码执行，先将 body 的背景颜色设为 red，然后打印 1，将 Promise 的 then 中的回调函数加入到本轮执行栈中微任务队列中等待执行，再打印 3，本轮同步代码执行完毕，现在开始清空微任务队列，打印 2，然后将 body 的背景颜色设置为 yellow，本轮事件循环任务结束，js 引擎线程将主线程释放给渲染线程执行渲染，最后一直都是 yellow 的背景颜色。
 
+
+
 ```js
 <script>
         document.body.style.background = 'red';
@@ -2090,6 +1963,8 @@ function _read() {
 
 1. js 引擎在该帧内还有时间执行代码，本轮事件循环任务结束，js 引擎线程继续开启下一轮事件循环，取出前面宏任务队列中的代码，进行新一轮事件循环，打印 2 并将 body 的颜色设为 yellow，往后再没有可执行的代码，然后等待渲染线程显然页面，表现为一直都是 yellow 的背景颜色。（yellow 不闪烁）
 2. js 引擎在该帧内没有时间执行代码，本轮事件循环任务结束，js 引擎线程将主线程释放给渲染线程执行渲染，渲染线程将页面渲染为 red，然后开启下一轮事件环任务，打印 2 并将 body 的颜色设为 yellow，往后再没有可执行的代码，然后等待渲染线程显然页面，表现为 yellow 的背景颜色。（red 到 yellow 闪烁）
+
+
 
 ```html
 <button id="button">按钮</button>
@@ -2127,9 +2002,13 @@ function _read() {
 </script>
 ```
 
+
+
+
+
 ```js
 console.log(1);
-async function async() {
+async function asy() {
   console.log(2);
   await console.log(3);
   console.log(4);
@@ -2144,8 +2023,34 @@ const promise = new Promise((resolve, reject) => {
 promise.then((res) => {
   console.log(res);
 });
-async();
+asy();
 console.log(8);
+```
+
+
+
+
+
+```js
+Promise.resolve().then(() => {
+    console.log(0);
+    return new Promise((resolve)=>{
+        resolve('a');
+    })
+}).then(res => {
+    console.log(res)
+})
+Promise.resolve().then(() => {
+    console.log(1);
+}).then(() => {
+    console.log(2);
+}).then(() => {
+    console.log(3);
+}).then(() => {
+    console.log(4);
+}).then(() => {
+    console.log(5);
+})
 ```
 
 
@@ -2180,7 +2085,7 @@ Node.js 开启调试服务被动等待，调试客户端主动发起对接。
    > NODE_OPTIONS='--inspect' vercel dev
    > ```
 
- 在已运行的程序上开启调试服务，`kill -s SIGUSR1 49026` 作用是给进程 id 是 49026 的进程发送 `SIGUSR1` 信号，当 Node.js 进程收到 `SIGUSR1` 时，将启动调试服务。
+在已运行的程序上开启调试服务，`kill -s SIGUSR1 49026` 作用是给进程 id 是 49026 的进程发送 `SIGUSR1` 信号，当 Node.js 进程收到 `SIGUSR1` 时，将启动调试服务。
 
 2. 客户端调试 Chrome DevTools 会根据地址列表自动检查调试服务启动情况，默认地址有本地的 9229 和 9222 端口。`chrome://inspect` 面板负责调试管理。 ![image-20220428204207581](..\typora-user-images\image-20220428204207581.png)
 
@@ -2330,6 +2235,8 @@ console.log(this)(
 
 面试题：浏览器中的事件环和 node 中的事件环的区别。
 
+
+
 ## commonjs
 
 commonjs 规范：
@@ -2375,8 +2282,6 @@ node 中的全局对象是 global 对象，该对象上的属性或者方法都�
 上面这几个属性是在模块包裹的函数传入的，也是 argument 上对应的。
 
 在 commonjs 模块化规范中 require 方法底层就是依赖的 fs.readFileSync( )同步读取模块文件内容的，会有阻塞。
-
-
 
 ## 模块化原理前置支持
 
@@ -2633,6 +2538,8 @@ console.log(f2()); // 20
 
 // 虽然这段代码可以在浏览器中正常运行，但在 Node.js 中 f1() 会产生一个“找不到变量 x”的 ReferenceError。这是因为在 Node 中顶级作用域不是全局作用域，而 x 其实是在当前模块的作用域之中。
 ```
+
+
 
 ## 模拟实现 require
 
@@ -3343,7 +3250,7 @@ console.log(buf9);
 
 - indexOf ( value[,offset] ) ,常用来对传递过来的数据来进行拆分， 比如来处理 formdata 格式
 
-  ![image-20220610223813511](.\typora-user-images\image-20220610223813511.png)
+  ![image-20220610223813511](..\typora-user-images\image-20220610223813511.png)
 
 ```js
 let b1 = Buffer.from('123ab123ab123');
@@ -4026,8 +3933,6 @@ server.on('error', function (err) {
 });
 ```
 
-
-
 ```js
 const http = require('http');
 const url = require('url');
@@ -4079,8 +3984,6 @@ server.on('error', function (err) {
 // 可以采用nodemon 工具来监控文件的变化，文件变化后可以自动重启  （开发的时候用nodemon  生产环境pm2）
 // npm install nodemon -g
 ```
-
-
 
 ## 网络
 
