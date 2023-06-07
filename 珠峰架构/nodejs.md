@@ -1,14 +1,14 @@
 ## 函数式编程
 
-目前自己在日常开发时写一些业务处理函数的这个过程并不是函数式编程。但是函数式编程中一定涉及函数，函数式编程是一种编程范式，强调使用**函数之间的组合**，处理数据。将运算过程抽象成函数可以复用。
+目前自己在日常开发时写一些业务处理函数并没有使用函数式编程的思想，但是函数式编程中一定涉及函数，函数式编程是一种编程范式，强调使用**函数之间的组合**，目的是**处理数据**。将运算过程抽象成函数可以复用。
 
 常见的编程范式有:
 
-- 面向过程编程 (Procedural Programming) PP: 按照步骤来实现，将程序分解为过程和函数。这些过程和函数按顺序执行来完成任务，基本就是现阶段开发业务的一个流程，几乎不涉及函数式编程。**开发者能详细的控制每一行代码的逻辑**。流水账式的编写代码。
+- 面向过程编程 (Procedural Programming) PP: 按照步骤来实现，将程序分解为过程和函数。这些过程和函数按顺序执行来完成任务，基本就是现阶段开发业务的一个流程，几乎不涉及函数式编程思想。**开发者能详细的控制每一行代码的逻辑**，流水账式的编写代码。
 
 - 面向对象编程(Object-Oriented Programming) 0OP:将程序分解为对象，每个对象都有自己的状态（属性）和行为（方法）。而方法是对属性进行的修改，更复杂的功能则通过创建多种对象，然后对象之间配合实现业务。面向对象的核心是 (类，实例，继承，封装，多态)，JS 是单继承的，如果继承层级关系多了容易混乱。
 
-- 函数式编程(Functional Programming) FP:使用函数来组合和处理数据，描述数据之间的映射。函数指的并不是编程语言中的函数，指的是数学意义上的函数 y=f(x)输入映射输出
+- 函数式编程(Functional Programming) FP:使用函数组合和处理数据，描述数据之间的映射。函数指的并不是编程语言中的函数，指的是数学意义上的函数 y=f(x)输入映射输出
 
   一个函数 f 接收一个参数 x，并根据 x 计算返回一个结果 y。
 
@@ -66,7 +66,7 @@ const arr = [1, 2, 3, 4, 5];
 const sum = arr.reduce((prev, current) => prev + current, 0);
 ```
 
-根据函数编程的思想，在编写一个函数时，往往要接收另一个或者一些函数作为参数，然后内部会调用那些函数执行逻辑。Vue3 中的所有响应式 API 都是函数式编程思想的体现。
+根据函数式编程的思想，在编写一个函数时，往往要接收另一个或者一些函数作为参数，然后内部会调用那些函数执行逻辑。Vue3 中的所有响应式 API 都是函数式编程思想的体现。
 
 
 
@@ -74,19 +74,17 @@ const sum = arr.reduce((prev, current) => prev + current, 0);
 
 - 可维护性:函数式编程的程序通常更加简洁和可读，因为它们避免了状态变化和副作用。
 - 可测试性:由于函数式编程程序通常是**无副作用（输入相同输出就一定相同，不会改变函数外的任何变量，不调用输出语句之类的函数）**的，所以可以很容易地对其进行单元测试。
-- 并发性:函数式编程程序通常是无副作用的，所以可以很容易地并行地执行
+- 并发性:函数式编程程序通常是无副作用的，所用担心函数同时执行时彼此影响
 - 扩展性:函数式编程程序通常是纯函数，可以很容易地组合和重用。
 - 可靠性:函数式编程程序通常是无副作用的，所以可以很容易地预测其行为。
 
 Vue3 也开始拥抱函数式编程，函数式编程可以抛弃 this，打包过程中更好的利用 tree-shaking 过滤无用的代码
 
-纯函数可以对相同的输入的执行结果进行缓存，只要输入一样，则可以直接采用上一次输入相同的结果。
-
 
 
 **函数是一等公民**
 
-> First-class Function (头等函数) 当一门编程语言的函数可以被当作变量一样用时，则称这门语言拥有头等函数
+> First-class Function (头等函数) ，当一门编程语言的函数可以被当作变量一样用时，则称这门语言拥有头等函数
 
 - 函数可以存储在变量中
 - 函数可以作为参数
@@ -134,6 +132,8 @@ Array.prototype.reduce = function reduce(callback, initialValue) {
   return initialValue;
 };
 ```
+
+
 
 #### 高阶函数的应用
 
@@ -327,6 +327,8 @@ let r1 = sum(1, 2)(3)(4, 5, 6)(7); // 缩小了函数的范围
    }
    ```
 
+
+
 扩展：判断数据类型
 
 1. typeof 可以判断基础类型 typeof null == ’object‘ （缺陷就是只能判断基础类型），不能判断 null
@@ -379,49 +381,39 @@ let r1 = sum(1, 2)(3)(4, 5, 6)(7); // 缩小了函数的范围
 
 4. constructor 找到对应实例的构造函数
 
-**柯里化**（JavaScript 设计模式一书中有实现）
+
+
+**柯里化**
 
 缩小函数的调用范围，柯里化函数要求参数是固定。
 
 ```js
-Function.prototype.fun = function (n) {
-  let len = 0;
-  let arr = [];
-  let remFun = (value) => {
-    len++;
-    arr.push(value);
-    if (len === n) {
-      return this(...arr);
-    } else {
-      return remFun;
+function curry(fn) {
+  const length = fn.length; // 2
+  const args = []; // []
+  function curried(arg) {
+    args.push(arg);
+    if (args.length >= length) {
+      let result = fn(...args);
+      args.length -= 1;  /// +++++++++++++++++++++++
+      return result;
     }
-  };
-  return remFun;
-};
+    return curried;
+  }
 
-function sum(...args) {
-  return args.reduce((current, next) => {
-    return current + next;
-  });
+  return curried;
 }
 
-let test = sum.fun(6);
 
-console.log(test(1)(2)(3)(4)(5)(6));
-```
 
-```js
-function currying(callback) {
-  let arr = [];
-
-  return function (...args) {
-    if (args.length === 0) {
-      callback.call(this, ...arr);
-    } else {
-      arr.push(...args);
-      return arugments.callee;
+function curry(func) {
+  let curried = (...args) => {
+    if (args.length < func.length) {
+      return (...rest) => curried(...args, ...rest);
     }
+    return func(...args);
   };
+  return curried;
 }
 ```
 
@@ -465,84 +457,11 @@ function getTime() {
 
 
 
-### 函数柯里化
+### 函数组合
+
+针对同一批参数，需要依次进行一些列的处理，最后生成所需的数据。
 
 ```js
-function curry(fn) {
-  let argsLength = fn.length;
-  let argsArr = [];
-  return function curried(...args) {
-    if (argsArr.length >= argsLength) return fn(...argsArr);
-    argsArr.push(...args);
-    return curried;
-  };
-}
-```
-
-```js
-function sum1(a, b, c) {
-  // 多参数的函数
-  return a + b + c;
-}
-sum1(1, 2, 3);
-
-function sum2(x, y) {
-  return function c(z) {
-    return x + y + z;
-  };
-}
-
-sum2(1, 2)(3);
-// 函数柯里化的要求就是必须转成单参数的传入 (1)(2)(3)  标准的柯里化
-// 偏函数 就是先固定一些参数，之后传入其它的函数(1,2)(3)
-
-// 在开发的时候 一般不区分偏函数和柯里化(1)(2)(3)  (1,2)(3)
-// 转化成了单一的函数之后，会让函数粒度变的更低 （控制的更精准）
-
-function sum3(x) {
-  return function (y) {
-    return function (z) {};
-  };
-}
-let sum31 = sum3(1); // 可以通过一个范围较大的函数，衍生出小函数，可以通过组合来使用
-sum3(2)(3);
-
-function isType(typing, val) {
-  return Object.prototype.toString.call(val) === `[object ${typing}]`;
-}
-// 固定的参数希望缓存起来，可以利用柯里化来实现
-console.log(isType('String', 'abc'));
-console.log(isType('String', 123));
-console.log(isType('String', true));
-
-const _ = require('lodash');
-
-const curriedIsType = _.curry(isType);
-
-const isString = curriedIsType('String');
-console.log(isString('123'));
-console.log(isString(123));
-
-function sum(a, b, c) {
-  // 多参数的函数
-  return a + b + c;
-}
-// 柯里化的实现， （分批传入参数）， 将多参数转化成细粒度函数，转化后还可以组合， 可以实现部分参数的缓存
-function curry(func) {
-  // 高阶函数
-  const curried = (...args) => {
-    if (args.length < func.length) {
-      // 传递的参数 不满足函数
-      return (...other) => curried(...args, ...other);
-    }
-    return func(...args);
-  };
-  return curried;
-}
-
-const curriedSum = curry(sum);
-console.log(curriedSum(1, 2)(3)); // 如果执行的参数没有达到函数的参数 此时会返回一个新函数来继续等待接受剩余的参数
-
 // 组合 compose 组合函数 （redux compose， koa express 组合函数）  1） 处理请求参数 2） 看用户是否权限  3） 响应内容
 
 function double(n) {
@@ -583,41 +502,6 @@ const r = composed(10000);
 console.log(r);
 ```
 
-### 函数组合
-
-针对同一批参数，需要依次进行一些列的处理，最后生成所需的数据。
-
-```js
-function flowRight(...fns) {
-  if (fns.length == 1) {
-    // 只有一个函数就不组合了
-    return fns[0];
-  }
-
-  return function composedRight(...args) {
-    return fns.reduceRight((args, current) => {
-      return current(...args);
-    }, args);
-  };
-}
-
-function double(n) {
-  // 纯函数
-  return n * 2;
-}
-function toFixed(n) {
-  return n.toFixed(2);
-}
-function addPrefix(n) {
-  return '£' + n;
-}
-addPrefix(toFiexd(double(10000))); // 洋葱模型
-
-const _ = require('lodash');
-const composed = _.flowRight(addPrefix, toFixed, double);
-composed(10000);
-```
-
 函数柯里化和组合应用：
 
 ```js
@@ -649,6 +533,8 @@ console.log(composedFn1(str));
 // 小结：函数式编程的基本 纯函数、柯里化、组合来进行数据的处理。 可以将一些复杂的运算逻辑抽象成函数。 可以复用
 ```
 
+
+
 ### 异步串行
 
 ```js
@@ -663,6 +549,8 @@ fs.readFile('./name.txt', 'utf8', function (err, data) {
   });
 });
 ```
+
+
 
 ### 异步并发
 
@@ -718,6 +606,8 @@ fs.readFile(path.resolve(__dirname, 'name.txt'), 'utf8', function (err, data) {
 });
 ```
 
+
+
 ### 发布订阅模式
 
 ```js
@@ -762,6 +652,8 @@ fs.readFile(path.resolve(__dirname, './age.txt'), 'utf-8', function (err, data) 
 // vue2 中属性@xxx="fn" 都是发布订阅  this.emit()
 // 视图更新就是观察者模式
 ```
+
+
 
 ### 观察者模式
 
@@ -826,9 +718,13 @@ s.setState('开心了');
 
 Promise 本身还是基于回调函数实现异步的。
 
+> 异步导致的问题：回调地狱（让代码难以阅读）、错误处理 （⽆法统⼀处理错误）、多个异步操作（“同步结果”困难）
+
+
+
 重点思路：
 
-- 创建 promise 实例时传入的回调函数是同步回调(executor)，且该回调函数接受两个函数：resolve 和 reject 作为参数
+- 创建 promise 实例时传入的回调函数是**同步回调(executor)**，且该回调函数接受两个函数：resolve 和 reject 作为参数
 
   ```js
   const pro1 = new Promise((resolve, reject) => {
@@ -843,13 +739,16 @@ Promise 本身还是基于回调函数实现异步的。
 
 - resolve 和 reject 可以改变 promise 实例对象的状态 pending=> fulfilled 或者 pending => rejected
 
-- resolve 和 reject 函数可以接受一个 javascript 中的数据，也可以是一个新的 Promise
+- resolve 和 reject 函数可以接受一个 javascript 中的数据，**也可以是一个新的 Promise**
+
+  - 如果resolve接受的是一个promise实例，则会使用该promise实例的成功或者失败的原因作为下一个promise的成功或者失败的原因
+  - 如果reject接受的是一个promise实例，则直接将该promise实例作为下一个promise的reason
 
 - executor 函数执行报错时，调用 reject 函数
 
 - 同一个 promise 实例可以调用多次 then 函数
 
-- promise 可以链式调用
+- then方法可以链式调用
 
 - **then 方法调用时是同步执行的，传给 then 方法的 onFulfilled 函数和 onRejected 函数是可选的**
 
@@ -996,10 +895,11 @@ class Promise {
     // 这里可以用一个变量，为了看的清除 用2来表示
     this.value = undefined;
     this.reason = undefined;
-    this.onResolvedCallbacks = []; // 存放成功的回调的
-    this.onRejectedCallbacks = []; // 存放失败的回调的
-    const resolve = (value) => {
-      // 这里我们添加一个规范外的逻辑 让value值是promise的话可以进行一个解析
+    this.onResolvedCallbacks = []; 
+    this.onRejectedCallbacks = []; 
+    // resolve和reject必须使用箭头函数，不然this只想会存在错误
+    const resolve = (value) => {  
+      // 这里添加一个规范外的逻辑 让value值是promise的话可以进行一个解析
       if (value instanceof Promise) {
         // 递归解析值
         return value.then(resolve, reject);
@@ -2302,15 +2202,15 @@ fs.existsSync(url)，该方法的异步方法被废弃。
 目录删除和创建。
 
 ```js
-fs.mkdir(path.resolve(__dirname.'a'),function(err){
+fs.mkdir(path.resolve(__dirname,'a'),function(err){
     //....
 })
 
-fs.mkdir(path.resolve(__dirname.'a/b/c/d'),function(err){   // 报错，该api要求在创建文件时需要先有上级目录
+fs.mkdir(path.resolve(__dirname,'a/b/c/d'),function(err){   // 报错，该api要求在创建文件时需要先有上级目录
     //....
 })
 
-fs.mkdir(path.resolve(__dirname.'a/b/c/d'),{recursive:true},function(err){
+fs.mkdir(path.resolve(__dirname,'a/b/c/d'),{recursive:true},function(err){
     //....
 })
 
@@ -2433,9 +2333,13 @@ async function rmdir(filePath){
 }
 ```
 
-### path
 
-path.resolve()这个方法根据路径解析出一个绝对路径而且**解析的路径是`以运行为基准`**，当拼接 ' / '时则直接回到磁盘根路径下。
+
+
+
+###  path
+
+**path.resolve()** 这个方法根据路径解析出一个绝对路径而且**解析的路径是`以运行位置为基准`**，当拼接 ' / '时则直接回到磁盘根路径下。
 
 C:\users\test\Desktop\node\one\1.js:
 
@@ -2453,7 +2357,42 @@ console.log(path.resolve('note.md'));
 
 打印：C:\users\test\Desktop\node\note.md
 
-path.join()这个方法只是负责路径拼接，没有其他任何功能
+所以一般要结合__dirname来使用：
+
+```js
+const path = require('path');
+
+console.log(path.resolve(__dirname,'note.md'));
+console.log(path.resolve(process.cwd(),'note.md'));  // 默认
+```
+
+注意：
+
+> __dirname是node在commonjs模块化规范中提供的，如果文件使用的是esmodule模块化规范 xxx.mjs
+>
+> ```js
+> import path from 'path'
+> console.log(path.resolve(__dirname,'note.md'));
+> console.log(arugments) // arguments也是没有的
+> ```
+>
+> 这是会报错：__dirname未定义。
+>
+> 
+>
+> 解决办法： 在esmodule模块化文件中获取文件的绝对路径
+> ```js
+> import path from 'path'
+> import url from 'url'
+> const obj = url.parse(import.meta.url)  // const obj = new URL(import.meta.url)
+> 
+> let dirname = path.dirname(obj,pathname) // 这个就是文件的绝对路径
+> 
+> ```
+
+
+
+**path.join()**这个方法只是负责路径拼接，没有其他任何功能
 
 如果有'/'路径的情况下不要使用 resolve，resolve 会将'/'视为绝对路径。
 
@@ -2470,6 +2409,14 @@ path.basename('a.js', '.js'); // a
 
 path.dirname(); // 取处路径中的路径部分
 ```
+
+
+
+**path.dirname(path)**：获取这个路径的上一级目录路径。
+
+**path.extname(path)、path.basename(path,base)**
+
+
 
 ### vm 模块
 
@@ -2896,24 +2843,26 @@ timeout
 
 ![image-20210418105915555](..\typora-user-images\image-20210418105915555.png)
 
+
+
 ## event 模块
 
-发布订阅模式。 非常有利于代码的解耦合，比如有两个类，原本这了类是彼此独立不相干的，但是两个类的实例之间可以相互通信，一般使用类的继承或者继承原型链。，但是另一种方式就是使用发布订阅模式。
+node中提供的发布订阅模式模块。 利于代码的解耦合，比如有两个类，原本这了类是彼此独立不相干的，但是两个类的实例之间可以相互通信，一般使用类的继承或者继承原型链，但是另一种方式就是使用发布订阅模式。
 
 ```js
-const EventEmitter = require('events'); // 内置模块检测时候 会进行检测
-// 发布订阅： 能解决什么问题？  异步， 解决代码耦合的问题 （组件通信）
+const EventEmitter = require('events'); 
 const util = require('util');
 
 function Girl() {}
-util.inherits(Girl, EventEmitter);
+util.inherits(Girl, EventEmitter); // 现在可以不强求使用这个方法，可以使用class+extends 
 
 let girl = new Girl(); // once
 
 // 批处理 例如多次修改数据只更新一次页面
 
+ // 内部的提供的newListener，会在每次绑定一个事件的时候出触发，但是本次绑定的事件的回调函数还没有被添加的待触发的数组中。
 let flag = false;
-girl.on('newListener', (type) => {
+girl.on('newListener', (type) => { 
   // 此方法可以监控到用户绑定了哪些事件
   if (!flag) {
     process.nextTick(() => {
@@ -2922,19 +2871,23 @@ girl.on('newListener', (type) => {
     flag = true;
   }
 });
+
 // 1.绑定事件触发newListener 但是立刻 emit了 ， 喝酒这件事还没放到队列中
 girl.on('女生失恋了', () => {
   // {女生失恋了:[fn,fn,fn]}
   console.log('喝酒');
 });
+
 // 2.绑定事件触发newListener, 触发emit, 只有喝酒这在队列中
 girl.on('女生失恋了', () => {
   console.log('逛街');
 });
+
 // 2.绑定事件触发newListener, 触发emit, 只有喝酒、逛街这在队列中
 girl.on('女生失恋了', () => {
   console.log('哭');
 });
+
 // const shopping = ()=>{
 //     console.log('逛街')
 // }
@@ -2942,6 +2895,7 @@ girl.on('女生失恋了', () => {
 // girl.once('女生失恋了',()=>{
 //     console.log('哭')
 // })
+
 // girl.off('女生失恋了',shopping); // 取消绑定的事件
 // girl.emit('女生失恋了') // 第一次执行完毕后在列表中移除了哭的这件事
 // girl.emit('女生失恋了')
@@ -2954,16 +2908,17 @@ girl.on('女生失恋了', () => {
 - Object.setPrototypeof()
 - `Fun.prototype.__proto__` = Fnn.prototype
 
-node 中的 util 模块提供一些原生 API
+node 中的 util 模块提供一些原生 API。
+
+
 
 手写 event：
 
 ```js
-function EventEmitter(){
+function EventEmitter(){}
 
-}
 EventEmitter.prototype.on = function (eventName,fn){
-    if(!this._events) this._events = {};
+    if(!this._events) this._events = {}; // 这种写法可以处理那些继承了EventEmitter的类的实例上没有this._event属性的情况
 
     if(eventName !== 'newListener'){
        this.emit('newListener',eventName)
@@ -3002,6 +2957,8 @@ module.exports = EventEmitter
 ```
 
 在 node 中有一个核心模块 util，该方法中有一个 inherits 方法实现两个构造函数的继承。util.inherits(ctor,superCtor)
+
+
 
 ## NPM
 
@@ -3099,39 +3056,52 @@ npx 也可以执行命令，但是项目中不存在该命令行工具时，会�
 
 mime 第三方包可以用于传入一个文件名，返回文件的类型。
 
+
+
 ## Buffer
 
 Buffer 是 global 的属性，属性的值是一个构造函数。服务器端需要大量操作文件，所以 node 就自定义了一个类型 buffer，代表的是内存。操作文件就是 i/o 操作，针对内存做输入输出，描述内存情况，多大的文件，文件的内容。
 
-Buffer 的结构和数组很相似，操作 Buffer 的方法拼写也和数组的方法一样。数组中没法存放二进制格式的文件（图片，音视频），而 buffer 则可以。
+Buffer 的结构和数组很相似，操作 Buffer 的方法拼写也和数组的方法一样。数组中没法存放二进制格式的文件（图片，音视频），而 buffer 则可以。一旦声明了buffer的大小后就不能再改变。
 
 早期浏览器不支持文件读取，node 中操作文件需要 Buffer 类，**优点是可以和字符串相互转换。**
 
-内存用二进制表示数据。
+```shell
+npm install @types/node   // 这个包用于提示node中api的类型
+```
 
-0.1 + 0.2 !=0.3，这是为什么？
+  
 
-0.1 无法用有限的内存表示，所以就会出现省略问题，小数运算都是一些近似值的运算。
+```js
+// 声明方式（三种）
+const buf1 = Buffer.allocated(size[, value])  // size是字节数  每个字节上都存放value的值
+// 打印buffer中的数据时，使用的是16进制来显示
 
-0.2 也是无法准确表示出来的，都会比之前的数大一些。
+const buf2 = Buffer.from(arrayBuffer)  // 根据arrayBuffer自行指定buffer中每一项的存储内容
 
-进制转化：
+const buf3 = Buffer.form(string)  // 将字符串转为二进制存储到buffer中
 
-小数转二进制可以采用乘 2 法。
+```
 
-node 中 buffer 的展示采用的是 16 进制，存储的是二进制。
+uft-8编码是一个长度可变的编码规则，其中英文字母占一个字节，汉字占3个字节。
 
-0.2+0.2 == 0.4 ，为什么？因为这种计算是一种近似值得计算
 
-整数的进制转化：
 
-8 比特位 = 1 字节
+buffer合并：
 
-一个字母占一个字节，八个比特位。
+```js
+// buffer类似数组，可以通过索引和长度来访问每个字节
+const buf1 = Buffer.form('hello')
+const buf2 = Buffer.form('world')
 
-一个汉字占 3 个字节（utf-8），也就是 24 个比特位。
+const buf3 = Buffer.allocated(buf1.length+buf2.length)
+// buf1.copy(target,targetStart,sourceStart,sourceEnd)
+buf1.copy(buf3,0,0,6)
+buf2.copy(buf3,6,0,6)
 
-一个字节最大能表示的数字是 255，ascii 码中一个字符就是一个字节，因为 8 个位能表示所有的美国当时使用的字母，数字和符号。
+```
+
+
 
 parseInt('10111001',2) // 二进制的数转为 10 进制
 
@@ -3831,7 +3801,7 @@ add(element){
 
 ## fs
 
-文件夹就是一个树结构，我们就需要操作树的一系列方法。
+文件夹就是一个树结构，就需要操作树的一系列方法。
 
 ## http
 
