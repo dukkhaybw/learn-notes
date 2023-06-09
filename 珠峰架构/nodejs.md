@@ -1448,15 +1448,15 @@ var timeoutID = scope.setTimeout(function[, delay, arg1, arg2, ...]);  // 附加
 
 ## 生成器函数
 
-基于 Promise 的异步处理，其实 Promise 本身还是有一些问题，所以又衍生出了其他基于 Promise 的新语法特性对 Promise 的缺点进行规避。
+Promise 本身还是有一些问题，所以又衍生出了其他**基于** Promise 的新语法特性对 Promise 的缺点进行规避。
 
-Promise 串行通过 then 链解决，并行通过 Promise.all 来解决。如果功能更复杂，难免还是会有回调函数的嵌套，因为 promise 本身还是基于回调函数的。传给 then 方法 onfulfilled 和 onrejected 都是回调函数。所以 Promise 并没有完全解决嵌套问题，写异步时不够优雅。
+Promise 串行通过 then 链解决；并行通过 Promise.all 来解决。如果功能更复杂，难免还是会有回调函数的嵌套，因为 promise 本身还是基于回调函数的。传给 then 方法 onfulfilled 和 onrejected 都是回调函数。所以 Promise 并没有完全解决嵌套问题，写异步时不够优雅。
 
-为了让异步编程用同步代码风格来实现，解决方式有：
+为了**让异步编程用同步代码风格来实现**，解决方式有：
 
-1. generator
+1. generator+promise
 
-   generator 生成器，用于生成迭代器。Generator + Promise。可迭代的数据类型的值都有内置的迭代器。不能被迭代就说明代类型的值内部没有迭代器。
+   generator 生成器，用于生成迭代器。可迭代的数据类型的值都有内置的迭代器。不能被迭代就说明代类型的值内部没有迭代器。
 
    基本用法：
 
@@ -1474,7 +1474,7 @@ Promise 串行通过 then 链解决，并行通过 Promise.all 来解决。如�
    it.next()
    ```
 
-   严格意义上的类数组：1. 有索引；2. 有长度；3. 能遍历
+   **严格意义上的类数组：1. 有索引；2. 有长度；3. 能遍历**
 
    ```js
    let likeArray = {0:1,1:2,2:3,length:3}   // 这个对象默认并不是严格意义上的类数组
@@ -1496,29 +1496,53 @@ Promise 串行通过 then 链解决，并行通过 Promise.all 来解决。如�
        	let index= 0  // 闭包
            return {
                next:()=>{
-                   return {value:this[index],done:index===this.length}
+                   return {value:this[index],done:index++>=this.length}
                }
            }
    	}
    }
    
    let arr = [...likeArray]  // 会自动调用该对象中的迭代器方法
-
-
-
-   ```js
-   // 类数组转化成数组： length，索引，迭代方法
    ````
+   
+   
+   ```js
+   let likeArray = {
+       0:1,
+       1:2,
+       2:3,
+       length:3,
+       [Symbol.interayor]:function* (){
+           let index = 0
+           while(index === this.length){
+               yield this[index++]
+           }
+       }
+   }
+   
+   let likeArray = { // 内部迭代的时候会根据 done 的返回结果来继续调用 next 
+       0: 1, 
+       1: 2, 
+       2: 3, 
+       length: 3, 
+       [Symbol.toStringTag]() { return 'likeArray'  },
+       // Symbol 可以创建一个独一无二的值， 而且这个 Symbol 还可以实现“元编程” 可以改变 js 的原有的实现、底层机制 console.log(likeArray.toString());       [object likeArray]
+   
+       [Symbol.iterator]() { // 要求返回值 而且标识是否迭代完成 {done:false/true,value:结果}
+           let that = this; // 当前的类数组 
+           let index = 0; 
+           return { // 自己模拟了一个迭代器 
+               next() { 
+                   return ({ value: that[index],done: index++ === that.length })
+               }
+           }
+       }
+   };
+   ```
+   
+   
 
-let likeArray = { // 内部迭代的时候会根据 done 的返回结果来继续调用 next 0: 1, 1: 2, 2: 3, length: 3, get [Symbol.toStringTag]() { return 'likeArray'; } }; // Symbol 可以创建一个独一无二的值， 而且这个 Symbol 还可以实现“元编程” 可以改变 js 的原有的实现、底层机制 console.log(likeArray.toString()); // [object likeArray]
-
-let likeArray = { // 内部迭代的时候会根据 done 的返回结果来继续调用 next 0: 1, 1: 2, 2: 3, length: 3, [Symbol.iterator]() { // 要求返回值 而且标识是否迭代完成 {done:false/true,value:结果} let that = this; // 当前的类数组 let index = 0; return { // 自己模拟了一个迭代器 next() { return { value: that[index], done: index++ === that.length }; } }; } };
-
-let likeArray = { 0: 1, 1: 2, 2: 3, length: 3, [Symbol.iterator]: function\* () { let index = 0; let len = this.length; while (index !== len) { yield this[index++]; } } };
-
-````
-
-```js
+````js
 function* read() {
 try {
  let a = yield 'vue';
@@ -1533,48 +1557,54 @@ try {
 }
 
 let it = read(); // 生成一个迭代器  （协程）
-it.next(); // 遇到yield 语句就暂停协程的执行，而执行父协程
+it.next(); // 遇到yield 语句就暂停协程的执行，而执行父协程，并将协程中的数据返给父协程
 it.next('a'); // 父协程启动read子协程的执行，并将参数作为yield语句的返回值传入子协程
-it.throw('b'); // 父协程将错误抛给子协程去捕获
+it.throw('b'); // 父协程将错误抛给子协程去捕获，由子协程内部去捕获
 it.next('c');
 ````
 
 yield 产出的结果可以等结果产出后再调用 next 开启子协程的继续执行。
 
 ```js
-const fs = require('fs').promise;
+const fs = require('fs/promise');
 const path = require('path');
 
 function* read() {
-  let name = yield fs.readFile(path.resolve(__dirname, 'name.txt'), 'utf8');
-  let age = yield fs.readFile(path.resolve(__dirname, name), 'utf8');
-  return age;
+    try{
+        let name = yield fs.readFile(path.resolve(__dirname, 'name.txt'), 'utf8');
+        let age = yield fs.readFile(path.resolve(__dirname, name), 'utf8');
+        return age;
+    }catch(error){
+        console.log(error)
+    }
 }
 
 let it = read();
 let { value, done } = it.next();
 if (!done) {
-  value
-    .then((data) => {
-      let { value, done } = it.next(data);
-      if (!done) {
-        value
-          .then((data) => {
-            let { value, done } = it.next(data);
-            if (done) {
-              console.log(value);
-            }
-          })
-          .catch((error) => {
-            it.throw(error);
-          });
-      }
+    value
+        .then((data) => {
+        let { value, done } = it.next(data);
+        if (!done) {
+            value
+                .then((data) => {
+                let { value, done } = it.next(data);
+                if (done) {
+                    console.log(value);
+                }
+            })
+                .catch((error) => {
+                it.throw(error);
+            });
+        }
     })
-    .catch((error) => {
-      it.throw(error);
+        .catch((error) => {
+        it.throw(error);
     });
 }
 ```
+
+
 
 ### CO 库
 
@@ -1609,6 +1639,7 @@ function co(it) {
     next();
   });
 }
+
 co(read())
   .then((data) => {
     console.log(data);
@@ -1617,6 +1648,8 @@ co(read())
     console.log(err);
   });
 ```
+
+
 
 ### 实现 generator 函数(状态机)
 
@@ -1710,8 +1743,11 @@ console.log(it.next('ccc'));
 
 整个 genertator 构造器函数的实现就是依靠的状态机，给函数提供闭包中的一个上下文，上下文中有一些列的标识或方法去修改该上下文中的标识，根据标识不同走不同逻辑。
 
+
+
 ### async + await
 
+- async + await = generator + co
 - async 函数默认执行后就会返回一个 promise，
 - 内部是支持 tryCatch,当内部有 tryCatch 时，内部抛错会别捕获，外出的 promise 则不会再触发 onRejected
 
@@ -2078,6 +2114,8 @@ node 中实现了一些**新的有别于浏览器的异步 API**，而且它没�
 
 单线程语言，不必开启多个线程，节约内存，单线程语言处理 CPU 密集型可能会发生阻塞。适合 i/o 密集型（文件读写），web 场景基本都是文件读写，（nginx 也是单线程的，适合处理高并发），node 底层的系统操作依然是多线程的（比如多个请求都是读取文件内容，nodejs 中的主线程只是依次将读取任务派发给底层的其他多线程模块去处理的，并不会阻塞）。异步和文件读写，靠底层的多线程去执行这些异步任务，任务完成后，通过事件环将结果返回，node 中的专门触发线程读取回调并执行。node 不适合 cpu 密集型的，适合 i/o 密集型的。
 
+
+
 ### 应用场景
 
 - 为客户端服务的中间层（bff，代理），解决跨域，处理数据的结构
@@ -2086,6 +2124,8 @@ node 中实现了一些**新的有别于浏览器的异步 API**，而且它没�
 - 做工具（打包工具，构建工具）， 但是现在逐渐转向 Esbuild
 - 日志收集系统
 - 提供接口，做服务端（egg.js,nest.js）
+
+
 
 ### 异步同步阻塞非阻塞
 
@@ -2098,6 +2138,8 @@ node 中实现了一些**新的有别于浏览器的异步 API**，而且它没�
 同步不一定阻塞，也可能是非阻塞的，但非阻塞的情况很少。不存在异步阻塞的情况。
 
 一般是异步非阻塞，同步阻塞
+
+
 
 ## 全局对象
 
@@ -2167,6 +2209,8 @@ node 中的模块有三种：
 - 第三方模块，先安装在引用
 - 自定义模块，以相对路径或者绝对路径进行使用
 
+
+
 ### 全局对象
 
 node 中的全局对象是 global 对象，该对象上的属性或者方法都可以直接访问，同时在模块化开发中，如果在 global 对象上挂载了变量，则可以在不同模块文件中访问到（污染全局变量）。
@@ -2182,6 +2226,8 @@ node 中的全局对象是 global 对象，该对象上的属性或者方法都�
 上面这几个属性是在模块包裹的函数传入的，也是 argument 上对应的。
 
 在 commonjs 模块化规范中 require 方法底层就是依赖的 fs.readFileSync( )同步读取模块文件内容的，会有阻塞。
+
+
 
 ## 模块化原理前置支持
 
@@ -2518,6 +2564,8 @@ fs.readFileSync(filename, 'utf8');
 
 读取文件内容，包裹自执行函数，返回 module.exports
 
+
+
 ### 模块实现
 
 模块实现原理，在 commonjs 中加载一个模块就是去读取对应的文件内容，并且给这个文件内容包裹一个函数，并且执行该函数将函数的执行结果返回。
@@ -2644,6 +2692,98 @@ setInterval((0=>{
 
 而 ES 中的导出导出的是接口，这点和 commonjs 存在差异。
 
+
+
+### 循环引用
+
+module-a.js
+
+```js
+let b = require('./module-b.js');
+console.log('a中打印的b', b);
+module.exports = 'a';
+```
+
+
+
+```js
+let a = require('./module-a.js');
+console.log('b中打印的a', a);
+module.exports = 'b';
+```
+
+
+
+node module-a.js：
+
+```js
+b中打印的a {}
+a中打印的b b
+```
+
+
+
+在上面的commonjs模块化模拟实现的代码中，如果module-a.js作为模块执行的入口，会是先创建b模块并加入缓存，然后才是在b模块中引入a模块时创建a模块，然后再缓存a模块。但是在node源码中，会一上来就先判断缓存中是否存在对应的模块，没有则为a模块创建对象并并加入缓存，然后a中执行过程中引入了b模块，则又创建了b模块并缓存，然后继续执行完b模块的代码，但由于b模块代码中引入了a，则会去加载a模块，但是a模块已经被缓存了，只是因为a模块没有执行到a模块自己的module.exports = 'a'，所以a模块是一个空对象，所以打印了：“b中打印的a {}”，当b模块执行完后，b模块对应的module.exports = 'b'，然后执行上下文回到a模块代码中继续执行，这时a模块中打印b模块时，就有值存在了：“a中打印的b b”。
+
+
+
+**对于commonjs规范来说，可以实现部分加载。**
+
+如果非要两个模块之间相互调用，则使用下面的方法：
+
+```js
+function say(){
+    console.log('a中的say方法,希望在b模块中使用')
+}
+
+let moduleB; // 你告诉我我依赖的是谁
+module.exports = {
+    say,
+    save(mod){
+        moduleB = mod
+    },
+    init(){
+        moduleB.say()
+    }
+}
+```
+
+
+
+```js
+function say(){
+    console.log('b中的say方法,希望在a模块中使用')
+}
+
+let moduleA; // 你告诉我我依赖的是谁
+module.exports = {
+    save(mod){
+        moduleA = mod
+    },
+    say,
+    init(){
+        moduleA.say()
+    }
+}
+```
+
+
+
+```js
+const a1 = require('./a1');
+const b1 = require('./b1')
+
+a1.save(b1);
+b1.save(a1);
+
+// 模块一定已经加载完毕了
+
+a1.init();
+b1.init(); // 通过延后处理的方式来实 解决循环引用的问题
+```
+
+
+
 ## process
 
 process 进程对象中的重要属性：
@@ -2658,9 +2798,9 @@ process 进程对象中的重要属性：
 
   浏览器的事件环是每执行一个宏任务就会清空微任务。
 
-- cwd：current working directory 当前的执行工作目录，运行打包时，找对应的配置文件，在当前目录下寻找执行路径。 process.cwd()
+- cwd：current working directory 当前的执行工作目录，运行打包时，找对应的配置文件，在当前目录下寻找执行路径。 process.cwd() ，可以通过执行process.chdir(path)，来修改process.cwd() 的路径。
 
-- argv：参数列表，用户命令行交互获取用户输入的参数，前两个参数是默认的（可执行文件 node 的路径， 被执行文件路径），后面是用户的参数。关于参数的解析有一些常用的第三方库：commonder yargs
+- argv：参数列表，用户命令行交互获取用户输入的参数，前两个参数是默认的（可执行文件 node 的路径， 被执行文件路径），后面是用户的参数。关于参数的解析有一些常用的第三方库：commander、yargs
 
   ```js
   let args = process.argv.slice(2).reduce((memo, current, index, array) => {
@@ -2682,9 +2822,9 @@ process 进程对象中的重要属性：
   在代码执行之前，设置一些临时的环境变量,进程一结束就被销毁（set , export），不同系统设置环境变量的语法不同，借助 cross-env 实现跨平台设置环境变量。
 
   ```shell
-  set key=value node index.js   // windows
+  set key=value && node index.js   // windows
 
-  export key=value node index.js  // mac
+  export key=value && node index.js  // mac
   ```
 
   process.env 中包含全局环境变量（操作系统中的那些环境变量）和 局部环境变量
@@ -2706,6 +2846,54 @@ console.log(process.argv);
 ```
 
 写工具无非就是创建一些配置文件，解析用户的执行操作等。
+
+
+
+commander使用演示：
+
+```shell
+npm install commander -D
+```
+
+
+
+```js
+const {program} = require('commander')
+const chalk = require('chalk') 
+const pkg = require('./package.json')
+program.version(pkg.version)
+    .name('my-cli')
+    .usage('<command> [options]')
+
+program.option('--type [type]', 'Choose a project type', {
+    default: 'node',
+    })
+program.command('create') // 执行的命令
+    // 选项 短写、长写   描述信息    默认值
+    .option('-d, --directory [dir]','set directory',process.cwd())
+    .description('create project dir')
+    .action((args)=>{ // 命令对应的行为
+        console.log('create project',args)
+    }
+)
+program.command('serve')
+    .option('-p, --port <v>','set port')
+    .description('start serve')
+    .action((args)=>{
+        console.log('serve',args,program.opts())
+    }
+)
+// 固定的写
+program.on('--help',function(){
+    console.log(`\r\nRun ${chalk.blueBright('my-cli <command>')} --help for detailed usage of given command.`)
+})
+
+program.parse(process.argv)
+```
+
+
+
+
 
 ## node 中的事件环
 
@@ -2739,6 +2927,17 @@ setTimeout
 setImmediate
 */
 ```
+
+- js代码交给V8解析执行
+- 其中涉及node异步API的代码，会通过libuv来处理
+- libuv会为不同的异步API开启多个不同线程进行异步处理
+- 线程处理成功后，将回调函数推入对应的队列中，然后事件循环线程依次循环不同的队列，取出其中的任务并执行
+
+
+
+每⼀个阶段都对应⼀个事件队列,当event loop执⾏到某个 阶段时会将当前阶段对应的队列依次执⾏。当该队列已⽤尽或 达到回调限制，事件循环将移动到下⼀阶段。
+
+
 
 setImmediate 是 node 中新增的宏任务
 
@@ -2839,9 +3038,13 @@ immediate
 timeout
 ```
 
+
+
 ## 模块查找流程
 
 ![image-20210418105915555](..\typora-user-images\image-20210418105915555.png)
+
+
 
 
 
@@ -2962,7 +3165,7 @@ module.exports = EventEmitter
 
 ## NPM
 
-- 全局模块，在命令行中使用，常用的全局模块,npm,nrm,nvm
+- 全局模块，在命令行(命令行工具)中使用，常用的全局模块,npm,nrm,nvm
 
   nrm ls
 
@@ -3012,6 +3215,8 @@ www 文件内容：
 console.log('asd')
 ```
 
+
+
 写法二：
 
 1. npm init -y
@@ -3058,13 +3263,71 @@ mime 第三方包可以用于传入一个文件名，返回文件的类型。
 
 
 
+### npm版本管理 
+
+npm采⽤了semver规范作为依赖版本管理⽅案。semver 约定 ⼀个包的版本号必须包含3个数字 
+
+- MAJOR，主版本号
+- MINOR，⼩版本号
+- PATCH，修订版本号
+
+MAJOR 对应⼤的版本号迭代，做了不兼容旧版的修改时要更新 
+
+MAJOR 版本号 MINOR 对应⼩版本迭代，发⽣兼容旧版API的修改或功能更新时，更新MINOR版本号 
+
+PATCH 对应修订版本号，⼀般针对修复 BUG 的版本号 
+
+当每次发布包的时候都需要升级版本号:
+
+```
+npm version major # ⼤版本号加 1，其余版本号归 0
+npm version minor # ⼩版本号加 1，修订号归 0
+npm version patch # 修订号加 1
+```
+
+预发版：
+
+- alpha(α)：预览版，或者叫内部测试版；⼀般不向外部发布，会有很多bug；⼀般只有测试⼈员使⽤。 "1.0.0- alpha.1" 
+- beta(β)：测试版，或者叫公开测试版；这个阶段的版本会 ⼀直加⼊新的功能；在alpha版之后推出。 "1.0.0- beta.1" 
+- rc(release candidate)：最终测试版本；可能成为最终产品 的候选版本，如果未出现问题则可发布成为正式版 本。"1.0.0-rc.1"
+
+![image-20230608171801990](C:\Users\dukkha\Desktop\study-notes\珠峰架构\images\image-20230608171801990.png)
+
+npm run 命令执⾏时，会把 ./node_modules/.bin/ ⽬录 添加到执⾏环境的 PATH 变量中，因此如果某个命令⾏包未 全局安装，⽽只安装在了当前项⽬的 node_modules 中， 通过 npm run ⼀样可以调⽤该命令。
+
+执⾏ npm 脚本时要传⼊参数，需要在命令后加 -- 标明, 如 npm run hello -- --port 3000 可以将 --port 参数传 给hello 命令 
+
+npm 提供了 pre 和 post 两种钩⼦机制，可以定义某个脚本 前后的执⾏脚本,没有定义默认会忽略
+
+```json
+"scripts": {
+    "prehello":"echo prehello",
+    "hello": "echo hello",
+    "posthello":"echo posthello"
+}
+```
+
+![image-20230608172236300](C:\Users\dukkha\Desktop\study-notes\珠峰架构\images\image-20230608172236300.png)
+
+
+
 ## Buffer
 
-Buffer 是 global 的属性，属性的值是一个构造函数。服务器端需要大量操作文件，所以 node 就自定义了一个类型 buffer，代表的是内存。操作文件就是 i/o 操作，针对内存做输入输出，描述内存情况，多大的文件，文件的内容。
+前端的blob类型的数据也是二进制，但是不允许操作它。arrayBuffer是前端用于存放二进制数据的类型，但是也是不能直接操作它，必须转为例如DateView
+
+> **`ArrayBuffer`** 对象用来表示通用的、固定长度的原始二进制数据缓冲区。
+>
+> 它是一个字节数组，通常在其他语言中称为“byte array”。你不能直接操作 `ArrayBuffer` 中的内容；而是要通过[类型化数组对象](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/TypedArray)或 [`DataView`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/DataView) 对象来操作，它们会将缓冲区中的数据表示为特定的格式，并通过这些格式来读写缓冲区的内容。
+>
+> [`ArrayBuffer()` (en-US)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer/ArrayBuffer) 构造函数创建一个以字节为单位的给定长度的新 `ArrayBuffer`。你也可以从现有的数据（例如，从 [Base64](https://developer.mozilla.org/zh-CN/docs/Glossary/Base64) 字符串或者[从本地文件](https://developer.mozilla.org/zh-CN/docs/Web/API/FileReader/readAsArrayBuffer)）获取数组缓冲区。
+
+Buffer 是 global 的属性，属性的值是一个构造函数。服务器端需要大量操作文件，所以 node 就自定义了一个类型 buffer，代表的是内存中存放的二进制数据，可以直接访问和操作这些二进制数据。操作文件就是 i/o 操作，针对内存做输入输出，描述内存情况，多大的文件，文件的内容。buffer在打印的使用表现的是内存地址上存放的数据，但是实际存放的是该内存的地址。
 
 Buffer 的结构和数组很相似，操作 Buffer 的方法拼写也和数组的方法一样。数组中没法存放二进制格式的文件（图片，音视频），而 buffer 则可以。一旦声明了buffer的大小后就不能再改变。
 
 早期浏览器不支持文件读取，node 中操作文件需要 Buffer 类，**优点是可以和字符串相互转换。**
+
+
 
 ```shell
 npm install @types/node   // 这个包用于提示node中api的类型
@@ -3094,18 +3357,18 @@ buffer合并：
 const buf1 = Buffer.form('hello')
 const buf2 = Buffer.form('world')
 
-const buf3 = Buffer.allocated(buf1.length+buf2.length)
+const buf3 = Buffer.alloc(buf1.length+buf2.length)
 // buf1.copy(target,targetStart,sourceStart,sourceEnd)
 buf1.copy(buf3,0,0,6)
 buf2.copy(buf3,6,0,6)
 
-```
-
-
 
 parseInt('10111001',2) // 二进制的数转为 10 进制
 
-(0x16).toString('2') // 16 进制转为 2 进制
+(0x16).toString('2') // 16 进制转为 2 进制数对应的字符串
+```
+
+
 
 ### base64 的转化
 
@@ -3161,6 +3424,8 @@ let code = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 code += code.toLowerCase();
 code += '0123456789+/';
 console.log(code[57] + code[56] + code[62] + code[32]); // 54+g  base32 将值限制到32位以下这样就可以实现32位编码了
+
+Buffer.from('珠').toString('base64')
 ```
 
 Buffer 就是内存，Buffer 一旦声明就不能改变大小。声明 buffer 时需要一个固定的长度作为声明的依据。Buffer 的长度是以字节为单位。
@@ -3171,6 +3436,8 @@ let buffer2 = Buffer.from('一一'); // 6个字节
 let buffer3 = Buffer.alloc(100); // 申请一个长度为100个字节的buffer
 let buffer4 = Buffer.from([100, 0x75, 0xf2]); // 使用场景：比如前端传给后端的是ArrayBuffer，到后端接收到的就是一个Buffer数组格式，可以使用form方法将它转为buffer来使用。
 ```
+
+
 
 **Buffer 实例属性**
 
@@ -3197,17 +3464,17 @@ Buffer.prototype.copy = function (target, targetStart, sourceStart = 0, sourceEn
 };
 ```
 
-- slice：buffer 截取，buffer 有 slice 方法可以截取 buffer，截取的是内存 类似于二维数组，内部的每个元素都是对内存地址的
+- slice：buffer 截取，buffer 有 slice 方法可以截取 buffer，截取的是内存 **类似于二维数组**，内部的每个元素都是内存地址的
 
 ```js
 let arr = [1, 2, 3, 4, 5];
-slice浅拷贝;
+// slice浅拷贝;
 let arr2 = arr.slice(0, 1); // [1]
 arr2[0] = 100;
 console.log(arr);
 
 let arr = [[1], 2, 3, 4, 5];
-slice浅拷贝;
+// slice浅拷贝;
 let arr2 = arr.slice(0, 1); // [1]
 arr2[0][0] = 100;
 console.log(arr); // buffer和二维数组是一样的
@@ -3243,7 +3510,9 @@ console.log(b1.split('ab'));
 
 Buffer 拼接的其他方法：
 
-- `Buffer.concat ( [buf1,buf2,...][,length])`
+- **`Buffer.concat ( [buf1,buf2,...][,length])`**
+
+- concat是创建一个新的buffer，然后将其他buffer中的每一个内存地址上的值复制到该新buffer上。
 
   ```js
   Buffer.concat = function (list, len = list.reduce((a, b) => a + b.length, 0)) {
@@ -3253,7 +3522,7 @@ Buffer 拼接的其他方法：
       b.copy(buf, offset);
       offset += b.length;
     });
-    return buf.slice(0, offset);
+    return buf.slice(0, offset);   // 截取掉多余的内存部分   当len大于list中buffer总长度时起作用
   };
   ```
 
@@ -3273,23 +3542,7 @@ buf1.copy(buf3, 6, 0, 6); // 将buf1拷贝到buf3中,后面的参数依次是：
 buf2.copy(buf3, 0, 0, 6);
 // copy方法主要的作用是实现字符串拼接
 
-Buffer.prototype.copy = function (target, targetStart, sourceStart = 0, sourceEnd = this.length) {
-  for (let i = 0; i < sourceEnd - sourceStart; i++) {
-    target[targetStart + i] = this[sourceStart + i];
-  }
-};
-
 Buffer.concat([buf2, buf1]); // buffer拼接
-
-Buffer.concat = function (list, len = list.reduce((a, b) => a + b.length, 0)) {
-  let buf = Buffer.alloc(len);
-  let offset = 0;
-  list.forEach((b) => {
-    b.copy(buf, offset);
-    offset += b.length;
-  });
-  return buf.slice(0, offset); // 截取掉多余的内存部分   当len大于list中buffer总长度时起作用
-};
 
 Buffer.prototype.slice(start, end); // buffer和二维数组一样
 
@@ -3301,7 +3554,20 @@ console.log(buf); //  buf的第一个字节处变为100
 Buffer.isBuffer(varibale); // 判断一个变量是否是buffer
 
 buf.indexOf('value', start);
+```
 
+
+
+**根据用户传递的具有一定规律（特殊符号）的内容进行分割**
+
+例如：
+
+- 行读取器
+- 数据传输中formdata
+
+对于是中文的情况，在utf-8编码规则下，一个中文字占3个字节，如果某次收到的是4个字节的数据，那么如果直接将这个4个字节先转为字符串，则存在乱码的情况。所以在处理二进制数据的时候，一般会将二进制数据拼接在一起为完整的数据后，在处理并得到自己想要的结果。
+
+```js
 Buffer.prototype.split = function (sep) {
   // Buffer中没有该方法
   sep = Buffer.isBuffer(sep) ? sep : Buffer.from(sep);
@@ -3310,13 +3576,17 @@ Buffer.prototype.split = function (sep) {
   let fondIndex = 0;
   let offset = 0;
   while (-1 != (findIndex = this.indexOf(sep, offset))) {
-    arr.push(this / slice(offset, findIndex));
+    arr.push(this.slice(offset, findIndex));
     offset = findIndex + len;
   }
   arr.push(this.slice(offset));
   return arr;
 };
 ```
+
+
+
+
 
 ## 文件操作 fs
 
@@ -3334,7 +3604,7 @@ const fs = require('fs')
 const path = require('path')
 
 fs.readfile(path.resolve(__dirname),name.txt,['utf8',]function(err,data){   // 将一个文件的内容都读到内存中，不指定编码时，data为buffer格式
-	fs.writeFile(path.resolve(__dirname,'copt.txt'),data,function(error,data){
+    fs.writeFile(path.resolve(__dirname,'copt.txt'),data,function(error,data){
         // 清空后写入或者创建后写入
     })
 })
@@ -3343,16 +3613,24 @@ fs.readfile(path.resolve(__dirname),name.txt,['utf8',]function(err,data){   // �
 
 
 // 目的：读取一部分处理一部分，处理完后释放那部分（流）
-// r:读取  w:写入  a:追加  r+可读可写，文件不存在则报错   w+:可读可写，文件不存在则创建
+// w:write 如果写入的文件不存在，就创建，存在就清空写入
+// r:read 文件不存在会报错  fs.readFile
+// a:append 在原有基础上增加
+// w+ 如果读取的文件不存在不会报错
+// r+ 如果读取的文件存在会报错,而且可以写入
 const buf = Buffer.alloc(3)   // 固定大小的容器
-
 // 打开文件，读取内容，进行操作，关闭文件
-fs.open(path.resolve(__dirname,'name.txt'),'r',function(err,fd){
+fs.open(path.resolve(__dirname,'name.txt'),'r',function(err,fd){  // 打开文件并不是将内容读到内存中
     // fd 数字  文件描述符号
     // 将文件读取到buf中,0为buf的第几个字节开始写，3表示写入3个字节,0表示从文件的第几个字节开始读取内容
+    // 读写操作再代码中正好是相反的（参照物不同导致的相反）
+    // 将读取到的数据写入到buffer中
+    // 从buffer第0个位置开始写入
+    // 写入3个字符
+    // 读取文件的位置 ReadPosition
     fs.read(fd,buf,0,3,0,function(error,bytesRead){
         // bytesRead 真实读取到的个数
-        fs.open(path.resolve(__dirname,'copy.txt','w',function(error,wfd){
+        fs.open(path.resolve(__dirname,'copy.txt','w',[mode],function(error,wfd){
             // 向wfd文件写入buf，从buf的第0个字节开始取出，取出bytesRead个字节，从wfd的第0个字节位置开始写入
             fs.write(wfd,buf,0,bytesRead,0,function(err，written){
                 // written 真正写入的个数
@@ -3365,35 +3643,33 @@ fs.open(path.resolve(__dirname,'name.txt'),'r',function(err,fd){
 
 
 
-const buf = Buffer.alloc(3)
 function copy(source,target,cb){
-    // 读取的长度写死了，为3
-    let readPosition = 0
-    let writePosition = 0
-    function destory(fd,wfd){
-        let time = 0
-        function done(){
-            if(++time ==2){
-                cb()
-            }
-        }
-        fs.close(fd,done)
-        fs.close(wfd,done)
-    }
-    fs.open(source,'r',function(err,fd){
+    const BUFFER_SIZE = 5
+    let readPosition = 0;
+    const buffer = Buffer.alloc(BUFFER_SIZE); // 这个是内存中的内容
+    // 读和写没有分离，强依赖
+    fs.open(path.resolve(__dirname, source), 'r', function (err, rfd) {
         if(err) return cb(err)
-        fs.open(target,'w',function(err,wfd){
+        fs.open(path.resolve(__dirname, target), 'w', 0o666, function (err, wfd) {
             if(err) return cb(err)
             function next(){
-                fs.read(fd,buf,0,3,readPosition,function(err,bytesRead){
+                fs.read(rfd, buffer, 0, BUFFER_SIZE, readPosition, function (err, bytesRead) {
                     if(err) return cb(err)
-                    readPosition += bytesRead
-                    fs.write(wfd,buf,0,3,writePosition,function(err,written){
-                        if(err) return cb(err)
-                        writePosition+= written
-                        if(bytesRead == 3) return destory(fd,wfd)
+                    if(bytesRead == 0){
+                        function destroy(err){
+                            let times = 0;
+                            function done(){
+                                if(++times == 2) cb(err)
+                            }   
+                            fs.close(rfd,done)
+                            fs.close(wfd,done)
+                        }
+                        return destroy();
+                    }
+                    fs.write(wfd, buffer, 0, bytesRead, function (err, written) {
+                        readPosition += written; // 维护读取的长度
                         next()
-                    })
+                    });
                 })
             }
             next()
@@ -3405,6 +3681,8 @@ function copy(source,target,cb){
 //解决办法：发布订阅，node原生就基于发布订阅来写了可读流和可写流
 
 ```
+
+
 
 ## 可读流
 
@@ -3446,7 +3724,38 @@ res.on('error', function (error) {});
 // 可读流可以控制速率和暂停读取
 ```
 
-提示：当在 node 项目中看到 xxx.on('data',function(){ ... }) , xxx.on('end',function(){....})的代码的话，说明一定是一个可读流。
+提示：当在 node 项目中看到 xxx.on('data',function(){ ... }) , xxx.on('end',function(){....})的代码的话，说明一定是一个基于发布定于event模块的代码。
+
+
+
+```js
+
+let rs = fs.createReadStream(path.resolve(__dirname,'test.txt'),{
+    highWaterMark:3 , // 意味着每次读取3个, 如果不给highWaterMark默认就是64k
+})
+let ws = fs.createWriteStream(path.resolve(__dirname,'copy.txt'),{
+    highWaterMark:1 , // 我希望我能写入时浪费的内存是多少 ，期望值
+})
+
+rs.on('data',function(chunk){ 
+    let flag =  ws.write(chunk); // flag 要不要读取了
+    if(!flag){
+        rs.pause(); // 暂停读取操作
+    }
+    // fs.write
+})dddddd
+ws.on('drain',function(){
+    console.log('写完了')
+    rs.resume(); // 恢复data事件的触发
+})
+
+// ---------------------------------
+rs.pipe(ws); // 管道就是将文件读取出来传递到其它地方
+```
+
+
+
+
 
 **模拟实现可读流**
 
@@ -3540,7 +3849,7 @@ module.exports = createReadStream;
 
 代码的逻辑的启发：如果代码逻辑是异步嵌套的话，完全可以用发布订阅将代码进行解耦合。
 
-## 可写流
+
 
 ## 链表
 
@@ -3626,6 +3935,8 @@ module.exports = Queue;
 // ll.update(0,100)
 // console.log(ll.head);
 ```
+
+
 
 ## 树结构
 
@@ -3799,9 +4110,33 @@ add(element){
 
 面试：二叉树的反转。
 
+
+
 ## fs
 
 文件夹就是一个树结构，就需要操作树的一系列方法。
+
+```js
+const fs = require('fs')
+const path = require('path')
+
+function copy(source,target,callback){
+	fs.readFile(path.resolve(__dirname,source),function(error,data){
+        if(error){
+            return callback(error)
+        }
+        fs.writeFile(path.resolve(__dirname,target),data,callback)
+    })    
+}
+
+// 这种拷贝文件的方式适合小文件的拷贝，建议64k以下，因为是一次性将文件内容读取到内存中，然后再写入target中，所以如果文件体积过大，会占用大量内存空间 （node中的文件流每次默认读取64kb）
+```
+
+
+
+
+
+
 
 ## http
 
