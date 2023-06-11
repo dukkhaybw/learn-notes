@@ -742,7 +742,37 @@ Promise 本身还是基于回调函数实现异步的。
 - resolve 和 reject 函数可以接受一个 javascript 中的数据，**也可以是一个新的 Promise**
 
   - 如果resolve接受的是一个promise实例，则会使用该promise实例的成功或者失败的原因作为下一个promise的成功或者失败的原因
+
+    ```js
+    Promise.resolve(new Promise((resolve,reject)=>{
+        setTimeout(()=>{
+            resolve('ok')
+        },1000)
+    
+    })).then((data)=>{
+        console.log(data)
+    })
+    ```
+
+    
+
   - 如果reject接受的是一个promise实例，则直接将该promise实例作为下一个promise的reason
+
+    ```js
+    Promise.reject(new Promise((resolve,reject)=>{
+        setTimeout(()=>{
+            resolve('no ok')
+        },1000)
+    })).catch((err)=>{ // catch的本质就是then
+        console.log(err)
+    }).then(data=>{
+        console.log(data)
+    })
+    
+    // Promise.reject 不会等待内部代码执行完毕
+    ```
+
+    
 
 - executor 函数执行报错时，调用 reject 函数
 
@@ -2229,7 +2259,7 @@ node 中的全局对象是 global 对象，该对象上的属性或者方法都�
 
 
 
-## 模块化原理前置支持
+## 模块化原理前置知识
 
 ### fs
 
@@ -2237,38 +2267,24 @@ node 中的全局对象是 global 对象，该对象上的属性或者方法都�
 
 fs 模块中有两种 api，同步和异步。同步的性能好，因为不用开启其他线程。
 
-什么时候用同步什么时候用异步？如果用户请求，如果采用同步则会发生阻塞问题，如果代码刚启动时用同步则没有负面影响。
-
-fs.readFileSync(url[,'utf8'])
-
-fs.existsSync(url)，该方法的异步方法被废弃。
-
-操作文件夹，文件夹就是一个树结构。
-
-目录删除和创建。
+什么时候用同步什么时候用异步？如果用户请求，如果采用同步则会发生阻塞问题，如果代码刚启动时用同步则没有负面影响。fs.readFileSync(url[,'utf8'])；fs.existsSync(url)，该方法的异步方法被废弃。
 
 ```js
-fs.mkdir(path.resolve(__dirname,'a'),function(err){
+// 自动递归创建
+fs.mkdir(path.resolve(__dirname,'a/b/c/d')[,{recursive:true}],function(err){
+    // 报错，该api要求在创建文件时需要先有上级目录
     //....
 })
 
-fs.mkdir(path.resolve(__dirname,'a/b/c/d'),function(err){   // 报错，该api要求在创建文件时需要先有上级目录
-    //....
-})
+// 如果a目录下不为空，则不能删除，也支持{recursive:true}递归删除
+fs.rmdir(path.resolve(__dirname,'a'),cb) {}
+// fs.rm(path[,options],callback)
 
-fs.mkdir(path.resolve(__dirname,'a/b/c/d'),{recursive:true},function(err){
-    //....
-})
+ // 只读子文件夹和子文件
+fs.readdir(path.resolve(__dirname,'a'),function(error,dirs){ })
 
-
-fs.rmdir(path.resolve(__dirname,'a'),cb)   // 如果a目录下不为空，则不能删除，也支持{recursive:true}递归删除
-
-
-fs.readdir(path.resolve(__dirname,'a'),function(error,dirs){  // 只读子文件夹和子文件
-
-})
-
-fs.stat(path.resolve(__dirname,'a'),function(error,statObj){   // 如果该路径不存在文件或者文件夹，则报错
+// 如果该路径不存在文件或者文件夹，则报错
+fs.stat(path.resolve(__dirname,'a'),function(error,statObj){  
     statObj.isFile(path.resolve(__dirname,'a'))   // 是否是文件
     statObj.isDirectory(path.resolve(__dirname,'a'))  // 是否是文件夹
 })
@@ -2277,46 +2293,33 @@ fs.unlink(path,cb)  // 删除文件
 
 
 
-
-fs.readdir(path.resolve(__dirname,'a'),function(error,dirs){
-    dirs.forEach(dir=>{
-        fs.stat(path.resolve(__dirname,'a',dir),function(error,state){
-            if(state.isFile()){
-                fs.unlink(path.resolve(__dirname,'a',dir),function(){})
-            }else{
-                fs.rmdir(path.resolve(__dirname,'a',dir),function(){})
-            }
-        })
-    })
-})
-
-
-
 // 异步串行删除   通过递归调用
-function rmdir(filePath,cb){
-    fs.stat(filePath),function(err,statObj){
-        if(err) return cb(err)
-        if(statObj.isFile()){   // 如果是文件
-            fs.unlink(filePath,cb)
-        }else{  // 如果是目录
-            fs.readdir(filePath,function(err,dirs){
-                if(err) return cb(err)
-                dirs = dirs.map(dir=>path.resolve(filename,dir))
-                let index = 0
-                // 异步串行删除
-                function next(){
-                    if(dirs.length===index){   // 空目录直接删除
-                        return fs.rmdir(filename,cb)
-                    }
-                    let dir = dirs[index++]
-                    rmdir(dir,next)
-                }
-                next()
-            })
+function rmdir(filePath, cb = () => {}) {
+  fs.stat(filePath, function (err, statObj) {
+    if (err) return cb(err);
+    if (statObj.isFile()) {
+      // 如果是文件
+      fs.unlink(filePath, cb);
+    } else {
+      // 如果是目录
+      fs.readdir(filePath, (err, dirs) => {
+        if (err) return cb(err);
+        dirs = dirs.map((dir) => path.resolve(filePath, dir));
+        let index = 0;
+        // 异步串行删除
+        function next() {
+          if (dirs.length === index) {
+            // 空目录直接删除,或者目录下文件都删除完了
+            return fs.rmdir(filePath, cb);
+          }
+          let dir = dirs[index++];
+          rmdir(dir, cb);
         }
+        next();
+      });
     }
+  });
 }
-
 
 // 异步并发删除  for循环
 function rmdir(filePath,cb){
@@ -2378,8 +2381,6 @@ async function rmdir(filePath){
     }
 }
 ```
-
-
 
 
 
@@ -3684,7 +3685,7 @@ function copy(source,target,cb){
 
 
 
-## 可读流
+## 文件可读流
 
 ```js
 const fs = rquire('fs');
@@ -3848,6 +3849,246 @@ module.exports = createReadStream;
 ```
 
 代码的逻辑的启发：如果代码逻辑是异步嵌套的话，完全可以用发布订阅将代码进行解耦合。
+
+
+
+## 其他流
+
+流的核⼼就是可以对数据进⾏分块处理。读取一部分，操作一部分。
+
+可读流有两个典型的事件：
+
+- on('data',()=>{})
+- on('end',()=>{})
+
+
+
+可写流有两个典型的事件：
+
+- write('()=>{})
+- end(()=>{})
+
+**典型的可读和可写流**
+
+- http中的request和response
+- fs中的文件可读写流
+- zlib中的压缩可读写流
+- crypto中的数据加密解密流
+- TCP套接字
+- process中的stdout和stderr的标准输入输出流
+- process.stdin进程监听输入
+
+
+
+**典型典型双工流**
+
+既可以写也可以读的流，且读和写的过程可以彼此独立无关。
+
+- TCP sockets 
+- zlib streams 
+- crypto streams
+
+
+
+**典型的转化流**
+
+转化流 （Transform stream 将读取到的数据进⾏转换后写 ⼊可写流的流）
+
+- zlib streams 
+- crypto str
+
+
+
+```js
+process.stdin.on('data',function(chunk){
+    // console.log(chunk.toString())  console.err
+
+    process.stderr.write(chunk)
+    process.stderr.end(chunk) // write + close
+})
+```
+
+
+
+node中原生提供的各种流，都是继承自内部的strem库来实现的。 文件流本质都是对fs.open fs.read fs.close这些方法基于发布订阅模式的封装。
+
+如果要实现自己的流，也可以直接继承strem库中提供的不同的流（可读流，可写流，双⼯流和转化流）
+
+
+
+可读流：
+
+```js
+const fs = require('fs')
+const {Readable} =  require('stream')
+
+// 父类Readable提供了一个方法 read 方法当 on('data')的时候 会触发父类的Readable.read()
+// Readable.read()自动调用子类MyReadStream的_read方法 我们自己实现的逻辑可以放到_read方法中
+class MyReadStream extends Readable{
+    constructor(){
+        super();
+        this.idx = 0
+    }
+    // fs.createReadStream()  extends Readable 并且实现了自己的_read方法 
+    _read(){ 
+        // 自己决定什么样的数据传递给 on('data')的回调 
+        if(this.idx < 10){
+            this.push(this.idx++ + '')  // 通过这个push方法将数据传给on('data')的回调，直到push的方法的值为null时，就不再触发on('data')的回调，同时触发on('end')的回调 
+        }else{
+            this.push(null); // 触发end方法
+        }
+    }
+}
+const mrs = new MyReadStream();
+// 当用户监听了data事件后，会触发原型上的_read方法,如果_read有被实现的话
+mrs.on('data',function(chunk){
+    console.log(chunk)
+})
+mrs.on('end',function(){
+    console.log('end')
+})
+```
+
+
+
+
+
+可写流：
+
+```js
+const {Writable} =  require('stream')
+
+class MWriteStream extends Writable{
+    _write(chunk,encoding,clearBuffer){ // 自己实现的_write 
+        console.log(chunk)
+        clearBuffer();
+    }
+}
+const ws = new MWriteStream
+ws.write('ok'); // 调用的是父类的write -> 父类在调用子类的write
+ws.write('ok'); 
+ws.write('ok'); 
+ws.write('ok'); 
+ws.end('ok')
+```
+
+
+
+```js
+class Parent {
+    write(){
+        this._write()
+    }
+}
+class Child extends Parent{
+    _write(){
+        console.log('子的write')
+    }
+}
+new Child().write()
+```
+
+
+
+
+
+双工流：
+
+```js
+const {Duplex} =  require('stream')
+
+class MyDuplex extends Duplex {
+    constructor(){
+        super();
+        this.idx = 0
+    }
+    _read(){ 
+        if(this.idx < 10){
+            this.push(this.idx++ + '')
+        }else{
+            this.push(null); // 触发end方法
+        }
+    }
+    _write(chunk,encoding,clearBuffer){
+        console.log(chunk)
+        clearBuffer();
+    } // read 和 write没关系 
+}
+let myDuplex  = new MyDuplex();
+
+myDuplex.on('data',function(chunk){
+    console.log(chunk)
+})
+myDuplex.write('ok')
+```
+
+
+
+
+
+转化流：
+
+```js
+const {Transform}  =require('stream')
+class MyTransform extends Transform{
+    _transform(chunk,encoding,clearBuffer){ // 参数和可写流一样
+        if(chunk){
+            const data = chunk.toString().toUpperCase()
+            this.push(data); // 放入到可独流中
+        }
+        clearBuffer()
+    }
+}
+process.stdin.pipe(new MyTransform).pipe(process.stdout)
+```
+
+
+
+```js
+const zlib = require('zlib'); // 内置的模块， 都有流的写法；也有非流的用法
+
+// 压缩:先读取内容 -> 压缩 -> 写入新的文件
+// 先读取内容.pipe(压缩).pipe(写入新的文件)
+
+const fs = require('fs');
+
+const rs = fs.createReadStream('./test.txt')
+const ws = fs.createWriteStream('./test.txt.gz')
+
+// 压缩、解压
+const gzip = zlib.createGzip()
+
+// 非流的用法，需要将要压缩的内容一次性读取出来进行压缩
+zlib.gzip('string',function(err,data){
+    console.log(data)
+})
+
+// 流的用法  
+rs.pipe(gzip).pipe(ws)
+```
+
+
+
+```js
+const fs = require('fs');
+const rs = fs.createReadStream('./test.txt')
+const ws = fs.createWriteStream('./copy.txt')
+const crypto = require('crypto');
+// 加密算法 和 摘要算法的区别？ 是否可逆
+
+// 1) md5 不可逆  2） 输入相同输出相同  3) 输入的内容不同输出长度永远相同
+// 非流的用法
+const r = crypto.createHash('md5').update('1234567890').digest('base64')
+console.log(r) //  就是crypto的api
+
+
+// 流的用法
+const md5Stream = crypto.createHash('md5')
+md5Stream.setEncoding('base64')
+rs.pipe(md5Stream).pipe(ws)
+```
+
+
 
 
 
@@ -4290,13 +4531,11 @@ server.on('error', function (err) {
 // npm install nodemon -g
 ```
 
+
+
 ## 网络
 
-面试和底层。
 
-- 当浏览器地址栏输入 URL 到页面显示的全过程
-- https
-- http0.9,http1.0,http1.1,http2.0,http3.0 特点和不足
 
 ## Express
 
