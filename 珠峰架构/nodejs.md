@@ -1892,7 +1892,19 @@ function _read() {
 
 ## 浏览器中的事件环
 
+- 宏任务： 脚本的执⾏、ui渲染、定时器、http请求、事件处 理（⽤户操作）、MessageChannel、setImmediate 
+
+- 微任务： 原⽣的promise.then、mutationObserver、 node中的（process.nextTick）、queueMicrotask
+- requestFrameAnimation 、requestIDleCallback 
+
 ![image-20220714211548498](..\typora-user-images\image-20220714211548498.png)
+
+
+
+- 主线程代码执⾏完毕后，会查找微任务队列中的任务将其取出到执行栈中执⾏，循环该过程直到清空为任务队列， 如果微任务被取出到执行执行的过程中⽣成了新的微任务放到本次微任务队列的后⾯，如果是宏任务则交给对应的线程去处理
+- 微任务队列全部清空后，要检测"是否到达刷新渲染的时机"，如果到达，则由渲染线程占据主线程，进行页面渲染工作，此时js引擎暂停工作，渲染结束后，js引擎恢复工作，在宏任务队列中取出一个宏任务到执行栈中执行，期间循环前一步的工作流程；如果没有到达渲染时机，则直接去取宏任务队列中的一个任务进行执行。浏览器有⾃⼰的刷新频率
+
+
 
 下面几段代码在浏览器中的表现：
 
@@ -1914,20 +1926,18 @@ function _read() {
 
 
 ```js
-<script>
-        document.body.style.background = 'red';
-        console.log(1)
-        setTimeout(()=>{
-            console.log(2)
-            document.body.style.background = 'yellow';
-        })
-        console.log(3);
-</script>
+document.body.style.background = 'red';
+console.log(1)
+setTimeout(()=>{
+    console.log(2)
+    document.body.style.background = 'yellow';
+})
+console.log(3);
 ```
 
 本轮同步代码执行，先将 body 的背景颜色设为 red，然后打印 1，将 setTimeout 中的回调函数加入到宏任务队列中等待执行，再打印 3，本轮同步代码执行完毕，现在开始清空微任务队列，微任务为空。接下来就有两种情况：
 
-1. js 引擎在该帧内还有时间执行代码，本轮事件循环任务结束，js 引擎线程继续开启下一轮事件循环，取出前面宏任务队列中的代码，进行新一轮事件循环，打印 2 并将 body 的颜色设为 yellow，往后再没有可执行的代码，然后等待渲染线程显然页面，表现为一直都是 yellow 的背景颜色。（yellow 不闪烁）
+1. js 引擎在该帧内还有时间执行代码，本轮事件循环任务结束，js 引擎线程继续开启下一轮事件循环，取出前面宏任务队列中的代码，进行新一轮事件循环，打印 2 并将 body 的颜色设为 yellow，往后再没有可执行的代码，然后等待渲染线程渲染页面，表现为一直都是 yellow 的背景颜色。（yellow 不闪烁）
 2. js 引擎在该帧内没有时间执行代码，本轮事件循环任务结束，js 引擎线程将主线程释放给渲染线程执行渲染，渲染线程将页面渲染为 red，然后开启下一轮事件环任务，打印 2 并将 body 的颜色设为 yellow，往后再没有可执行的代码，然后等待渲染线程显然页面，表现为 yellow 的背景颜色。（red 到 yellow 闪烁）
 
 
@@ -1947,25 +1957,21 @@ function _read() {
 </script>
 ```
 
-代码模拟点击的情况，绑定的事件处理函数是同步执行的。
+**代码模拟点击的情况，绑定的事件处理函数是同步执行的。而用户点击的情况，事件处理函数会被追加到宏任务队列中进行执行。**
 
-而用户点击的情况，事件处理函数会被追加到宏任务队列中进行执行。
-
-```html
-<script>
-  Promise.resolve().then(() => {
+```js
+Promise.resolve().then(() => {
     console.log('Promise1');
     setTimeout(() => {
-      console.log('setTimeout2');
+        console.log('setTimeout2');
     }, 0);
-  });
-  setTimeout(() => {
+});
+setTimeout(() => {
     console.log('setTimeout1');
     Promise.resolve().then(() => {
-      console.log('Promise2');
+        console.log('Promise2');
     });
-  }, 0);
-</script>
+}, 0);
 ```
 
 
@@ -2025,7 +2031,7 @@ Promise.resolve().then(() => {
 
 ### 方式一
 
-Node 内置命令行调试器，通过 `node inspect` 命令执行，通过输入命令来描述行为不如可视化操作高效。
+Node 内置命令行调试器，通过 `node inspect` 命令执行，通过输入命令来描述行为，不如可视化操作高效。
 
 ### 方式二
 
@@ -2088,12 +2094,7 @@ VSCode 提供了两种启动模式：
   "program": "${workspaceFolder}/app.js", // 指定程序入口文件
   // "args": ["--listen", "8080"]，// 传入参数 node app.js --listen=8080
   "request": "launch",
-  "skipFiles": [
-    "<node_internals>/**"
-  ],
-  "type": "pwa-node"
 }
-
 
 ```
 
@@ -2148,12 +2149,12 @@ node 中实现了一些**新的有别于浏览器的异步 API**，而且它没�
 
 ### 应用场景
 
-- 为客户端服务的中间层（bff，代理），解决跨域，处理数据的结构
+- 作为客户端服务的中间层（bff（Back-end For Front-end），代理），解决跨域，处理数据的结构
 
 - ssr，在服务端解析 js 语法，可以解析 vue 和 react 中的语法实现服务端渲染，将框架代码在服务器端运行，运行完成后生成一个 html 返给前端完整渲染后的结果
 - 做工具（打包工具，构建工具）， 但是现在逐渐转向 Esbuild
 - 日志收集系统
-- 提供接口，做服务端（egg.js,nest.js）
+- 提供接口，做服务端（egg.js，nest.js，koa，express）
 
 
 
@@ -2179,8 +2180,6 @@ node 中实现了一些**新的有别于浏览器的异步 API**，而且它没�
 console.dir(global, { showHidden: true }); // 更加详细的打印对象属性
 ```
 
-在 node 中一个 js 文件下直接访问 this，this 指向的是一个空对象，这是模块化的结果，模块化机制实现不同文件之间的引用。
-
 node 环境下：
 
 ```js
@@ -2193,13 +2192,13 @@ console.log(this)(
 )();
 ```
 
-- 传统使用单例模式实现模块化的封装，会有调用过长的问题
+- 传统使用**单例模式**实现模块化的封装，会有调用过长的问题
 
-- IIFE，立即执行函数，导出 IIFE 中的内容，利用闭包需要再拆分文件
+- IIFE，**立即执行函数**，导出 IIFE 中的内容，利用闭包需要再拆分文件
 
 - seajs，requirejs 类似于 jsonp 方式，动态请求一个文件并在拿到文件后再做一些事
 
-- import / export default ，前端模块化是基于 http 请求的。在 webpack 打包项目中没有看到发请求，使用为 webpack 将引用的代码打包到统一的文件而不发请求了（除非拆包）。 import 一个文件，浏览器会自动的去发起一个请求，返回执行结果后使用。
+- import / export default ，前端模块化是基于 http 请求的。在 webpack 打包项目中没有看到发请求，是因为webpack 将引用的代码打包到统一的文件而不发请求了（除非拆包）。动态 import 一个文件，浏览器会自动的去发起一个请求，返回执行结果后使用。
 
 - 服务端实现模块化就不需要发请求，因为服务端可以用文件读写的能力更简单的实现模块化。
 
@@ -2213,7 +2212,7 @@ console.log(this)(
 
 commonjs 规范：
 
-- 每个文件都是一个模块
+- 每个文件就是一个模块
 - 引用用 require
 - 导出用 module.exports
 
@@ -2225,12 +2224,9 @@ package.json:
 
 ```json
 {
-    "type":"module"   // 结合.mjs
+    "type":"module" // "commonjs"
 }
 
-{
-    "type":"commonjs"
-}
 ```
 
 node 中的模块有三种：
@@ -2263,8 +2259,6 @@ node 中的全局对象是 global 对象，该对象上的属性或者方法都�
 
 ### fs
 
-内置模块：
-
 fs 模块中有两种 api，同步和异步。同步的性能好，因为不用开启其他线程。
 
 什么时候用同步什么时候用异步？如果用户请求，如果采用同步则会发生阻塞问题，如果代码刚启动时用同步则没有负面影响。fs.readFileSync(url[,'utf8'])；fs.existsSync(url)，该方法的异步方法被废弃。
@@ -2285,8 +2279,8 @@ fs.readdir(path.resolve(__dirname,'a'),function(error,dirs){ })
 
 // 如果该路径不存在文件或者文件夹，则报错
 fs.stat(path.resolve(__dirname,'a'),function(error,statObj){  
-    statObj.isFile(path.resolve(__dirname,'a'))   // 是否是文件
-    statObj.isDirectory(path.resolve(__dirname,'a'))  // 是否是文件夹
+    statObj.isFile()   // 是否是文件
+    statObj.isDirectory()  // 是否是文件夹
 })
 
 fs.unlink(path,cb)  // 删除文件
@@ -2539,19 +2533,13 @@ console.log(f2()); // 20
 
 ### require 执行流程
 
-在 node 的源码中执行 Module.prototype.require(path)； 然后调用 Module.\_load 加载某个模块文件，返回该方法执行结果：module.exports；
-
-Module.\_resolveFilename 方法获取文件的绝对路径，因为之后要读取该文件，尝试添加后缀.js 或者.json，.node 等。
-
-判断文件是否在缓存中
-
-判断模块是否是原生的，如果不是原生模块，则直接创造模块 new Module，每个模块有一个 id，id 对应的值就是模块的绝对路径，还有一个属性叫 exports 代表文件的导出结果，默认是空对象。 new Module 创建完模块后，进行模块缓存。
-
-缓存该模块，第一次加载时将文件所在路径作为 key，模块对象作为值缓存在一个对象中。
-
-module.load(path):加载文件
-
-findLongestRegisteredExtension(filename): 找对应的文件的后缀名注册过的对应的加载逻辑，js 文件有 js 的加载逻辑，json 有 json 的加载逻辑。加载采用了策略模式（Module.extensions(文件后缀)）。在 vite 中就是扩展了该策略模式，实现了对.vue 文件的加载。 可以根据该方法实现加载文件类型的扩展。
+1. 在 node 的源码中执行 Module.prototype.require(path)； 然后调用 Module.\_load 加载某个模块文件，返回该方法执行结果：module.exports；
+2. Module.\_resolveFilename 方法获取文件的绝对路径，因为之后要读取该文件，尝试添加后缀.js 或者.json，.node 等。
+3. 判断文件是否在缓存中
+4. 判断模块是否是原生的，如果不是原生模块，则直接创造模块 new Module，每个模块有一个 id，id 对应的值就是模块的绝对路径，还有一个属性叫 exports 代表文件的导出结果，默认是空对象。 new Module 创建完模块后，进行模块缓存。
+5. 缓存该模块，第一次加载时将文件所在路径作为 key，模块对象作为值缓存在一个对象中。
+6. module.load(path):加载文件
+7. findLongestRegisteredExtension(filename): 找对应的文件的后缀名注册过的对应的加载逻辑，js 文件有 js 的加载逻辑，json 有 json 的加载逻辑。加载采用了策略模式（Module.extensions(文件后缀)）。在 vite 中就是扩展了该策略模式，实现了对.vue 文件的加载。 可以根据该方法实现加载文件类型的扩展。
 
 在 js 文件的策略模式源码中，采用 fs 模块的读取文件对应的内容，将内容传给 Module.\_compile,进行模块编译。
 
@@ -2559,11 +2547,10 @@ findLongestRegisteredExtension(filename): 找对应的文件的后缀名注册�
 fs.readFileSync(filename, 'utf8');
 ```
 
-旧版使用调用 Module.wrap 方法对文件内容进行包裹一个函数，用 vm.runInThisContext 去包裹该函数， 然后创建一系列的变量`'exports','reqiure','module'，'__filename','__dirname'`,赋值：\_\_dirname,require,exports,module 等；执行包裹后的函数并传入前面创建的几个参数。
+8. 旧版使用调用 Module.wrap 方法对文件内容进行包裹一个函数，用 vm.runInThisContext 去包裹该函数， 然后创建一系列的变量`'exports','reqiure','module'，'__filename','__dirname'`,赋值：\_\_dirname,require,exports,module 等；执行包裹后的函数并传入前面创建的几个参数。
+   新版使用`vm.compileFunction(content,['exports','reqiure','module','__filename','__dirname']){....}`
 
-新版使用`vm.compileFunction(content,['exports','reqiure','module','__filename','__dirname']){....}`
-
-读取文件内容，包裹自执行函数，返回 module.exports
+9. 读取文件内容，包裹自执行函数，返回 module.exports
 
 
 
@@ -2724,9 +2711,7 @@ a中打印的b b
 
 
 
-在上面的commonjs模块化模拟实现的代码中，如果module-a.js作为模块执行的入口，会是先创建b模块并加入缓存，然后才是在b模块中引入a模块时创建a模块，然后再缓存a模块。但是在node源码中，会一上来就先判断缓存中是否存在对应的模块，没有则为a模块创建对象并并加入缓存，然后a中执行过程中引入了b模块，则又创建了b模块并缓存，然后继续执行完b模块的代码，但由于b模块代码中引入了a，则会去加载a模块，但是a模块已经被缓存了，只是因为a模块没有执行到a模块自己的module.exports = 'a'，所以a模块是一个空对象，所以打印了：“b中打印的a {}”，当b模块执行完后，b模块对应的module.exports = 'b'，然后执行上下文回到a模块代码中继续执行，这时a模块中打印b模块时，就有值存在了：“a中打印的b b”。
-
-
+在上面的commonjs模块化模拟实现的代码中，如果module-a.js作为模块执行的入口，会是先创建b模块并加入缓存，然后才是在b模块中引入a模块时创建a模块，然后再缓存a模块。但是在node源码中，会一上来就先创建**入口模块**对应的Module实例对象，并缓存到Module._cache中，然后a中执行过程中引入了b模块，则又创建了b模块并缓存，然后继续执行完b模块的代码，但由于b模块代码中引入了a，则会去加载a模块，但是a模块已经被缓存了，只是因为a模块没有执行到a模块自己的module.exports = 'a'，所以a模块是一个空对象，所以打印了：“b中打印的a {}”，当b模块执行完后，b模块对应的module.exports = 'b'，然后执行上下文回到a模块代码中继续执行，这时a模块中打印b模块时，就有值存在了：“a中打印的b b”，最后才是给module-a的module.export 赋值为‘a'。
 
 **对于commonjs规范来说，可以实现部分加载。**
 
@@ -2793,7 +2778,7 @@ process 进程对象中的重要属性：
 
 - platform：代码执行平台，写脚手架需要系统级别的配置文件，系统配置文件都是放在本机的用户下的。windows，mac 和 Linux 的系统配置文件所存放的路径都是不同的，可以根据 platform 区分平台，将对应的配置文件放在对应的平台目录下。
 
-  process.platform
+  process.platform平台标识win32和darwin
 
 - nextTick(cb)：
 
@@ -2801,7 +2786,7 @@ process 进程对象中的重要属性：
 
 - cwd：current working directory 当前的执行工作目录，运行打包时，找对应的配置文件，在当前目录下寻找执行路径。 process.cwd() ，可以通过执行process.chdir(path)，来修改process.cwd() 的路径。
 
-- argv：参数列表，用户命令行交互获取用户输入的参数，前两个参数是默认的（可执行文件 node 的路径， 被执行文件路径），后面是用户的参数。关于参数的解析有一些常用的第三方库：commander、yargs
+- argv：参数列表，用户命令行交互获取用户输入的参数，前两个参数是默认的（可执行文件 node 的路径， 被执行文件路径），后面是用户的参数。关于参数的解析有一些常用的第三方库：commander、yargs、minimist
 
   ```js
   let args = process.argv.slice(2).reduce((memo, current, index, array) => {
@@ -2863,8 +2848,8 @@ const {program} = require('commander')
 const chalk = require('chalk') 
 const pkg = require('./package.json')
 program.version(pkg.version)
-    .name('my-cli')
-    .usage('<command> [options]')
+    .name('my-cli')   // 发布的命令名字
+    .usage('<command> [options]')   // 使⽤⽅式
 
 program.option('--type [type]', 'Choose a project type', {
     default: 'node',
@@ -2946,7 +2931,7 @@ nextTick 是 node 中新增的微任务（node 官方不这么叫），优先级
 
 `process.nextTick()` 从技术上讲不是事件循环的一部分。相反，它都将在当前操作完成后处理 `nextTickQueue`， 而不管事件循环的当前阶段如何。这里的一个*操作*被视作为一个从底层 C/C++ 处理器开始过渡，并且处理需要执行的 JavaScript 代码。
 
-任何时候在给定的阶段中调用 `process.nextTick()`，所有传递到 `process.nextTick()` 的回调将在事件循环继续之前解析。
+**任何时候在给定的阶段中调用 `process.nextTick()`，所有传递到 `process.nextTick()` 的回调将在事件循环继续之前解析。**
 
 ```
    ┌───────────────────────────┐
@@ -2973,15 +2958,15 @@ nextTick 是 node 中新增的微任务（node 官方不这么叫），优先级
 
 上图左侧的每一个都是一个队列。
 
-**timers：存放所有定时器任务**
+**timers：存放所有定时器任务**，本阶段执⾏已经达到定时任务的 setTimeout() 和 setInterval() 的调度回调函数。
 
-pending callbacks：上次循环没有执行完毕的
+pending callbacks：执⾏延迟到下⼀个循环迭代的 I/O 回调
 
 idle,prepare：node 内部使用的队列，开发者没法控制
 
 **poll(轮询阶段)：处理 i/o 回调，在循环的过程中在此阶段阻塞，没有宏任务后在这个阶段休眠**
 
-**check：setImmediate**
+**check：setImmediate() 回调函数在这⾥执⾏。 **
 
 close callbacks：一些关闭的回调函数，如：`socket.on('close', ...)`
 
@@ -3166,19 +3151,19 @@ module.exports = EventEmitter
 
 ## NPM
 
-- 全局模块，在命令行(命令行工具)中使用，常用的全局模块,npm,nrm,nvm
+- 全局模块，在命令行(命令行工具)中使用，常用的全局模块：npm,nrm,nvm
 
-  nrm ls
-
-  nrm use xxx
-
-  npm copnfig list
-
-  npm root -g：输出全局的软件包位置
-
-  npm config ls :查看全局包安装地址（prefix）
+  > nrm ls
+  >
+  > nrm use xxx
+  >
+  > npm copnfig list
+  >
+  > npm root -g：输出全局的软件包位置
 
 全局安装的工具包虽然可以在任意路径命令行中执行，但是并不是通过配置系统的环境变量 path 下实现的而是将这个模块放到了 npm 目录下，而 npm 在系统变量 path 中，所以所有全局的工具模块都可以执行。
+
+
 
 编写一个可以发布的第三方全局模块包：
 
@@ -3205,7 +3190,7 @@ module.exports = EventEmitter
 
 如果是测试全局模块，可以在当前的包下执行 npm link (--force)，该命令可以将包临时的放在全局的 npm 下。
 
-npm unlink modulename（package.json 中的 name 字段）
+npm uninstall --global  modulename（package.json 中的 name 字段）
 
 可执行文件需要增加执行头 —— #! /usr/bin/env node
 
@@ -3222,7 +3207,7 @@ console.log('asd')
 
 1. npm init -y
 
-2. 创建 node.js 文件（如果 package.json 中没有配置 main, 默认会将 index.js 作为入口，如果包中没有 index.js, 那么就必须配置 main）
+2. 创建 index.js 文件（如果 package.json 中没有配置 main, 默认会将 index.js 作为入口，如果包中没有 index.js, 那么就必须配置 main）
 
 3. 在全局包的 package.json 文件中添加 bin 这个 key，在其中指定自定义指令。告诉系统执行全局命令时需要执行哪一个 JS 文件。
 
@@ -3238,6 +3223,10 @@ console.log('asd')
 
 6. 命令行中测试 输入 wuyibo ，就会执行 index.js 文件
 
+
+
+
+
 - 项目依赖模块
 
   - 项目依赖
@@ -3248,19 +3237,35 @@ console.log('asd')
 
 npm pack
 
-执行代码的方式：
+
 
 可以在代码中配置可执行脚本，package.json 中的 script 字段。
 
 将一些全局模块安装在项目中，一般情况下开发工具就安装在项目中。全局模块安装在项目中，项目的 node_modules 目录下会有.bin 目录下创建可执行文件。
 
-如果通过 npm run xxx 执行命令，会将当前项目下的 node_modules/.bin 目录临时放在系统环境变量 path 中后，再执行对应的命令。
+npm run 命令执⾏时，会把 ./node_modules/.bin/ ⽬录 添加到执⾏环境的 PATH 变量中，因此如果某个命令⾏包未 全局安装，⽽只安装在了当前项⽬的 node_modules 中， 通过 npm run ⼀样可以调⽤该命令。
 
 npm run env 查看环境变量 path，在控制台打印系统环境变量，其中会有该项目的中的 node_modules/.bin。
 
 npx 也可以执行命令，但是项目中不存在该命令行工具时，会先下载再执行，然后再删除，原理大致和 npm run xxx 一样。
 
-mime 第三方包可以用于传入一个文件名，返回文件的类型。
+执⾏ npm 脚本时要传⼊参数，需要在命令后加 -- 标明, 如 npm run hello -- --port 3000 可以将 --port 参数传 给hello 命令 
+
+npm 提供了 pre 和 post 两种钩⼦机制，可以定义某个脚本 前后的执⾏脚本,没有定义默认会忽略
+
+```json
+"scripts": {
+    "prehello":"echo prehello",
+    "hello": "echo hello",
+    "posthello":"echo posthello"
+}
+```
+
+![image-20230608172236300](C:\Users\dukkha\Desktop\study-notes\珠峰架构\images\image-20230608172236300.png)
+
+
+
+**mime 第三方包可以用于传入一个文件名，返回文件的类型。**
 
 
 
@@ -3294,21 +3299,7 @@ npm version patch # 修订号加 1
 
 ![image-20230608171801990](C:\Users\dukkha\Desktop\study-notes\珠峰架构\images\image-20230608171801990.png)
 
-npm run 命令执⾏时，会把 ./node_modules/.bin/ ⽬录 添加到执⾏环境的 PATH 变量中，因此如果某个命令⾏包未 全局安装，⽽只安装在了当前项⽬的 node_modules 中， 通过 npm run ⼀样可以调⽤该命令。
 
-执⾏ npm 脚本时要传⼊参数，需要在命令后加 -- 标明, 如 npm run hello -- --port 3000 可以将 --port 参数传 给hello 命令 
-
-npm 提供了 pre 和 post 两种钩⼦机制，可以定义某个脚本 前后的执⾏脚本,没有定义默认会忽略
-
-```json
-"scripts": {
-    "prehello":"echo prehello",
-    "hello": "echo hello",
-    "posthello":"echo posthello"
-}
-```
-
-![image-20230608172236300](C:\Users\dukkha\Desktop\study-notes\珠峰架构\images\image-20230608172236300.png)
 
 
 
@@ -3322,7 +3313,7 @@ npm 提供了 pre 和 post 两种钩⼦机制，可以定义某个脚本 前后�
 >
 > [`ArrayBuffer()` (en-US)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer/ArrayBuffer) 构造函数创建一个以字节为单位的给定长度的新 `ArrayBuffer`。你也可以从现有的数据（例如，从 [Base64](https://developer.mozilla.org/zh-CN/docs/Glossary/Base64) 字符串或者[从本地文件](https://developer.mozilla.org/zh-CN/docs/Web/API/FileReader/readAsArrayBuffer)）获取数组缓冲区。
 
-Buffer 是 global 的属性，属性的值是一个构造函数。服务器端需要大量操作文件，所以 node 就自定义了一个类型 buffer，代表的是内存中存放的二进制数据，可以直接访问和操作这些二进制数据。操作文件就是 i/o 操作，针对内存做输入输出，描述内存情况，多大的文件，文件的内容。buffer在打印的使用表现的是内存地址上存放的数据，但是实际存放的是该内存的地址。
+Buffer 是 global 的属性，属性的值是一个构造函数。服务器端需要大量操作文件，所以 node 就自定义了一个类型 buffer，代表的是内存中存放的二进制数据，可以直接访问和操作这些二进制数据。操作文件就是 i/o 操作，针对内存做输入输出，描述内存情况，多大的文件，文件的内容。buffer在打印使用表现的是内存地址上存放的数据，但是实际存放的是该内存的地址。
 
 Buffer 的结构和数组很相似，操作 Buffer 的方法拼写也和数组的方法一样。数组中没法存放二进制格式的文件（图片，音视频），而 buffer 则可以。一旦声明了buffer的大小后就不能再改变。
 
@@ -3347,7 +3338,7 @@ const buf3 = Buffer.form(string)  // 将字符串转为二进制存储到buffer�
 
 ```
 
-uft-8编码是一个长度可变的编码规则，其中英文字母占一个字节，汉字占3个字节。
+uft-8编码是一个长度可变的编码规则，其中英文字母占一个字节，汉字占三个字节。
 
 
 
@@ -3402,10 +3393,10 @@ base64 表示文件转化后每一个字节不大于等于 64。而 8 个比特�
 
 ```js
 // 汉字转化成base64  无论是二进制还是16进制 还是 8进制展现的结果不同但是表现值都是相同的
-// 为什么不用2进制 而用16进制展现呢?  111111111111111111111111
-//   255 ->                         ff ff
+// 为什么不用2进制 而用16进制展现呢? 
+//   255 ->  ff ff
 let buffer = Buffer.from('珠');
-console.log(buffer); // e7 8f a0  因为一个字节最大8个位-》 8个位最大的值就是255 -》 ff
+console.log(buffer); // e7 8f a0  因为一个字节最大8个位-> 8个位最大的值就是255 -> ff
 
 // e7 8f a0 -> 24位， 转化后每一位不大于等于64
 
