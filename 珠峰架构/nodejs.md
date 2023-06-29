@@ -4524,8 +4524,6 @@ server.on('error', function (err) {
 
 
 
-## 网络
-
 
 
 ## Express
@@ -4803,9 +4801,11 @@ app.listen(3000, function (req, res) {
 
 注册一个函数和注册一组函数的区别。
 
-![image-20220619101024524](.\typora-user-images\image-20220619101024524.png)
+![image-20220619101024524](..\typora-user-images\image-20220619101024524.png)
 
-![image-20220619101348551](.\typora-user-images\image-20220619101348551.png)
+![image-20220619101348551](..\typora-user-images\image-20220619101348551.png)
+
+
 
 ## 缓存
 
@@ -4890,37 +4890,45 @@ if (ifNoneMatch === etag) {
 
 按照规范来说，有 Etag 时就不采用 last-modified，但是有的网站两种方式都会采用。
 
+
+
 ## cookie 和 session
 
 cookie，session，sessionStoreage 和 localStorage 的区别？
 
-- sessionStoreage 会话关闭，数据就丢失（浏览器端存储）。应用：比如存放页面滚动位置。
+- sessionStoreage 会话（单个tab页面）关闭，数据就丢失（浏览器端存储）。应用：比如存放页面滚动位置。
 
 - localStorage 存在本地，浏览器关闭也不丢失，需要手动删除（浏览器端存储），存储容量有限。应用：前端性能优化时，将 js,css 等静态资源存到 localStorage 中
 
   比如百度移动端：
 
-  ![image-20220620224202143](.\typora-user-images\image-20220620224202143.png)
+  ![image-20220620224202143](..\typora-user-images\image-20220620224202143.png)
 
-sessionStoreage ，localStorage 都不能跨域。
+- sessionStoreage ，localStorage 都不能跨域。
 
-cookie，session
 
-http 的特点是无状态的，每次 http 之间没有关联。 通过增加请求头字段来标识 http 请求之间存在关联，一般使用 cookie 来存储。
 
-每次请求都会自动携带 cookie，cookie 内容过多，过多可能导致页面白屏，会浪费流量。尽量 cookie 合理化，如通过过期时间，通过域名分割 cookie。可以浏览器存储，也可以服务端通过响应头设置。默认可以限制二级域名共享 cookie。cookie 会走网络，所以有安全问题。
+**cookie，session**
+
+http 的特点是无状态的，每次 http 之间没有关联。 通过增加请求头字段来标识 http 请求之间存在关联，一般使用 cookie 来存储，前后端都可以设置cookie。
+
+每次请求浏览器都会自动携带 cookie，cookie 内容过多，过多可能导致页面白屏，会浪费流量。尽量 cookie 合理化，如通过过期时间，通过域名分割 cookie。默认可以限制二级域名共享 cookie。cookie 会走网络，所以有安全问题。
+
+cookie有路径限制。每个cookie都可以设置一个路径属性，指定cookie适用于哪个URL路径。如果未设置路径属性，则默认为当前页面所在的路径。当浏览器发送请求时，它只会带上与请求路径匹配的cookie。例如，如果cookie的路径设置为"/foo"，那么它只会被发送到以"/foo"开头的URL路径。
 
 和 cookie 相比，session 更安全一些。
 
 cookie 是存放在客户端的，在客户端或者网络中有可能被拦截篡改，这样服务端就不一定能发现。
 
-现在对于 session，客户端请求的时候，服务端给客户端一个标识，真正的信息存放在服务器中。中间的这个标识也是存放在 cookie 中进行通行的。 session 基于 cookie。
+现在对于 session，客户端请求的时候，服务端给客户端一个标识，真正的信息存放在服务器中。中间的这个标识也是存放在 cookie 中进行通行的。 session 基于 cookie，session中的信息是存储在服务器的内存中的，所以服务端一宕机就会丢失，共享也比较麻烦，存数据库中也是有丢失风险的。
 
 目前的项目大都是前后端分离的，这就涉及跨域，cookie 默认不支持跨域。
 
 前后端同构项目，前端写的代码都是嵌入到服务端的或者服务端渲染都常用的是 cookie。
 
 现在主流的模式基于 jwt 和 token 的模式。
+
+
 
 ### cookie 的使用和安全
 
@@ -4939,6 +4947,7 @@ res.setHeader('Set-Cookie', ['name=zf', 'b=1']); // 设置多个
 // domain  有效域名，如果不设置则就是当前域名
 // path  有效路径, 只有路径是以指定的路径开头时，才能访问，一般用不到
 // expires  过期时间, 以秒为单位，下面的10表示10秒钟
+// max-age  过期时间, 以秒为单位，下面的10表示10秒钟
 // httpOnly  只读，方式客户端篡改cookie ，表示浏览器不能通过document.cookie来获取cookies
 
 res.setHeader('Set-Cookie', ['name=zf; domain=域名; path=/xxxx; max-age=10; httpOnly=true', 'b=1']); //域名不带协议类型
@@ -4948,9 +4957,9 @@ cookie 可以在一级域名中设置后，可以在所有的二级域名下进�
 
 如果一级域名和二级域名下都有同名的 cookie，当客户端在二级域名下读取的时候，会都读取到。
 
-![image-20220621195945058](.\typora-user-images\image-20220621195945058.png)
+![image-20220621195945058](..\typora-user-images\image-20220621195945058.png)
 
-![image-20220621200005187](.\typora-user-images\image-20220621200005187.png)
+![image-20220621200005187](..\typora-user-images\image-20220621200005187.png)
 
 ```js
 const http = require('http');
@@ -5207,15 +5216,20 @@ app.listen(3000, () => {
 });
 ```
 
+
+
 ## JWT
 
 session 的问题：
 
 - 占服务器内存
 - 服务器重启可能丢，即使存在数据库中也有可能数据库宕机
-- 不利于不利于分布式部署（比如同一个公司有多个项目，多个项目想共用一个登录状态，如果是 session 的话就需要将存放 session 的数据库进行共享）
+- 不利于分布式部署（比如同一个公司有多个项目，多个项目想共用一个登录状态，如果是 session 的话就需要将存放 session 的数据库进行共享）
 
-JSON WEB TOKEN
+**JSON WEB TOKEN**
+
+- 服务端无需存储，类似cookie签名
+- 可以跨域
 
 用户第一次访问时进行登录，根据用户的标识产生一个签名，这个签名是服务端存放的密钥，是唯一的。服务端生成唯一的密钥（令牌）后返客户端，下次客户端访问时，带上令牌和标识，服务端收到后，根据客户端带的标识生成令牌，比较两个令牌是否相同，以达到状态保持的需要。
 
@@ -5243,7 +5257,7 @@ let app = express()
 
 app.psot('/login',function(req,res){
      // jwt.encode(value,secret)
-    let token = jwt.encode({name:'zf'},'secret')   // 编码
+    let token = jwt.encode({name:'zf'},'secret')   // 编码  secret：密钥
     res.send({
         err:0,
         data:{
