@@ -938,3 +938,47 @@ Counter 7.componentDidUpdate
  */
 ```
 
+
+
+
+
+## React Hooks
+
+为函数组件引入组件状态或其他副作用能力。 
+
+### useState
+
+为函数组件引入状态。React16.8以前函数组件是没有状态的，在函数组件中定义的变量会在每次函数组件被重新调用时，重新创建，并不会记录上一次的值。
+
+
+
+
+
+**那hooks是如何为函数组件引入状态之类的，这些状态又是如何被记录的了？**
+
+源码中是针对每个函数组件都有一套记录自己内部hooks调用情况的链表。
+
+类似：
+
+```js
+const hookState = []
+let hookIndex = 0
+
+export function useState(initialState){
+   	const oldState= hookState[hookIndex] = hookState[hookIndex] || typeof initialState ==='function'?initialState():initialState
+    const currentIndex = hookIndex  // 每次调用hooks,他们都会记录自己是第几个被调用的
+    function setState(action){
+        let newState = typeof action === 'function'?action(oldState):action;
+        hookState[currentIndex] = newState
+        scheduleUpdate()
+    }
+    return [hookState[hookIndex++],setState]
+}
+
+
+function scheduleUpdate(){
+    hookIndex = 0 
+    compareTwoVdom(this.container,vodm,vdom)
+}
+```
+

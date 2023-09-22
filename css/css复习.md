@@ -24,7 +24,7 @@ html 元素自身没有滚动条，即使在 html 元素设置了固定高度的
 </body>
 ```
 
-![image-20220523000403272](.\typora-user-images\image-20220523000403272.png)
+![image-20220523000403272](..\typora-user-images\image-20220523000403272.png)
 
 html 和 body 在不设置高度的情况下，默认都是由内容撑开高度。但内容超过页面可视区高度时，将默认在文档上生成滚动条。
 
@@ -58,7 +58,7 @@ html 和 body 在不设置高度的情况下，默认都是由内容撑开高度
 </body>
 ```
 
-![image-20220523003125725](.\typora-user-images\image-20220523003125725.png)
+![image-20220523003125725](..\typora-user-images\image-20220523003125725.png)
 
 在 body 高度固定，却 body 和 html 的高度都为固定值时，才会在 body 和文档上都出现滚动条。
 
@@ -86,7 +86,7 @@ html 和 body 在不设置高度的情况下，默认都是由内容撑开高度
 </body>
 ```
 
-![image-20220523003358420](.\typora-user-images\image-20220523003358420.png)
+![image-20220523003358420](..\typora-user-images\image-20220523003358420.png)
 
 在 html 的 overflow 值为 hidden 而 body 的高度确定且 overflow 值为 auto 时，才会只出现 body 的滚动条而隐藏系统滚动条。
 
@@ -207,3 +207,12 @@ animation-duration:time s
 
 animation-timing-function:steps(n)
 ```
+
+
+
+## BFC
+
+BFC的概念，特点和开启BFC能解决的问题。
+
+
+
