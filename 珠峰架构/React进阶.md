@@ -2537,11 +2537,11 @@ ReactDOM.render 方法对应的调用栈，如下图所示：
 
 ![Drawing 3.png](https://s0.lgstatic.com/i/image/M00/6E/CE/Ciqc1F-zmFmAXkYlAAI2ONTKc9s081.png)
 
-ReactDOM.render 方法对应的调用栈非常深，中间涉及的函数量也比较大。分析调用栈是理解渲染链路的一个手段，目的是借此提取关键逻辑，而非理解调用栈中的每一个方法。
+分析调用栈是理解渲染链路的一个手段，目的是借此提取关键逻辑，而非理解调用栈中的每一个方法。
 
 ![image-20220425125307885](..\typora-user-images\image-20220425125307885.png)
 
-图中 scheduleUpdateOnFiber 方法的作用是调度任务，在由 ReactDOM.render 发起的首屏渲  ，它触发的就是 performSyncWorkOnRoot。**performSyncWorkOnRoot 同步开启的正是 render 阶段；而 commitRoot 方法开启的则是真实 DOM 的渲染过程（commit 阶段）**。因此以 scheduleUpdateOnFiber 和 commitRoot 两个方法为界，大致把 ReactDOM.render 的调用栈划分为三个阶段：
+图中 scheduleUpdateOnFiber 方法的作用是调度任务，在由 ReactDOM.render 发起的首屏渲染 ，它触发的就是 performSyncWorkOnRoot。**performSyncWorkOnRoot 同步开启的正是 render 阶段；而 commitRoot 方法开启的则是真实 DOM 的渲染过程（commit 阶段）**。因此以 scheduleUpdateOnFiber 和 commitRoot 两个方法为界，大致把 ReactDOM.render 的调用栈划分为三个阶段：
 
 - 初始化阶段
 - render 阶段
@@ -2744,11 +2744,11 @@ performSyncWorkOnRoot 直译过来就是“执行根节点的同步任务”，*
 
 在这 3 种模式中，**常用的 ReactDOM.render 对应的是 legacy 模式，它实际触发的仍然是同步的渲染链路**。blocking 模式可以理解为 legacy 和 concurrent 之间的一个过渡形态，之所以会有这个模式，是因为 React 官方希望能够提供[渐进的迁移策略](https://zh-hans.reactjs.org/docs/faq-versioning.html#commitment-to-stability)，帮助更加顺滑地过渡到 Concurrent 模式。
 
-按照官方的说法，“**长远来看，模式的数量会收敛，不用考虑不同的模式**，但就目前而言，模式是一项重要的迁移策略，让每个人都能决定自己什么时候迁移，并按照自己的速度进行迁移”。由此可以看出，Concurrent 模式确实是 React 的终极目标，也是其创作团队使用 Fiber 架构重写核心算法的动机所在。
+
 
 ### 拓展：关于异步模式下的首次渲染链路
 
-当下，如果想要开启异步渲染，需要调用 `ReactDOM.createRoot`方法来启动应用，那`ReactDOM.createRoot`开启的渲染链路与 ReactDOM.render 有何不同呢？
+如果想要开启异步渲染，需要调用 `ReactDOM.createRoot`方法来启动应用，那`ReactDOM.createRoot`开启的渲染链路与 ReactDOM.render 有何不同呢？
 
 这里修改一下调用方式，给你展示一下调用栈。由于本讲的源码取材于 React 17.0.0 版本，在这个版本中，createRoot 仍然是一个 unstable 的方法。因此实际调用的 API 应该是“unstable_createRoot”：
 
@@ -2760,7 +2760,7 @@ Concurrent 模式开启后，首次渲染的调用栈变成了如下图所示的
 
 <img src="https://s0.lgstatic.com/i/image/M00/6E/D9/CgqCHl-zmJyAbYZNAAFI67qKm98019.png" alt="Drawing 9.png" style="zoom: 200%;" />
 
-乍一看，好像和 ReactDOM.render 差别很大，其实不然。图中 createRoot 所触发的逻辑仍然是一些准备性质的初始化工作。关键在于下面框出来的这部分，如下图所示：
+图中 createRoot 所触发的逻辑仍然是一些准备性质的初始化工作。关键在于下面框出来的这部分，如下图所示：
 
 <img src="https://s0.lgstatic.com/i/image/M00/6E/CE/Ciqc1F-zmKKAF0ODAADhhdYWzo0441.png" alt="Drawing 10.png" style="zoom:200%;" />
 
@@ -2795,11 +2795,13 @@ function requestUpdateLane(fiber) {
 
 因此不同的渲染模式在挂载阶段的差异，本质上来说并不是工作流的差异（其工作流涉及初始化 → render → commit 这 3 个步骤），而是 mode 属性的差异。mode 属性决定着这个工作流是一气呵成（同步）的，还是分片执行（异步）的。
 
+
+
 ### Fiber 架构一定是异步渲染吗？
 
 **React 16 如果没有开启 Concurrent 模式，那它还能叫 Fiber 架构吗**？
 
-从动机上来看，Fiber 架构的设计确实主要是为了 Concurrent 而存在。但经过了本讲紧贴源码的讲解，相信你也能够看出，在 React 16，包括已发布的 React 17 版本中，不管是否是 Concurrent，整个数据结构层面的设计、包括贯穿整个渲染链路的处理逻辑，已经完全用 Fiber 重构了一遍。站在这个角度来看，Fiber 架构在 React 中并不能够和异步渲染画严格的等号，它是一种**同时兼容了同步渲染与异步渲染的设计**。
+从动机上来看，Fiber 架构的设计确实主要是为了 Concurrent 而存在。在 React 16，包括已发布的 React 17 版本中，不管是否是 Concurrent，整个数据结构层面的设计、包括贯穿整个渲染链路的处理逻辑，已经完全用 Fiber 重构了一遍。站在这个角度来看，Fiber 架构在 React 中并不能够和异步渲染画严格的等号，它是一种**同时兼容了同步渲染与异步渲染的设计**。
 
 总结：
 
@@ -2823,7 +2825,7 @@ React 15 下的调和过程是一个递归的过程。 Fiber 架构下的调和�
 
 <img src="..\typora-user-images\image-20220425200420687.png" alt="image-20220425200420687" style="zoom:50%;" />
 
-workInProgress 节点的创建：
+workInProgress 节点的创建（另一个workInProgress 树）：
 
 performSyncWorkOnRoot (render 阶段的起点) 调用了 renderRootSync，renderRootSync 被调用后的情况：
 
@@ -2922,6 +2924,8 @@ workLoopSync 做的事情就是**通过 while 循环反复判断 workInProgress 
 
 一棵 current 树，一棵 workInProgress 树，这两棵 Fiber 树至少在现在看来，是完全没区别的（毕竟都还只有一个根节点）。React 这样设计的目的何在？或者换个问法——到底是什么样的事情一棵树做不到，非得搞两棵“一样”的树出来？在一步一步理解 Fiber 树的构建和更新过程之后，认识“两棵 Fiber 树”的动机。
 
+
+
 ### beginWork 开启 Fiber 节点创建过程
 
 与树构建过程强相关的动作进行逻辑提取,代码如下（解析在注释里）：
@@ -2954,7 +2958,7 @@ function beginWork(current, workInProgress, renderLanes) {
     didReceiveUpdate = false;
   }
   ......
-  // 这坨 switch 是 beginWork 中的核心逻辑，原有的代码量相当大
+  // 这个switch 是 beginWork 中的核心逻辑，原有的代码量相当大
   switch (workInProgress.tag) {
     ......
     // 这里省略掉大量形如"case: xxx"的逻辑
@@ -2985,7 +2989,7 @@ function beginWork(current, workInProgress, renderLanes) {
 
 作用：
 
-1. beginWork 的入参是**一对用 alternate 连接起来的 workInProgress 和 current 节点**；
+1. beginWork 的入参是**一对用 alternate 连接起来的 workInProgress 树和 current 节树**；
 2. **beginWork 的核心逻辑是根据 fiber 节点（workInProgress**）**的 tag 属性的不同，调用不同的节点创建函数**。
 
 当前的 current 节点是 rootFiber，而 workInProgress 则是 current 的副本，它们的 tag 都是 3，如下图所示：
@@ -2994,7 +2998,7 @@ function beginWork(current, workInProgress, renderLanes) {
 
 而 3 正是 HostRoot 所对应的值，因此第一个 beginWork 将进入 updateHostRoot 的逻辑。
 
-这里你先不必急于关注 updateHostRoot 的逻辑细节。事实上，在整段 switch 逻辑里，包含的形如“update+类型名”这样的函数是非常多的。在专栏示例的 Demo 中，就涉及了对 updateHostRoot、updateHostComponent 等的调用，十来种 updateXXX。这些函数之间不仅命名形式一致，工作内容也相似。就 render 链路来说，它们共同的特性，就是都会**通过调用 reconcileChildren 方法，生成当前节点的子节点**。
+在整段 switch 逻辑里，包含的形如“update+类型名”这样的函数是非常多的。在专栏示例的 Demo 中，就涉及了对 updateHostRoot、updateHostComponent 等的调用，十来种 updateXXX。这些函数之间不仅命名形式一致，工作内容也相似。就 render 链路来说，它们共同的特性，就是都会**通过调用 reconcileChildren 方法，生成当前节点的子节点**。
 
 reconcileChildren 的源码如下：
 
@@ -3159,7 +3163,7 @@ reconcileChildren 函数上下文里的 workInProgress 就是 rootFiber 节点�
 
 分析完 App FiberNode 的创建过程。最关键的东西已经讲完了，剩余节点的创建只不过是对 performUnitOfWork、 beginWork 和 ChildReconciler 等相关逻辑的重复。
 
-刚刚这一通分析所涉及的调用栈很长，相信不少人如果是初读的话，过程中肯定不可避免地要反复回看，确认自己现在到底在调用栈的哪一环。将本讲讲解的 beginWork 所触发的调用流程总结进一张大图：
+将本讲讲解的 beginWork 所触发的调用流程总结进一张大图：
 
 <img src="https://s0.lgstatic.com/i/image/M00/71/47/Ciqc1F-97fSAYLUIAAGBjhvNylg581.png" alt="7.png" style="zoom:50%;" />
 
@@ -3167,7 +3171,9 @@ reconcileChildren 函数上下文里的 workInProgress 就是 rootFiber 节点�
 
 理解了 Fiber 节点的创建过程，就不难理解 Fiber 树的构建过程。
 
-前面我们已经锲而不舍地研究了各路关键函数的源码逻辑，此时相信你已经能够将函数名与函数的工作内容做到对号入座。这里不必再纠结与源码的实现细节，可以直接从工作流程的角度来看后续节点的创建。
+前面研究了各路关键函数的源码逻辑，此时相信你已经能够将函数名与函数的工作内容做到对号入座。这里不必再纠结与源码的实现细节，可以直接从工作流程的角度来看后续节点的创建。
+
+
 
 #### 循环创建新的 Fiber 节点
 
@@ -3185,7 +3191,7 @@ function workLoopSync() {
 }
 ```
 
-**它会循环地调用 performUnitOfWork**，而 performUnitOfWork，开篇我们已经点到过它，其主要工作是“通过调用 beginWork，来实现新 Fiber 节点的创建”；它还有一个次要工作，**就是把新创建的这个 Fiber 节点的值更新到 workInProgress 变量里去**。源码中的相关逻辑提取如下：
+**它会循环地调用 performUnitOfWork**，而 performUnitOfWork，其主要工作是“通过调用 beginWork，来实现新 Fiber 节点的创建”；它还有一个次要工作，**就是把新创建的这个 Fiber 节点的值更新到 workInProgress 变量里去**。源码中的相关逻辑提取如下：
 
 ```js
 // 新建 Fiber 节点
@@ -3280,13 +3286,373 @@ sibling 属性局部截图：
 
 注意，在分析 Fiber 树的构建过程时，选取了 **beginWork** 作为切入点，但整个 Fiber 树的构建过程中，并不是只有 beginWork 在工作。这其中，还穿插着 **completeWork** 的工作。只有将 completeWork 和 beginWork 放在一起来看，才能够真正理解，Fiber 架构下的“深度优先遍历”到底是怎么一回事。
 
+
+
 ### 总结
 
 通过本讲的学习，掌握 beginWork 的实现原理、理清 Fiber 节点的创建链路，最终串联起了 Fiber 树的宏观构建过程。
 
 下一讲，继续 completeWork 的工作内容，将整个 render 阶段讲透；另一方面，过一遍 commit 阶段的工作流，并基于此去串联由初始化、render、commit 所组成的完整渲染工作流，力求对整个 ReactDOM.render 所触发的渲染链路形成一个系统、通透的理解。
 
-### completeWork
+
+
+
+
+## completeWork
+
+从completeWork出发，理解FIber树和DOM树之间的联系。在此基础上，结合 commit 阶段工作流，对 ReactDOM.render 所触发的渲染链路有一个完整理解。
+
+demo代码如下：
+
+```jsx
+import React from "react";
+import ReactDOM from "react-dom";
+function App() {
+  return (
+    <div className="App">
+      <div className="container">
+        <h1>我是标题</h1>
+        <p>我是第一段话</p>
+        <p>我是第二段话</p>
+      </div>
+    </div>
+  );
+}
+const rootElement = document.getElementById("root");
+ReactDOM.render(<App />, rootElement);
+```
+
+
+
+### completeWork——将 Fiber 节点映射为 DOM 节点
+
+**completeWork 的调用时机**
+首先，在调用栈中定位一下 completeWork。Demo 所对应的调用栈中，第一个 completeWork出现在下图红框选中的位置：
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/0300192c8bda4f1db63be94d674d14ef.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_1_,size_20,color_FFFFFF,t_70,g_se,x_16#pic_center)
+
+从 performUnitOfWork到 completeWork，中间会经过一个这样的调用链路：
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/b58011db010e41b59f4fe371ebbd7d21.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_1_,size_15,color_FFFFFF,t_70,g_se,x_16#pic_center)
+
+暂时将 completeUnitOfWork简单理解为一个用于发起 completeWork调用的函数。completeUnitOfWork是在 performUnitOfWork中被调用的，那么 performUnitOfWork是如何把握其调用时机的呢？直接来看相关源码：
+
+```js
+function performUnitOfWork(unitOfWork) {
+
+  ......
+
+  // 获取入参节点对应的 current 节点
+  var current = unitOfWork.alternate;
+  var next;
+  if (xxx) {
+
+    ...
+
+    // 创建当前节点的子节点
+    next = beginWork$1(current, unitOfWork, subtreeRenderLanes);
+
+    ...
+
+  } else {
+    // 创建当前节点的子节点
+    next = beginWork$1(current, unitOfWork, subtreeRenderLanes);
+  }
+
+  ......
+
+  if (next === null) {
+    // 调用 completeUnitOfWork
+    completeUnitOfWork(unitOfWork);
+  } else {
+    // 将当前节点更新为新创建出的 Fiber 节点
+    workInProgress = next;
+  }
+  ......
+}
+```
+
+
+  这段源码中需要提取出的信息是：performUnitOfWork每次会尝试调用 beginWork来创建当前节点的子节点，若创建出的子节点为空（也就意味着当前节点不存在子 Fiber节点），则说明当前节点是一个叶子节点。按照深度优先遍历的原则，当遍历到叶子节点时，“递”阶段就结束了，随之而来的是“归”的过程。因此这种情况下，就会调用 completeUnitOfWork，执行当前节点对应的 completeWork逻辑。
+
+  接下来在 demo 代码的 completeWork处打上断点，看看第一个走到 completeWork的节点是哪个，结果如下图所示：
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/5e9820171b604333933579f95dbe1ae4.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_1_,size_20,color_FFFFFF,t_70,g_se,x_16#pic_center)
+
+
+
+  显然，第一个进入 completeWork的节点是 h1，如下图所示：
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/a99352f553fc4a239e3673818977f09a.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_0_,size_20,color_FFFFFF,t_70,g_se,x_16#pic_center)
+
+  由图可知，按照深度优先遍历的原则，h1 确实将是第一个被遍历到的叶子节点。接下来我们就以 h1 为例，一起看看 completeWork都围绕它做了哪些事情。
+
+
+
+**completeWork 的工作原理**
+  这里仍然提取一下 completeWork的源码结构和主体逻辑，代码如下：
+
+```js
+function completeWork(current, workInProgress, renderLanes) {
+  // 取出 Fiber 节点的属性值，存储在 newProps 里
+  var newProps = workInProgress.pendingProps;
+  // 根据 workInProgress 节点的 tag 属性的不同，决定要进入哪段逻辑
+  switch (workInProgress.tag) {
+    case ......:
+      return null;
+    case ClassComponent:
+      {
+        .....
+      }
+    case HostRoot:
+      {
+        ......
+      }
+    // h1 节点的类型属于 HostComponent，因此这里为你讲解的是这段逻辑
+    case HostComponent:
+      {
+        popHostContext(workInProgress);
+        var rootContainerInstance = getRootHostContainer();
+        var type = workInProgress.type;
+        // 判断 current 节点是否存在，因为目前是挂载阶段，因此 current 节点是不存在的
+        if (current !== null && workInProgress.stateNode != null) {
+          updateHostComponent$1(current, workInProgress, type, newProps, rootContainerInstance);
+          if (current.ref !== workInProgress.ref) {
+            markRef$1(workInProgress);
+          }
+        } else {
+          // 这里首先是针对异常情况进行 return 处理
+          if (!newProps) {
+            if (!(workInProgress.stateNode !== null)) {
+              {
+                throw Error("We must have new props for new mounts. This error is likely caused by a bug in React. Please file an issue.");
+              }
+            } 
+            return null;
+          }
+          // 接下来就为 DOM 节点的创建做准备了
+          var currentHostContext = getHostContext();
+          // _wasHydrated 是一个与服务端渲染有关的值，这里不用关注
+          var _wasHydrated = popHydrationState(workInProgress);
+          // 判断是否是服务端渲染
+          if (_wasHydrated) {
+            // 这里不用关注，请你关注 else 里面的逻辑
+            if (prepareToHydrateHostInstance(workInProgress, rootContainerInstance, currentHostContext)) {
+              markUpdate(workInProgress);
+            }
+          } else {
+            // 这一步很关键， createInstance 的作用是创建 DOM 节点
+            var instance = createInstance(type, newProps, rootContainerInstance, currentHostContext, workInProgress);
+            // appendAllChildren 会尝试把上一步创建好的 DOM 节点挂载到 DOM 树上去
+            appendAllChildren(instance, workInProgress, false, false);
+            // stateNode 用于存储当前 Fiber 节点对应的 DOM 节点
+            workInProgress.stateNode = instance; 
+            // finalizeInitialChildren 用来为 DOM 节点设置属性
+            if (finalizeInitialChildren(instance, type, newProps, rootContainerInstance)) {
+              markUpdate(workInProgress);
+            }
+          }
+          ......
+        }
+        return null;
+      }
+    case HostText:
+      {
+        ......
+      }
+    case SuspenseComponent:
+      {
+        ......
+      }
+    case HostPortal:
+      ......
+      return null;
+    case ContextProvider:
+      ......
+      return null;
+    ......
+
+  }
+  {
+    {
+      throw Error("Unknown unit of work tag (" + workInProgress.tag + "). This error is likely caused by a bug in React. Please file an issue.");
+    }
+  }
+}
+
+```
+
+  试图捋顺这段 completeWork逻辑，需要掌握以下几个要点:
+
+- completeWork的核心逻辑是一段体量巨大的 switch语句，在这段 switch语句中，completeWork 将根据 workInProgress 节点的 tag 属性的不同，进入不同的 DOM 节点的创建、处理逻辑。
+- 在 demo示例中，h1 节点的 tag属性对应的类型应该是 HostComponent，也就是“原生 DOM 元素类型”。
+- completeWork中的 current、 workInProgress分别对应的是下图中左右两棵 Fiber 树上的节点：
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/6be622782ec84e2c98a36129554cffad.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_1_,size_20,color_FFFFFF,t_70,g_se,x_16#pic_center)
+
+
+  **其中 workInProgress树代表的是“当前正在 render中的树”，而 current树则代表“已经存在的树”。**
+
+  workInProgress节点和 current节点之间用 alternate属性相互连接。在组件的挂载阶段，current树只有一个 rootFiber 节点，并没有其他内容。因此 h1这个 workInProgress节点对应的 current节点是 null。
+
+  捋顺思路后，直接来提取知识点。关于 completeWork，需要明白以下几件事。
+
+- 用一句话来总结 completeWork 的工作内容：负责处理 Fiber 节点到 DOM 节点的映射逻辑。
+
+- completeWork 内部有 3 个关键动作：
+  - 创建DOM 节点（CreateInstance）
+  - 将 DOM 节点插入到 DOM 树中（AppendAllChildren）
+  - 为 DOM 节点设置属性（FinalizeInitialChildren）
+- 创建好的 DOM 节点会被赋值给 workInProgress 节点的 stateNode 属性。也就是说当我们想要定位一个 Fiber 对应的 DOM 节点时，访问它的 stateNode属性就可以了。这里可以尝试访问运行时的 h1 节点的 stateNode属性，结果如下图所示：
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/7bcde23471d24d5c81b1332c9332ed06.png#pic_center)
+
+- 将 DOM 节点插入到 DOM 树的操作是通过 appendAllChildren函数来完成的。
+
+  说是将 DOM 节点插入到 DOM 树里去，实际上是将子 Fiber 节点所对应的 DOM 节点挂载到其父 Fiber 节点所对应的 DOM 节点里去。比如说在本讲 Demo 所构建出的 Fiber 树中，h1 节点的父结点是 div，那么 h1 对应的 DOM 节点就理应被挂载到 div 对应的 DOM 节点里去。
+
+  比如 h1 节点作为第一个进入 completeWork的节点，它的父节点 div 对应的 DOM 就尚不存在。其实不存在也没关系，反正 h1 DOM 节点被创建后，会作为 h1 Fiber 节点的 stateNode属性存在，丢不掉的。当父节点 div 进入 appendAllChildren逻辑后，会逐个向下查找并添加自己的后代节点，这时候，h1 就会被它的父级 DOM 节点“收入囊中”。
+
+**completeUnitOfWork —— 开启收集 EffectList 的“大循环”**
+  completeUnitOfWork的作用是开启一个大循环，在这个大循环中，将会重复地做下面三件事：
+
+- 针对传入的当前节点，调用 completeWork
+
+- 将当前节点的副作用链（EffectList）插入到其父节点对应的副作用链（EffectList）中；
+
+- 以当前节点为起点，循环遍历其兄弟节点及其父节点。当遍历到兄弟节点时，将 return掉当前调用，触发兄弟节点对应的 performUnitOfWork逻辑；而遍历到父节点时，则会直接进入下一轮循环，也就是重复 1、2 的逻辑。
+
+  
+
+**completeUnitOfWork 开启下一轮循环的原则**
+  在理解副作用链之前，首先要理解 completeUnitOfWork开启下一轮循环的原则，也就是步骤 3。步骤 3 相关的源码如下所示（解析在注释里）：
+
+```js
+do {
+  ......
+
+  // 这里省略步骤 1 和步骤 2 的逻辑 
+
+  // 获取当前节点的兄弟节点
+  var siblingFiber = completedWork.sibling;
+  // 若兄弟节点存在
+  if (siblingFiber !== null) {
+    // 将 workInProgress 赋值为当前节点的兄弟节点
+    workInProgress = siblingFiber;
+    // 将正在进行的 completeUnitOfWork 逻辑 return 掉
+    return;
+  } 
+  // 若兄弟节点不存在，completeWork 会被赋值为 returnFiber，也就是当前节点的父节点
+  completedWork = returnFiber; 
+    // 这一步与上一步是相辅相成的，上下文中要求 workInProgress 与 completedWork 保持一致
+  workInProgress = completedWork;
+} while (completedWork !== null);
+
+```
+
+  步骤 3 是整个循环体的收尾工作，它会在当前节点相关的各种工作都做完之后执行。
+
+  当前节点处理完了，自然是去寻找下一个可以处理的节点。我们知道，当前的 Fiber 节点之所以会进入 completeWork，是因为“递无可递”了，才会进入“归”的逻辑，这就意味着当前 Fiber 要么没有 child 节点、要么 child节点的 completeWork早就执行过了。因此 child 节点不会是下次循环需要考虑的对象，下次循环只需要考虑兄弟节点（siblingFiber）和父节点（returnFiber）。
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/ac6f5e3e422c473f81c2bc7447d5b4f0.png#pic_center)
+
+  结合前面的分析和图示可知，h1 节点是递归过程中所触及的第一个叶子节点，也是其兄弟节点中被遍历到的第一个节点；而剩下的两个 p 节点，此时都还没有被遍历到，也就是说连 beginWork都没有执行过。
+
+  因此对于 h1 节点的兄弟节点来说，当下的第一要务是回去从 beginWork 开始走起，直到 beginWork “递无可递”时，才能够执行 completeWork 的逻辑。beginWork的调用是在 performUnitOfWork里发生的，因此 completeUnitOfWork一旦识别到当前节点的兄弟节点不为空，就会终止后续的逻辑，退回到上一层的 performUnitOfWork里去。
+
+  接下来我们再来看 h1 的父节点 div：在向下递归到 h1 的过程中，div 必定已经被遍历过了，也就是说 div 的“递”阶段（ beginWork） 已经执行完毕，只剩下“归”阶段的工作要处理了。因此，对于父节点，completeUnitOfWork会毫不犹豫地把它推到下一次循环里去，让它进入 completeWork的逻辑。
+
+  值得注意的是，completeUnitOfWork中处理兄弟节点和父节点的顺序是：先检查兄弟节点是否存在，若存在则优先处理兄弟节点；确认没有待处理的兄弟节点后，才转而处理父节点。这也就意味着，completeWork 的执行是严格自底向上的，子节点的 completeWork总会先于父节点执行。
+
+
+
+**副作用链（effectList）的设计与实现**
+  无论是 beginWork 还是 completeWork，它们的应用对象都是 workInProgress树上的节点。我们说 render阶段是一个递归的过程，“递归”的对象，正是这棵 workInProgress 树（见下图右侧高亮部分）：
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/25e745cb16f6481fb14c29299747c836.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_1_,size_20,color_FFFFFF,t_70,g_se,x_16#pic_center)
+
+  那么我们递归的目的是什么呢？或者说，render 阶段的工作目标是什么呢？
+
+  render 阶段的工作目标是找出界面中需要处理的更新。
+
+  在实际的操作中，并不是所有的节点上都会产生需要处理的更新。比如在挂载阶段，对图中的整棵 workInProgress递归完毕后，React 会发现实际只需要对 App 节点执行一个挂载操作就可以了；而在更新阶段，这种现象更为明显。
+
+  更新阶段与挂载阶段的主要区别在于更新阶段的 current 树不为空，比如说情况可以是下图这样子的：
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/3351303e95a745a09b6862226c0734e7.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_1_,size_20,color_FFFFFF,t_70,g_se,x_16#pic_center)
+
+  假如说我的某一次操作，仅仅对 p 节点产生了影响，那么对于渲染器来说，它理应只关注 p 节点这一处的更新。这时候问题就来了：怎样做才能让渲染器又快又好地定位到那些真正需要更新的节点呢？
+
+  在 render阶段，我们通过艰难的递归过程来明确“p 节点这里有一处更新”这件事情。按照 React 的设计思路，render阶段结束后，“找不同”这件事情其实也就告一段落了。commit 只负责实现更新，而不负责寻找更新，这就意味着我们必须找到一个办法能让 commit阶段“坐享其成”，能直接拿到 render阶段的工作成果。而这，正是副作用链（effectList）的价值所在。
+
+  **副作用链（effectList）** 可以理解为 render阶段“工作成果”的一个集合：每个 Fiber节点都维护着一个属于它自己的 effectList，effectList在数据结构上以链表的形式存在，链表内的每一个元素都是一个 Fiber节点。这些 Fiber 节点需要满足两个共性：
+
+- 都是当前 Fiber 节点的后代节点
+- 都有待处理的副作用
+  Fiber节点的 effectList里记录的并非它自身的更新，而是其需要更新的后代节点。带着这个结论，我们再来品品小节开头 completeUnitOfWork中的“步骤 2”：
+
+将当前节点的副作用链（effectList）插入到其父节点对应的副作用链（effectList）中。
+
+  “completeWork 是自底向上执行的”，也就是说，子节点的 completeWork 总是比父节点先执行。试想，若每次处理到一个节点，都将当前节点的 effectList 插入到其父节点的 effectList 中。那么当所有节点的 completeWork 都执行完毕时，我是不是就可以从“终极父节点”，也就是 rootFiber 上，拿到一个存储了当前 Fiber 树所有 effect Fiber的“终极版”的 effectList 了？
+
+  把所有需要更新的 Fiber 节点单独串成一串链表，方便后续有针对性地对它们进行更新，这就是所谓的“收集副作用”的过程。
+
+  这里我挂载过程为例，分析一下这个过程是如何实现的。
+
+  首先我们要知道的是，这个 effectList链表在 Fiber 节点中是通过 firstEffect和 lastEffect来维护的，如下图所示：
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/38f5f3230f3a4ec08eb2f66cd38b711a.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_1_,size_20,color_FFFFFF,t_70,g_se,x_16#pic_center)
+
+  其中 firstEffect表示 effectList的第一个节点，而 lastEffect则记录最后一个节点。
+
+  对于挂载过程来说，我们唯一要做的就是把 App 组件挂载到界面上去，因此 App 后代节点们的 effectList其实都是不存在的。effectList只有在 App 的父节点（rootFiber）这才不为空。
+
+  那么 effectList的创建逻辑又是怎样的呢？其实非常简单，只需要为 firstEffect和 lastEffect各赋值一个引用即可。以下是从 completeUnitOfWork源码中提取出的相关逻辑：
+
+```js
+// 若副作用类型的值大于“PerformedWork”，则说明这里存在一个需要记录的副作用
+if (flags > PerformedWork) {
+  // returnFiber 是当前节点的父节点
+  if (returnFiber.lastEffect !== null) {
+    // 若父节点的 effectList 不为空，则将当前节点追加到 effectList 的末尾去
+    returnFiber.lastEffect.nextEffect = completedWork;
+  } else {
+    // 若父节点的 effectList 为空，则当前节点就是 effectList 的 firstEffect
+    returnFiber.firstEffect = completedWork;
+  }
+  // 将 effectList 的 lastEffect 指针后移一位
+  returnFiber.lastEffect = completedWork;
+}
+
+```
+
+  代码中的 flags咱们已经反复强调过了，是用来标识副作用类型的；而“completedWork”这个变量，在当前上下文中存储的就是“正在被执行 completeWork相关逻辑”的节点；至于“PerformedWork”，它是一个值为 1 的常量，React 规定若 flags（又名 effectTag）的值小于等于 1，则不必提交到 commit阶段。因此 completeUnitOfWork只会对 flags大于 PerformedWork的 effect fiber 进行收集。
+
+  这里以 App 节点为例，走一遍 effectList 的创建过程：
+
+- App FiberNode 的 flags属性为 3，大于 PerformedWork，因此会进入 effectList的创建逻辑；
+- 创建 effectList时，并不是为当前 Fiber 节点创建，而是为它的父节点创建，App 节点的父节点是 rootFiber，rootFiber的 effectList此时为空；
+- rootFiber 的 firstEffect和 lastEffect指针都会指向 App 节点，App 节点由此成为 effectList 中的唯一一个 FiberNode，如下图所示。
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/97d62e7f4fd444c082bce9208b454a5d.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_1_,size_20,color_FFFFFF,t_70,g_se,x_16#pic_center)
+
+**commit 阶段工作流简析**
+  在整个 ReactDOM.render 的渲染链路中，render阶段是 Fiber架构的核心体现；而对于 commit 阶段，做到“了解”。
+
+  commit会在 performSyncWorkOnRoot中被调用，如下图所示：
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/1da17826a3cc4e9bbec5591510d6e43b.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_1_,size_20,color_FFFFFF,t_70,g_se,x_16#pic_center)
+
+  这里的入参 root并不是 rootFiber，而是 fiberRoot（FiberRootNode）实例。fiberRoot的 current 节点指向 rootFiber，因此拿到 effectList对后续的 commit流程来说不是什么难事。
+
+从流程上来说，commit共分为 3 个阶段：before mutation、mutation、layout。
+
+- before mutation 阶段，这个阶段 DOM 节点还没有被渲染到界面上去，过程中会触发 getSnapshotBeforeUpdate，也会处理 useEffect钩子相关的调度逻辑。
+- mutation，这个阶段负责 DOM 节点的渲染。在渲染过程中，会遍历 effectList，根据 flags（effectTag）的不同，执行不同的 DOM 操作。
+- layout，这个阶段处理 DOM 渲染完毕之后的收尾逻辑。比如调用 componentDidMount/componentDidUpdate，调用 useLayoutEffect钩子函数的回调等。除了这些之外，它还会把 fiberRoot 的 current 指针指向 workInProgress Fiber 树。
+
+commit是一个绝对同步的过程。render阶段可以同步也可以异步，但 commit一定是同步的。
+
 
 
 

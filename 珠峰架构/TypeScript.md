@@ -65,18 +65,26 @@ rollup.config.js:
 import ts from 'rollup-plugin-typescript2'; // ts 插件
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import path from 'path';
+import { fileURLToPath } from 'url'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 export default {
   input: 'src/index.ts',
   output: {
-    file: path.resolve('dist/bundle.js'),
+    file: path.resolve(__dirname, 'dist/bundle.js'),
     format: 'iife', // 自执行函数 格式化的格式，增加一个作用域
     name: 'xxx',
     sourcemap: true // umd 可以支持 amd 和 commonjs规范
   },
   plugins: [
-    ts(), // ts()内部会创建一个默认的配置，如果你有配置文件他就会找自己的配置文件
-    nodeResolve()
+    ts({
+        tsconfig:path.resolve(__dirname, 'tsconfig.json'),
+    }), // ts()内部会创建一个默认的配置，如果你有配置文件他就会找自己的配置文件
+    nodeResolve({
+        extension:['.js','.ts']
+    })
   ]
 };
 ```
@@ -85,14 +93,37 @@ package.json:
 
 ```json
 "script":{
-    "dev":"rollup -cw"
-}
+    "dev":"rollup -c -w"
+},
+"type":"module"
 ```
 
 一般情况下写 ts 时，需要生成一个 ts 的配置文件以自定义一些规则。
 
 ```shell
 tsc --help，tsc --init
+```
+
+
+
+tsconfig.json:
+
+```json
+{
+  "compilerOptions": {
+    "target": "ES5",                                 
+     "lib": [
+      "ESNext",
+      "DOM",
+     ],                                       
+    "module": "ESNext",                               
+    "sourceMap": true,                                
+    "esModuleInterop": true,                            
+    "forceConsistentCasingInFileNames": true,            
+    "strict": true,                                      
+    "strictNullChecks": true,                         
+  }
+}
 ```
 
 
@@ -541,9 +572,15 @@ ts 最终会被编译成 js ，所添加的类型最后都会被删除掉 ，只
 
 1. 变量 ：后面的都是类型
 
-2. ts 中要考虑安全性，如果是安全的就可以赋值
+2. **类型推导**，会根据赋值的值的类型来推导变量类型
 
-3. **类型推导**，会根据赋值的值的类型来推导变量类型
+3. ts 类型是从安全的角度出发的， 一切从安全角度来考虑，如果是安全的就可以赋值
+
+4. ts 是在开发的时候来检测，不是在运行的时候，所以代码并没有被真正的执行
+
+5. ts 中是具备一个类型推导的特点，不是所有的变量都需要增加类型。 只有无法推断或者推断错误的时候才需要编写类型
+
+   
 
    
 
@@ -612,24 +649,6 @@ console.log(myFavoriteNumber.length); // 编译时报错  index.ts(5,30): error 
 type IValue = number | string | HTMLElement; // 联合类型只能使用共享的方法，非共享不能使用
 
 // val = 123; // 当确定类型后 就会根据类型来继续识别
-```
-
-
-
-
-
-### 元组
-
-数组不限制长度和内部存储的顺序，元组要限制长度和顺序
-
-```tsx
-let tuple: [string, number, boolean] = ['', 1, true]; // 这里必须要有三个值
-
-// 元组可以新增已经存在的类型，没有初始被指定的类型是无法添加到数组中的。
-tuple.push(1); // 要求必须是三个类型中的一个，即string或者number或者boolean
-tuple.push({})  // 提示错误，对象类型不是 string或者number或者boolean 中的任意类型
-
-tuple[3]; // 为了安全，限制了不能使用第四个，所以该行代码无法获取数组元素，即使上面追加了 1为索引3对应的值，提示错误：在索引 "3" 处没有元素。
 ```
 
 
@@ -732,8 +751,6 @@ never 和 void 的区别
 
 
 
-
-
 ### object
 
 ```tsx
@@ -776,12 +793,12 @@ create([]);
   // number和 BigInt类型不一样,不兼容
 
 
-  let s1：symbol = Symbol(); // 对象的key可以是symbol
-  let s2 = Symbol();
+let s1：symbol = Symbol(); // 对象的key可以是symbol
+let s2 = Symbol();
 
-  console.log(s1 === s2);   // false
+console.log(s1 === s2);   // false
 
-  let b1: bigint = BigInt(Number.MAX_SAFE_INTEGER) + BigInt(100);
+let b1: bigint = BigInt(Number.MAX_SAFE_INTEGER) + BigInt(100);
 ```
 
 
@@ -860,6 +877,25 @@ interface IArguments {
   callee: Function;
 }
 ```
+
+
+
+### 元组
+
+数组不限制长度和内部存储的顺序，元组要限制长度和顺序
+
+```tsx
+let tuple: [string, number, boolean] = ['', 1, true]; // 这里必须要有三个值
+let tuple: [name:string, age:number, male:boolean] = ['', 1, true]; // 这里必须要有三个值
+
+// 元组可以新增已经存在的类型，没有初始被指定的类型是无法添加到数组中的。
+tuple.push(1); // 要求必须是三个类型中的一个，即string或者number或者boolean
+tuple.push({})  // 提示错误，对象类型不是 string或者number或者boolean 中的任意类型
+
+tuple[3]; // 为了安全，限制了不能使用第四个，所以该行代码无法获取数组元素，即使上面追加了 1为索引3对应的值，提示错误：在索引 "3" 处没有元素。
+```
+
+
 
 
 
@@ -1263,7 +1299,7 @@ class Circle {
 
 class Circle {
     constructor( public x:number,public y:number, public r:number){   //直接将参数定义到this上了，不用再写this.x = x this.y = y  this.r = r
-        // public表示类接受x,y,r三个参数，并且将它们自动挂载到this上，也就不用再写下面得代码了：
+        // public表示类接受x,y,r三个参数，并且将它们自动挂载到this上，也就不用再写下面代码了：
         // this.x = x
         // this.y = y
         // this.r = r
@@ -1296,6 +1332,19 @@ class Cat extends Animal{
 
 const cat1 = new Cat('Tom', 18)
 
+
+// 使用private实现单例模式
+class Singleton {
+  static instance: Singleton | null;
+  private constructor() {}
+
+  static getInstance: () => Singleton = function () {
+    if (Singleton.instance === null) {
+      Singleton.instance = new Singleton();
+    }
+    return Singleton.instance;
+  };
+}
 
 
 
@@ -3460,7 +3509,7 @@ declare module '*.vue' {
 
 ### typescript 中的数据类型
 
-![image-20210711154756553](.\typora-user-images\image-20210711154756553.png)
+![image-20210711154756553](..\typora-user-images\image-20210711154756553.png)
 
 - 直接使用字面量进行类型声明
 

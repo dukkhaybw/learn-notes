@@ -2730,7 +2730,7 @@ var c = String(a); // explicit coercion
 
 
 
-![image-20230324173951556](C:/Users/shuyi/Desktop/study-notes/js/JS%E8%BF%9B%E9%98%B6.images/image-20230324173951556.png)
+![image-20230324173951556](../js/JS%E8%BF%9B%E9%98%B6.images/image-20230324173951556.png)
 
 
 
@@ -2821,13 +2821,13 @@ function displayVal () {
 
 **分词或词法分析**（tokenizing/lexing）：JS代码字符串被拆分成段，一个变量或者函数的作用域就是在这个阶段被确定的。
 
-![image-20230325193444593](C:/Users/shuyi/Desktop/study-notes/js/JS%E8%BF%9B%E9%98%B6.images/image-20230325193444593.png)
+![image-20230325193444593](../js/JS%E8%BF%9B%E9%98%B6.images/image-20230325193444593.png)
 
 **语法分析**：解析（parsing）词法分析后的一段段的代码，被转换成一个抽象语法树（AST, Abstract Syntax Tree）
 
 语法树的顶端有一个父节点：var 变量的声明。在这个父节点的下面，有两个子节点：一个子节点是标识符 base；另外一个子节点就是等号的赋值表达。等号赋值表达的节点下面，还有一个子节点就是数字表面量 0。
 
-![image-20230325193837095](C:/Users/shuyi/Desktop/study-notes/js/JS%E8%BF%9B%E9%98%B6.images/image-20230325193837095.png)
+![image-20230325193837095](../js/JS%E8%BF%9B%E9%98%B6.images/image-20230325193837095.png)
 
 
 
@@ -2840,4 +2840,478 @@ function displayVal () {
 根据流程图中的红色虚线框部分所示，在词法分析后，JavaScript 引擎会在做语法分析的同时，更新全局作用域和创建局部作用域。在这个代码例子中，全局作用域里增加了 base 和 scope 变量，displayVal 里有 base、scope 和 increment 变量，而 addOne 里有 base 变量。
 
 
+
+
+
+## 设计模式
+
+
+
+### 代理模式
+
+
+
+结构型设计模式。在结构型模式中，最经典的是代理模式。Vue.js 的一个大的特点是用了响应式编程（Reactive Programming），基于代理模式实现。
+
+#### 应用场景
+
+代理对象作为主体对象的接口。代理对象在调用者和主体对象之间，主要起到的作用是保护和控制调用者对主体对象的访问。代理会拦截所有或部分要在主体对象上执行的操作，有时会增强或补充它的行为。
+
+> 接口（interface）是一种抽象类型，它能定义类、模块、或者子系统的功能和属性。接口规定了一个实体应该具有哪些方法、属性、事件等，但是并不规定具体实现。
+>
+> 在面向对象编程中，接口通常作为类的属性，用来规定类应该实现哪些方法和属性。一个类可以实现多个接口，从而具备多种功能。接口可以大大提高代码的可重用性和可维护性，同时也方便了代码的扩展和升级。
+>
+> ```js
+> // 定义一个接口
+> class ShapeInterface {
+>   calculateArea() {}
+>   calculatePerimeter() {}
+> }
+> 
+> // 定义一个类，实现接口中的方法
+> class Rectangle extends ShapeInterface {
+>   constructor(width, height) {
+>     super();
+>     this.width = width;
+>     this.height = height;
+>   }
+>   calculateArea() {
+>     return this.width * this.height;
+>   }
+>   calculatePerimeter() {
+>     return 2 * (this.width + this.height);
+>   }
+> }
+> 
+> // 测试代码
+> const rectangle = new Rectangle(4, 5);
+> console.log(rectangle.calculateArea()); // 输出 20
+> console.log(rectangle.calculatePerimeter()); // 输出 18
+> ```
+>
+> 
+
+
+
+**延迟初始化**
+
+例如在需要时才创建对象，而不是一上来就先创建对象，然后等待着被调用。
+
+```js
+// 定义一个原始对象
+class RealObject {
+  constructor() {
+    console.log("创建了一个真实对象");
+  }
+  operation() {
+    console.log("执行了真实对象的操作");
+  }
+}
+
+// 定义一个代理对象，用于延迟初始化
+class ProxyObject {
+  constructor() {
+    console.log("创建了一个代理对象");
+  }
+  operation() {
+    // 在代理对象中延迟初始化真实对象
+    if (!this.realObject) {
+      console.log("延迟初始化真实对象");
+      this.realObject = new RealObject();
+    }
+    console.log("执行了代理对象的操作");
+    this.realObject.operation();
+  }
+}
+
+// 测试代码
+const proxy = new ProxyObject();
+proxy.operation();
+```
+
+这种技术在一些需要创建大量对象的场景中非常有用，例如缓存、图片加载等。
+
+图片加载：
+
+```js
+// 定义一个图片对象
+class ImageObject {
+  constructor(url) {
+    this.url = url;
+    console.log(`创建了一个图片对象，url为 ${url}`);
+  }
+  load() {
+    console.log(`加载图片 ${this.url}`);
+  }
+}
+
+// 定义一个代理对象，用于延迟加载图片
+class ImageProxy {
+  constructor(url) {
+    this.url = url;
+    console.log(`创建了一个代理对象，url为 ${url}`);
+  }
+  load() {
+    // 在代理对象中延迟加载图片
+    if (!this.imageObject) {
+      console.log(`延迟加载图片 ${this.url}`);
+      this.imageObject = new ImageObject(this.url);
+    }
+    this.imageObject.load();
+  }
+}
+
+// 测试代码
+const image1 = new ImageProxy("https://example.com/image1.jpg");
+const image2 = new ImageProxy("https://example.com/image2.jpg");
+const image3 = new ImageProxy("https://example.com/image3.jpg");
+
+// 在需要加载图片时，调用代理对象的 load 方法即可
+image1.load();
+image2.load();
+setTimeout(() => {
+  image3.load();
+}, 3000);
+```
+
+缓存：
+
+```js
+// 定义一个数据对象
+class DataObject {
+  constructor(id) {
+    this.id = id;
+    console.log(`创建了一个数据对象，id为 ${id}`);
+  }
+  getData() {
+    console.log(`从服务器获取数据，id为 ${this.id}`);
+    // 模拟从服务器获取数据的过程
+    return `数据 ${this.id}`;
+  }
+}
+
+// 定义一个代理对象，用于缓存数据
+class DataProxy {
+  constructor(id) {
+    this.id = id;
+    console.log(`创建了一个代理对象，id为 ${id}`);
+  }
+  getData() {
+    // 在代理对象中实现缓存
+    if (!this.dataObject) {
+      console.log(`从缓存中获取数据，id为 ${this.id}`);
+      this.dataObject = new DataObject(this.id);
+    }
+    return this.dataObject.getData();
+  }
+}
+
+// 测试代码
+const data1 = new DataProxy(1);
+const data2 = new DataProxy(2);
+const data3 = new DataProxy(1);
+
+// 第一次获取数据，从服务器获取
+console.log(data1.getData());
+
+// 第二次获取数据，从缓存获取
+console.log(data2.getData());
+
+// 第三次获取数据，从缓存获取
+console.log(data3.getData());
+```
+
+数据验证：在将输入转发给主体之前对输入的内容进行验证，确保无误后，再传给后端。
+
+```js
+// 定义一个数据对象
+class DataObject {
+  constructor(data) {
+    this.data = data;
+    console.log("创建了一个数据对象", data);
+  }
+  getData() {
+    console.log("获取数据", this.data);
+    return this.data;
+  }
+}
+
+// 定义一个代理对象，用于验证数据
+class DataProxy {
+  constructor(data) {
+    this.dataObject = new DataObject(data);
+    console.log("创建了一个代理对象", data);
+  }
+  getData() {
+    this.validate();
+    return this.dataObject.getData();
+  }
+  validate() {
+    console.log("验证数据", this.dataObject.getData());
+    // 在代理对象中实现数据验证
+    if (this.dataObject.getData().name.length < 3) {
+      throw new Error("名称长度不能小于 3");
+    }
+    if (this.dataObject.getData().age < 18) {
+      throw new Error("年龄不能小于 18");
+    }
+  }
+}
+
+// 测试代码
+const data1 = new DataProxy({
+  name: "Tom",
+  age: 20
+});
+console.log(data1.getData()); // 输出 { name: "Tom", age: 20 }
+
+try {
+  const data2 = new DataProxy({
+    name: "Li",
+    age: 16
+  });
+  console.log(data2.getData());
+} catch (error) {
+  console.log(error.message); // 输出 "名称长度不能小于 3"
+}
+```
+
+安全验证：用来验证客户端是否被授权执行操作，只有在检查结果为肯定的情况下，才将请求发送给后端。
+
+```js
+// 定义一个用户对象
+class UserObject {
+  constructor(id, name) {
+    this.id = id;
+    this.name = name;
+    console.log(`创建了一个用户对象，id为 ${id}，name为 ${name}`);
+  }
+  operation() {
+    console.log(`执行了用户 ${this.name} 的操作`);
+  }
+}
+
+// 定义一个代理对象，用于安全验证
+class UserProxy {
+  constructor(id, name, password) {
+    this.userObject = new UserObject(id, name);
+    this.password = password;
+    console.log(`创建了一个代理对象，id为 ${id}，name为 ${name}`);
+  }
+  operation() {
+    // 在代理对象中实现安全验证
+    if (this.password !== "123456") {
+      console.log(`用户 ${this.userObject.name} 的操作被拒绝`);
+      throw new Error("密码错误");
+    }
+    this.userObject.operation();
+  }
+}
+
+// 测试代码
+const user1 = new UserProxy(1, "Tom", "123456");
+user1.operation(); // 输出 "执行了用户 Tom 的操作"
+
+try {
+  const user2 = new UserProxy(2, "Jerry", "123123");
+  user2.operation();
+} catch (error) {
+  console.log(error.message); // 输出 "密码错误"
+}
+```
+
+日志记录：
+
+```js
+// 定义一个数据库对象
+class DBObject {
+  constructor() {
+    console.log("创建了一个数据库对象");
+  }
+  save(data) {
+    console.log(`保存数据 ${JSON.stringify(data)} 到数据库`);
+  }
+}
+
+// 定义一个代理对象，用于日志记录
+class DBProxy {
+  constructor() {
+    this.dbObject = new DBObject();
+    console.log("创建了一个代理对象");
+  }
+  save(data) {
+    console.log(`保存数据 ${JSON.stringify(data)}`);
+    this.dbObject.save(data);
+    console.log(`数据 ${JSON.stringify(data)} 保存完成`);
+  }
+}
+
+// 测试代码
+const db = new DBProxy();
+db.save({ name: "Tom", age: 20 });
+```
+
+
+
+典型的应用是Vue.js中的响应式编程。
+
+Vue.js 实现依赖收集的主要机制是基于**观察者模式**，通过【`Object.defineProperty`】(在 Vue 2.x 中) 或【`Proxy`】(在 Vue 3.x 中) 对数据进行劫持。这种机制使 Vue 能够在数据变化时通知相关的依赖。以下是 Vue 依赖收集的基本步骤：
+
+1. **初始化阶段**：当你创建一个 Vue 实例时，Vue 会遍历 `data` 对象的所有属性，并使用 Object.defineProperty 或 Proxy 进行数据劫持，为每个属性创建一个 `Dep` 实例。`Dep` 实例负责管理与该属性相关的所有依赖。
+2. **依赖收集**：当 Vue 模板中引用了某个属性时（如 `{{ message }}`），会触发该属性的 getter 方法。在 getter 方法中，Vue 会检查当前是否有活跃的计算属性或观察者（即 `Dep.target`）。如果存在活跃的观察者，Vue 会将其添加到当前属性的 `Dep` 实例中。这样，当属性发生变化时，`Dep` 实例就知道需要通知哪些观察者。
+3. **更新**：当属性发生变化时，会触发属性的 setter 方法。在 setter 方法中，Vue 会通知与该属性关联的 `Dep` 实例进行更新。`Dep` 实例会遍历其内部的观察者列表，通知每个观察者执行更新操作。观察者会根据新的属性值重新计算或渲染，从而实现数据的响应式更新。
+
+```js
+let currentWatcher = null;
+
+class Watcher {
+  constructor(update) {
+    this.update = update;
+      this.run()
+  }
+  run() {
+    currentWatcher = this;
+    this.update();
+    currentWatcher = null;
+  }
+}
+
+function defineReactive(obj, key, value) {
+  let watchers = [];
+
+  Object.defineProperty(obj, key, {
+    configurable: true,
+    enumerable: true,
+    get() {
+      if (currentWatcher) {
+        watchers.push(currentWatcher);
+      }
+      return value;
+    },
+    set(newValue) {
+      console.log(`设置属性 ${key} 的值: ${newValue}`);
+      value = newValue;
+      watchers.forEach(watcher => watcher.run());
+    }
+  });
+}
+
+function observe(obj) {
+  if (!obj || typeof obj !== 'object') {
+    return;
+  }
+
+  Object.keys(obj).forEach(key => {
+    defineReactive(obj, key, obj[key]);
+  });
+}
+
+const data = { name: 'Tom', age: 20 };
+
+observe(data);
+
+new Watcher(() => {
+  console.log(`模板中使用了数据 ${data.name}`);
+});
+
+data.name = 'Jerry'; 
+// 输出 
+// 模板中使用了数据 Tom
+// 设置属性 name 的值: Jerry
+// 模板中使用了数据 Jerry
+```
+
+
+
+#### 实现方式
+
+1. 对象组合
+   - 使主体保持不变
+   - 必须手动 delegate 所有方法
+
+```js
+class Calculator {
+  constructor () {
+    /*...*/
+  }
+  plus () { /*...*/ }
+  minus () { /*...*/ }
+}
+
+class ProxyCalculator {
+  constructor (calculator) {
+    this.calculator = calculator
+  }
+  // 代理的方法
+  plus () { return this.calculator.divide() }
+  minus () { return this.calculator.multiply() }
+}
+
+var calculator = new Calculator();
+var proxyCalculator = new ProxyCalculator(calculator);
+```
+
+
+
+2. 对象字面量加工厂模式
+
+```js
+function factoryProxyCalculator (calculator) {
+  return {
+    // 代理的方法
+    plus () { return calculator.divide() },
+    minus () { return calculator.multiply() }
+  }
+}
+
+var calculator = new Calculator();
+var proxyCalculator = new factoryProxyCalculator(calculator);
+```
+
+
+
+3. 对象增强
+   - 不需要 delegate 所有方法
+   - 改变了主体对象，会造成函数式编程思想中的“副作用“
+
+```js
+
+function patchingCalculator (calculator) {
+  var plusOrig = calculator.plus
+  calculator.plus = () => {
+    // 额外的逻辑
+    // 委托给主体
+    return plusOrig.apply(calculator)
+  }
+  return calculator
+}
+var calculator = new Calculator();
+var safeCalculator = patchingCalculator(calculator);
+```
+
+
+
+4. Proxy
+   - 不需要手动的去 delegate 所有的方法，也不会改变主体对象，保持了主体对象的不变性
+   - 它没有 polyfill，如果使用内置的代理，就要考虑在兼容性上做出一定的牺牲
+
+```js
+
+var ProxyCalculatorHandler = {
+  get: (target, property) => {
+    if (property === 'plus') {
+      // 代理的方法
+      return function () {
+        // 额外的逻辑
+        // 委托给主体
+        return target.divide();
+      }
+    }
+    // 委托的方法和属性
+    return target[property]  // Reflect
+  }
+}
+var calculator = new Calculator();
+var proxyCalculator = new Proxy(calculator, ProxyCalculatorHandler);
+```
 
