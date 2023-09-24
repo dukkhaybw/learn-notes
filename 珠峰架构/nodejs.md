@@ -4,7 +4,7 @@
 
 常见的编程范式有:
 
-- 面向过程编程 (Procedural Programming) PP: 按照步骤来实现，将程序分解为过程和函数。这些过程和函数按顺序执行来完成任务，基本就是现阶段开发业务的一个流程，几乎不涉及函数式编程思想。**开发者能详细的控制每一行代码的逻辑**，流水账式的编写代码。
+- 面向过程编程 (Procedural Programming) PP: 按照步骤来实现，将程序分解为过程和函数。这些过程和函数按顺序执行来完成任务，几乎不涉及函数式编程思想。**开发者能详细的控制每一行代码的逻辑**，流水账式的编写代码。
 
 - 面向对象编程(Object-Oriented Programming) 0OP:将程序分解为对象，每个对象都有自己的状态（属性）和行为（方法）。而方法是对属性进行的修改，更复杂的功能则通过创建多种对象，然后对象之间配合实现业务。面向对象的核心是 (类，实例，继承，封装，多态)，JS 是单继承的，如果继承层级关系多了容易混乱。
 
@@ -131,13 +131,24 @@ Array.prototype.reduce = function reduce(callback, initialValue) {
   }
   return initialValue;
 };
+
+
+Array.prototype.reduce = function(callback,initalValue){
+    let array = this
+    let acc = typeof initalValue === 'undefined' ? array[0]:initalValue;
+    let startIndex =  typeof initalValue === 'undefined' ? 1 : 0;
+    for(let index = startIndex;index<arr.length;index++){
+        acc = callback(acc, arr[index],index,arr)
+    }
+    return acc
+}
 ```
 
 
 
 #### 高阶函数的应用
 
-例如，现在项目中有一个核心方法。它的业务逻辑已经非常完善了。但是某个开发者想自己在执行这个核心代码逻辑之前做点自己的逻辑，核心代码执行之后再做自己的逻辑。原有的方式是：
+例如，现在项目中有一个核心方法。它的业务逻辑已经非常完善了。但是某个开发者想自己在执行这个核心代码逻辑之前做点自己的逻辑，核心代码执行之后再做自己的逻辑。
 
 **作用一：可以在原来核心代码逻辑的前面和后面分别增加自己的代码。但是这样做的不足：别人在调取这段核心代码时也会执行到自己添加的代码（破坏了原有函数）。——面向切片编程（AOP）**
 
@@ -161,7 +172,7 @@ newFn(); // 它会将befor函数传入的函数先执行，然后再执行say方
 Function.prototype.before = function (callback) {
   let self = this;
   return function (...args) {
-    callback();
+    callback(...args);
     self(...args); //也可以用箭头函数
   };
 };
@@ -170,7 +181,7 @@ Function.prototype.after = function (callback) {
   let self = this;
   return function (...args) {
     self(...args);
-    callback(); //也可以用箭头函数
+    callback(...args); //也可以用箭头函数
   };
 };
 ```
@@ -191,11 +202,13 @@ function perform(fn, wrappers) {
 }
 ```
 
-<img src="..\typora-user-images\image-20211113222412658.png" alt="image-20211113222412658" style="zoom: 67%;" />
+<img src="..\typora-user-images\image-20211113222412658.png" alt="image-20211113222412658" style="zoom: 200%;" />
 
 <img src="..\typora-user-images\image-20211113222830481.png" alt="image-20211113222830481" style="zoom:67%;" />
 
 **AOP:主要作用就是将一些跟核心业务逻辑模块无关的功能抽离，其实就是给原函数增加一层，不影响原函数内部的逻辑。**
+
+
 
 **作用二：形成闭包保存变量**
 
@@ -331,7 +344,7 @@ let r1 = sum(1, 2)(3)(4, 5, 6)(7); // 缩小了函数的范围
 
 扩展：判断数据类型
 
-1. typeof 可以判断基础类型 typeof null == ’object‘ （缺陷就是只能判断基础类型），不能判断 null
+1. typeof 可以判断基础类型 typeof null == ’object‘ （缺陷就是只能判断基本类型），不能判断 null
 
    > 面试题：为什么 typeof null 返回 ‘object’ ？
    >
@@ -453,7 +466,7 @@ function getTime() {
 - 对共享内存的修改
 - DOM 访问，打印/log 等
 
-副作用是的方法通用性降低，让代码难以理解和预测，测试困难，导致静态问题（并发操作）等
+副作用使得方法通用性降低，让代码难以理解和预测，测试困难，导致静态问题（并发操作）等
 
 
 
