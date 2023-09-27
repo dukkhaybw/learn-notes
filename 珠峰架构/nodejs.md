@@ -401,24 +401,6 @@ let r1 = sum(1, 2)(3)(4, 5, 6)(7); // 缩小了函数的范围
 缩小函数的调用范围，柯里化函数要求参数是固定。
 
 ```js
-function curry(fn) {
-  const length = fn.length; // 2
-  const args = []; // []
-  function curried(arg) {
-    args.push(arg);
-    if (args.length >= length) {
-      let result = fn(...args);
-      args.length -= 1;  /// +++++++++++++++++++++++
-      return result;
-    }
-    return curried;
-  }
-
-  return curried;
-}
-
-
-
 function curry(func) {
   let curried = (...args) => {
     if (args.length < func.length) {
@@ -430,7 +412,33 @@ function curry(func) {
 }
 ```
 
-反柯里化使用 call 在增大函数的调用范围。
+
+
+**反柯里化**
+
+```javascript
+function uncurry(fn) {
+  return function (...args) {
+    let current = fn;
+    for (let arg of args) {
+      current = current(arg);
+    }
+    return current;
+  };
+}
+
+
+function add(x) {
+  return function (y) {
+    return x + y;
+  };
+}
+
+const uncurriedAdd = uncurry(add);
+console.log(uncurriedAdd(3, 4)); // 输出: 7
+```
+
+上述`uncurry`函数接受一个柯里化函数`fn`作为参数，并返回一个新的函数。这个新函数可以接受多个参数，并将这些参数依次应用于原始柯里化函数，直到最后一个参数被调用为止。
 
 
 
@@ -731,9 +739,7 @@ s.setState('开心了');
 
 Promise 本身还是基于回调函数实现异步的。
 
-> 异步导致的问题：回调地狱（让代码难以阅读）、错误处理 （⽆法统⼀处理错误）、多个异步操作（“同步结果”困难）
-
-
+> 异步导致的问题：回调地狱（让代码难以阅读）、错误处理 （⽆法统⼀处理错误）、多个并发异步操作（“同步结果”困难）
 
 重点思路：
 
@@ -811,7 +817,7 @@ Promise 本身还是基于回调函数实现异步的。
 
   **分析 onFulfilled 函数和 onRejected 函数返回值——x 与 promise2 的成功态和失败态的关系**：
 
-  - 其中需要考虑 x 可能时其他库实现的 promise 实例
+  - 其中需要考虑 x 可能是其他库实现的 promise 实例
 
   - 如果 x 和 promise2 是同一个 promise2 对象，则调用 promise2 的 reject 并报错
 
