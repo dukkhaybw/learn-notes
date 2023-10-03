@@ -1,16 +1,15 @@
 ## 函数式编程
 
-目前自己在日常开发时写一些业务处理函数并没有使用函数式编程的思想，但是函数式编程中一定涉及函数，函数式编程是一种编程范式，强调使用**函数之间的组合**，目的是**处理数据**。将运算过程抽象成函数可以复用。
+目前自己在日常开发中写的一些业务处理函数并没有使用函数式编程的思想，本质还是面向过程编程。函数式编程中一定涉及函数，同时函数式编程是一种编程范式，强调使用**函数之间的组合**，目的是**处理数据**。将运算过程抽象成函数，可以实现复用。
 
 常见的编程范式有:
 
-- 面向过程编程 (Procedural Programming) PP: 按照步骤来实现，将程序分解为过程和函数。这些过程和函数按顺序执行来完成任务，几乎不涉及函数式编程思想。**开发者能详细的控制每一行代码的逻辑**，流水账式的编写代码。
+- 面向过程编程 (Procedural Programming) PP: 按照步骤来实现，将程序分解为**过程和函数**。这些过程和函数按顺序执行来完成任务，几乎不涉及函数式编程思想。**开发者能详细的控制每一行代码的逻辑**，是一种流水账式的编写代码。
 
 - 面向对象编程(Object-Oriented Programming) 0OP:将程序分解为对象，每个对象都有自己的状态（属性）和行为（方法）。而方法是对属性进行的修改，更复杂的功能则通过创建多种对象，然后对象之间配合实现业务。面向对象的核心是 (类，实例，继承，封装，多态)，JS 是单继承的，如果继承层级关系多了容易混乱。
 
-- 函数式编程(Functional Programming) FP:使用函数组合和处理数据，描述数据之间的映射。函数指的并不是编程语言中的函数，指的是数学意义上的函数 y=f(x)输入映射输出
+- 函数式编程(Functional Programming) FP:使用函数组合来处理数据，描述数据之间的映射。函数指的并不是编程语言中的函数，指的是数学意义上的函数 y=f(x)输入映射输出，一个函数 f 接收一个参数 x，并根据 x 计算返回一个结果 y。
 
-  一个函数 f 接收一个参数 x，并根据 x 计算返回一个结果 y。
 
 面向过程编程：
 
@@ -73,18 +72,18 @@ const sum = arr.reduce((prev, current) => prev + current, 0);
 **函数式编程的优势**
 
 - 可维护性:函数式编程的程序通常更加简洁和可读，因为它们避免了状态变化和副作用。
-- 可测试性:由于函数式编程程序通常是**无副作用（输入相同输出就一定相同，不会改变函数外的任何变量，不调用输出语句之类的函数）**的，所以可以很容易地对其进行单元测试。
-- 并发性:函数式编程程序通常是无副作用的，所用担心函数同时执行时彼此影响
-- 扩展性:函数式编程程序通常是纯函数，可以很容易地组合和重用。
+- 可测试性:由于函数式编程程序通常是**无副作用（输入相同输出就一定相同，不会改变函数外的任何变量，不调用输出语句之类的函数等）**的，所以可以很容易地对其进行单元测试。
+- 并发性:函数式编程程序通常是无副作用的，所用函数之间彼此独立，可以同时执行而不彼此影响
+- 扩展性:函数式编程程序通常是纯函数，可以很容易地**组合和重用**。
 - 可靠性:函数式编程程序通常是无副作用的，所以可以很容易地预测其行为。
 
-Vue3 也开始拥抱函数式编程，函数式编程可以抛弃 this，打包过程中更好的利用 tree-shaking 过滤无用的代码
+Vue3 拥抱函数式编程，函数式编程可以抛弃 this，打包过程中更好的利用 tree-shaking 过滤无用的代码
 
 
 
 **函数是一等公民**
 
-> First-class Function (头等函数) ，当一门编程语言的函数可以被当作变量一样用时，则称这门语言拥有头等函数
+> First-class Function (头等函数) ，当一门编程语言的函数可以被当作变量值一样用时，则称这门语言拥有头等函数
 
 - 函数可以存储在变量中
 - 函数可以作为参数
@@ -186,7 +185,7 @@ Function.prototype.after = function (callback) {
 };
 ```
 
-react 的 setState 中就用到了事务，也就是在 setState 函数执行前做一些事，执行后再做一些事。等同于 before 和 after。
+react的 setState 中就用到了事务，也就是在 setState 函数执行前做一些事，执行后再做一些事。等同于 before 和 after。
 
 react 事务：
 
@@ -232,65 +231,52 @@ let fn = after(3, function () {
 2. 利用高阶函数的闭包机制，实现参数的保存（函数柯里化，偏函数）
 
    currying(函数柯里化)，一个柯里化后的函数会先接受一些参数，接受这些参数后，函数并不会立即被调用求值，而是继续返回另一个函数，之前传递的参数都被保存在闭包中。等到函数需要被真正执行的时候，之前传入的所有参数都会被一次性用于求值。
-
-```js
-// 通过高阶函数来实现参数的保留
-function isType(typing, val) {
-  return Object.prototype.toString.call(val) === `[object ${typing}]`;
-}
-// 每次执行都需要传入字符串, 可以利用高阶函数来实现参数的保留。 闭包的机制（执行上下文不会被销毁）
-
-function isType(typing) {
-  // typing
-  return function (val) {
-    // isString/ isNumber
-    return Object.prototype.toString.call(val) === `[object ${typing}]`;
-  };
-}
-
-let util = {};
-['String', 'Number', 'Boolean'].forEach((typing) => {
-  util['is' + typing] = isType(typing);
-});
-
-let isString = isType('String'); // 缩小了函数的范围
-let isNumber = isType('Number');
-
-console.log(util.isString('abc'));
-console.log(util.isNumber(123));
-
-// 函数柯理化、偏函数(有的人统称偏函数也叫柯里化函数) 将多个参数传入的形式转化成n个函数，并且每次传递的参数"是一个"
-// 柯里化函数要求参数的个数是确定的。
-let r = sum(1, 2, 3, 4, 5, 6, 7);
-
-// 偏函数 ，下面的参数一下传递了一个以上
-let r1 = sum(1, 2)(3)(4, 5, 6)(7); // 缩小了函数的范围
-//  作业：是自己实现一个通用的函数柯里化
-// let newType = currying(isType)
-// let isString = newType('String')
-
-// let newSum = currying(sum);
-// sum(1,2,3)(4,5)(6,7)
-
-// 反柯里化 放大函数的范围
-// Object.prototype.toString.call(val) -> toString()
-// 高阶函数的两种功能，1) 可以扩展功能, 2) 预制参数
-```
-
-3. 缓存
-
+   
    ```js
-   const _ = require('lodash');
-   function exec(a, b) {
-     console.log('打印语句'); // 该代码只执行了一次
-     return a + b;
+   // 通过高阶函数来实现参数的保留
+   function isType(typing, val) {
+     return Object.prototype.toString.call(val) === `[object ${typing}]`;
+   }
+   // 每次执行都需要传入字符串, 可以利用高阶函数来实现参数的保留。 闭包的机制
+   
+   function isType(typing) {
+     // typing
+     return function (val) {
+       // isString/ isNumber
+       return Object.prototype.toString.call(val) === `[object ${typing}]`;
+     };
    }
    
-   let memoizedExec = _.memoize(exec); // 默认只要第一个实参相同，就能命中缓存结果并直接返回
-   memoizedExec(1, 2); // 3
-   memoizedExec(1, 2); // 3
-   memoizedExec(1, 3); // 还是3
+   let util = {};
+   ['String', 'Number', 'Boolean'].forEach((typing) => {
+     util['is' + typing] = isType(typing);
+   });
+   
+   let isString = isType('String'); // 缩小了函数的范围
+   let isNumber = isType('Number');
+   
+   console.log(util.isString('abc'));
+   console.log(util.isNumber(123));
+   
+   // 函数柯理化、偏函数将多个参数传入的形式转化成n个函数，并且每次传递的参数"是一个或多个"
+   // 柯里化函数要求参数的个数是确定的一个。
+   let r = sum(1, 2, 3, 4, 5, 6, 7);
+   
+   // 偏函数 ，下面的参数一下传递了一个以上
+   let r1 = sum(1, 2)(3)(4, 5, 6)(7); // 缩小了函数的范围
+   //  作业：是自己实现一个通用的函数柯里化
+   // let newType = currying(isType)
+   // let isString = newType('String')
+   
+   // let newSum = currying(sum);
+   // sum(1,2,3)(4,5)(6,7)
+   
+   // 反柯里化 放大函数的范围
+   // Object.prototype.toString.call(val) -> toString()
+   // 高阶函数的两种功能，1) 可以扩展功能, 2) 预制参数
    ```
+
+3. 缓存
 
    ```js
    const _ = require('lodash');
@@ -322,9 +308,9 @@ let r1 = sum(1, 2)(3)(4, 5, 6)(7); // 缩小了函数的范围
    4
    */
    ```
-
+   
    **memoize 实现：**
-
+   
    ```js
    function memoize(callback, resolver = (...args) => args[0]) {
      const cache = new Map();
@@ -344,11 +330,11 @@ let r1 = sum(1, 2)(3)(4, 5, 6)(7); // 缩小了函数的范围
 
 扩展：判断数据类型
 
-1. typeof 可以判断基础类型 typeof null == ’object‘ （缺陷就是只能判断基本类型），不能判断 null
+1. typeof 可以判断基础类型 typeof null == ’object‘ （缺陷就是只能判断基本类型），且不能判断 null
 
    > 面试题：为什么 typeof null 返回 ‘object’ ？
    >
-   > 在 JS 的最初版本中，使用的是 32 位系统，为了性能考虑，在判断数据类型时，使用**低位存储的二进制数据进行变量类型信息的判断**，000 开头代表是对象，然而 null 表示为全零，所以将它错误的判断为 object 。虽然现在的内部类型判断代码已经改变了，但是对于这个 Bug 却是一直流传下来。
+   > 在 JS 的最初版本中，为了性能考虑，在判断数据类型时，使用**低位存储的二进制数据进行变量类型信息的判断**，000 开头代表是对象，然而 null 表示为全零，所以将它错误的判断为 object 。虽然现在的内部类型判断代码已经改变了，但是对于这个 Bug 却是一直流传下来。
    >
    > | 数据类型     | 机器码标识      |
    > | ------------ | --------------- |
@@ -480,10 +466,12 @@ function getTime() {
 
 ### 函数组合
 
-针对同一批参数，需要依次进行一些列的处理，最后生成所需的数据。
+函数的组合可以将高细粒度的函数重新组合成一个新的函数。最终将数据传入组合后的新函数，得到最终的结果。针对同一批参数，需要依次进行一些列的处理，最后生成所需的数据。
+
+> 早期常⻅的函数组合写法：洋葱模型`c(b(a()))`、过滤器 `a() | b() | c()`
 
 ```js
-// 组合 compose 组合函数 （redux compose， koa express 组合函数）  1） 处理请求参数 2） 看用户是否权限  3） 响应内容
+// compose 组合函数 （redux compose， koa express 中间件实现原理）  1） 处理请求参数 2） 看用户是否权限  3） 响应内容
 
 function double(n) {
   // 纯函数
@@ -506,9 +494,9 @@ function flowRight(...fns) {
   }
   // 最终reduce返回的是一个函数
   return fns.reduceRight(
-    (a, b) =>
-      (...args) =>
-        b(a(...args))
+    (a, b) =>{
+      return (...args) => b(a(...args))
+    }
   );
 }
 // double -> a 从right开始
@@ -549,9 +537,9 @@ const lodash = require('lodash/fp'); // 会自动将内部的方法柯里化， 
 const composedFn1 = _.flowRight(lodash.toUpper, lodash.join('_'), lodash.split(' '));
 console.log(composedFn1(str));
 
-// redux + compose
+// 这种模式也称之为PointFree，把数据处理的过程先定义成一种与参数无关的合成运算就叫 Pointfree
 
-// 小结：函数式编程的基本 纯函数、柯里化、组合来进行数据的处理。 可以将一些复杂的运算逻辑抽象成函数。 可以复用
+// 小结：函数式编程的基础：纯函数、柯里化、组合来进行数据的处理。 可以将一些复杂的运算逻辑抽象成函数。 可以复用
 ```
 
 
@@ -599,7 +587,7 @@ fs.readFile(path.resolve(__dirname, 'age.txt'), 'utf8', function (err, age) {
 // 异步并发，最终需要一起获得到结果
 ```
 
-**异步代码是无法通过 try catch 捕获异步任务中的错误**，所以在 node 中的异步回调函数内部处理错误并作为回调函数的第一个参数返回。
+**异步代码是无法通过 try catch 捕获异步任务中的错误**（除了async + await），所以在 node 中的异步回调函数内部处理错误并作为回调函数的第一个参数返回。
 
 ```js
 function after(times, callback) {
@@ -767,16 +755,15 @@ Promise 本身还是基于回调函数实现异步的。
         setTimeout(()=>{
             resolve('ok')
         },1000)
-    
     })).then((data)=>{
         console.log(data)
     })
     ```
-
     
-
+    
+    
   - 如果reject接受的是一个promise实例，则直接将该promise实例作为下一个promise的reason
-
+  
     ```js
     Promise.reject(new Promise((resolve,reject)=>{
         setTimeout(()=>{
@@ -790,9 +777,9 @@ Promise 本身还是基于回调函数实现异步的。
     
     // Promise.reject 不会等待内部代码执行完毕
     ```
-
+  
     
-
+  
 - executor 函数执行报错时，调用 reject 函数
 
 - 同一个 promise 实例可以调用多次 then 函数
@@ -2955,7 +2942,7 @@ setImmediate
 
 
 
-每⼀个阶段都对应⼀个事件队列,当event loop执⾏到某个 阶段时会将当前阶段对应的队列依次执⾏。当该队列已⽤尽或 达到回调限制，事件循环将移动到下⼀阶段。
+每⼀个阶段都对应⼀个事件队列,当event loop执⾏到某个 阶段时会将当前阶段对应的队列依次执⾏。当该队列已⽤尽或达到回调限制，事件循环将移动到下⼀阶段。
 
 
 
@@ -3333,8 +3320,6 @@ npm version patch # 修订号加 1
 
 
 
-
-
 ## Buffer
 
 前端的blob类型的数据也是二进制，但是不允许操作它。arrayBuffer是前端用于存放二进制数据的类型，但是也是不能直接操作它，必须转为例如DateView
@@ -3703,7 +3688,6 @@ function copy(source,target,cb){
 // 读写不分离，代码耦合度高
 
 //解决办法：发布订阅，node原生就基于发布订阅来写了可读流和可写流
-
 ```
 
 
@@ -3714,7 +3698,7 @@ function copy(source,target,cb){
 const fs = rquire('fs');
 const path = require('path');
 
-let rs = fs.createReadStream(path.resolve(__dirname, 'note.md'), {
+let res = fs.createReadStream(path.resolve(__dirname, 'note.md'), {
   flags: 'r',
   highWaterMark: 3, //  每次读取的字节长度，不写默认64*1024Byte
   start: 0, // 从文件的第几个字节开始读取
@@ -3729,7 +3713,7 @@ let rs = fs.createReadStream(path.resolve(__dirname, 'note.md'), {
 // 可读流底层是基于event模块实现的
 res.on('data', function (chunk) {
   // 内部每次的可读流都会触发该方法
-  rs.pause(); // 本次读取流触发后，执行该行则暂停直流对指定文件的读取
+  res.pause(); // 本次读取流触发后，执行该行则暂停直流对指定文件的读取
 
   // rs.resume()  // 回复读取流
 });
@@ -3750,8 +3734,6 @@ res.on('error', function (error) {});
 
 提示：当在 node 项目中看到 xxx.on('data',function(){ ... }) , xxx.on('end',function(){....})的代码的话，说明一定是一个基于发布定于event模块的代码。
 
-
-
 ```js
 
 let rs = fs.createReadStream(path.resolve(__dirname,'test.txt'),{
@@ -3767,7 +3749,7 @@ rs.on('data',function(chunk){
         rs.pause(); // 暂停读取操作
     }
     // fs.write
-})dddddd
+})
 ws.on('drain',function(){
     console.log('写完了')
     rs.resume(); // 恢复data事件的触发
@@ -4398,10 +4380,6 @@ function copy(source,target,callback){
 
 
 
-
-
-
-
 ## http
 
 http-server：该包可以启动一个本地服务，预览文件夹，启动文件。
@@ -4555,6 +4533,10 @@ server.on('error', function (err) {
 ```
 
 
+
+## koa
+
+node中的一个框架，使用简单，核心代码少，底层基于node封装了一些api。自己从零开始写的话需要处理很多逻辑，比如路由处理，请求参数的解析，缓存，跨域等，其中很多功能是通过插件引入的。
 
 
 
