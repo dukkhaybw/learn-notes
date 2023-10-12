@@ -858,41 +858,39 @@ output:{
 - `url-loader` => `asset/inline` 导出一个资源的 base64
 
   ```js
-   output:{
+  output:{
     filename:'bundle.js',
     path:path.resolve(__dirname,"./build")
   }
-
-
+  
   {
     test:/\.(jpg|png|svg|gif|jpeg)$/,
     type:"asset/inline"  // 不要配置文件打包路径，因为没有输出文件，都在js中以base64表示了
   }
-  ```
 
 
 
 - asset 在导出一个 data URI 和发送一个单独的文件之间自动选择。之前通过使用 `url-loader`，并且配置资源体积限制实现
 
   ```js
-  
-  output:{
-      filename:'bundle.js',
-      path:path.resolve(__dirname,"./build")
-  }
-  
-  {
-    test:/\.(jpg|png|svg|gif|jpeg)$/,
-    type:"asset",
-    generator:{
-      filename:"img/[name].[hash:6][ext]"
-    },
-    parser:{
-      dataUrlCondition:{
-        maxSize: 10 *1024   // 小于该体积（10kb）则打包为base64
-      }
+
+output:{
+  filename:'bundle.js',
+  path:path.resolve(__dirname,"./build")
+}
+
+{
+  test:/\.(jpg|png|svg|gif|jpeg)$/,
+  type:"asset",
+  generator:{
+    filename:"img/[name].[hash:6][ext]"
+  },
+  parser:{
+    dataUrlCondition:{
+      maxSize: 10 *1024   // 小于该体积（10kb）则打包为base64
     }
   }
+}
   ```
 
 ```diff
