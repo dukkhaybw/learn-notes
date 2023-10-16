@@ -1,17 +1,8 @@
 # Vue.js
 
-学习 Vue 要达到的程度：
-
-- 能使用
-- 原理
-  - MVVM 原理
-  - vuex 原理
-  - vue-router 原理
-  - nextTick 原理
-  - keep-alive 原理
-  - 组件插件的二次封装
-
 vue.js 的核心：声明式地将数据渲染进模板语法。跟渲染一个字符串模板非常类似。
+
+
 
 ## 认识
 
@@ -29,17 +20,15 @@ vue 是**一套**渐进式框架(mvvm)，用于写前端的用户界面。
 
 ### vue 的渐进式体现
 
-vue.js (基础核心模块)：内部有基础语法、核心实现、组件开发、指令等（核心库只关注视图层）
-
-vue-router (路由模块)：构建 SPA 应用使用的前端路由模块
-
-vuex (公共状态管理模块)：组件间数据共享管理的模块
-
-vue-cli（脚手架）：快速搭建 vue 项目的工具模块
-
-components（组件）：第三方 UI 库，如：element-ui、iview、vux 等
+- vue.js (基础核心模块)：内部有基础语法、核心实现、组件开发、指令等（核心库只关注视图层）
+- vue-router (路由模块)：构建 SPA 应用使用的前端路由模块
+- vuex (公共状态管理模块)：组件间数据共享管理的模块
+- vue-cli（脚手架）：快速搭建 vue 项目的工具模块
+- components（组件）：第三方 UI 库，如：element-ui、iview、vux 等
 
 使用 vue 就是创建一个 vue 实例，由实例（vm 监听器）去管理 html 部分和 data 数据部分。底层就是一个类,使用类构造实例，new Vue(options)
+
+
 
 ### MVVM
 
@@ -53,7 +42,9 @@ components（组件）：第三方 UI 库，如：element-ui、iview、vux 等
 
 - MVVM:model view viewModel
 
-![image-20210513082239192](.\typora-user-images\image-20210513082239192.png)
+![image-20210513082239192](..\typora-user-images\image-20210513082239192.png)
+
+
 
 ### 模拟双向数据绑定
 
@@ -95,6 +86,8 @@ data2.name.age=18
 如果设置 data.name={gender:'male'}，那新增加的  {gender:'male'} 将没有响应式的能力
 ```
 
+
+
 ```JavaScript
 2.0版本：
 function oberver(obj){
@@ -126,6 +119,8 @@ data2.name.age=17
 不足：
 没有考虑data1是数组的情况，同时也没有考虑data对象的某个属性的属性值是数组的情况，同时该数组的某个元素项是一个对象的情况也没有考虑。
 ```
+
+
 
 ```javascript
 3.0版本：
@@ -166,6 +161,8 @@ data.name.age=17
 不足：
 缺少常见数组方法操作数据后仍然具有响应式的能力，如数组的push，splice，unshift
 ```
+
+
 
 ```javascript
 4.0版本：
@@ -267,7 +264,6 @@ propertiesObject 是一个对象，它的结构是：
 {
 	key:{
 		value: xxx
-
 	}
 }
 
@@ -276,7 +272,7 @@ propertiesObject 是一个对象，它的结构是：
 
 具体内容参考[Object.defineProperty()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty)
 
-![img](https://upload-images.jianshu.io/upload_images/7513201-b5321f078c877567.png?imageMogr2/auto-orient/strip|imageView2/2/w/1046/format/webp)
+![image-20231015162507829](../vue/images/image-20231015162507829.png)
 
 注意点：
 
@@ -290,7 +286,7 @@ var b = Object.create(a); //有点继承的意思
 console.log(a == b); //false
 ```
 
-![image-20210804101259081](.\typora-user-images\image-20210804101259081.png)
+![image-20210804101259081](..\typora-user-images\image-20210804101259081.png)
 
 直接和对象的原型对象操作有关的其他 API
 
@@ -519,27 +515,46 @@ vue 不支持 ie8 及其以下版本，因为 vue 源码中使用了 ie8 及其�
    >
    > > cosnt com={ template: '<div>hi</div>' }
    >
-   > ​ 如果需要在客户端编译模板 (比如传入一个字符串给 `template` 选项，或挂载到一个元素上并以其 DOM 内部的 HTML 作为模板)，就将需要加上编译器。**当使用 `vue-loader`(webpack 中使用的加载器) 或 `vueify` 的时候，`*.vue` 文件内部的模板会在构建时预编译成 JavaScript。在最终打好的包里实际上是不需要编译器的，所以只用运行时版本即可。**
+   >  如果需要在客户端编译模板 (比如传入一个字符串给 `template` 选项，或挂载到一个元素上并以其 DOM 内部的 HTML 作为模板)，就将需要加上编译器。**当使用 `vue-loader`(webpack 中使用的加载器) 或 `vueify` 的时候，`*.vue` 文件内部的模板会在构建时预编译成 JavaScript。在最终打好的包里实际上是不需要编译器的，所以只用运行时版本即可。**
    >
    > 如果还是要在项目工程中使用 vue.js 完整版，则可以通过 webpack 的 webpack.config.js 文件中添加以下配置一个别名：
    >
-   > > module.exports = {
-   > >
-   > > // ...
-   > >
-   > > resolve: {
-   > >
-   > > ​ alias: {
-   > >
-   > > ​ 'vue$': 'vue/dist/vue.esm.js'
-   > >
-   > > ​ // 在引入的模块中有以 vue 结尾的模块名时，用 webpack 时需用 'vue/dist/vue.common.js'
-   > >
-   > > ​ }
-   > >
-   > > }
-   > >
-   > > }
+   > ```js
+   > module.exports = {
+   >   // ...
+   >   resolve: {
+   >     alias: {
+   >       'vue$': 'vue/dist/vue.esm.js'
+   >       // 在引入的模块中有以 vue 结尾的模块名时，用 webpack 时需用 'vue/dist/vue.common.js'
+   >     }
+   >   }
+   > }
+   > ```
+   >
+   > 
+
+
+
+编译时版本（Compiler version）和运行时版本（Runtime version）。它们之间的主要差异在于是否有编译器。
+
+1. 编译时版本（Compiler version）：
+   - 包含了完整的Vue编译器，可以将Vue模板直接编译成JavaScript渲染函数。
+   - 包括了模板解析、静态渲染函数生成、AST转换、虚拟DOM生成等功能。
+   - 体积较大，适用于开发环境和需要在客户端编译模板的场景（如单文件组件）。
+   - 在使用编译时版本时，可以在Vue实例的选项中直接传入模板字符串。
+2. 运行时版本（Runtime version）：
+   - 不包含编译器，无法将模板字符串直接编译成渲染函数。
+   - 体积较小，适用于生产环境，以及使用预编译的模板（如使用Vue Loader预编译的单文件组件）的场景。
+   - 在使用运行时版本时，需要使用已经编译好的渲染函数或者手动创建渲染函数。
+
+
+
+在Vue2中Vue模板有以下几种写法：
+
+1. 通过在html中以CDN引入的，模板是响应的html代码段
+2. optionsAPI中的template所编写的字段
+
+
 
 ## 声明式渲染
 
@@ -1322,7 +1337,7 @@ vue 中的指令，表现形式是在 html 标签上的**自定义标签属性**
    //等价于：（if和else必须是相邻的兄弟元素）
    <h1 v-if="flag">控制标题是否显示与隐藏</h1>
    <h1 v-else>这是flag控制的else</h1>
-   ```
+  ```
 
    `v-if` 是一个指令，所以必须将它添加到一个元素上。想通过 v-if 控制一组元素标签的显示于隐藏，可以把一个`< template >`元素当做不可见的包裹元素，并在上面使用 v-if。最终的渲染结果将不包含`< template >`元素。
 
@@ -1377,13 +1392,13 @@ vue 中的指令，表现形式是在 html 标签上的**自定义标签属性**
 
     可将数组或者对象渲染到一组元素中。在 `v-for` 块中，我们可以访问所有父作用域的 property。也可以用 `of` 替代 `in` 作为分隔符。在遍历对象时，会按 `Object.keys()` 的结果遍历，但是**不能**保证它的结果在不同的 JavaScript 引擎下都一致。
 
-​ **指令参数：**
+ **指令参数：**
 
-​ 一些指令能够接收一个“参数”，在指令名称之后以冒号表示，一般是 html 标签的 attribute 属性或者 js 事件名。
+ 一些指令能够接收一个“参数”，在指令名称之后以冒号表示，一般是 html 标签的 attribute 属性或者 js 事件名。
 
-​ 从 2.6.0 开始，可以用**方括号**括起来的 JavaScript 表达式作为一个指令的参数，这种参数称为动态参数。动态参数预期会求出一个**字符串**，异常情况下值为 `null`。这个特殊的 `null` 值可以被显性地用于移除绑定。任何其它非字符串类型的值都将会触发一个警告。
+ 从 2.6.0 开始，可以用**方括号**括起来的 JavaScript 表达式作为一个指令的参数，这种参数称为动态参数。动态参数预期会求出一个**字符串**，异常情况下值为 `null`。这个特殊的 `null` 值可以被显性地用于移除绑定。任何其它非字符串类型的值都将会触发一个警告。
 
-​ 在 DOM 中使用模板时 (直接在一个 HTML 文件里撰写模板)，还需要避免使用大写字符来命名键名，因为浏览器会把 attribute 名全部强制转为小写。
+ 在 DOM 中使用模板时 (直接在一个 HTML 文件里撰写模板)，还需要避免使用大写字符来命名键名，因为浏览器会把 attribute 名全部强制转为小写。
 
 ```javascript
 //循环数组：
@@ -1541,7 +1556,7 @@ computed:{  //这种写法默认只设置了计算属性的getter方法
 }
 ```
 
-​
+
 
 ```
 let dirty = true
@@ -2459,17 +2474,17 @@ var updater = {
 
 ### 数据绑定
 
-​ 在分析源码之前，先对它的概念和用法表现有一个基本的了解。
+ 在分析源码之前，先对它的概念和用法表现有一个基本的了解。
 
-​ 什么是数据绑定：
+ 什么是数据绑定：
 
-​ 数据绑定：先是页面显示，再是 一旦更新了 data 中的某个属性数据，所有界面上直接使用或者间接使用（计算属性）了该属性的节点都会自动更新。重点在更新界面的实现。
+ 数据绑定：先是页面显示，再是 一旦更新了 data 中的某个属性数据，所有界面上直接使用或者间接使用（计算属性）了该属性的节点都会自动更新。重点在更新界面的实现。
 
-​ 数据劫持：**数据劫持是 vue 中用来实现数据绑定的一种技术**。基本思想是用 defineProperty（）来监视 data 中所有属性（任意层级）的数据的变化，一旦变化就去更新界面。
+ 数据劫持：**数据劫持是 vue 中用来实现数据绑定的一种技术**。基本思想是用 defineProperty（）来监视 data 中所有属性（任意层级）的数据的变化，一旦变化就去更新界面。
 
-​ 在前面的数据代理中，它并不是数据绑定，它不是给 data 中的属性添加 get 或者 set 方法，而是将 data 中的数据通过 defineProperty（）代理到了 vm 实例上。 而数据绑定是给 data 上的属性添加 get 与 set 方法。
+ 在前面的数据代理中，它并不是数据绑定，它不是给 data 中的属性添加 get 或者 set 方法，而是将 data 中的数据通过 defineProperty（）代理到了 vm 实例上。 而数据绑定是给 data 上的属性添加 get 与 set 方法。
 
-​ 当数据改变时，先触发 vue 实例上的属性的 set 方法，然后又通过 set 方法改变了 data 上的对应数据，并触发 data 上数据的 set 方法，触发视图更新操作。
+ 当数据改变时，先触发 vue 实例上的属性的 set 方法，然后又通过 set 方法改变了 data 上的对应数据，并触发 data 上数据的 set 方法，触发视图更新操作。
 
 ```javascript
 <div id="app">
@@ -3026,7 +3041,7 @@ export default new Vuex.store({  //创建store实例
 
 ```
 
-​ modules 中存放要合并的项目的各个模块的 state，getter,mutations,actions，其中 state 会自动按照模块进行划分，state:{A:{name:'jack'},B:{name:'entry'},isLogin: true} ,但是 getter,mutations,actions 默认不会以模块进行划分，全部合并到一个 getter,mutations,actions 中，如果各个模块中有同名的属性名，则可能冲突覆盖某些模块的某个 getter,mutations,actions 中的属性。，解决办法：给各个模块添加 namespaced:true。这样要做之后，store 中的 getter,mutations,actions 的来自各个模块的属性的属性名前面会加上模块的名字，如：getters：{‘A/queryBase’：function（）{ ... }，‘B/queryBase’：function(){ ... } , 'queryLogin': function(){...}}。
+ modules 中存放要合并的项目的各个模块的 state，getter,mutations,actions，其中 state 会自动按照模块进行划分，state:{A:{name:'jack'},B:{name:'entry'},isLogin: true} ,但是 getter,mutations,actions 默认不会以模块进行划分，全部合并到一个 getter,mutations,actions 中，如果各个模块中有同名的属性名，则可能冲突覆盖某些模块的某个 getter,mutations,actions 中的属性。，解决办法：给各个模块添加 namespaced:true。这样要做之后，store 中的 getter,mutations,actions 的来自各个模块的属性的属性名前面会加上模块的名字，如：getters：{‘A/queryBase’：function（）{ ... }，‘B/queryBase’：function(){ ... } , 'queryLogin': function(){...}}。
 
 以后在组件模块中使用的方式是：$store.getters['A/queryBase']
 
@@ -3409,7 +3424,7 @@ module.exports = {
 
 vue-cli3.0 移除了配置文件目录： config 和 build 文件夹。移除了配置文件目录后如何自定义配置环境变量和模式呢?
 
-​ 在一个产品的前端开发过程中，一般来说会经历本地开发、测试脚本、开发自测、测试环境、预上线环境，然后才能正式的发布。对应每一个环境可能都会有所差异，比如说服务器地址、接口地址、websorket 地址…… 等等。在各个环境切换的时候，就需要不同的配置参数，所以就可以用环境变量和模式，来方便我们管理。
+ 在一个产品的前端开发过程中，一般来说会经历本地开发、测试脚本、开发自测、测试环境、预上线环境，然后才能正式的发布。对应每一个环境可能都会有所差异，比如说服务器地址、接口地址、websorket 地址…… 等等。在各个环境切换的时候，就需要不同的配置参数，所以就可以用环境变量和模式，来方便我们管理。
 
 **在基于 vue 脚手架的项目中，cli-3.0 总共提供了四种方式来制定环境变量：**
 
