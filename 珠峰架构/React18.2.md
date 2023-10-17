@@ -44,7 +44,7 @@
 
 ### JSX及其本质
 
-**React17后不用再主动引入 React 而直接而使用在文件中 jsx 语法**。因为新版项目中将 jsx不再转为 React.createElement，但是babel转换后的代码在浏览器中的执行结果是一样的——虚拟DOM对象。
+**React17后可以不用再主动引入 React 而直接而使用在文件中 jsx 语法**。因为新版项目中将 jsx不再转为 React.createElement，但是babel转换后的代码在浏览器中的执行结果是一样的——虚拟DOM对象。
 
 ```jsx
 //在React17以前，babel转换是老的写法
@@ -149,13 +149,15 @@ JSX的编译和后续执行：
 包含jsxDEV函数调用的代码在发送到浏览器后，浏览器会根据源码中定义的该jsxDEV方法的代码逻辑进行执行，最后返回一个虚拟DOM。
 
 ```js
+// ReactElement是一个工厂函数，用于创建一个个的虚拟DOM节点对象
 function ReactElement(type, key, ref, props) {
-  return {//这就是React元素，也被称为虚拟DOM
-    $$typeof: REACT_ELEMENT_TYPE,
-    type,//h1 span
+  // 这就是React元素，也被称为虚拟DOM
+  return {
+    $$typeof: REACT_ELEMENT_TYPE,  // $$typeof，每个虚拟DOM节点都有，表示节点的类型
+    type,//h1 span，如果是函数组件或者类组件，那就是个函数或者类本身
     key,//唯一标识
-    ref,//后面再讲，是用来获取真实DOM元素
-    props//属性 children,style,id
+    ref,//用来获取真实DOM元素
+    props//属性 children,style,id...
   }
 }
 ```
@@ -176,11 +178,7 @@ jsxEDV函数在浏览器中调用后生成的结构
 
 
 
-对于一个虚拟DOM节点的children属性，可能是一个字符串，数字，对象或者数组，其中数组的中的每一项元素可以是前面3中的某一种。
-
-
-
-有一点需要注意，上面编写的jsx都是直接使用的原生的标签，如h1,span等等，所以它们生成的函数调用的第一个参数都是字符串的'h1'或者'span'等。
+对于一个虚拟DOM节点的children属性，可能是一个字符串，数字，对象或者数组，其中数组的中的每一项元素可以是前面3中的某一种。有一点需要注意，上面编写的jsx都是直接使用的原生的标签，如h1,span等等，所以它们生成的函数调用的第一个参数都是字符串的'h1'或者'span'等。
 
 如果你编写的使用一个函数组件，如下代码：
 
@@ -292,7 +290,7 @@ React15中的render过程是不可中断的，这就导致JS可能长时间霸�
 - 正常帧任务完成后没超过 16 ms,说明时间有富余，此时就会执行 `requestIdleCallback` 里注册的任务
 - Reac中自己实现了一个requestIdleCallback，因为原生requestIdleCallback空闲时间不可控且有兼容性问题，里面定义了每帧空闲执行时间为5ms
 
-![cooperativescheduling2](http://img.zhufengpeixun.cn/cooperativescheduling2.jpg)
+![image-20231016215855254](./images/image-20231016215855254.png)
 
 模拟代码：
 
@@ -350,7 +348,6 @@ React15中的render过程是不可中断的，这就导致JS可能长时间霸�
       }
     </script>
   </body>
-
 </html>
 ```
 
@@ -368,7 +365,7 @@ fiber定义（fiber是什么）：
 1. **Fiber 是一个执行的最小单元**，每次执行完一个执行单元, React 就会检查现在还剩多少时间，如果没有时间就将控制权让出去
    ![fiberflow](http://img.zhufengpeixun.cn/fiberflow.jpg)
 2. **Fiber 是一种数据结构**
-   - React 目前的做法是使用**链表, 根据jsx函数执行后返回的具有层级的虚拟DOM对象生成，虚拟DOM中的每个虚拟节点内部表示为一个`Fiber`**
+   - React 目前的做法是使用**链表, 根据jsx函数执行后返回的具有层级的虚拟DOM对象生成，虚拟DOM中的每个虚拟节点内部表示为一个`Fiber`** 
    - 从顶点开始遍历
    - 如果有第一个儿子，先遍历第一个儿子
    - 如果没有第一个儿子，标志着此节点遍历完成
@@ -377,8 +374,6 @@ fiber定义（fiber是什么）：
    - 没有父节点遍历结束
 
 为什么Fiber结构可以进行中断后继续执行？fiber树是根据虚拟DOM生成的。
-
-
 
 其中根Fiber——**HostRootFiber**，对应的真实DOM节点就是项目html中一开始写好的div#root元素。
 
@@ -564,8 +559,6 @@ enqueueUpdate(fiber, update2)
 processUpdateQueue(fiber);
 console.log(fiber.memoizedState);
 ```
-
-
 
 Fiber之前：虚拟DOM=>真实DOM
 
@@ -952,7 +945,7 @@ export function FiberNode(tag, pendingProps, key) {
   this.memoizedProps = null; //已经生效的属性
 
   //每个fiber还会有自己的状态，每一种fiber 状态存的类型是不一样的
-  //类组件对应的fiber 存的就是类的实例的状态,HostRoot存的就是要渲染的元素
+  //类组件对应的fiber 存的就是类的实例的状态, HostRoot存的就是要渲染的元素
   this.memoizedState = null;
   //每个fiber身上可能还有更新队列
   this.updateQueue = null;
@@ -1223,4 +1216,4 @@ export function beginWork(current, workInProgress) {
 
 
 
-一个组件中，一般会有很多个Fiber单元。
+一个组件中，一般会有很多个Fiber单元。 
