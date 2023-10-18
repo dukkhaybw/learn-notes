@@ -23,9 +23,7 @@
 
 范畴：范畴就是使用箭头连接的物体。（In mathematics, a category is an algebraic structure that comprises "objects" that are linked by "arrows". ）。
 
-范畴是指把事物作归类整理所依据的共同性质，就是说：范畴是事物种类的本质。因为一个种类的本质往往由多个性质所构成，而本质与构成它的各个性质之间又总是以一定的结构方式互相联系着的
-
-也就是说，彼此之间存在某种关系的概念、事物、对象等等，都构成"范畴"。随便什么东西，只要能找出它们之间的关系，就能定义一个"范畴"。
+范畴是指把事物作归类整理所依据的**共同性质**，就是说：范畴是事物种类的本质。因为一个种类的本质往往由多个性质所构成，而本质与构成它的各个性质之间又总是以一定的结构方式互相联系着的，也就是说，彼此之间存在某种关系的概念、事物、对象等等，都构成"范畴"。随便什么东西，只要能找出它们之间的关系，就能定义一个"范畴"。
 
 ![img](https://www.ruanyifeng.com/blogimg/asset/2017/bg2017022210.jpg)
 
@@ -69,7 +67,7 @@ class Category {
 }
 ```
 
-上面代码中，`Category`是一个类，也是一个容器，里面包含一个值（`this.val`）和一种变形关系（`addOne`）。你可能已经看出来了，这里的范畴，就是所有彼此之间相差`1`的数字。
+上面代码中，`Category`是一个类，也是一个容器，里面包含一个值（`this.val`）和一种变形关系（`addOne`）。这里的范畴，就是所有彼此之间相差`1`的数字。
 
 注意，本文后面的部分，凡是提到"容器"的地方，全部都是指"范畴"。
 
@@ -79,9 +77,7 @@ class Category {
 
 范畴论使用函数表达范畴成员之间的关系。
 
-伴随着范畴论的发展，就发展出一整套函数的运算方法。这套方法起初只用于数学运算，后来有人将它在计算机上实现了，就变成了今天的"函数式编程"。
-
-**本质上，函数式编程只是范畴论的运算方法，跟数理逻辑、微积分、行列式是同一类东西，都是数学方法，只是碰巧它能用来写程序。**
+伴随着范畴论的发展，就发展出一整套函数的运算方法。这套方法起初只用于数学运算，后来有人将它在计算机上实现了，就变成了今天的"函数式编程"。**本质上，函数式编程只是范畴论的运算方法，跟数理逻辑、微积分、行列式是同一类东西，都是数学方法，只是碰巧它能用来写程序。**
 
 所以，为什么函数式编程要求函数必须是纯的，不能有副作用？因为它是一种数学运算，原始目的就是求值，不做其他事情，否则就无法满足函数运算法则了。
 
@@ -98,6 +94,8 @@ class Category {
 如果一个值要经过多个函数，才能变成另外一个值，就可以把所有中间步骤合并成一个函数，这叫做"函数的合成"（compose）。
 
 ![img](https://www.ruanyifeng.com/blogimg/asset/2017/bg2017022204.png)
+
+上图中，`X`和`Y`之间的变形关系是函数`f`，`Y`和`Z`之间的变形关系是函数`g`，那么`X`和`Z`之间的关系，就是`g`和`f`的合成函数`g·f`。
 
 上图的代码实现
 
@@ -158,8 +156,6 @@ addX(2)(1) // 3
 ### 函子
 
 函数不仅可以用于同一个范畴之中值（成员）的转换，还可以用于将一个范畴转成另一个范畴。这就涉及到了函子（Functor）。
-
-
 
 **概念**
 
@@ -222,7 +218,277 @@ class Functor {
 
 
 
------------
+#### of 方法
+
+上面生成新的函子的时候，用了`new`命令。这实在太不像函数式编程了，因为`new`命令是面向对象编程的标志。
+
+**函数式编程一般约定，函子有一个`of`方法，用来生成新的容器。**
+
+下面就用`of`方法替换掉`new`。
+
+```js
+Functor.of = function(val) {
+  return new Functor(val);
+};
+```
+
+然后，前面的例子就可以改成下面这样。
+
+```js
+Functor.of(2).map(function (two) {
+  return two + 2;
+});
+// Functor(4)
+```
+
+
+
+#### Maybe 函子
+
+函子接受各种函数，处理容器内部的值。这里就有一个问题，容器内部的值可能是一个空值（比如`null`），而外部函数未必有处理空值的机制，如果传入空值，很可能就会出错。
+
+```js
+Functor.of(null).map(function (s) {
+  return s.toUpperCase();
+});
+// TypeError
+```
+
+上面代码中，函子里面的值是`null`，结果小写变成大写的时候就出错了。
+
+Maybe 函子就是为了解决这一类问题而设计的。简单说，它的`map`方法里面设置了空值检查。
+
+```javascript
+class Maybe extends Functor {
+  map(f) {
+    return this.val ? Maybe.of(f(this.val)) : Maybe.of(null);
+  }
+}
+
+
+
+Maybe.of(null).map(function (s) {
+  return s.toUpperCase();
+});
+// Maybe(null)
+```
+
+
+
+#### Either 函子
+
+条件运算`if...else`是最常见的运算之一，函数式编程里面，使用 Either 函子表达。
+
+Either 函子内部有两个值：左值（`Left`）和右值（`Right`）。右值是正常情况下使用的值，左值是右值不存在时使用的默认值。
+
+```javascript
+class Either extends Functor {
+  constructor(left, right) {
+    this.left = left;
+    this.right = right;
+  }
+
+  map(f) {
+    return this.right ? 
+      Either.of(this.left, f(this.right)) :
+      Either.of(f(this.left), this.right);
+  }
+}
+
+Either.of = function (left, right) {
+  return new Either(left, right);
+};
+
+
+
+var addOne = function (x) {
+  return x + 1;
+};
+
+Either.of(5, 6).map(addOne);
+// Either(5, 7);
+
+Either.of(1, null).map(addOne);
+// Either(2, null);
+```
+
+上面代码中，如果右值有值，就使用右值，否则使用左值。通过这种方式，Either 函子表达了条件运算。
+
+Either 函子的常见用途是提供默认值。下面是一个例子。
+
+```js
+Either
+  .of({address: 'xxx'}, currentUser.address)
+  .map(updateField);
+```
+
+上面代码中，如果用户没有提供地址，Either 函子就会使用左值的默认地址。
+
+Either 函子的另一个用途是代替`try...catch`，使用左值表示错误。
+
+```js
+function parseJSON(json) {
+  try {
+    return Either.of(null, JSON.parse(json));
+  } catch (e: Error) {
+    return Either.of(e, null);
+  }
+}
+```
+
+上面代码中，左值为空，就表示没有出错，否则左值会包含一个错误对象`e`。一般来说，所有可能出错的运算，都可以返回一个 Either 函子。
+
+
+
+#### ap 函子
+
+函子里面包含的值，完全可能是函数。我们可以想象这样一种情况，一个函子的值是数值，另一个函子的值是函数。
+
+```javascript
+function addTwo(x) {
+  return x + 2;
+}
+
+const A = Functor.of(2);
+const B = Functor.of(addTwo)
+```
+
+上面代码中，函子`A`内部的值是`2`，函子`B`内部的值是函数`addTwo`。有时，想让函子`B`内部的函数，可以使用函子`A`内部的值进行运算。这时就需要用到 ap 函子。ap 是 applicative（应用）的缩写。凡是部署了`ap`方法的函子，就是 ap 函子。
+
+```javascript
+class Functor {
+  constructor(val) { 
+    this.val = val; 
+  }
+  
+  of(val){
+    return new Functor(val)
+  }
+
+  map(f) {
+    return new Functor(f(this.val));
+  }
+}
+
+class Ap extends Functor {
+  ap(F) {  // F是另一个函子
+    return Ap.of(this.val(F.val));
+  }
+}
+
+Ap.of(addTwo).ap(Functor.of(2))
+// Ap(4)
+```
+
+ap 函子的意义在于，对于那些多参数的函数，就可以从多个容器之中取值，实现函子的链式操作。
+
+```javascript
+function add(x) {
+  return function (y) {
+    return x + y;
+  };
+}
+
+Ap.of(add).ap(Maybe.of(2)).ap(Maybe.of(3));
+// Ap(5)
+```
+
+上面代码中，函数`add`是柯里化以后的形式，一共需要两个参数。通过 ap 函子，我们就可以实现从两个容器之中取值。它还有另外一种写法。
+
+```js
+Ap.of(add(2)).ap(Maybe.of(3));
+```
+
+
+
+#### Monad 函子
+
+函子是一个容器，可以包含任何值。函子之中再包含一个函子，也是完全合法的。但是，这样就会出现多层嵌套的函子。
+
+```js
+Maybe.of(
+  Maybe.of(
+    Maybe.of({name: 'Mulburry', number: 8402})
+  )
+)
+```
+
+
+
+上面这个函子，一共有三个`Maybe`嵌套。如果要取出内部的值，就要连续取三次`this.val`。这当然很不方便，因此就出现了 Monad 函子。
+
+**Monad 函子的作用是，总是返回一个单层的函子。**它有一个`flatMap`方法，与`map`方法作用相同，唯一的区别是如果生成了一个嵌套函子，它会取出后者内部的值，保证返回的永远是一个单层的容器，不会出现嵌套的情况。
+
+```js
+
+class Monad extends Functor {
+  join() {
+    return this.val;
+  }
+  flatMap(f) {
+    return this.map(f).join();
+  }
+}
+```
+
+上面代码中，如果函数`f`返回的是一个函子，那么`this.map(f)`就会生成一个嵌套的函子。所以，`join`方法保证了`flatMap`方法总是返回一个单层的函子。这意味着嵌套的函子会被铺平（flatten）。
+
+
+
+#### IO 操作
+
+Monad 函子的重要应用，就是实现 I/O （输入输出）操作。
+
+I/O 是不纯的操作，普通的函数式编程没法做，这时就需要把 IO 操作写成`Monad`函子，通过它来完成。
+
+```javascript
+var fs = require('fs');
+
+var readFile = function(filename) {
+  return new IO(function() {
+    return fs.readFileSync(filename, 'utf-8');
+  });
+};
+
+var print = function(x) {
+  return new IO(function() {
+    console.log(x);
+    return x;
+  });
+}
+```
+
+上面代码中，读取文件和打印本身都是不纯的操作，但是`readFile`和`print`却是纯函数，因为它们总是返回 IO 函子。
+
+如果 IO 函子是一个`Monad`，具有`flatMap`方法，那么我们就可以像下面这样调用这两个函数。
+
+```javascript
+readFile('./user.txt')
+.flatMap(print)
+```
+
+这就是神奇的地方，上面的代码完成了不纯的操作，但是因为`flatMap`返回的还是一个 IO 函子，所以这个表达式是纯的。我们通过一个纯的表达式，完成带有副作用的操作，这就是 Monad 的作用。
+
+由于返回还是 IO 函子，所以可以实现链式操作。因此，在大多数库里面，`flatMap`方法被改名成`chain`。
+
+```javascript
+var tail = function(x) {
+  return new IO(function() {
+    return x[x.length - 1];
+  });
+}
+
+readFile('./user.txt')
+.flatMap(tail)
+.flatMap(print)
+
+// 等同于
+readFile('./user.txt')
+.chain(tail)
+.chain(print)
+```
+
+上面代码读取了文件`user.txt`，然后选取最后一行输出。
 
 
 
@@ -234,8 +500,6 @@ class Functor {
 
 2. 在大量访问的情况下，一个很小的资源加载对资源的消耗非常大，能够实现对资源的有效控制，对做业务来说十分关键。
    **通过函数式 + 响应式编程，可以通过用户的实时需求动态加载资源，从而能够节省不必要的资源预加载成本。**
-
-
 
 
 
