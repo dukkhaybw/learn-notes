@@ -172,7 +172,7 @@ jsxEDV函数在浏览器中调用后生成的结构
 </h1>
 ```
 
-每个虚拟DOM节点会有一个类型属性——$$typeof
+每个虚拟DOM节点会有一个类型属性——`$$typeof`
 
 ![image-20230313211759844](../%E7%8F%A0%E5%B3%B0%E6%9E%B6%E6%9E%84/React18.2.images/image-20230313211759844.png)
 
@@ -180,7 +180,7 @@ jsxEDV函数在浏览器中调用后生成的结构
 
 对于一个虚拟DOM节点的children属性，可能是一个字符串，数字，对象或者数组，其中数组的中的每一项元素可以是前面3中的某一种。有一点需要注意，上面编写的jsx都是直接使用的原生的标签，如h1,span等等，所以它们生成的函数调用的第一个参数都是字符串的'h1'或者'span'等。
 
-如果你编写的使用一个函数组件，如下代码：
+如果编写的使用一个函数组件，如下代码：
 
 ```jsx
 function FunctionComponent(){
@@ -210,7 +210,7 @@ var element = /*#__PURE__*/React.createElement(FunctionComponent, {
 
 ## 第二节
 
-在编译阶段将编写的jsx经过babel编译后转为jsx(type,config)的方法调用，而前一节就是在jsx这个函数方法，该方法返回一个虚拟DOM（JS对象）。
+在编译阶段将编写的jsx经过babel编译后转为jsxDEV(type,config)的方法调用，而前一节就是在实现jsxDEV这个函数方法，该方法返回一个虚拟DOM（JS对象）。
 
 用react-dom将虚拟DOM变为真实DOM插入已经存在的节点上。
 
@@ -256,25 +256,17 @@ React15中的render过程是不可中断的，这就导致JS可能长时间霸�
 
 - JS 任务执行时间过长
 
-  - 浏览器刷新频率为 60Hz,大概 16.6 毫秒渲染一次，而 JS 线程和渲染线程是互斥的，所以如果 JS 线程执行任务时间超过 16.6ms 的话，就会导致掉帧，导致卡顿，解决方案就是 React 利用空闲的时间进行更新，同时将一个大任务拆分为可以分段执行的小任务，不影响渲染进行的渲染
+  - 浏览器刷新频率为 60Hz,大概 16.6 毫秒渲染一次，而 JS 线程和渲染线程是互斥的，所以如果 JS 线程执行任务时间超过 16.6ms 的话，就会导致掉帧，导致卡顿，解决方案就是 **React 利用空闲的时间进行更新，同时将一个大任务拆分为可以分段执行的小任务，不影响渲染进行的渲染**
 
   - 把一个耗时任务切分成一个个小任务，分布在每一帧里的方式就叫时间切片 
-    >React16以后的Fiber的Fiber架构已经尽可能的将大任务拆分为小任务了，如果在执行最小粒度的任务时，依旧超过了16.6ms的时长，那么react将无能为力，仍就会出现卡顿的情况。
+    >React16以后的Fiber架构已经尽可能的将大任务拆分为小任务了，如果在执行最小粒度的任务时，依旧超过了16.6ms的时长，那么react将无能为力，仍就会出现卡顿的情况。
     >
     >这种调度是合作式调度。
-
-**屏幕刷新率**
-
-- 目前大多数设备的屏幕刷新率为 60 次/秒
-- 浏览器渲染动画或页面的每一帧的速率也需要跟设备屏幕的刷新率保持一致
-- 页面是一帧一帧绘制出来的，当每秒绘制的帧数（FPS）达到 60 时，页面是流畅的,小于这个值时，用户会感觉到卡顿
-- 每个帧的预算时间是 16.66 毫秒 (1 秒/60)
-- 1s 60 帧，所以每一帧分到的时间是 1000/60 ≈ 16 ms,所以书写代码时力求不让一帧的工作量超过 16ms
 
 **帧**
 
 - 每个帧的开头包括样式计算、布局和绘制
-- JavaScript 执行 Javascript 引擎和页面渲染引擎在同一个渲染线程,GUI 渲染和 Javascript 执行两者是互斥的
+- Javascript 引擎和页面渲染引擎在同一个渲染线程，GUI 渲染和 Javascript 执行两者是互斥的
 - 如果某个任务执行时间过长，浏览器会推迟渲染
 
 ![image-20230314211155095](../%E7%8F%A0%E5%B3%B0%E6%9E%B6%E6%9E%84/React18.2.images/image-20230314211155095.png)
@@ -365,7 +357,7 @@ fiber定义（fiber是什么）：
 1. **Fiber 是一个执行的最小单元**，每次执行完一个执行单元, React 就会检查现在还剩多少时间，如果没有时间就将控制权让出去
    ![fiberflow](http://img.zhufengpeixun.cn/fiberflow.jpg)
 2. **Fiber 是一种数据结构**
-   - React 目前的做法是使用**链表, 根据jsx函数执行后返回的具有层级的虚拟DOM对象生成，虚拟DOM中的每个虚拟节点内部表示为一个`Fiber`** 
+   - React 目前的做法是使用**链表, 根据jsxDEV函数执行后返回的具有层级的虚拟DOM对象生成，虚拟DOM中的每个虚拟节点内部表示为一个`Fiber`** 
    - 从顶点开始遍历
    - 如果有第一个儿子，先遍历第一个儿子
    - 如果没有第一个儿子，标志着此节点遍历完成
@@ -397,7 +389,7 @@ fiber定义（fiber是什么）：
 
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20190911101457435.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80Mzk0OTUzNQ==,size_16,color_FFFFFF,t_70)
 
-- 深度优先搜索英文缩写为 DFS 即`Depth First Search`
+- 深度优先搜索 DFS 即`Depth First Search`
 - 其过程简要来说是对每一个可能的分支路径深入到不能再深入为止，而且每个节点只能访问一次
 - 应用场景
   - React 虚拟 DOM 的构建
@@ -434,7 +426,7 @@ function dfs(node){
 
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20190911114957325.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80Mzk0OTUzNQ==,size_16,color_FFFFFF,t_70)
 
-- 宽度优先搜索算法（又称广度优先搜索），其英文全称是 Breadth First Search
+- 宽度优先搜索算法（又称广度优先搜索） Breadth First Search
 - 算法首先搜索距离为`k`的所有顶点，然后再去搜索距离为`k+l`的其他顶点
 
 ```js
