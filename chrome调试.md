@@ -102,7 +102,7 @@
 
 使用一个快捷键 `ctrl + shift + D` (`⌘ + shift + D` Mac) 来实现位置的切换。
 
-![image-20230303175919664](./chrome%E8%B0%83%E8%AF%95.images/image-20230303175919664.png)
+![image-20230303175919664](images/image-20230303175919664.png)
 
 
 

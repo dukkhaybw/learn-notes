@@ -35,13 +35,13 @@ chatGPT之前的人工智能的特点：有多少人工就有多少智能，所�
 
    从 2020 年的 GPT-3 开始，拥有**海量参数的大模型**出现，直接使用预训练好的大语言模型，无需任何微调，就能解决**情感分析、命名实体识别、机器翻译**等一系列的自然语言处理问题。而对于很多 AI 没见过的问题，也只要通过自然语言给到 AI 几个例子，通过“小样本学习”（Few-Shot Learning），AI 就能给出正确的回答。（零样本以及小样本学习的能力，使得一个大模型可以一次性解决不同类型的很多问题）
 
-   ![image-20230416101611837](C:/Users/shuyi/Desktop/study-notes/chatGPT.images/image-20230416101611837.png)
+   ![image-20230416101611837](images/image-20230416101611837.png)
 
    
 
    在计算机视觉上，2021 年 OpenAI 发表的 CLIP 这样的模型也有类似的效果。对于图片的分类不再局限于预先的人工数据标注的类别，而是可以扩展到任何类别上去。在自然语言、语音、视觉，乃至这些领域相互融合的多模态领域里，AI 同时在加速发展。（通过 4 亿个（图片, 文本）对的训练，对于图片的分类可以任意扩展，而不需要预先标注。）
 
-   ![image-20230416105138645](C:/Users/shuyi/Desktop/study-notes/chatGPT.images/image-20230416105138645.png)
+   ![image-20230416105138645](images/image-20230416105138645.png)
 
 3. **这个浪潮带来的变化会对每一个人的工作带来巨大的冲击**
    让 AI 帮写代码，翻译英文资料，修改写过的文章，为文章配图等。
@@ -148,7 +148,7 @@ chatGPT之前的人工智能的特点：有多少人工就有多少智能，所�
    jupyter-lab .   // 这是启动JupyterLab
    ```
 
-   ![image-20230416184744447](C:/Users/shuyi/Desktop/study-notes/chatGPT.images/image-20230416184744447.png)
+   ![image-20230416184744447](images/image-20230416184744447.png)
 
    ![img](https://static001.geekbang.org/resource/image/dd/48/dd2a812ed18581bab0dd51cda83d0d48.png?wh=1920x1004)
 
@@ -162,7 +162,7 @@ chatGPT之前的人工智能的特点：有多少人工就有多少智能，所�
 
 线上的Colab需要安装openAI的python依赖包：!pip install openai  和设置API key：`%env OPENAI_API_KEY=在这里写你获取到的ApiKey`
 
-![image-20230416185126227](C:/Users/shuyi/Desktop/study-notes/chatGPT.images/image-20230416185126227.png)
+![image-20230416185126227](images/image-20230416185126227.png)
 
 如果需要将 Notebook 分享出去，记得把其中 OpenAI 的 API key 删除掉，免得别人的调用，花费都算在了自己头上。
 
