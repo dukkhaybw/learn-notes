@@ -522,13 +522,23 @@ readFile('./user.txt')
 
 2. 在学习 JavaScript 的引擎、浏览器和编译原理的过程中，来理解各种数据结构和算法，这样更能理解这门语言的运行机制和原理，起到和专门讲算法的课程相辅相成的作用。
 
-3. **学习每一节课尽量一鼓作气，有些概念即使模糊，硬着头皮看下去也比停顿去深入了解某个点强。**
+3. **学习每一节课尽量一鼓作气，有些概念即使模糊，硬着头皮看下去也比停顿去深入了解某个点强。**实在遇到困难的地方，你可以简单查下资料，但只要查到刚刚能让你继续往下读的内容即可，千万不要偏离了每节课的主题。
+
+
+
+结合 JS 语言对函数式编程的支持，以及它相关领域的前端应用来。在前端开发中，人机交互复杂。比如加载了一个界面后，根本不知道用户会做出什么反应，或者点击哪个按钮。这第一步就是先把初始页面加载下来，**行动**。
+
+当用户点击了一个按钮，比如一个日历的时候，就进行到了第二步，即**感知**到用户想要选择一个日期。所以，就可以给这个按钮加上事件处理器（event handler），完成相关的日历组件或模块加载，通过之前“记住”的用户需求，展示加载后的日历，这也就是第三步，**响应**。
+
+<img src="C:/Users/shuyi/Desktop/learn-notes/js/images/image-20231023081958044.png" alt="image-20231023081958044" style="zoom: 150%;" />
 
 
 
 **使用函数式编程的时候，考虑的是“生产力”，使用面向对象的时候，考虑的更多是“生产关系”。**
 
 JavaScript 中的继承，是基于原型链的继承，更偏向 delegation（委托） 而不是 inheritance（继承）。即使在面向对象设计本身，也是追求多用组合少用继承。所以用JS面向对象编程时，有自己的一些特点来组织生产关系。
+
+通过学习 JavaScript 的引擎、浏览器和编译原理的过程中，来理解数据结构和算法，这样更能理解这门语言的运行机制和原理，起到和专门讲算法的课程相辅相成的作用。
 
 
 
@@ -537,11 +547,9 @@ JavaScript 中的继承，是基于原型链的继承，更偏向 delegation（�
 1. 如果已经学过传统的面向对象语言，那么在学 JavaScript 的时候，很可能**对函数式的理解和运用不够深入**；
 2. 如果一开始就学习 JavaScript，只停留在开发一些简单应用上，可以说**对它的面向对象的理解和运用不会很深入**。
 
-
-
 注意点：
 
-![img](https://static001.geekbang.org/resource/image/94/a1/94yy2a2e9f67c8a6d299fd18ab6088a1.jpg?wh=2000x1006)
+<img src="C:/Users/shuyi/Desktop/learn-notes/js/images/image-20231023082657937.png" alt="image-20231023082657937" style="zoom:150%;" />
 
 
 
@@ -604,8 +612,8 @@ JS最常用面向对象编程和函数式编程范式来开发应用。
 
 减少副作用的两个原则：
 
-1. 函数体中不适用函数外部的变量
-2. 对于传入函数体中的实参，拷贝后再进行使用
+1. 函数体中不使用函数外部的变量（纯函数）
+2. 对于传入函数体中的实参，拷贝后再进行使用（不可变）
 3. 对于函数体要使用的数据，可以通过闭包或者对象冻结的方式进行隐藏或者限制操作
 
 
@@ -669,6 +677,10 @@ calculateGST(100); // return 5
 
 非纯函数：指函数体中的代码依赖了函数体外的变量或者值，或者函数体内部采用了可变的量，比如采用一个随机数。
 
+在计算机中，幂等的意思是一个程序执行多次结果是一样的。
+
+
+
 
 
 ### 不可变
@@ -689,7 +701,7 @@ console.log(beforeList.slice(0,2))
 //[ 1, 2 ]
 ```
 
-![img](https://static001.geekbang.org/resource/image/66/ed/668060b8cfdf2dd6569975d96e9ef2ed.jpg?wh=1920x1167)
+![image-20231023084334876](C:/Users/shuyi/Desktop/learn-notes/js/images/image-20231023084334876.png)
 
 可变：就是指对于外部传入的实参，直接进行修改，这样是存在隐患的，因为不确定外部是否会基于原来的那个变量的值进行其他后续操作。
 
@@ -806,7 +818,7 @@ JavaScript 中的常量（const，constant）算不算不可变呢？
 
 
 
-## 用闭包对象管理数据
+## 用闭包、对象管理数据
 
 在不可变的原则下，管理项目中的数据？
 
@@ -1279,11 +1291,15 @@ transLogger( "Hello World", lower );     // hello world
 
 在面对未知、动态和不可控时，函数式编程很重要的一点就是**控制好输入**。可以尽量提高接口的适应性和适配性，增加过滤和转化的能力，以及增加代码的可读性。
 
+还有更复杂一些的工具来解决参数问题。比如在讲部分应用和柯里化的时候，提到它在给我们带来一些灵活性的同时，也仍然会有一些限制，即**参数的顺序问题**，必须按照一个顺序来执行。而有些三方库提供的一些工具，就可以将参数倒排或重新排序。
+
+重新排序的方式有很多，可以通过解构（destructure），从数组和对象参数中提取值，对变量进行赋值时重新排序；或通过延展操作符把一个对象中的一组值，“延展”成单独的参数来处理；又或者通过 .toString() 和正则表达式解析函数中的参数做处理。
+
 
 
 ## 函数抽象化
 
-组合、管道和reducer把函数从具象变到抽象。
+组合、管道和reducer把一些列具体的函数变为一个抽象的函数。
 
 **函数从具体到抽象，本质是把不同的函数封装在只有一个入口和出口的函数当中。**在函数式编程里，组合（Composition）就是把函数组合起来，形成一个新的函数。
 
@@ -1296,6 +1312,19 @@ var isOdd = compose(equalsToOne, remainderOfTwo);
 但是，上面这个函数的传参顺序是反直觉的，因为如果按照正常的顺序，应该是先把 remainderByTwo 放在前面来计算余数，然后再执行后面的 equalsToOne。
 
 为什么以这样反直觉的方式传参？**因为组合函数内部是按照传参顺序来排列（包裹）的。**
+
+在 lodash 函数编程模块中，`compose` 方法接受多个函数作为参数，并返回一个新的函数。这个新的函数按照从右到左的顺序依次执行传入的函数。
+
+```js
+const greet = (name) => `Hello, ${name}!`;
+const capitalize = (str) => str.toUpperCase();
+const exclaim = (str) => `${str}!!!`;
+
+const welcome = _.compose(exclaim, capitalize, greet);
+console.log(welcome('John'));  // 输出：HELLO, JOHN!!!
+```
+
+
 
 
 
@@ -1428,11 +1457,13 @@ isOdd(2); // 返回 false
 
 ### 转导 Transduction
 
-函数式编程中的很多概念，都来自于对复杂、动力系统研究与控制等领域。而转导主要为了更好的，更系统的控制数据。React中的reducer就使用到了transducing。
+函数式编程中的很多概念，都来自于对复杂、动态系统研究与控制。而转导主要为了更好的，更系统的控制数据。React中的reducer就使用到了transducing。
 
 transduce 和 reducer 的作用以及原理。**reducer 最主要的作用其实是解决在使用多个 map、filter、reduce 操作大型数组时，可能会发生的性能问题。**
 
-通过使用 transducer 和 reducer，就可以优化一系列 map、filter、reduce 操作，**使得输入数组只被循环一次并直接产生输出结果，而不需要创建任何中间数组**。不用tansducer 或 reducer的例子：
+通过使用 transducer 和 reducer，就可以优化一系列 map、filter、reduce 操作，**使得输入数组只被循环一次并直接产生输出结果，而不需要创建任何中间数组**。
+
+不用tansducer 或 reducer的例子：
 
 ```js
 var oldArray = [36, 29, 18, 7, 46, 53];
@@ -1590,9 +1621,11 @@ Array.prototype.filterReduce = function (cb, initValue) {
 
 ### map 映射和函子
 
-函子：是一个带运算工具的**数据类型**或**数据结构值**。例如：在 JavaScript 中，字符串（string）就是一个数据类型，而数组（array）既是一个数据类型也是一个数据结构。
+函子：是一个带运算方法的**数据类型**或**数据结构值**。例如：在 JavaScript 中，字符串（string）就是一个数据类型，而数组（array）既是一个数据类型也是一个数据结构。
 
-<img src="C:/Users/shuyi/Desktop/study-notes/js/JS%E8%BF%9B%E9%98%B6.images/image-20230323154804114.png" alt="image-20230323154804114" style="zoom:67%;" />
+如果想让下图中的每个字母都变成大写，那么就是一个转换和映射的过程。
+
+<img src="./JS%E8%BF%9B%E9%98%B6.images/image-20230323154804114.png" alt="image-20230323154804114" style="zoom:67%;" />
 
 这是一段抽象的代码来表示一个字符串的映射函子 stringMap。
 
@@ -1626,7 +1659,7 @@ filter 可以是双向的，可以过滤掉（filter out）不想要的，也可
 
 
 
-isOdd是一个用于判断是否时奇数的函数，符合断言定义。
+isOdd是一个用于判断是否是奇数的函数，符合断言定义。
 
 ````js
 [1,2,3,4,5].filter( isOdd ); // [1,3,5]
@@ -1684,7 +1717,7 @@ var isEven = v => v % 2 == 0;
 >
 > ["1","2","3","4","5"].map( unary( parseInt ) ); // [1,2,3,4,5]
 
-monad 和 functor 有什么区别呢？函子（functor）其实就是一个值和围绕值的一些功能。array.map 可以被看做是一个 functor，它有一组值，而如 map 这样的方法可以作用于数组里面的每一个值，提供了一个映射的功能。	
+monad 和 functor 有什么区别呢？函子（functor）其实就是一个值和围绕值的一些方法。array.map 可以被看做是一个 functor，它有一组值，而如 map 这样的方法可以作用于数组里面的每一个值，提供了一个映射的功能。	
 
 **monad 就是在 functor 的基础上，又增加了一些特殊功能，其中最常见的就是 chain 和应用函子（applicative)。**
 
@@ -1776,6 +1809,8 @@ typeof B;   // "number"
 
 那么，满足这些类型签名的函数就组成了 monoid。它的概念就是基于之前说到过的 identity 函数。在 TypeScript 中，identity 也是泛型使用中的一个例子。
 
+在 C# 和 Java 这样的语言中，泛型可以用来创建可重用的组件，一个组件可以支持多种类型的数据。 这样用户就可以以自己的数据类型来使用组件。它的基本原理也是基于这样的一个 identity 函数。
+
 ```ts
 function identity<T>(arg: T): T {
     return arg;
@@ -1797,7 +1832,7 @@ A.chain (identity) // 返回 15
 
 ### applicative
 
-应用函子（applicative），简称 ap。它的作用是**可以把一个封装过的函数应用到一个包装过的值上**。
+应用函子（applicative），简称 ap。它的作用是**可以把一个封装过的函数应用到另一个包装过的值上**。
 
 ```js
 function Just(val) {
@@ -1956,13 +1991,13 @@ consumer.subscribe( function onValue(v){
 
 如果是动态加载，就是在初始化之后，根据需求再继续加载。
 
-![image-20230324090508696](C:/Users/shuyi/Desktop/study-notes/js/JS%E8%BF%9B%E9%98%B6.images/image-20230324090508696.png)
+![image-20230324090508696](./JS%E8%BF%9B%E9%98%B6.images/image-20230324090508696.png)
 
 
 
 动态导入基本可以分成两类，一类是可视时加载（load on visibility），一种是交互时加载（load on interaction）。
 
-可视时加载：经常用在长页面当中，不需要一上来就加载整个页面，而是当用户滑动到了某个部分的时候，再加载相关的内容。
+可视时加载(懒加载)：经常用在长页面当中，不需要一上来就加载整个页面，而是当用户滑动到了某个部分的时候，再加载相关的内容。
 
 交互时加载：当用户和页面进行交互时，比如点击了某个按钮后，可能产生的加载。
 
@@ -1973,9 +2008,9 @@ consumer.subscribe( function onValue(v){
 
 在后续的动态加载中：
 
-1. 首次交互时间（TTI，Time to Interactive）
+1. 首次交互时间（TTI，Time to Interactive）：就是当用户开始从首屏开始往下滑动，或者点击了某个按钮开启了日历弹窗的时候。
 
-![image-20230324091022423](C:/Users/shuyi/Desktop/study-notes/js/JS%E8%BF%9B%E9%98%B6.images/image-20230324091022423.png)
+![image-20230324091022423](./JS%E8%BF%9B%E9%98%B6.images/image-20230324091022423.png)
 
 通过一些打包工具，比如用 Webpack 先加载核心的组件，渲染主程序，之后根据交互的需要，按需加载某个模块。
 
@@ -1983,7 +2018,7 @@ consumer.subscribe( function onValue(v){
 
 如果是 Node 服务器端的加载渲染，有Loadable Components 库。
 
-![image-20230324092221613](C:/Users/shuyi/Desktop/study-notes/js/JS%E8%BF%9B%E9%98%B6.images/image-20230324092221613.png)
+![image-20230324092221613](./JS%E8%BF%9B%E9%98%B6.images/image-20230324092221613.png)
 
 在使用动态导入前，一般应该先考虑**预加载（pre-load）或预获取（pre-fetch）**。
 
@@ -1997,13 +2032,13 @@ consumer.subscribe( function onValue(v){
 
 一种是浏览器渲染，在客户端渲染（CSR，client side rendering）模式下，是先下载 HTML、JS 和 CSS，包括数据，所有的内容都下载完成，然后再开始渲染。
 
-一种是服务器端渲染，服务器端渲染（SSR，server side rendering）模式下，是先让用户能看到一个完整的页面，但是无法交互。只有等相关数据从服务器端加载和 hydrate 后，比如说一个按钮加上了的相关事件处理之后，才能交互，但可能在加载和 hydrate 前点击某个按钮的时候，就会发现某个组件没反应。为此，Google开源了一个叫JSAction 的小工具，它的作用就是先加载一部分轻代码（tiny code），这部分代码可以“记住”用户的行为，然后根据用户的交互来加载组件，等加载完成再让组件执行之前“记住”的用户请求。
+一种是服务器端渲染，服务器端渲染（SSR，server side rendering）模式下，是先让用户能看到一个完整的页面，**但是无法交互。**只有等相关数据从服务器端加载和 hydrate 后，比如说一个按钮加上了的相关事件处理之后，才能交互，但可能在加载和 hydrate 前点击某个按钮的时候，就会发现某个组件没反应。为此，Google开源了一个叫JSAction 的小工具，它的作用就是先加载一部分轻代码（tiny code），这部分代码可以“记住”用户的行为，然后根据用户的交互来加载组件，等加载完成再让组件执行之前“记住”的用户请求。
 
-![image-20230324093759979](C:/Users/shuyi/Desktop/study-notes/js/JS%E8%BF%9B%E9%98%B6.images/image-20230324093759979.png)
+![image-20230324093759979](JS%E8%BF%9B%E9%98%B6.images/image-20230324093759979.png)
 
 
 
-![image-20230324093954163](C:/Users/shuyi/Desktop/study-notes/js/JS%E8%BF%9B%E9%98%B6.images/image-20230324093954163.png)
+![image-20230324093954163](JS%E8%BF%9B%E9%98%B6.images/image-20230324093954163.png)
 
 
 
