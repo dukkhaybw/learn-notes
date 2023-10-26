@@ -44,7 +44,7 @@
 
 ### JSX及其本质
 
-**React17后可以不用再主动引入 React 而直接而使用在文件中 jsx 语法**。因为新版项目中将 jsx不再转为 React.createElement，但是babel转换后的代码在浏览器中的执行结果是一样的——虚拟DOM对象。
+**React17以后可以不用再主动引入 React 而直接在文件中写 jsx 语法，但是要手动配置开启automatic**。因为新版项目中将 jsx不再转为 React.createElement，但是babel转换后的代码在浏览器中的执行结果是一样的——虚拟DOM对象树。
 
 ```jsx
 //在React17以前，babel转换是老的写法
@@ -102,7 +102,7 @@ jsx("h1", {
 // React.createElement=jsx
 ```
 
-新的编译模式后，子节点直接以对象props中的children属性值存在，以前的字节点是作为第3个及其往后参数的方式传入createElement，在createElement中在将他们作为props的children属性的属性值。
+新的编译模式下，子节点直接以对象props中的children属性值存在，以前的子节点是作为第3个及其往后参数的方式传入createElement，在createElement中再将他们转为props的children的属性值。
 
 
 
@@ -140,13 +140,14 @@ JSX的编译和后续执行：
 
 ![img](https://static.zhufengpeixun.com/virutaldom_1664073330011.jpg)
 
+React项目运行的两个环节：
+
+1. 编译阶段，把使用jsx编写的项目源码通过webacpk或者vite中的babel插件——*@babel/plugin-transform-react-jsx*——编译为普通的js代码（具体是React.createElement或者jsxDEV方法调用），这是在node环境中完成的，和浏览器无关
+2. 运行阶段，将编译打包后的上线到服务器，用户访问服务器后加载对应的html和js文件，而js文件中的内容就是上一阶段生成的js代码，浏览器会加载并执行React.createElement或者jsxDEV方法，得到虚拟DOM树，再根据虚拟DOM树生成Fiber树，再生成真实的DOM插入到页面中
 
 
-![image-20220425230654081](..\typora-user-images\image-20220425230654081.png)
 
-
-
-包含jsxDEV函数调用的代码在发送到浏览器后，浏览器会根据源码中定义的该jsxDEV方法的代码逻辑进行执行，最后返回一个虚拟DOM。
+包含jsxDEV函数调用的代码在发送到浏览器后，浏览器会根据源码中定义的该jsxDEV方法的代码逻辑进行执行，最后返回一个虚拟DOM树。
 
 ```js
 // ReactElement是一个工厂函数，用于创建一个个的虚拟DOM节点对象
@@ -154,10 +155,10 @@ function ReactElement(type, key, ref, props) {
   // 这就是React元素，也被称为虚拟DOM
   return {
     $$typeof: REACT_ELEMENT_TYPE,  // $$typeof，每个虚拟DOM节点都有，表示节点的类型
-    type,//h1 span，如果是函数组件或者类组件，那就是个函数或者类本身
-    key,//唯一标识
-    ref,//用来获取真实DOM元素
-    props//属性 children,style,id...
+    type,// h1 span，如果是函数组件或者类组件，那就是个函数或者类本身
+    key,// 唯一标识
+    ref,// 用来获取真实DOM元素
+    props// 属性 包括：children,style,id...
   }
 }
 ```
@@ -178,15 +179,15 @@ jsxEDV函数在浏览器中调用后生成的结构
 
 
 
-对于一个虚拟DOM节点的children属性，可能是一个字符串，数字，对象或者数组，其中数组的中的每一项元素可以是前面3中的某一种。有一点需要注意，上面编写的jsx都是直接使用的原生的标签，如h1,span等等，所以它们生成的函数调用的第一个参数都是字符串的'h1'或者'span'等。
-
-如果编写的使用一个函数组件，如下代码：
+一个虚拟DOM节点的children属性，可能是一个字符串，数字，对象或者数组，其中数组的中的每一项元素可以是前面3中的某一种。有一点需要注意，上面编写的jsx都是直接使用的原生的标签，如h1,span等，所以它们生成的函数调用的第一个参数都是字符串的'h1'或者'span'等。 如果编写的是一个函数组件，如下代码：
 
 ```jsx
 function FunctionComponent(){
-  return (<h1>
-    hello <span style={{ color: 'red' }}>world!</span>
-  </h1>)
+  return (
+    <h1>
+      hello <span style={{ color: 'red' }}>world!</span>
+    </h1>
+  )
 }
 
 let element = <FunctionComponent number={1}></FunctionComponent>
@@ -199,6 +200,7 @@ function FunctionComponent() {
     }
   }, "world!"));
 }
+
 var element = /*#__PURE__*/React.createElement(FunctionComponent, {
   number: 1
 });
