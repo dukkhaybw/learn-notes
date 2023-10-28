@@ -630,9 +630,144 @@ It is interesting to listen to him.
 
    ![image-20221209200047267](./new-perspective-fundamental.assets/image-20221209200047267.png)
 
+
+
+**“不可数名词”转化为“可数名词”的一些规律：**
+
+1. **对于物质名词或总称的名词，若是表示不同的种类，或者因为特定的意思，或者是液体表示“几杯”或“几瓶”这样的数量，则转化为可数名词。**
+
+   > 1) I like *cake*, not hamburger.
+   >
+   > 2) My mother is making *a cake* in the kitchen. 
+   >
+   >    
+   >
+   > A: Would you like *a cake*?
+   >
+   > B: No, I don't like *cake*. 
+   >
+   > 
+   >
+   > 1) I don't like *milk*.
+   >
+   > 2) Yogurt contains a higher percentage of lactic acid than other fermented *milks*. 
+
+以上谈的是，总称名词或物质名词在表示“不同种类或具体的事物”时转化为可数名词，此时它们的词义没有改变或改变不大。
+
+但是，有些名称，当由不可数转为可数名词时，意思会有很大的变化。比如paper这个词，表示“纸”时是不可数名词，但表示“报纸”和“论文”时则是可数名词。
+
+> 1) I need *some paper* to write a letter on.
+>
+> 2) I have *a term paper* to write on weekends.
+>
+> 3) I bought *a paper*. 
+
+肉类的名词,比如chicken，作为不可数名词，表示“鸡肉”；作为可数名词，表示“鸡”这种动物。
+
+比如glass表示“玻璃”时不可数，但表示“玻璃杯”时则可数。
+
+> *Glass* does not rust or rot.
+>
+> This vase is made of *glass*. 
+>
+> She drank two *glasses* of wine.
+>
+> He broke *a glass*.  他打碎了一个玻璃杯。不能错误地理解为“他打碎了一块玻璃”。因为glass若是表示“玻璃”，则是不可数名词，因而不能用不定冠词a来修饰。“一块玻璃”应该说成a piece of glass。比如：
+>
+> He broke *a piece of glass*. 他打碎了一块玻璃。
+
+此外，glass的复数形式glasses还可以表示“眼镜”，并且作为“眼镜”的意思，只能用复数形式，则“一副眼镜”应该说成a pair of glasses。
+
+再比如，water一词是属于第一组Group A中的名词。但是，如果特指具体的某一片水体，尤其是指某一国所专门拥有的一片海域（a particular stretch ofsea or ocean, especially that of a state or country）时，则常用复数waters，此时表示“海域，领海”。比如“东海海域”就可以说成：the *waters* of the East Sea. 
+
+液体物质名词若表示“几杯”或“几瓶”这样的数量时，则转化为可数名词。比如：Two *beers* and three *coffees*, please!
+
+
+
+2. **对于抽象名词，若是具体化了，则转化为可数名词。并且，此时往往伴随着词义上或大或小的改变。**比如art（艺术）／an 
+
+   art（一项技术，一门特定的艺术）；beauty（美丽）／a beauty（一个美人）；youth（青春）／a youth（一个年轻人）。
+
+   > 1) She had great *beauty* in her youth.
+   >
+   > 2) She was *a beauty* in her youth. 
+
+
+
+TOEFL考试中的句子：
+
+> 1. Financier Andrew Mellon donated most of his magnificent art *collection* to the National Gallery of Art, where it is now located.
+>
+>  
+>
+> 2. One of the most impressive *collections* of nineteenth-century European paintings in the United States can be found at the Philadelphia Museum of Art. 
+>    
+>
+> 在例句1）中，collection是指“艺术收藏品”这个总称的、抽象的概念，而没有具体说明是什么收藏品，所以是不可数名词。下文的单数代词it指代这个不可数名词。在例句2）中，collection是特指“19世纪欧洲油画收藏品”这样的具体事物，所以是可数名词。
+
+在以前的TOEFL考试中，曾多次考查中国学生判断名词可数性的能力，比如下面这道改错题：
+
+21 (A) **Accounting** is described (B)**as art** of classifying, (C)**recording**, and reporting (D)**significant**  financial events. 
+
+
+
+正确答案 :B，应改为as an art。在该句的语境中，art就是指accounting这项具体的技能，因而转化为可数名词。既然是可数名词，在单数art的前面就需要有不定冠词an来修饰。故将B即as art改为as an art才正确。
+
+会计是一门对重大财务事件进行分类、记录和报告的专业技术。 
+
+
+
+**可数的名词如何转化成不可数的名词**
+
+比如对于room这个词，表示“房间”，此时是可数名词。但是若作为“空间，余地”来理解时，则是一个抽象概念而转化成为一个不可数名词。
+
+> There's plenty of *room* for everybody to sit down in this *room*. 
+>
+> You can ride with us. There's enough *room* in my car. 
+>
+> “站票”就是指“供你站立的一个‘空间’”，因此英文中的“站票”就是standing room，
+>
+> 请看例句：There's no seat now. There's standing *room* only.   没有座位了，只有站票。
+
+
+
+更为特殊的是，即使是一般作为可数的名词，在某些特殊的语境中，也可能作为不可数名词来使用。比如husband和wife这两个名词在一般情况下都是作为可数名词，但是在特殊的语境中，可能转化为不可数名词，此时其前面不需要不定冠词修饰。比如在西方举行婚礼的场景中，牧师最后会对着新郎、新娘及众人说：I pronounce this couple to be *husband* and *wife*. You may kiss. 
+
+这里的husband和wife都是单数，按理说，在它们的前面应该需要有不定冠词a来修饰的。但在这里，它们是表示“夫妻”这样的概念，而不是具体指某人，是作为不可数名词，所以不需要冠词修饰。 
+
+我现在宣布这对新人成为夫妻。你们现在可以亲吻了。 
+
+ 
+
+We are not *boyfriend* and *girlfriend*.   这里的boyfriend和girlfriend同样是转化为不可数名词了，强调的是“男女朋友”这个概念。
+
+
+
+3. 从更广泛的意义上来说，当一个名词表示抽象的、总称的概念（abstract  or generic concept）时，一般作为不可数名词来用。而当它表示具体的、特定的事物（concrete or particular things）时，则通常用作可数名词。这就是为什么词典中对于某个单词的某一词义，后面标注的既是可数，也是不可数。此时关键要看如何使用这个词义，如果是当作具体的事物来看，则是可数；如果是当作一个概念来看，则是不可数。
+
+拿area（面积）来说，如果是指某个地方的具体多大的“面积”，则是可数。比如：The square covers *an area* of 20,000 square meters. 另一方面，如果把“面积”作为一个总体的概念（以区别于其他的概念，比如“人口”），则是不可数。比如：Shanghai is the largest city in *area* in China, but Beijing is the largest city in population. 
+
+另外，作为“地区、区域”来讲，area是可数名词。对于area的这些不同的词义及其可数性，读者都需要根据具体的上下文来灵活把握。我们来看下面的两道TOEFL考试题：
+
+1. Large, multicolored insects (A)with four wings, dragonflies (B)play a very important role in the ecosystem of humid (C)area by (D)controlling the population of mosquitoes
+
+正确答案：C，应改为areas。根据上下文，这里的area是“地区”的意思，是可数名词，因而要把C即area变为复数的areas，这样它的前面就可以不用限定词修饰。
+
+蜻蜓——这一体形较大的、彩色的、带有四个翅膀的昆虫——通过控制蚊子的数量而对潮湿地区的生态系统的平衡起着重要作用。
+
+
+
+2. Located in Canada, the Columbia Ice Field (A)covers (B)area of 120 square miles and is 3.30 feet (C)thick in some (D)places. 
+
+正确答案：B，应改为an area。根据上下文，这里的area是表示具体的“面积”，是可数名词，因而要把B即area改为an area。 
+
+哥伦比亚冰原位于加拿大，面积达120平方英里，在有的地方厚度达3.3英尺。
+
+
+
 #### 不可数名词的度量
 
-不能用具体的数字（基数）（比如 one, two, three, four）来表示不可 数名词的数量，但可以借用量词来表示其量的概念。不同类型的不 可数名词所使用的量词不一样，一般的规则如下：
+不能用具体的数字（基数）（比如 one, two, three, four）来表示不可 数名词的数量，但可以借用量词来表示其量的概念。不同类型的不可数名词所使用的量词不一样，一般的规则如下：
 
 1. piece 修饰：
 
