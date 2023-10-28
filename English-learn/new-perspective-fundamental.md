@@ -495,9 +495,11 @@ It is interesting to listen to him.
 
 右置的定语共有六种（尽管可以有副词作右置定语，但因较少用到，在此不作讨论）：==介词短语、分词短语、不定式短语、形容词短语、定语从 句以及同位语从句==。
 
-==左置的两个定语的位置关系非常 明确和严格：必须是限定词在形容词的左边，结构是：限定词＋形容词 ＋名词。==
+==左置的两个定语的位置关系非常明确和严格：必须是限定词在形容词的左边，结构是：限定词＋形容词 ＋名词。==
 
 ==英语和汉语的一 个基本差别就是名词修饰语即**定语**的位置差异。汉语的定语一律是在名词的前面，而英语的定语有在名词前面的，也有在名词后面的， 多的定语是置于被修饰名词的后面，构成后置定语。所以，在**语言学** 上，**汉语被称作是“中心词（head）在后”的语言（head-last language）；英语被称作是“中心词在前”的语言（head-first language）**。==
+
+
 
 ### 句子成分
 
@@ -507,6 +509,8 @@ It is interesting to listen to him.
 2. 语言的构造级别可以分为词、短语、句子、段落 和篇章这样的等级。主语、谓语、宾语、补语和状语这五种“句子成 分”都是在“句子”这一层级上的成分。而定语成分则“稍逊一层”，它属于“短语”这一层 级，是属于“短语成分”，即是组成名词短语的成分，然后通过名词短语 间接地构成句子成分。
 
 因为造成我们对英语句子理解障碍的“罪魁祸首”之一 就是英语里**复杂的定语修饰关系**。所以，前面介绍的关于**定语的结构规律**是非常重要的**英语思维规律之一**，建议读者在今后无论是读英语还是写英语，都要给予极大的关注。
+
+
 
 ## 名词
 
@@ -553,6 +557,10 @@ It is interesting to listen to him.
    > the lunar calendar：阴历
    >
    > 阴历二月”不能说 February，而是 the second month on the lunar calendar 或者说成 the second lunar month。
+   >
+   > 七夕：the seventh of the seventh lunar month
+   >
+   > 中秋：the fifteenth of the eighth lunar month
 
 4. 星期、四季
 
@@ -570,9 +578,11 @@ It is interesting to listen to him.
 2. 限定词修饰名词？
 3. 名词用作可数与用作不可数，意义上的差别？
 
-根据名词的构成，可将名词分为简单名词和复合名词。
+根据名词的构成，可将名词分为简单名词和复合名词。对于名词，最重要的分类就是可数名词与不可数名词。这一分类是学习英语名词用法的核心，因为它关系到很多问题，比如可数名词变复数的问题，限定词修饰名词的问题，还有是一个名词用作可数与用作不可数，意义上有差别。
 
 简单名词就是组成部分不可被分割的名词，比如 story, student 和 teacher 等。英语中的名词绝大多数是简单名词。复合名词就是由若干单词组合而构成的名词，比如 girlfriend, roommate 和 mother-in-law（岳母／婆婆） 等
+
+
 
 #### 名词的数
 
@@ -594,9 +604,11 @@ It is interesting to listen to him.
 或者按气体、液体和固体来作出分类：
 
 2. **一些因其组成部分太小而不易数的名词**（nouns that have parts that are too small or insignificant to count）用作不可数名词。
-   ![image-20221209132237835](./new-perspective-fundamental.assets/image-20221209132237835.png)
 
-3. **表示总称的名词通常不可数**（nouns that are classes or categories of things）。这些名词侧重于表示某类事物的总的概念，而不是具体的事物。如果要具体指出该总称概念下的具体事物，则要用其他 不同的名词。
+
+![image-20221209132237835](./new-perspective-fundamental.assets/image-20221209132237835.png)
+
+2. **表示总称的名词通常不可数**（nouns that are classes or categories of things）。这些名词侧重于表示某类事物的总的概念，而不是具体的事物。如果要具体指出该总称概念下的具体事物，则要用其他 不同的名词。
 
    ![image-20221209143539050](./new-perspective-fundamental.assets/image-20221209143539050.png)
 
