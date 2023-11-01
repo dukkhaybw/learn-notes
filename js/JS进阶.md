@@ -2259,8 +2259,6 @@ console.log(widget9.getName()); // 返回 “天气应用”
 
 静态的属性是属于构造函数的属性，而不是构造的对象实例的属性。
 
-
-
 **创建公开静态属性**
 
 通过 static 这个关键词来创建公开的静态属性。静态属性只能作用于 class 本身。
@@ -2308,8 +2306,6 @@ console.log(widget13.instanceGetName()); // 返回 “天气应用”
 
 
 
-
-
 ## 继承、委托和组合
 
 为了提高js的可复用性的几个核心思想和方法：
@@ -2328,7 +2324,7 @@ console.log(widget13.instanceGetName()); // 返回 “天气应用”
 
 4. 组合
 
-   - 在一个构造函数或者实例对象上挂载一个其他构造函数的实例对象
+   在一个构造函数或者实例对象上挂载一个其他构造函数的实例对象
 
 5. 借用
 
@@ -2347,7 +2343,7 @@ console.log(widget13.instanceGetName()); // 返回 “天气应用”
 
 一个面向对象的核心思想：**组合优于继承**。
 
-![image-20230324104825095](./JS%E8%BF%9B%E9%98%B6.images/image-20230324104825095.png)
+<img src="./JS%E8%BF%9B%E9%98%B6.images/image-20230324104825095.png" alt="image-20230324104825095" style="zoom:50%;" />
 
 JS中是通过哪些方法来解决代码复用，以及在使用不同的方法时，它们各自解决了什么问题、又引起了什么问题。以在实际项目中选择合适的方法解决实际问题。
 
@@ -2495,7 +2491,7 @@ class SetLikeMap {
 
 上面说的授权，广义上其实就是一种组合。但是这种组合更像是“个体和平台的合作”；而另一种组合更像是“团队内部的合作”，它也有很多的应用和实现方式。
 
-![image-20230324114856471](JS%E8%BF%9B%E9%98%B6.images/image-20230324114856471.png)
+<img src="JS%E8%BF%9B%E9%98%B6.images/image-20230324114856471.png" alt="image-20230324114856471" style="zoom:50%;" />
 
 
 
@@ -2521,7 +2517,7 @@ argumentSlice(1, 2, 3, 4, 5, 6); // returns [2,3]
 
 把其他对象的属性和方法拷贝到自己的身上。这种方式也叫**显性混入**（Explicit mixin）。
 
-> `Object.assign(target, ...sources)` 方法将所有[可枚举](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/propertyIsEnumerable)（`Object.propertyIsEnumerable()` 返回 true）的[自有](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwnProperty)（`Object.hasOwnProperty()` 返回 true）属性从一个或多个源对象复制到目标对象，返回修改后的对象。
+> `Object.assign(target, ...sources)` 方法将所有[可枚举](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/propertyIsEnumerable)（`Object.propertyIsEnumerable()` 返回 true）的[自有](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwnProperty)（`Object.hasOwnProperty()` 返回 true）属性从一个或多个源对象复制到目标对象，返回修改后的对象。就是浅拷贝。
 >
 > target：
 >
@@ -2530,6 +2526,123 @@ argumentSlice(1, 2, 3, 4, 5, 6); // returns [2,3]
 > sources：
 >
 > 源对象，包含将被合并的属性。
+
+```js
+var widget = {
+  appName : "核心微件"
+}
+var calendar = Object.assign({
+  appVersion: "1.0.9"
+}, widget);
+
+console.log(calendar.hasOwnProperty("appName")); // 返回 true
+console.log(calendar.appName); // 返回 “核心微件”
+console.log(calendar.hasOwnProperty("appVersion")); // 返回 true
+console.log(calendar.appVersion); // 返回 “1.0.9”
+```
+
+
+
+浅拷贝：
+
+```js
+function shallowCopy(parent, child) {
+  var i;
+  child = child || {};
+  for (i in parent) {
+    if (parent.hasOwnProperty(i)) {
+      child[i] = parent[i];
+    }
+  }
+  return child;
+}
+```
+
+
+
+
+
+深拷贝：
+
+```js
+function deepCopy(o) { return JSON.parse(JSON.stringify(o)); }
+
+
+function deepCopy(parent, child) {
+  var i,
+      toStr = Object.prototype.toString,
+      astr = "[object Array]";
+  child = child || {};
+  for (i in parent) {
+    if (parent.hasOwnProperty(i)) {
+      if (typeof parent[i] === "object") {
+        child[i] = (toStr.call(parent[i]) === astr) ? [] : {};
+        deepCopy(parent[i], child[i]);
+      } else {
+        child[i] = parent[i];
+      }
+    }
+  }
+  return child;
+}
+```
+
+
+
+在 React 当中，也可以看到组合优于继承，并且它同样体现在两个方面，一个是“团队内部的合作”，另一个是“个体与平台合作”。
+
+“团队内部的合作”的例子，WelcomeDialog 就是嵌入在 FancyBorder 中的一个团队成员。
+
+```jsx
+function FancyBorder(props) {
+  return (
+    <div className={'FancyBorder FancyBorder-' + props.color}>
+      {props.children}
+    </div>
+  );
+}
+
+function WelcomeDialog() {
+  return (
+    <FancyBorder color="blue">
+      <h1 className="Dialog-title">
+        Welcome
+      </h1>
+      <p className="Dialog-message">
+        Thank you for visiting our spacecraft!
+      </p>
+    </FancyBorder>
+  );
+}
+
+```
+
+
+
+“个体与平台合作”的例子，WelcomeDialog 是一个“专业”的 Dialog，它授权给 Dialog 这个平台，借助平台的功能，实现自己的 title 和 message。
+
+```jsx
+function Dialog(props) {
+  return (
+    <FancyBorder color="blue">
+      <h1 className="Dialog-title">
+        {props.title}
+      </h1>
+      <p className="Dialog-message">
+        {props.message}
+      </p>
+    </FancyBorder>
+  );
+}
+
+function WelcomeDialog() {
+  return (
+    <Dialog
+      title="Welcome"
+      message="Thank you for visiting our spacecraft!" />
+  );
+}
+```
 
 
 
@@ -2699,25 +2812,25 @@ bind polyfill：
 ```js
 // 我的，没有考虑到new调用的情况
 Function.prototype.myBind(newThis,...argsOutter){
-    const self = this
-    return function (...argsInner){
-        newThis.temFn = self
-        const result = newThis.temFn(...argsOutter,...argsInner)
-        delete newThis.temFn
-        return result
-    }
+  const self = this
+  return function (...argsInner){
+    newThis.temFn = self
+    const result = newThis.temFn(...argsOutter,...argsInner)
+    delete newThis.temFn
+    return result
+  }
 }
 
 
 Function.prototype.mybind = function (context,...args1) {
-    let that = this
-    function fBind(...args2) { // 执行bind函数
-        return that.apply(this instanceof fBind ? this : context, args1.concat(args2))
-    }
-    function Fn(){} // 两个类的原型并未公用，而是通过原型链的方式找到该原型方法
-    Fn.prototype = this.prototype
-    fBind.prototype = new Fn()
-    return fBind
+  let that = this
+  function fBind(...args2) { // 执行bind函数
+    return that.apply(this instanceof fBind ? this : context, args1.concat(args2))
+  }
+  function Fn(){} // 两个类的原型并未公用，而是通过原型链的方式找到该原型方法
+  Fn.prototype = this.prototype
+  fBind.prototype = new Fn()
+  return fBind
 }
 ```
 
@@ -2752,7 +2865,7 @@ partialFunc(9); // 12
 
 **软性绑定**
 
-可以在 global 或 undefined 的情况下，将 this 绑定到一个默认的 obj 上。
+可以在 global 为 undefined 的情况下，将 this 绑定到一个默认的 obj 上。
 
 ```js
 if (!Function.prototype.softBind) {

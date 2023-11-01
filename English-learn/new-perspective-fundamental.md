@@ -801,16 +801,203 @@ We are not *boyfriend* and *girlfriend*.   这里的boyfriend和girlfriend同样
 
 
 
+----
+
+前面重点在从意义上讨论如何区分可数名词和不可数名称。下面这一部分从名称的名词的构成形式方面讨论名词的单数和复数形式的问题。对于某个名词，既要判断它是可数还是不可数，同时还要区分它是单数还是复数。
+
+**具体来说就是：不可数名词只有单数形式，没有复数形式；可数名词既有单数形式，也有复数形式，两套形式通常不同。**
+
+因此，对于可数名词来说，存在一个变复数的问题。这一节主要是从**形式**上来总结**可数名词的复数变化规则**。
+
+单数表示“一”；复数表示“多于一”，即表示两个或两个以上的数量。
+
+不同语言对于单复数的概念是不同的。比如汉语不区分单复数；英语区分单复数，把“多于一”的算作复数。与这两种语言不同的是，有些语言把名词区分为三种数的概念：“一”为单数；“二”为双数（dual number）；“二以上”为复数。也就是说，这种分类比英语更精确。这些语言把“二以上”算作复数，而英语只是把“一以上”算作复数。
+
+> one half *day* 半天（单数）
+>
+> one *day* 一天（单数）
+>
+> one and a half *days* 一天半（复数）
+
+英语中也有“双数”的概念，比如限定词both, either和neither都只能用来指“二”，不能指“二以上”的复数概念。each可以指“二或二以上”的复数概念，而every只能指“三或三以上”的复数概念。比如人类的性别只有“男”和“女”两种，所以只能说each sex而不能说every sex。
+
+> *Each sex* has its own physical and psychological characteristics. 
+
+
+
+单数是一个极端，复数是另一个极端，在这两个极端之间有一个中间的过渡状态，那就是有些名词可单数也可复数，但是含义上有差别。下面先来讨论两个极端的情况，即**某些只可用作单数的名词，以及某些只可用作复数的名词**。
+
+
+
+### 只用作单数的名词
+
+==在英语中，只用作单数的名词主要包括不可数名词与专有名词。这两类名词一般没有复数的变化形式。它们作主语时，谓语要用单数第三人称形式。==
+
+
+
+### 只用作复数的名词
+
+这些名词没有词形的变化，但都是当作复数名词来用。它们作主语时，谓语要用复数形式。具体分为以下几类：
+
+1. **“**二合一**”**的复数名词。这些名词表示**由相等的两个部分合在一起构成的工具、仪器或服装**。最常见的这种“二合
+
+   一”的名词有：
+
+   > - 工具和仪器
+   >   - glasses（眼镜）
+   >   - spectacles（眼镜）
+   >   - binocular（双筒望远镜，双目显微镜）
+   >   - scales（天平）
+   >   - clippers（理发剪，指甲刀）
+   >   - forceps（钳子，镊子〈尤指外科医生用的镊子〉）
+   >   - pincers（铁钳，钳子〈比如家用的老虎钳〉）
+   >   - tongs（钳子，夹子，镊子〈比如火钳子〉）
+   >   - tweezers（小钳〈比如女用的夹眉毛的小钳子〉）
+   >   - scissors（剪刀）
+   >   - shears（大剪刀）
+   > - 服装
+   >   - jeans（牛仔裤）
+   >   - trousers（长裤）
+   >   - shorts（短裤）
+   >   - trunks（男士泳裤）
+   >   - briefs（内裤）
+   >   - pants（短裤）
+   >   - slacks（休闲裤）
+   >   - pajamas（睡衣）
+   >
+   > 
+   >
+   > 对于这些名词，要说明数量，往往要用pair（如a pair of）表示。比如：
+   >
+   > He picked up the hot metal with a pair of *tongs*. 他用一把钳子夹起这块热金属。
+   >
+   > That's *a nice pair of* pants. 那是一条漂亮的短裤。
+   >
+   > As I'm shortsighted I always carry *two pairs of* glasses. 因为我近视，所以我总是随身携带两副眼镜。
+   >
+   > 
+   >
+   > **既然是复数名词，所以要用复数的代词来指代，**这点不同于汉语。在汉语中，这些名词往往
+   >
+   > 是单数概念的，比如我们问：
+   >
+   > A：我的眼镜在哪里？
+   >
+   > B：它不就在你的鼻子上戴着嘛！
+   >
+   > 这里，我们不会说“它们”，但在英语中却要用they来指代，比如上面的对话译成英文是这样
+   >
+   > 的：
+   >
+   > A: Where are my glasses?
+   >
+   > B: *They* are right on your nose!
+   >
+   > 
+
+2. **“单数形式复数含义”的名词**
+
+   有些名词虽然没有复数的标记，但用作复数，即形式上是单数但是表达复数的意义。
+
+   - **people** 作为“人们，人民”的意思时，它相当于person的复数形式，换句话说，person相当于是people的单数形式
+
+     > 1) There was only *one person* in the room.
+     > 2) There were *many people* in the room. 
+
+     但是，如果people用作别的意思，比如当“民族”或“部族”讲时，那就是一个普通名词，有单复数的变化。比如单数要用不定冠词a修饰，即a people（一个民族），复数要在词尾加-s，即peoples。
+
+     > The Chinese are *an* industrious *people*. 中华民族是一个勤劳的民族。
+     >
+     > the English-speaking *peoples* 说英语的民族
+     >
+     > 不过，用作“民族”这个意思时，单数形式的people通常也用复数形式的谓语。
+     >
+     > The Chinese *people have* achieved a great success. 中华民族取得了巨大的成功。
+
+
+
+3. **“the＋形容词”——表示一类人的复数名词**
+
+   在英文中，“the＋形容词”表示一类人，此时当作复数名词，作主语时，谓语要用复数。
+
+   *The rich are* becoming richer. 富人变得更富。
+
+
+
+4. **复数专有名词**
+
+   有些专有名词只用作复数。比如：
+
+   the Alps 阿尔卑斯山脉
+
+   *The Himalayas are* the roof of the world. 喜马拉雅山脉是世界屋脊。
+
+
+
+### 复数变形规则
+
+对于大多数中国的英语初学者来说，在使用英语名词时，往往忘记把名词变为复数，这在学生的作文或口语里可以找到大量的证据。他们在该用复数名词时，因为受到汉语不发达的复数概念和形式的影响，往往“忘记”了使用名词的复数。
+
+对于可数名词的学习，重点是要掌握可数名词复数的变化规律。
+
+1. 一般在词尾加**-s**
+
+   比如：desk/desks, book/books, hand/hands, dog/dogs, bee/bees, face/faces, orange/oranges等。
+
+2. 以**-s, -x, -ch, -sh**结尾的名词加**-es**
+
+   比如：class/classes, box/boxes, match/matches, bush/bushes等。
+
+   特别注意：以-ch结尾的名词，若-ch发/k/音，则加-s，例如：stomach/stomachs。
+
+3. 以**“**辅音字母＋**y”**结尾的名词，变**-y**为**-i**，再加**-es**；而以**“**元音字母＋**y”**结尾的名词，则加**-s**
+
+   比如：country/countries, family/families, baby/babies, lady/ladies;
+
+   play/plays, boy/boys, guy/guys, donkey/donkeys, monkey/monkeys, key/keys等。
+
+4. 有关以**-o**结尾的名词，这类名词的单数变复数稍微有些复杂，因为有的是加-es，有的是加-s（普遍的情况），而有的是加-es或-s均
+
+   可。下面就这三种情况分别列举：
+
+   **1**．一般加**-es**的名词有：
+
+   tomato/tomato*es*（西红柿）
+
+   hero/hero*es*（英雄）
+
+   Negro/Negro*es*（黑人）
+
+   veto/veto*es*（否决）
+
+   这些一般是以“辅音字母＋-o”结尾的名词。
+
+5. 有关以**-f**或**-fe**结尾的名词，它一般也有三种情况：
+
+   1. 一般直接加**-s**的名词
+   2. 一般变**f, fe**为**v**，再加**-es**的词有下面**12**个
+   3. 少数名词后加**-s**或变**f, fe**为**v**加**-es**均可
+
+
+
+
+
+
+
+
+
+
+
 
 
 ## 冠词（限定词）
 
-限定词（determiner）必然修饰某个名词，用于限定名词所指的范围，或者对名词起到特指或者泛指，具体数量或者不定量。限定词与名词的位置关系：
+限定词（determiner）必然修饰某个名词，用于限定名词所指的范围，或者对名词起到特指或者泛指，具体数量或者不定量等限定修饰作用。限定词与名词的位置关系：
 
 1. 限定词+名词
 2. 限定词+形容词+名词
 
-英语的十大词性中并没有限定词这一分类。而是对名词起到限定作用的各类词的总称。
+英语的十大词性中并没有限定词这一分类。而限定词是对名词起到限定修饰作用的各类词的总称。
 
 典型的限定词包括：
 
@@ -822,9 +1009,29 @@ We are not *boyfriend* and *girlfriend*.   这里的boyfriend和girlfriend同样
 6. 个体限定：ench，every，either，neither，both等
 7. 名词所属格：mary\`s，his father\`s
 
+冠词这一词性在汉语中是缺失的，但是却表现了英语的思维表达的特点。汉语中有的是量词来修饰一个名词。
+
+引言：
+
+> That's one small step for man, one giant leap for mankind. 
+>
+> Is Neil Armstrong's moon landing quote grammatically incorrect? （尼尔·阿姆斯特朗登月时的感言从语法角度来说是不正确的吗？）
+>
+> 在英语中，man如果表示“成年男子（an adult male human being）”时，一般要加冠词a来修饰，比如说a man。如果表示“全人类（the human race, mankind）”，则不需要用冠词a修饰。
+>
+> He found the missing "a" from Armstrong's famous first words from the moon in 1969.)。也就是说，阿姆斯特朗说的是That's one small step for *man*, one giant leap for mankind. 而没有冠词a，这就意味着，这里的man是表示“人类”的意思，也就相当于mankind。因此，阿姆斯特朗说的意思实际上是One small step for *mankind*, one giant leap for *mankind*. (Without the missing "a", Armstrong essentially said, "One small step for mankind, one giant leap for mankind.") 这就成了“这对于人类来说只是一小步，但对于人类来说却是一大步”。这显然是有矛盾的。他本来应该说That's one small step for *a man*, one giant leap for mankind. 才正确。
 
 
-冠词这一词性在汉语中是缺失的，但是却表现了英语的思维表达的特点。
+
+> 001年4月中美撞机事件发生后,一名大学生在英语演讲比赛中痛斥美国野蛮的侵略行径。本来是想表达“毫无疑问，责任完全在美方”。
+>
+> The U. S. party should completely accept the blame for it. It is out of *the* question!
+>
+> 这里问题就出在out of the question这个短语上。上面这句话英文的真正意思是“责任完全在美方，这不可能”，这样一来，该句的意思显然是在为美方开脱责任！这并非演讲者本来的意思。
+>
+> 在英语中，out of *the question*表示“不可能”，而out of *question*才表示“毫无疑问”。有和没有这个the，意思完全相反。
+
+
 
 英语中，冠词有三个：
 
