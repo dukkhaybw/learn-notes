@@ -1071,22 +1071,333 @@ a/an是不定冠词，the是定冠词。
 
 2. 区分特指与泛指
 
-   冠词除了要根据名词的情况选择外，还要确定是特指还是泛指。a/an不能用作特指，the用作特指。
+   冠词除了要根据名词的情况选择外，还要确定是特指还是泛指。a/an不能用作特指，the一般用作特指，但也可以表示泛指。
 
    泛指：表示一类事物或者某类事物的总称。
 
-   特指：表示某类事物中的具体某一个或者某一些
+   特指：表示某类事物中的具体某一个或者某一些。
+
+   > *The lion* is a dangerous animal.
+   >
+   > *The lion* escaped from the zoo. 
+   >
+   > 
+   >
+   > *The tiger* is becoming almost extinct.
+   >
+   > *The tiger* is sleeping in the cage. 
 
 3. 结合篇章和语境
 
+冠词的特指用法会涉及说话者与听话者之间的共有信息和场景。
+
+对于the来说，就是特指和泛指。定冠词**主要是表示特指的用法，其次才是表示泛指的用法**。但对于不定冠词a/an来说，不能表示特指，主要是用来表示泛指。此
 
 
-### 泛指
+
+
+
+### 表示泛指的四种情况
+
+冠词的泛指用法必须结合名词分类来进行讨论。
+
+名词可以分为：不可数名词、复数名词和单数名词。冠词与这三类名词的不同搭配，就会产生冠词的泛指概念。
+
+一般来说，这三类名词与英语的冠词有四种不同的搭配使用规则，从而衍生出四种不同的模式来表示泛指意义。具体就是一下4种：
 
 - 不可数名词不加冠词——表示泛指
 - 复数名词不加冠词——表示泛指
 - 单数名词与定冠词（the）连用——表示泛指
 - 单数名词与不定冠词连用——表示泛指
+
+#### 不可数名词不加冠词表示泛指
+
+不可数名词在表示泛指时，不可与定冠词the连用。如果与the连用，此时不可数名词是表示特指。
+
+> *Life* is hard sometimes.
+>
+> life是指整个人类生活，而不是具体指某个人的生活，即表示泛指，所以不能说*The* life is hard sometimes.
+>
+> *Life* is education in itself.
+>
+> 
+>
+> The writer is writing a book about *the life* of blacks in America.
+>
+> life专指“美国黑人的生活”，所以是特指，要说成 the life。
+>
+> I am studying *the life* of Beethoven. 
+>
+> life专指“贝多芬的生平”，所以是特指，要说成the life。 
+>
+> 
+>
+> I love *music*, poetry and art.
+>
+> I don't like the film, but I like *the music* (of the film). 
+>
+> 
+>
+> *Air* is a colorless and tasteless gas.
+>
+> *The air* in this room is stuffy. Please open the windows. 
+
+对于某些句子，既可以用the也可以不用the，但意思上会有差别。比如：
+
+> I love *cheese*.
+>
+> I love *the cheese*. 
+
+
+
+#### 复数名词不加冠词表示泛指
+
+复数名词在表示泛指时，不可与定冠词the连用。如果与the连用，此时复数名词是表示特指。
+
+> *Books* become more and more expensive.
+>
+> *Books* fill leisure time for many people.
+>
+> Put away *the books* on your desk.
+>
+> Move *the books* off that chair and sit down.
+>
+> 
+> 
+>
+> *Tigers* are becoming almost extinct.
+>
+> *Tigers* are dangerous animals.
+>
+> *The tigers* are sleeping in the cage. 
+
+从以上例句发现，**表示特指的复数可数名词或不可数名词，它们一般带有各种短语或从句作后置定语，以限定这些名词所指的事物的范围。**
+
+也有句子既可以用the也可以不用the，但意思上会有差别。比如：
+
+> I am afraid of *dogs*.
+>
+> I am afraid of *the dogs*. 
+
+在例句1）中，dogs是表示泛指，泛指狗这类动物，说话人想到的不是某些具体的一只只狗。
+
+在例句2）中，the dogs是表示特指，表示说话人并不是害怕所有的狗，而是专指害怕眼前的这些狗，比如因为它们个头非常大，样子凶悍，也许说话人并不害怕小狗。
+
+
+
+一般来说，“the＋复数名词”不能用作泛指，而只表示特指。不过，有两种特殊的表示复数的名词与the连用却可以表示泛指：一是“the＋国籍名词”，二是“the＋形容词”。具体详述如下：
+
+1. **the**＋国籍名词
+
+   该结构是指一个国籍的、一个种族集团的人。例句：*The Chinese* are a great people. 
+
+   Chinese是单复数同形的名词，这里的the Chinese是表示复数的概念，这从谓语动词are可以看出来。但这里的the Chinese表示的是“整个中国人或中华民族”，即是一个泛指的概念。 
+
+    当然不是所有的国籍名词都可以这样用，比如我们不能说the German are...*。这样用的国籍名词只限于以-ese, -sh和-ch结尾的词，具体的包括：
+
+   - 以-ese结尾的国籍名词：Chinese, Japanese
+   - 以-sh结尾的国籍名词：British, Cornish, Danish, English, Irish, Spanish, Turkish, Welsh
+   - 以-ch结尾的国籍名词：Dutch, French.
+
+2. **the**＋形容词
+
+   在英文中，“the＋形容词”表示一类人，是泛指，相当于在形容词的后面省去了people，所以被看作是复数名词，作主语时，**谓语要用复数**。比如：
+
+   *The poor* are causing the nation's leaders great concern. 
+
+   *The wise* avoid such temptations. 
+
+    *The emotionally disturbed* and *the physically and mentally handicapped* need the aid of
+
+   society.
+
+   the unemployed ＝the unemployed people ＝people who are unemployed
+
+
+
+#### 单数名词与定冠词the连用可以表示泛指
+
+定冠词the与单数名词连用时，**可以**表示泛指。在语气上显得比较正式或文雅，表示一个由典型的样品所代表的那个类别。比如：
+
+*The tiger* is becoming almost extinct.
+
+ *Tigers* are becoming almost extinct. 
+
+定冠词the与单数名词连用，**可以**表示特指，即表示某类事物中具体的某一个。请比较：
+
+ *The tiger* is becoming almost extinct.
+
+*The tiger* is sleeping in the cage. 
+
+**对于“the＋单数名词”，到底是表示泛指还是表示特指，一定是要根据上下文的语境来判断的。**请比较下面的例句：
+
+*The whale* is the largest mammal on earth.
+
+*The whale* is dead. 
+
+*The elephant* is the largest land mammal.
+
+*The elephant* over there has only one tusk. 
+
+
+
+**正因为“the＋单数名词”既可以表示泛指也可以表示特指，所以，在特指还是泛指的理解上有时会出现模棱两可的现象。**比如：
+
+A: *The president* is too powerful.
+
+B: Which president?
+
+A: No, I mean presidents in general. 
+
+在这个对话中，显然说话人B误解了A所说的the president的含义，误以为A说的the president是在特指“某一位总统”，于是B追问道Which president? 但最后A澄清自己刚才说的the president是一个泛指的概念，于是A说道：...presidents in general。
+
+特别需要注意的是，当man表示“人类”而不是“男人”时，相当于mankind，不用冠词，表示泛指。
+
+*Man* is a social animal. 人是社会的动物。
+
+Since time began, *man* has lived in fear of fire. 自古以来，人类就害怕发生火灾。 
+
+
+
+#### 单数名词与不定冠词a/an连用可以表示泛指
+
+单数名词与不定冠词a/an连用时，也可以表示泛指。“a/an＋单数可数名词”可以表示泛指，不定冠词a/an的泛指用法指的是某一类事物中任何一个具有代表性的成员，所以可以用any来替换a/an。
+
+*A tiger* is a dangerous animal.
+
+*The tiger* is a dangerous animal.
+
+ *Tigers* are dangerous animals. 
+
+*A teacher* should be patient with his or her students. 
+
+*A growing child* needs great nourishment. 
+
+*A child* needs plenty of love. ＝*Children* need plenty of love. ＝*Any child* needs plenty of love. 
+
+
+
+关于**a**（**n**）的泛指用法的深入讨论
+
+不定冠词a/an的泛指用法指的是**某一类事物中任何一个具有代表性的成员**，所以可以用any来替换a/an。比如我们可以说：*A tiger* is a dangerous animal. 表示“老虎是很危险的动物”，这里的“老虎”指的是任何一只具有典型代表性的老虎，是一个泛指的概念，相当于说：*Any tiger* is a dangerous animal. 
+
+说到这里，也许有人非得“抬杠”说：“你说任何老虎都是危险的，但是一只幼虎或者一只奄奄一息的老虎就没有什么危险。”但是，一只幼虎或奄奄一息的老虎并没有典型的代表性，不能代表“老虎”这种动物的一般特性。**正是因为a/an的泛指用法的上述特点，所以它不能用来表示那些属于整个类别的特性。**比如不能说： *A tiger* is becoming almost *extinct*.*
+
+因为这里的extinct只适于描写整个老虎种群的特性，强调的是“种群”的灭绝，而不适于表示“老虎”这类动物的一般特性。比如我们可以说“任何一只老虎都具有危险伤人的特性”：
+
+*Any tiger* is a *dangerous* animal. 
+
+却不能说“任何一只老虎都具有灭绝的特性”：
+
+ *Any tiger* is becoming almost *extinct*.*
+
+对于这种“整个类别”的特性，可以用复数名词或the来泛指，如在前面举过例句，此时我们可以说： *The tiger* is becoming almost *extinct*.     或者  *Tigers* are becoming almost *extinct*. 
+
+
+
+**a/an与单数名词连用表示泛指，这主要是限于用在主语的位置，如果是处在其他位置则不表示泛指。甚至即使是在主语位置，也不一定都是表示泛指的概念。**
+
+
+
+### 定冠词**the**的特指用法
+
+什么叫“特指（specific reference）”：这里的specific是针对交际的双方来说的，即一方是说话者，另一方是听话者。
+
+定冠词the表特指，就是指根据说话者和听话者共有的知识，或根据上下文，可以识别的独特的某物。换句话说，说话者用the是想要听话者找到双方心中都知道的所指，而听话者一方“断定”或“还原”所指对象的方法有多种。
+
+一般来说，听话者会通当时对话的情景或者文化背景，又或者是对话的上下文判断说话者的所指对象，因而形成两种特指模式：情景／文化特指（situational/cultural reference）和上下文共指（textual co-reference）。
+
+例句：
+
+> Have you fed *the* cat?         比如这句话发生的场景是在家里，听话者知道说话者这里说的cat就是特指自家的宠物猫，而不是别处的猫，更不是泛指所有的猫。这里的the就是表示在“家里”这样的**特定情景下的特指**。
+>
+> I went to *New York City* last week. *The* traffic is awful.     这句话里的the traffic不是泛指所有的交通，而是专指纽约市的交通。这里the的指代关系就是通过上下文来建立起来的，是属于**上下文共指**（textual co-reference）。 
+>
+> *The* brick house *on the corner* is mine.      这句话里之所以要用the来限定brick house，是因为其后的修饰语on the corner，这个后置定语即告诉听话者这里的brick house 不是泛指任何一处的砖房，而是特指“在拐角处的那栋砖房”。这里要使用the是因为句子的结构本身带有一个后置修饰语，这也属于上下文共指（textual co-reference）。 
+
+定冠词the的意义在于它所修饰的名词是某一具体所指物，并且说话者和听话者都可以依靠某种信息来确定或者说“还原”这一具体所指物。这些信息来源包括情景、文化、上下文以及句子结构。
+
+
+
+#### 情景／文化特指**（**situational/cultural reference）
+
+使用定冠词the表示特定情景／文化特指下的特指。必须依赖于说话者和听话者双方共有的知识。因为既然是要特指某事物，那么就应该是说话者与听话者双方都知道的，或者说是说话者认为听话者应该知道的。换句话说，我们使用定冠词the是说明“说话者（writer/speaker）可以断定听者（reader/listener）知道我在指谁或在指什么”。因此，可以这么说，冠词的用法不是单方面由说话者决定的，而是要根据交流双方共同知晓的信息而定。在实际的使用过程中，说话者首先必须估计对方（即听话者）的背景知识，然后再根据与双方共享的信息判断是否该用the来特指。所以，是否使用the需要根据不同的交际对象而定，表现出相当大的灵活性，而绝不能按照传统语法书上所讲的规则去死记！
+
+定冠词the有一条用法，是可以表示“著名的”人或事物。比如说到大科学家“爱因斯坦”，就要用定冠词the这样说：
+
+> Albert Einstein, *the* famous physicist 阿尔伯特·爱因斯坦，著名的物理学家
+>
+> 这里就不宜用不定冠词a说成：Albert Einstein, a famous physicist.*这里之所以应该用the而不用a，就是因为“爱因斯坦”举世闻名，因此说话者断定听话者应该知道“爱因斯坦”是何许人，也即说话者与听话者都共享这样一条信息——爱因斯坦是著名的物理学家。所以说话者要用the的特指用法来告诉听话者“我这里说的爱因斯坦不是别人，就是你所知道的那位著名的物理学家”。如果说话者用不定冠词a，则给人的感觉是，他断定听话者不知道“爱因斯坦”是何许人——这岂不是认为听话者太孤陋寡闻了嘛！有点侮辱听话者的常识水平的意味。
+
+
+
+这里其实涉及这样一个问题：“著名的”的范围问题。比如在多大范围内是“著名的”，或者说对什么人来说是“著名的”。比如，当代三大中国名人“刘翔”、“刘德华”和“姚明”，尽管这三人在中国可谓家喻户晓，但在知名度上，刘翔和姚明应该是具有世界性的知名度的，而刘德华在英语世界里的知名度应该不及前两位（比如在美国知道姚明的人比知道刘德华的人肯定要多很多），这就会影响到描述他们时冠词的使用。比如提到“刘翔”，就可以这么说：
+
+> Liu Xiang, *the* famous hurdler 刘翔，著名的跨栏运动员
+
+媒体上关于刘翔的其他头衔称谓还有：
+
+>  *the* 110-meter hurdles world record holder 这位110米跨栏世界纪录的保持者
+
+这里同样是用定冠词the来表示特指。
+
+提到“姚明”，我们可以这么说：
+
+> Yao Ming, *the* famous basketball player 姚明，著名的篮球运动员
+
+但是说到“刘德华”，则要区分读者对象了。如果是面向中国国内的读者，可以说：
+
+> Andy Lau, *the* famous actor 刘德华，这位著名的演员
+
+如果是面向世界的读者，可能要用不定冠词a来这样描述较为妥当：
+
+> Andy Lau, *a* famous *Chinese* actor 刘德华，一名著名的中国演员。
+
+再来看外国媒体报道中国著名演员陈冲（Joan Chen）的短文：
+
+> Here is an article about Joan Chen, *a* famous Chinese actress. She is famous both in China, where she grew up, and in the United States, where she now lives. How did Joan become a famous actress in two countries? It's an interesting story.
+
+这是一篇关于陈冲的文章，她是一位著名的中国女演员。她无论是在中国还是在美国都比较出名。她在中国出生，现在美国定居。关于她是如何成名的，这是一个有趣的故事。 
+
+如果是在英语世界里非常著名的人物，那么在描述时，一般都可以用the来特指。
+
+> Tom Cruise, *the* famous American movie star 汤姆·克鲁斯，著名的美国影星
+>
+> David Beckham, *the* British soccer player 大卫·贝克汉姆，英国足球明星
+>
+> 不过，这样一位全球知名的球星，在美国还是有很多人不知道。比如下面这篇文章的作者讲述了他老爸对大卫·贝克汉姆一无所知：
+>
+> **David Who? Never Heard of That Guy**
+>
+> It looks like *the* most famous soccer player on the face of the earth will have his work cut out for him when he arrives in the U. S. And I'm not talking about the competition he'll face on the pitch.
+>
+> On Saturday, I asked my dad if he'd heard that David Beckham was coming to play in the U. S.
+>
+> "Who?" he asked.
+>
+> "David Beckham, *the* famous British soccer player." I replied patiently, excusing my dad's apparent loss of hearing. He is getting old, after all.
+>
+> "Who's he?" Dad asked, hearing loud and clear. 
+>
+> 
+>
+> 上面这位作者，他断定他爸爸知道大卫·贝克汉姆是谁，于是就直接问他爸“是否听说了大卫·贝克汉姆要来美国踢球（if he'd heard that David Beckham was coming to play in the U. S.）的事”。在他老爸问了Who？之后，他以为他老爸是因为耳朵不好没有听清他的问题（...excusing my dad's apparent loss of hearing. He is getting old, after all.）于是耐心地回答说（replied patiently）：David Beckham, *the* famous British soccer player. 这里作者用the就表明他断定他老爸知道“贝克汉姆是著名球星”这样的信息。但是在他老爸追问Who's he?后，他才明白，他老爸根本就不知道贝克汉姆是谁！对于这位作者的老爸，如果要向他介绍小贝的话，恐怕是要用不定冠词a这样说了：David Beckham, a British soccer player。 
+
+以上讨论的有关the表示“著名的”这样用法的例子，是在人名后面接一个带有the的名词短语，来说明这个人的身份，此时用the表示“这里所指的就是那位著名的人”。
+
+
+
+另一种情况是，在著名的人名或地方的前面加the，即结构为“the＋专有名词”。注意，此时的the读音为［ði］，用以强调。
+
+
+
+
+
+
+
+
+
+
 
 
 
