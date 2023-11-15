@@ -4,13 +4,16 @@
 
 1. React是什么？
 
+   - [React](https://zh-hans.reactjs.org/)是一个用于构建用户界面的 JavaScript 库
+   - 可以通过组件化的方式构建快速响应的大型`Web`应用程序
+
 2. 搭建项目，一比一实现React
    1. npm init -y
-   
+
    2. npm install vite @vitejs/plugin-react  -D
-   
+
    3. 写vite配置文件
-   
+
       ```js
       import path from 'path';
       import { defineConfig } from 'vite';
@@ -31,9 +34,9 @@
       });
       
       ```
-   
+
       
-   
+
 3. 认识jsx
 
 4. 体验虚拟DOM
@@ -133,6 +136,63 @@ export default App;
 
 // 可以直接这么写，编译时会自动引入一个包   import jsx from 'jsx'  最后将jsx转为 jsx()函数调用的方式。
 ```
+
+
+
+在 React 17 或更高版本中，要利用新的 JSX 转换特性，需要确保构建工具和相应的插件正确配置。对于使用 Webpack 的项目，这通常涉及配置 Babel 以使用新的 JSX 转换。以下是一些步骤和要点：
+
+1. **确保安装了所需的依赖**：
+
+   - `@babel/core` 和 `babel-loader` 用于 Webpack 中的 Babel 集成。
+   - `@babel/preset-react` 包含 JSX 转换的逻辑。
+   - 确保 React 版本是 17 或更高。
+
+2. **在 Babel 配置中启用新的 JSX 运行时**：
+
+   - 在 Babel 配置文件（通常是 `.babelrc` 或 `babel.config.js`）中，设置 `@babel/preset-react` 的 `runtime` 选项为 `"automatic"`。这指示 Babel 使用新的 JSX 转换。
+
+   例如，在 `babel.config.js` 中的配置可能如下所示：
+
+   ```js
+   module.exports = {
+     presets: [
+       "@babel/preset-env",
+       ["@babel/preset-react", {
+         runtime: "automatic" // 启用新的 JSX 运行时
+       }]
+     ],
+     // 其他配置...
+   };
+   
+   ```
+
+3. **配置 Webpack 的 Babel Loader**：
+
+   - 在你的 Webpack 配置文件中，确保你已经设置了 `babel-loader` 以处理 JavaScript 和 JSX 文件。
+
+   例如，在 `webpack.config.js` 中的相关部分可能如下：
+
+   ```js
+   module: {
+     rules: [
+       {
+         test: /\.(js|jsx)$/,
+         exclude: /node_modules/,
+         use: {
+           loader: "babel-loader",
+           // Babel 配置在 .babelrc 或 babel.config.js 中指定
+         },
+       },
+       // 其他 loaders...
+     ],
+   }
+   ```
+
+4. **确保 React 版本正确**：
+
+   - 验证 `package.json` 文件中的 React 版本是否为 17 或更高。
+
+
 
 
 
