@@ -26,22 +26,24 @@ body{
     height:100%;
 }
 
-在为给html设置height：100%时，直接给body设置height：100%是无效的，body的高度还是由内容撑开。
+在没给html设置height：100%时，直接给body设置height：100%是无效的，body的高度还是由内容撑开。
 ```
 
 给 html 设置的许多属性都直接作用于 document 上，因为 document 无法获取和控制。
 
-在 css 中由外向内依次是：document =>初始包含快 =>html =>body
+在 css 中由外向内依次是：document =>初始包含块 =>html =>body
 
-## 初始包含快
 
-初始包含快是一个视口大小的矩形。，它也是 html 元素的包含块，初始包含块由用户代理建立。
+
+## 初始包含块
+
+初始包含块是一个视口大小的矩形。它也是 html 元素的包含块，初始包含块由用户代理建立。
 
 浮动元素和定位元素的包含块有不同情况：
 
 对于浮动元素的包含块为最近的块级祖先元素。
 
-对于一个非根元素，如果它的 position 为 relative 或者 static，则该元素的包含块为最经一级的父级块元素的内容（content）区域。
+对于一个非根元素，如果它的 position 为 relative 或者 static，则该元素的包含块为最近一级的父级块元素的内容（content）区域。
 
 对于一个非根元素，如果它的 position 为 absolute，则包含块设置为最近的 position 值不为 static 的祖先元素，并且 top 和 left 值的基点是该祖先元素的 padding 区域的左上角。
 
@@ -95,7 +97,7 @@ margin 与 padding 的默认值为 0，不是 auto，当单位为百分比时，
   在其他css首部引入另一个css
   @import url("common-css/header.css");
   /* @import url("./common-css/header.css"); */  //都正确
-
+  
   在html文件中引入
   <style>
   	@import url("common-css/header.css")
@@ -116,7 +118,7 @@ margin 与 padding 的默认值为 0，不是 auto，当单位为百分比时，
   >
   > **6.书写位置不同**
 
-#### 属性选择器
+### 属性选择器
 
 ```
 可以使用多种基础选择器和属性选择器进行组合
@@ -149,6 +151,8 @@ input[title|='str']{ //选出含有该属性且属性值以str开头或者str-�
 }
 ```
 
+
+
 ### 伪类选择器
 
 ```
@@ -164,6 +168,17 @@ input[title|='str']{ //选出含有该属性且属性值以str开头或者str-�
 
 }
 ```
+
+当这些伪类同时应用于同一个元素时，它们的优先级顺序如下：
+
+1. link：适用于未访问过的链接（默认状态）。优先级最低。
+2. visited：适用于已访问过的链接。优先级次于 link。
+3. hover：适用于鼠标悬停在链接上的状态。优先级在 link 和 visited 之上。
+4. active：适用于链接被激活的状态，通常是用户点击链接但尚未释放鼠标按钮的瞬间。优先级最高。
+
+
+
+
 
 ## fixed 定位
 
@@ -216,7 +231,7 @@ CSS 盒模型的组成：外边距（margin）+ 边框（border）+ 内边距（
 
   box-sizing: content-box;
 
-  ![image-20210216182223406](.\typora-user-images\image-20210216182223406.png)
+  ![image-20210216182223406](..\typora-user-images\image-20210216182223406.png)
 
 - IE 盒子模型(怪异盒模型)
 
@@ -224,7 +239,7 @@ CSS 盒模型的组成：外边距（margin）+ 边框（border）+ 内边距（
 
   box-sizing: border-box;
 
-  ![image-20210216183733380](.\typora-user-images\image-20210216183733380.png)
+  ![image-20210216183733380](..\typora-user-images\image-20210216183733380.png)
 
 ### JS 获取盒模型对应的宽和高
 
@@ -238,7 +253,7 @@ CSS 盒模型的组成：外边距（margin）+ 边框（border）+ 内边距（
 
 #### 概念
 
-​ 响应式地实现各种页面布局。任何一个容器(包括行类元素)都可以指定为 Flex 布局。父元素设为 Flex 布局以后，子元素的`float`、`clear`和`vertical-align`属性将失效。
+ 响应式地实现各种页面布局。任何一个容器(包括行类元素)都可以指定为 Flex 布局。父元素设为 Flex 布局以后，子元素的`float`、`clear`和`vertical-align`属性将失效。
 
 ```css
 .selector{
@@ -249,7 +264,7 @@ flex： 将对象作为弹性伸缩盒显示，没有为父元素设置宽度时
 inline-flex：将对象作为内联块级弹性伸缩盒显示，没有给父元素设置宽度，但是父元素默认会根据子元素的宽高去自适应。
 ```
 
-​ 父元素开启 flex 布局后，父元素称为容器，而父元素内的子元素自动转为容器成员（项目）。项目默认沿主轴排列。
+ 父元素开启 flex 布局后，父元素称为容器，而父元素内的子元素自动转为容器成员（项目）。项目默认沿主轴排列。
 
 ![img](http://www.ruanyifeng.com/blogimg/asset/2015/bg2015071004.png)
 
@@ -285,7 +300,7 @@ inline-flex：将对象作为内联块级弹性伸缩盒显示，没有给父元
 </body>
 ```
 
-![image-20210428164404256](.\typora-user-images\image-20210428164404256.png)
+![image-20210428164404256](..\typora-user-images\image-20210428164404256.png)
 
 ```html
 <style>
@@ -307,7 +322,7 @@ inline-flex：将对象作为内联块级弹性伸缩盒显示，没有给父元
 </body>
 ```
 
-![image-20210428164312366](.\typora-user-images\image-20210428164312366.png)
+![image-20210428164312366](..\typora-user-images\image-20210428164312366.png)
 
 视觉视口：
 
@@ -334,7 +349,7 @@ inline-flex：将对象作为内联块级弹性伸缩盒显示，没有给父元
 </body>
 ```
 
-![image-20210428170351865](.\typora-user-images\image-20210428170351865.png)
+![image-20210428170351865](..\typora-user-images\image-20210428170351865.png)
 
 理想视口：
 
@@ -372,7 +387,7 @@ inline-flex：将对象作为内联块级弹性伸缩盒显示，没有给父元
 实现响应式布局能力
 
 - 将屏幕默认分为了 12 等份的宽度，在给元素设置宽度时，以列为单位进行设置。而具体占几列是通过类名来实现的
-- 框架将屏幕的大小定义了 4 中尺寸，通过 bootstrap 一系列的栅格类去控制元素在不同的屏幕尺寸下所占的列数 ![image-20210802000500137](.\typora-user-images\image-20210802000500137.png)
+- 框架将屏幕的大小定义了 4 中尺寸，通过 bootstrap 一系列的栅格类去控制元素在不同的屏幕尺寸下所占的列数 ![image-20210802000500137](..\typora-user-images\image-20210802000500137.png)
 - 列偏移
 
 ## css 属性的书写顺序
@@ -387,7 +402,7 @@ inline-flex：将对象作为内联块级弹性伸缩盒显示，没有给父元
 
 其他属性（CSS3）：content、cursor、border-radius、box-shadow、text-shadow、background：linear-gradient
 
-![image-20210427232930713](.\typora-user-images\image-20210427232930713.png)
+![image-20210427232930713](..\typora-user-images\image-20210427232930713.png)
 
 ## 页面布局的整体思路
 
