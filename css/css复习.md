@@ -259,3 +259,68 @@ BFC的概念，特点和开启BFC能解决的问题。
   - none：保留原有元素内容的长度和宽度，也就是说内容不会被重置。
 
 ![image-20210517225007211](C:/Users/shuyi/Desktop/learn-notes/css/images/image-20210517225007211.png)
+
+
+
+
+
+
+
+## CSS 文本换行
+
+正常情况下，在固定宽度的盒子中的**中文**会自动换行。例子如下
+
+html：
+
+```html
+<body>
+  <div class="test">哈哈哈哈哈哈哈哈哈哈</div>
+</body>
+```
+
+css:
+
+```css
+.test{
+  width: 60px;
+  background-color: aquamarine;
+}
+```
+
+页面效果：
+
+![image-20231120092206310](C:/Users/shuyi/Desktop/learn-notes/css/images/image-20231120092206310.png)
+
+所以就如以上所说的，对于固定宽度的盒子，盒子内部的中文文字超过盒子的宽度时，会自动换行。
+
+
+
+**当遇到非常长的英文单词或者很长的URL时，文本可能就不会自动换行，从而导致各种布局问题。**
+
+html：
+
+```html
+<body>
+  <div class="test">https://www.runoob.com/w3cnote/css-nowrap-break-word.html</div>
+</body>
+```
+
+css还是和上面一样。这时页面的表现如下：
+
+![image-20231120092103824](C:/Users/shuyi/Desktop/learn-notes/css/images/image-20231120092103824.png)
+
+
+
+为此可以参考一些css属性来解决：
+
+- `overflow-wrap`
+- `word-break`
+- `white-space`
+- `line-break`
+- `hyphens`
+
+
+
+### overflow-wrap
+
+overflow-wrap：用来说明当一个不能被分开的字符串太长而不能填充其包裹盒时，为防止其溢出，浏览器是否允许这样的单词中断换行。
