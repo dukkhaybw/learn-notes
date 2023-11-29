@@ -545,7 +545,7 @@ function initialUpdateQueue(fiber) {
   // pending 是一个循环链接
   const queue = {
     shared: {
-      pending: null
+      pending: null  // 指向更新队列的最后一项
     }
   }
   fiber.updateQueue = queue;
