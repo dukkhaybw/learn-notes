@@ -6,7 +6,9 @@
 
 ## 定义
 
-vite是下一代前端开发和构建工具。
+vite是下一代前端开发和构建工具，是一个基于Vue3的单文件组件的非打包开发服务器，它做到了本地快速开发启动，实现按需编译和不再等待整个应用编译完成。vite在开发环境下使用esbuild打包，在生成环境下用rollup打包。
+
+非打包：即在开发环境下不需要任何打包，快速启动。
 
 vite的特点：
 
@@ -17,7 +19,7 @@ vite的特点：
 1. 打包构建使用的是rollup，所以可以复用rollup插件
 1. 支持ts语法提示
 
-vite在开发环境下使用esbuild打包，在生成环境下用rollup打包。
+
 
 
 
@@ -106,7 +108,7 @@ App.vue:
 
 2. 将上面找到的文件及其依赖整体打包放到node_modules中的.vite/deps中，名字就是对应的库的名字
 
-   ![image-20230512202323634](C:/Users/shuyi/Desktop/study-notes/%E7%8F%A0%E5%B3%B0/vite.images/image-20230512202323634.png)
+   ![image-20230512202323634](./vite.images/image-20230512202323634.png)
 
    内部的_metadata.json中存放着原第三方依赖库的基本数据
 
@@ -128,15 +130,15 @@ App.vue:
 
    这个库文件——vue.runtime.esm-bundler.js是vue3的运行时的ESmodule版本文件。同时vue的源码库中的package.json中的module字段也是执行这个库文件的。如下图：
 
-   ![image-20230512203013465](C:/Users/shuyi/Desktop/study-notes/%E7%8F%A0%E5%B3%B0/vite.images/image-20230512203013465.png)
+   ![image-20230512203013465](./vite.images/image-20230512203013465.png)
 
 
 
 4. 当浏览器启动来访问本地开发服务器时，先请求index.html，再请求其中的main.js，而main.js中引用的第三方包的地址将变为node_modules/.vite/deps中对应的库文件。如下图：
 
-   ![image-20230512203753292](C:/Users/shuyi/Desktop/study-notes/%E7%8F%A0%E5%B3%B0/vite.images/image-20230512203753292.png)
+   ![image-20230512203753292](./vite.images/image-20230512203753292.png)
 
-   ![image-20230512203810995](C:/Users/shuyi/Desktop/study-notes/%E7%8F%A0%E5%B3%B0/vite.images/image-20230512203810995.png)
+   ![image-20230512203810995](./vite.images/image-20230512203810995.png)
 
 
 
@@ -188,7 +190,7 @@ require("esbuild").buildSync({  // 以同步的方式编译文件
 
 js文件的加载器是js，ts文件的加载器是ts或者tsx，jsx文件的加载器是jsx或者tsx，json的文件用json加载，css的是css等等。
 
-![image-20230512220730488](C:/Users/shuyi/Desktop/study-notes/%E7%8F%A0%E5%B3%B0/vite.images/image-20230512220730488.png)
+![image-20230512220730488](./vite.images/image-20230512220730488.png)
 
 
 
@@ -881,3 +883,159 @@ console.log("main");
 
 4. 请求服务器的时候,服务器可以返回/node_modules/.vite/deps/vue.js
 
+
+
+
+
+## 另一次课的内容
+
+什么是vite，为什么会有vite，vite原理，它和webpack的关系。
+
+vite是一个基于Vue3的单文件组件的**非打包开发服务器**，它做到了本地快速开发启动，实现按需编译和不再等待整个应用编译完成。vite在开发环境下使用esbuild打包，在生成环境下用rollup打包。
+
+非打包：即在开发环境下不需要任何打包，快速启动。
+
+### 基本使用
+
+```shell
+npm install create-vite-app -g
+
+create-vite-app projectName
+cd projectName
+npm install 
+npm run dev
+
+npm init vite-app projectName
+cd projectName
+npm install 
+npm run dev
+```
+
+ 第一次启动项目时，vite会进行一次优化：
+
+```shell
+PS C:\Users\shuyi\Desktop\projectName> npm run dev
+
+> projectName@0.0.0 dev
+> vite
+
+[vite] Optimizable dependencies detected:
+vue
+
+  Dev server running at:
+  > Network:  http://192.168.110.67:3000/
+  > Local:    http://localhost:3000/
+```
+
+
+
+![image-20231128212109412](./images/image-20231128212109412.png)
+
+优化依赖，在node_modules目录下生成一个.vite_opt_cache目录用于放优化文件。
+
+![image-20231128214243506](./images/image-20231128214243506.png)
+
+
+
+访问本地启动的项目时，查看网络面板，他会把首屏需要用到所有资源都去请求回来，他会请求回来一些浏览器没有办法直接识别的文件，比如.vue结尾的文件，但是如果点开这些文件，可以看到该vue文件中的内容并不是典型的.vue单文件内容了，而是已经被后台编译过的，浏览器可以直接识别的文件内容了。
+
+![image-20231128214338475](./images/image-20231128214338475.png)
+
+
+
+![image-20231128212700111](C:/Users/shuyi/Desktop/learn-notes/%E7%8F%A0%E5%B3%B0/images/image-20231128212700111.png)
+
+
+
+
+
+源码中的main.js文件：
+
+```js
+import { createApp } from 'vue'
+import App from './App.vue'
+
+createApp(App).mount('#app')
+```
+
+本地服务器请求回来的main.js的内容：
+
+```js
+import { createApp } from '/@modules/vue.js'
+import App from '/src/App.vue'
+
+createApp(App).mount('#app')
+```
+
+区别是在vue改为了 /@modules/vue.js。
+
+
+
+源码中的App.vue文件：
+
+```vue
+<template>
+<div>{{count}}</div>
+<button @click="handleAdd">+1</button>
+</template>
+
+<script>
+  import {reactive,toRefs} from 'vue'
+  export default {
+    name: 'App',
+    setup(){
+      let state = reactive({count:0})
+
+      function handleAdd(){
+        state.count++
+      }
+
+      return {
+        ...toRefs(state),
+        handleAdd
+      }
+    }
+  }
+</script>
+
+```
+
+
+
+本地服务器请求回来的App.vue的内容：
+
+```js
+import {reactive, toRefs} from '/@modules/vue.js'
+const __script = {
+    name: 'App',
+    setup() {
+        let state = reactive({
+            count: 0
+        })
+
+        function handleAdd() {
+            state.count++
+        }
+
+        return {
+            ...toRefs(state),
+            handleAdd
+        }
+    }
+}
+
+import {render as __render} from "/src/App.vue?type=template"
+__script.render = __render
+__script.__hmrId = "/src/App.vue"
+typeof __VUE_HMR_RUNTIME__ !== 'undefined' && __VUE_HMR_RUNTIME__.createRecord(__script.__hmrId, __script)
+__script.__file = "C:\\Users\\shuyi\\Desktop\\projectName\\src\\App.vue"
+export default __script
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkM6XFxVc2Vyc1xcc2h1eWlcXERlc2t0b3BcXHByb2plY3ROYW1lXFxzcmNcXEFwcC52dWUiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IjtBQU1BLENBQUMsQ0FBQyxDQUFDLENBQUMsQ0FBQyxFQUFFLENBQUMsQ0FBQyxDQUFDLENBQUMsQ0FBQyxDQUFDLENBQUMsQ0FBQyxDQUFDLENBQUMsQ0FBQyxDQUFDLENBQUMsQ0FBQyxDQUFDLENBQUMsRUFBRSxDQUFDLENBQUMsQ0FBQyxFQUFFLENBQUMsQ0FBQyxDQUFDLENBQUM7QUFDbEMsQ0FBQyxDQUFDLENBQUMsQ0FBQyxDQUFDLEVBQUUsQ0FBQyxDQUFDLENBQUMsQ0FBQyxDQUFDLENBQUMsRUFBRTtFQUNiLENBQUMsQ0FBQyxDQUFDLENBQUMsRUFBRSxDQUFDLENBQUMsQ0FBQyxDQUFDLENBQUM7RUFDWCxDQUFDLENBQUMsQ0FBQyxDQUFDLENBQUMsQ0FBQyxDQUFDO0lBQ0wsQ0FBQyxDQUFDLEVBQUUsQ0FBQyxDQUFDLENBQUMsQ0FBQyxFQUFFLEVBQUUsQ0FBQyxDQUFDLENBQUMsQ0FBQyxDQUFDLENBQUMsQ0FBQyxDQUFDLENBQUMsQ0FBQyxDQUFDLENBQUMsQ0FBQyxDQUFDLENBQUMsQ0FBQyxDQUFDLENBQUM7O0lBRTlCLENBQUMsQ0FBQyxDQUFDLENBQUMsQ0FBQyxDQUFDLENBQUMsRUFBRSxDQUFDLENBQUMsQ0FBQyxDQUFDLENBQUMsQ0FBQyxDQUFDLENBQUMsQ0FBQyxDQUFDLENBQUM7TUFDbEIsQ0FBQyxDQUFDLENBQUMsQ0FBQyxDQUFDLENBQUMsQ0FBQyxDQUFDLENBQUMsQ0FBQyxDQUFDLENBQUM7SUFDZDs7SUFFQSxDQUFDLENBQUMsQ0FBQyxDQUFDLENBQUMsRUFBRTtNQUNMLENBQUMsQ0FBQyxDQUFDLENBQUMsQ0FBQyxDQUFDLENBQUMsQ0FBQyxDQUFDLENBQUMsQ0FBQyxDQUFDLENBQUMsQ0FBQyxDQUFDLENBQUM7TUFDaEIsQ0FBQyxDQUFDLENBQUMsQ0FBQyxDQUFDLENBQUMsQ0FBQyxDQUFDO0lBQ1Y7RUFDRjtBQUNGIiwiZmlsZSI6IkM6L1VzZXJzL3NodXlpL0Rlc2t0b3AvcHJvamVjdE5hbWUvc3JjL0FwcC52dWUiLCJzb3VyY2VSb290IjoiIiwic291cmNlc0NvbnRlbnQiOlsiPHRlbXBsYXRlPlxuICA8ZGl2Pnt7Y291bnR9fTwvZGl2PlxuICA8YnV0dG9uIEBjbGljaz1cImhhbmRsZUFkZFwiPisxPC9idXR0b24+XG48L3RlbXBsYXRlPlxuXG48c2NyaXB0PlxuaW1wb3J0IHtyZWFjdGl2ZSx0b1JlZnN9IGZyb20gJ3Z1ZSdcbmV4cG9ydCBkZWZhdWx0IHtcbiAgbmFtZTogJ0FwcCcsXG4gIHNldHVwKCl7XG4gICAgbGV0IHN0YXRlID0gcmVhY3RpdmUoe2NvdW50OjB9KVxuXG4gICAgZnVuY3Rpb24gaGFuZGxlQWRkKCl7XG4gICAgICBzdGF0ZS5jb3VudCsrXG4gICAgfVxuXG4gICAgcmV0dXJuIHtcbiAgICAgIC4uLnRvUmVmcyhzdGF0ZSksXG4gICAgICBoYW5kbGVBZGRcbiAgICB9XG4gIH1cbn1cbjwvc2NyaXB0PlxuIl19
+
+```
+
+
+
+1. 使用的esmodule模块化规范，每一个import都会发起一个网络请求
+2. 在后端将main.js 中的内容进行改写操作 ，将所有不带`./ ..//`的 全部增加一个/@modules
+3. 将vue文件中的模板变为了render函数（是在后端完成的，前端直接请求回来的是可以识别的js内容）
