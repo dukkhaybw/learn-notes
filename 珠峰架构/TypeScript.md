@@ -2,7 +2,7 @@
 
 **类型就是拥有一系列共同特征的数据组成的集合体，对于集合来说，最小的集合是空集，它不包含任何值，在 TS 中与之对应的类型是 never。第二小的集合是包含单个值的集合，如字面量类型。**
 
-TS 包含 JS 的所有新旧语法特性，引入了**变量类型**（类型校验），让 JavaScript 从**动态类型**的语言变为了**静态类型**的语言。
+TS 包含 JS 的所有新旧语法特性，并引入了**变量类型**（类型校验），让 JavaScript 从**动态类型**的语言变为了**静态类型**的语言。
 
 TS 优点：
 
@@ -24,10 +24,10 @@ TS 优点：
 - TS 中获取一个值的数据类型：typeof 
 - 类，类的静态属性，静态方法，原型方法，原型属性，实例属性，属性访问器，类的属性修饰符：public，private，protected，readonly
 - 接口的作用，接口没有具体实现，全是抽象，接口描述函数，接口描述对象
-- 抽象类约束其他类
-- 接口描述构造函数，接口约束类
+- 抽象类约束其他类，可以有抽象和具体实现
+- 接口描述构造函数，接口也可以约束类
 - 泛型，泛型的作用，泛型在函数中使用，泛型在箭头函数中的使用，泛型在接口内部使用
-- type 中使用泛型，接口泛型，泛型约束 extends，keyof
+- type中使用泛型，接口泛型，泛型约束 extends，keyof
 
 
 
@@ -135,7 +135,7 @@ tsconfig.json:
 ```shell
 npm init -y
 
-npm i -D webpack webpack-cli webpack-dev-server typescript ts-loader clean-webpack-plugin @babel/core @babel/preset-env babel-loader core-js
+npm i -D webpack webpack-cli webpack-dev-server typescript ts-loader @babel/core @babel/preset-env babel-loader core-js
 ```
 
 - typescript: ts 编译器
@@ -170,7 +170,8 @@ module.exports = {
     filename: "bundle.js",
     environment: {
       arrowFunction: false // 关闭webpack的箭头函数，
-    }
+    },
+    clean:true
   },
   resolve: {
     extensions: [".ts", ".js",'.cjs','.json']   // 未写文件后缀名时，依次尝试该数组中的元素作后缀
@@ -207,13 +208,11 @@ module.exports = {
   },
 
   plugins: [
-    new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       title:'TS测试'，
       temlate:'./public/index.html'
     }),
   ]
-
 }
 ```
 
@@ -267,6 +266,8 @@ package.json：
   "include":["src/**/*", "tests/**/*"]   //所有src目录和tests目录下的文件都会被编译
   ```
 
+  
+
 - exclude：定义需要排除在外的目录
 
 - 默认值：["node_modules", "bower_components", "jspm_packages"]
@@ -277,13 +278,61 @@ package.json：
   "exclude": ["./src/hello/**/*"]  //src下hello目录下的文件都不会被编译
   ```
 
-- extends：定义被继承的配置文件
+  
+  
 
-- 例子：
+- extends：用于指定继承自其他配置文件的基本配置。
+
+- 当一个 `tsconfig.json` 文件中包含 `extends` 属性时，它可以引用另一个配置文件的路径，从而继承该配置文件的设置。这样可以方便地共享和扩展配置，避免重复配置相同的选项。具体来说，当一个 `tsconfig.json` 文件使用 `extends` 属性引用其他文件时，它会合并基础配置文件的设置，并将自己的设置与之合并。这样可以形成一个包含所有继承配置的综合配置。
+
+- 下面是一个示例，展示了如何使用 `extends` 属性继承另一个配置文件：
 
   ```json
-  "extends": "./configs/base"  //当前配置文件中会自动包含config目录下base.json中的所有配置信息作为ts的配置信息中的一部分
+  // baseConfig.json
+  {
+    "compilerOptions": {
+      "target": "es5",
+      "strict": true
+    }
+  }
   ```
+
+  
+
+  ```json
+  // tsconfig.json
+  {
+    "extends": "./baseConfig.json",
+    "compilerOptions": {
+      "outDir": "./dist",
+      "target": "es2016" 
+    },
+    "include": [
+      "./src"
+    ]
+  }
+  ```
+
+  `tsconfig.json` 将继承 `baseConfig.json` 中的 `compilerOptions` 配置，同时保留自己的 `compilerOptions` 配置。最终的合并结果将包含从两个配置文件中继承的配置。
+
+  最后的结果等价于下面这个文件内容：
+
+  ```json
+  {
+    "compilerOptions": {
+      "target": "es2016",
+      "strict": true,
+      "outDir": "./dist"
+    },
+    "include": [
+      "./src"
+    ]
+  }
+  ```
+
+  这意味着继承的配置文件中的值会被后续的配置文件中的同名选项值所覆盖。
+
+  
 
 - files：指定被编译文件的列表，只有需要编译的文件少时才会用到
 
@@ -297,6 +346,8 @@ package.json：
       "scanner.ts"
     ]  // 列表中的文件都会被TS编译器所编译
   ```
+
+
 
 ### compilerOptions（编译选项）
 
@@ -564,7 +615,7 @@ typescript.json 配置项解释：
 
 ## typescript 语法
 
-ts 的第三方包和其他项目的第三方包都可以提供自带的很多类型 （先掌握基本类型， 自己去定义类型， ts 中高级类型）
+ts 的第三方包和其他项目的第三方包都可以提供自带的很多类型 （先掌握基本类型， ts 中高级类型，内置类型（就是typescript包下面的lib下面的大量的.d.ts文件中定义的类型）， 自己去定义类型，类型体操）
 
 ts 最终会被编译成 js ，所添加的类型最后都会被删除掉 ，只是为了开发者来进行约束的，最终编译的结果就是一堆空气，在 js 中不可见。
 
@@ -580,9 +631,10 @@ ts 最终会被编译成 js ，所添加的类型最后都会被删除掉 ，只
 
 5. ts 中是具备一个类型推导的特点，不是所有的变量都需要增加类型。 只有无法推断或者推断错误的时候才需要编写类型
 
-   
 
-   
+当编写一个ts文件时，可以增加一句export {} ，表示这个文件是一个独立的模块，定义的变量不会在全局下，也就不与其他ts文件中的同名变量冲突。
+
+
 
 ### 基本类型
 
@@ -602,6 +654,9 @@ ts 最终会被编译成 js ，所添加的类型最后都会被删除掉 ，只
   let anyThing: any = 'hello';
   console.log(anyThing.myName);
   anyThing.setName('Jerry');
+  
+  const name = 'abc'  // 那么name的类型就是字面量类型：'abc'
+  let name = 'abc'  // 那么name的类型就是字符串类型：string
 
 
 
@@ -781,6 +836,14 @@ create([]);
 
 
 
+`{}`、`object` 和 `Object` 这三个类型有以下区别：
+
+1. `{}` 类型：表示空对象类型。它表示一个没有任何属性的对象，即空对象。例如，`const obj: {} = {};` 表示 `obj` 是一个空对象。`{}` 类型不允许添加任何属性或方法。
+2. `object` 类型：表示非原始类型的对象。它是 TypeScript 中的顶级类型，包括除了 `null` 和 `undefined` 之外的所有非原始类型。这意味着 `object` 可以是对象、数组、函数等。例如，`const obj: object = {};` 表示 `obj` 是一个空对象。使用 `object` 类型时，属性和方法的结构和类型信息会被忽略，编译器将对象视为任意类型，并无法提供属性和方法的类型检查和代码提示。
+3. `Object` 类型：表示 JavaScript 中的对象类型。它是 JavaScript 内置的构造函数 `Object` 的类型。在 TypeScript 中，`Object` 表示具有任意属性和方法的对象。例如，`const obj: Object = {};` 表示 `obj` 是一个空对象。与 `object` 类型不同的是，使用 `Object` 类型时，编译器会提供属性和方法的类型检查和代码提示。但需要注意的是，`Object` 类型也包括一些 JavaScript 内置对象的属性和方法，如 `toString()`、`hasOwnProperty()` 等，这些属性和方法并不适用于所有对象。
+
+综上所述，`{}` 类型表示空对象类型，`object` 类型表示非原始类型的对象，而 `Object` 类型表示 JavaScript 中具有任意属性和方法的对象类型。
+
 
 
 ###  symbol和bitInt
@@ -905,12 +968,12 @@ tuple[3]; // 为了安全，限制了不能使用第四个，所以该行代码�
 // 给函数的参数、函数的返回值，函数本身添加类型声明
 
 // 函数声明（Function Declaration）和函数表达式（Function Expression）：
-// 函数声明（Function Declaration）
+// 函数声明（Function Declaration）,这种方式不能标注函数类型
 function sum(x, y) {
   return x + y;
 }
 
-// 函数表达式（Function Expression）
+// 函数表达式（Function Expression），可以表示类型
 let mySum = function (x, y) {
   return x + y;
 };
@@ -933,6 +996,10 @@ let mySum: (x: number, y: number) => number = function (x: number, y: number): n
 };
 
 let mySum: (x: number, y: number) => number = function (x, y) {
+  return x + y;
+};
+// 或者
+let mySum: {(x: number, y: number): number} = function (x, y) {
   return x + y;
 };
 
@@ -984,6 +1051,7 @@ function spreadArguments(...args: any[]) {
 // 可以取值的类型
 let thisObj = { name: 'zf', age: 18 };
 type MyThis = typeof thisObj; // typeof 是ts中的，表示取出值对应的ts类型
+type IKeys = keyof MyThis  // => 'name'|'age'
 callThis.call(thisObj, 'abc');
 // 使用函数this必须要标明this的类型
 
@@ -991,6 +1059,8 @@ callThis.call(thisObj, 'abc');
 function callThis(this: MyThis, value: string) {
   // 在ts中函数使用必须要标识this的类型
 }
+
+
 
 // 函数的重载     根据参数来决定这个函数是做什么的  只能用function关键字来实现，箭头函数不能用重载
 // 'abc' => ['a','b','c']
@@ -1039,9 +1109,40 @@ export {};
 
 
 
-### 类型断言
+### 断言
 
 （! 或者 as typeName 或者` <xxx>`value）
+
+在 TypeScript 中，有两种主要的断言方式：类型断言（Type Assertion）和非空断言（Non-null Assertion）。
+
+1. 类型断言（Type Assertion）：
+
+   类型断言用于告诉编译器某个值的具体类型，即**强制**将一个表达式断定为特定的类型。类型断言有两种形式：
+
+   - 尖括号语法：使用尖括号`<Type>`将值断言为特定类型。
+
+   ```ts
+   let value: any = "hello";
+   let length: number = (<string>value!).length;
+   
+   // as 语法：使用`value as Type`将值断言为特定类型。
+   let value: any = "hello";
+   let length: number = (value! as string).length;
+   ```
+
+2. 非空断言（Non-null Assertion）：
+
+   非空断言用于告诉编译器一个值肯定不为 null 或 undefined。非空断言使用后缀感叹号!来表示。
+
+   ~~~ts
+   let element: HTMLElement | null = document.getElementById("myElement");
+   element!.classList.add("active");
+   ```
+   ~~~
+
+需要注意的是，使用断言时需要谨慎，确保断言的类型与实际值的类型相符，以避免潜在的运行时错误。同时，过度使用断言可能会破坏 TypeScript 的类型检查机制。
+
+
 
 ```ts
 // 类型断言 可以断定某个变量是可能的几种变量类型中的某一种 （手动判断） 断言后出错了，就要自己承担
@@ -1243,6 +1344,13 @@ function isApiError(error: Error) {
 
 类型断言的限制：若 `A` 兼容 `B`，那么 `A` 能够被断言为 `B`，`B` 也能被断言为 `A`。
 
+```
+微[7 3]
+宏[5]
+
+1 6 2 8 7 3 4 5
+```
+
 
 
 ### 类
@@ -1318,7 +1426,7 @@ class Circle {
 // public 叫公开的：子类可以访问 自己可以访问 外界可以访问（构造函数的实例和子类的实例都可以访问）
 // private 私有的： 只能自己访问（自己的constructor函数和原型方法可以访问）其他人（子类，子类实例和自身的实例都不可以访问）不可以  js是没有这些修饰的
 // protected 受保护的  子类的contructor构造函数和子类的原型方法可以访问 自己构造函数和原型方法可以访问 外界（子类的实例和自己的实例都不可以访问）不可以访问
-// readonly 表示只能在初始化的时候 修改值，初始化完毕后不能再修改 类似const (初始化包含声明的时候和constructor中)
+// readonly 表示只能在初始化的时候修改值，初始化完毕后不能再修改 类似const (初始化包含声明的时候和constructor中)
 
 class Animal{
     constructor(public name: string) { }
@@ -3373,30 +3481,7 @@ declare module '*.md';
 // 仅仅是使用ts的时候 有些变量没有 我声明后能 欺骗编辑器，具体的逻辑还是要你自己写的
 ```
 
-### 自定义类型
 
-在没有做任何 ts 配置时，默认情况即使因为变量的类型提示有错误存在，ts 任然是可以被编译为 js 的。之后为了避免这种情况，可以书写一个 ts 的配置文件。
-
-注意：ts 文件是可以有选择的被编译为任意特定版本的 js（es3， es5，es6....）文件的,有针对的提高兼容性。之后可以通过对 ts 工具进行配置，以编译为指定的 js 版本。
-
-对于 js 中的函数而言，它是不会考虑函数形参的类型和个数的。
-
-```
-函数变量的类型声明和个数声明：
-function sum (a:number, b:number){
-  return a + b
-}
-之后传给sum函数的参数都只能是number类型，同时必须是两个，不能多也不能少。
-```
-
-js 中定义函数的返回值的数据类型：
-
-```
-function sum(a , b):number{
-	return a + b
-}
-//这样该函数的返回值需要是number类型，不是的话就提示错误
-```
 
 ### 类型声明文件
 
@@ -3451,6 +3536,41 @@ declare global {
 }
 
 ```
+
+以下是一些常见的 `.d.ts` 文件放置位置的示例：
+
+1. 根目录：将所有的 `.d.ts` 文件都放置在项目的根目录下。这种方式可以使得所有的声明文件集中在一个地方，方便查找和管理。
+
+   ```
+   ├── src/
+   │   ├── index.ts
+   │   └── ...
+   ├── typings/
+   │   ├── library1.d.ts
+   │   ├── library2.d.ts
+   │   └── ...
+   ├── tsconfig.json
+   └── ...
+   ```
+
+2. 相同目录：将每个 `.d.ts` 文件与相应的代码文件放置在同一个目录下。这种方式可以使得每个模块或库的声明文件与其对应的代码文件紧密关联，方便维护。
+
+   ```
+   ├── src/
+   │   ├── index.ts
+   │   ├── library1/
+   │   │   ├── library1.ts
+   │   │   └── library1.d.ts
+   │   └── library2/
+   │       ├── library2.ts
+   │       └── library2.d.ts
+   ├── tsconfig.json
+   └── ...
+   ```
+
+   
+
+
 
 ### 声明模块
 
@@ -3507,75 +3627,7 @@ declare module '*.vue' {
 }
 ```
 
-### typescript 中的数据类型
-
-![image-20210711154756553](..\typora-user-images\image-20210711154756553.png)
-
-- 直接使用字面量进行类型声明
-
-  ```
-  let a:10;  //类似于js中用const定义的变量，不能再改变
-  a =10;
-  a=11; //报错
-  
-  ts中规定一个变量可以属于多中数据类型中的某一种：
-  let gender:'male'| 'female'
-  gender = 'male'
-  gender = 'female'
-  //上面两种写法都正确
-  
-  let c = string | boolean    （联合类型）
-  c = true
-  c = 'abc'
-  //上面两种写法都正确
-
-
-  let b:any;   //表示b变量可以是任意数据类型的值，就相当于关闭了ts的变量类型检测 ，不建议使用
-  b = 10;
-  b = 'abc';
-  b = true;
-
-  在ts中如果只声明了变量，但是并没有指定数据类型，则ts中默认该变量可以是任意类型的数据(隐式)，any类型的变量可以通过变量赋值给其他任意变量
-  let d;
-  d = 10;
-  d = 'abc';
-  d = true;
-  let s:number
-  s = d  //不会报错，相当于关闭了s 的变量检测
-
-
-  let b:unknown;
-  b = 10;
-  b = true;
-  b ='abc'
-  上面的写法也正确
-  s = b  //报错
-  不报错的正确写法，先确定当前类型为unknown类型的变量的是否存的式一个string类型的值。是的话再赋值为s
-  if(typeof b ==='string'){
-  	s = b
-  }  或者： s = b asstring   或者  s = <string>e   (类型断言)
-
-  unknown类型的变量不能直接赋值给其他变量
-
-  ```
-
-  ```
-  function fn():void{   //void表示没有返回值，或者返回值可以式undefined或者null
-
-  }
-  ```
-
-  在 js 中，有一种函数连 undefined 都不会返回，主要是用于报错的
-
-  ```
-  function fn2():never{
-  	throw new Error('报错')
-  }
-  ```
-
-  ```
-
-
+### 
 
 ## 书籍阅读
 
