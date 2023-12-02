@@ -51,7 +51,7 @@ npm install rollup typescript rollup-plugin-typescript2 @rollup/plugin-node-reso
 
 rollup:打包 js 类库的工具
 
-typescript：第三方模块，**内部提供许多的 ts 类型**，默认自带的
+typescript：第三方模块，编译ts代码的同时**内部也提供许多的 ts 类型**
 
 rollup-plugin-typescript2:关联 rollup 和 typescript 这两个包的第三方库
 
@@ -250,13 +250,13 @@ package.json：
 - 创建一个 ts 格式的文件，写入 ts 代码
 - 在文件所在目录中用命令行窗口打开，执行 tsc xxx.ts 命令将 ts 编译为 js 文件
 - 编译文件时，使用 -w 指令后，TS 编译器会自动监视文件的变化，并在文件发生变化时对文件进行重新编译
-- 如果直接使用 tsc 指令，则可以自动将当前项目下的所有 ts 文件编译为 js 文件,但是能直接使用 tsc 命令的前提时，要先在项目根目录下创建一个 ts 的配置文件 tsconfig.json
+- 如果直接使用 tsc 指令，则可以自动将当前项目下的所有 ts 文件编译为 js 文件,但是能直接使用 tsc 命令的前提是，要先在项目根目录下创建一个 ts 的配置文件 tsconfig.json
 
 
 
 ### tsconfig.json 配置
 
-- include：定义希望被编译文件所在的目录
+- **include**：定义希望被编译文件所在的目录
 
 - 默认值：["\*\*/\*"]
 
@@ -268,7 +268,7 @@ package.json：
 
   
 
-- exclude：定义需要排除在外的目录
+- **exclude**：定义需要排除在外的目录
 
 - 默认值：["node_modules", "bower_components", "jspm_packages"]
 
@@ -280,8 +280,7 @@ package.json：
 
   
   
-
-- extends：用于指定继承自其他配置文件的基本配置。
+- **extends**：用于指定继承自其他配置文件的基本配置。
 
 - 当一个 `tsconfig.json` 文件中包含 `extends` 属性时，它可以引用另一个配置文件的路径，从而继承该配置文件的设置。这样可以方便地共享和扩展配置，避免重复配置相同的选项。具体来说，当一个 `tsconfig.json` 文件使用 `extends` 属性引用其他文件时，它会合并基础配置文件的设置，并将自己的设置与之合并。这样可以形成一个包含所有继承配置的综合配置。
 
@@ -334,7 +333,7 @@ package.json：
 
   
 
-- files：指定被编译文件的列表，只有需要编译的文件少时才会用到
+- **files**：指定被编译文件的列表，只有需要编译的文件少时才会用到
 
 - 例子：
 
@@ -611,8 +610,6 @@ typescript.json 配置项解释：
 
 
 
-
-
 ## typescript 语法
 
 ts 的第三方包和其他项目的第三方包都可以提供自带的很多类型 （先掌握基本类型， ts 中高级类型，内置类型（就是typescript包下面的lib下面的大量的.d.ts文件中定义的类型）， 自己去定义类型，类型体操）
@@ -622,15 +619,9 @@ ts 最终会被编译成 js ，所添加的类型最后都会被删除掉 ，只
 后续注意点：
 
 1. 变量 ：后面的都是类型
-
-2. **类型推导**，会根据赋值的值的类型来推导变量类型
-
+2. **类型推导**，会根据赋的值的类型来推导变量类型
 3. ts 类型是从安全的角度出发的， 一切从安全角度来考虑，如果是安全的就可以赋值
-
 4. ts 是在开发的时候来检测，不是在运行的时候，所以代码并没有被真正的执行
-
-5. ts 中是具备一个类型推导的特点，不是所有的变量都需要增加类型。 只有无法推断或者推断错误的时候才需要编写类型
-
 
 当编写一个ts文件时，可以增加一句export {} ，表示这个文件是一个独立的模块，定义的变量不会在全局下，也就不与其他ts文件中的同名变量冲突。
 
@@ -638,37 +629,37 @@ ts 最终会被编译成 js ，所添加的类型最后都会被删除掉 ，只
 
 ### 基本类型
 
-- 类型声明
+```ts
+// String / string 的区别  (大写开头的叫类类型，小写开头叫基本类型)
 
-  ```ts
-  // String / string 的区别  (大写开头的叫类类型，小写开头叫基本类型)
-  
-  let num2: number = Number(12); // 强制转化 最后也是一个number类型
-  
-  // 描述的是基本数字类型用number，描述构造函数的实例用Number
-  let num3: Number = new Number(12); // number 只能描述基本类型，所以不能来描述实例
-  let num4: Number = 123; // 该行不报错，尽量不要用类类型来描述基本类型. 后续自定义类型会有大写的情况
-  
-  
-  // 在变量类型为任意值（any）的变量上访问任何属性和方法都是允许的，对它的任何操作，返回的内容的类型都是任意值
-  let anyThing: any = 'hello';
-  console.log(anyThing.myName);
-  anyThing.setName('Jerry');
-  
-  const name = 'abc'  // 那么name的类型就是字面量类型：'abc'
-  let name = 'abc'  // 那么name的类型就是字符串类型：string
+let num2: number = Number(12); // 强制转化后返回的是一个number类型的值
+
+// 描述的是基本数字类型用number，描述构造函数的实例用Number
+let num3: Number = new Number(12); // number 只能描述基本类型，所以不能来描述实例
+let num4: Number = 123; // 该行不报错，但尽量不要用类类型来描述基本类型. 后续自定义类型会有大写的情况
+
+
+// 在变量类型为任意值（any）的变量上访问任何属性和方法都是被TS允许的，对它的任何操作，返回的内容的类型都是任意值
+let anyThing: any = 'hello';
+console.log(anyThing.myName);  
+anyThing.setName('Jerry'); // 但是执行时报错
+
+const name = 'abc'  // name的类型就是字面量类型：'abc' 即：const name:'abc' = 'abc'
+let name = 'abc'  // name的类型就是字符串类型：string 即：const name:string = 'abc'
+```
 
 
 
 ### undefined 和 null
 
 null 和 undefined 在ts中也有对应的类型 就是null和undefined。
-null和undefined可以赋予给任何类型 （null和undefiend是任何类型的子类型，需要修改文件：typescript.json中的 "strictNullChecks"为false才行）。
-strictNullChecks 参数用于严格空检查模式,在严格空检查模式下， null 和 undefined 值都不属于任何一个类型，它们只能赋值给自己这种类型或者 any。
+null和undefiend是任何类型的子类型，但需要修改文件：typescript.json中的 "strictNullChecks"为false才行。
+strictNullChecks 参数用于严格空检查模式，在严格空检查模式下， null 和 undefined 值都不属于任何一个类型，它们只能赋值给自己这种类型或者 any。
 
 ```tsx
-let un: undefined = undefined; // 在严格模式下 null只能给null，undefined只能给undefined
-let nu: null = null; // 在严格模式下 null只能给null，undefined只能给undefined
+// 在严格模式下 null只能给null，undefined只能给undefined
+let un: undefined = undefined; 
+let nu: null = null; 
 
 // 非严格模式下
 let x: number = 1;
@@ -678,32 +669,25 @@ x = null;   // 不报错
 
 
 
-
-
 ### 联合类型
 
 - 联合类型（Union Types）表示赋值可以为多种类型中的一种，联合类型使用 **|** 分隔每个类型
 - **未赋值时**联合类型上只能访问两个类型共有的属性和方法
 - 类型断言可以将一个联合类型的变量，指定为一个更加具体的类型
-- 不能将联合类型断言为不存在的类型
+- 不能将联合类型断言为不存在的类型，除非使用双重断言
 
 ```tsx
-let myFavoriteNumber: string | number;
-myFavoriteNumber = 'seven';
-myFavoriteNumber = 7;
 // 当 TypeScript 不确定一个联合类型的变量到底是哪个类型的时候，只能访问此联合类型的所有类型里共有的属性或方法
 // 联合类型的变量在被赋值的时候，会根据类型推论的规则推断出一个类型
-
 let myFavoriteNumber: string | number;
 myFavoriteNumber = 'seven';
 console.log(myFavoriteNumber.length); // 5
+
 myFavoriteNumber = 7;
 console.log(myFavoriteNumber.length); // 编译时报错  index.ts(5,30): error TS2339: Property 'length' does not exist on type 'number'.
 
 // | 是交集还是并集？  设置值时是并集 ts中联合类型可以看成并集 取值看成交集
-type IValue = number | string | HTMLElement; // 联合类型只能使用共享的方法，非共享不能使用
-
-// val = 123; // 当确定类型后 就会根据类型来继续识别
+type IValue = number | string | HTMLElement; // 联合类型只能使用共享的方法，非共享不能使用，当确定类型后 就会根据类型来继续识别
 ```
 
 
@@ -713,14 +697,15 @@ type IValue = number | string | HTMLElement; // 联合类型只能使用共享�
 ### 枚举
 
 ```tsx
-// 枚举类型 （普通枚举 ）   （异构枚举：用的非常少,有数字也有其他值）
+// 枚举类型:普通枚举、异构枚举：用的非常少,有数字也有其他值
+
 //普通枚举:转为js后，用对象来表示
 enum STATUS {
   OK=200,
   NOT_FOUND=404,
   REDRICT=302,
 }
-// 枚举对应的值一般都是数字， 会根据开头的值来推断下一个的数值
+
 console.log(STATUS.OK); // 可以正举， 还可以反举 （只能是数字的值才可以反举）
 // -------------------------------------------
 // 普通枚举编译结果：
@@ -742,11 +727,9 @@ const enum STATUS {
   b = 100,
   c,
 }
-// 枚举对应的值一般都是数字， 会根据开头的值来推断下一个的索引,没给具体数值则从零开始
+// 枚举对应的值一般都是数字，会根据开头的值来推断下一个的数值，没给具体数值则从零开始
 console.log(STATUS.OK);   // 编译结果：console.log(0 /* OK */);
 ```
-
-
 
 
 
@@ -763,6 +746,9 @@ function whileTrue(): never {
 }
 
 //never是其它类型(null undefined)的子类型，代表不会出现的值
+let ne!:never
+let un: undefined = ne;
+
 // 走不到的情况 通常可以用never来保证代码的完整性 （完整性保护），
 
 // 自定义类型
@@ -790,7 +776,7 @@ function getArea(obj: ICircle | ISquare) {
 ```tsx
 // void 类型  函数不写返回值默认就是void ， 默认不写不是undefined？  undefined 可以兼容void类型
 function sum(): void {
-  // undefined 可以赋予给void 。  不能标识为返回值为undefiend类型, undefiend类型只能被赋予undefiend
+  // undefined 可以赋予给void。  不能标识为返回值为undefiend类型, undefiend类型只能被赋予undefiend
   // 当声明一个变量类型是 void 的时候，它的非严格模式(strictNullChecks:false)下仅可以被赋值为 null 和 undefined
   // 严格模式(strictNullChecks:true)下只能返回undefined
 }
@@ -809,29 +795,24 @@ never 和 void 的区别
 ### object
 
 ```tsx
-// object 类型 除了基本类型都可以用object来标识  标识对象和函数
+// object类型 除了基本类型都可以用object来标识  标识对象和函数
 // object和any的区别
 // object：表示变量是一个纯对象，且没有任何初始属性，所以不会有语法提示。  当在函数内部不取一个对象的任何属性或者方法时就可以使用object
 function create(target: object) {
-  // Object / object
-} // Object.create
+  // target. 不会有任何原型方法的提示
+  
+  target.xxx   // 提示object上没有'xxx'的错误
+}
 create([]);
 
 function create(target: Object) {
-  target.valueof()      // 使用Object时，表示该变量是Object构造函数的实例对象，对象上可以有原型属性的提示
+  target.valueof()      // 使用Object时，表示该变量是Object构造函数的实例对象，对象上有原型属性的提示
 }
-
-
-function create(target: object) {
-  target.xxx   // 提示object上没有'xxx'的错误
-} 
-create([]);
 
 function create(target: any) {
   target.xxx   // 没有错误提示
 } 
 
-create([]);
 ```
 
 
@@ -851,10 +832,9 @@ create([]);
 ```tsx
   // js 中有symbol和bitInt ts中可以使用，但是一般用不到
   // 使用 BigInt 可以安全地存储和操作大整数
-  // 我们在使用 BigInt 的时候，必须添加 ESNext 的编译辅助库
-  // 要使用1n需要 "target": "ESNext"
-  // number和 BigInt类型不一样,不兼容
-
+  // 在使用 BigInt 的时候，必须添加 ESNext 的编译辅助库
+  // 要使用 "target": "ESNext"
+  // number 和 BigInt类型不一样,不兼容
 
 let s1：symbol = Symbol(); // 对象的key可以是symbol
 let s2 = Symbol();
@@ -869,7 +849,7 @@ let b1: bigint = BigInt(Number.MAX_SAFE_INTEGER) + BigInt(100);
 ### 扩展
 
 ```tsx
-let name = '123'; // 无法重新声明块范围变量“name”。 默认ts中有声明过name属性了，所以我们在有的时候 不能在重新声明了
+let name = '123'; // 无法重新声明块范围变量“name”。 默认ts中有声明过name属性了，所以在有的时候 不能在重新声明了
 
 export {}; // 把name封装到了一个函数中， 实现了模块化了，模块化特点不会污染全局
 ```
@@ -878,7 +858,7 @@ export {}; // 把name封装到了一个函数中， 实现了模块化了，模�
 
 ### 字面量类型
 
-- 字面量类型的值要和实际的值的字面量一一对应,如果不一致就会报错
+- 字面量类型的变量要和实际的字面量值一一对应,如果不一致就会报错
 
 ```ts
 // 类型除了基本类型之外还可以是字面量类型，表示变量只能是指定的值或者指定几个值中的一个。
@@ -889,10 +869,10 @@ type direction = 'up' | 'down' | 'left' | 'right'; // 啥都编译不出来
 let d: direction = 'left'; // type中可以采用联和类型,接口不能使用
 
 const right: 'Right' = 'Right';
+
 type Direction = 'Up' | 'Down' | 'Left' | 'Right';
 function move(direction: Direction) {}
 move('Up');
-
 ```
 
 
@@ -908,11 +888,16 @@ let fibonacci4: (number | string)[] = [1, '1', 2, 3, 5];
 // 数组泛型
 let fibonacci: Array<number> = [1, 1, 2, 3, 5];
 
-// 用接口表示数组, 虽然接口也可以用来描述数组，但是我们一般不会这么做，因为这种方式比前两种方式复杂,不过有一种情况例外，那就是它常用来表示类数组
+// 用接口表示数组, 虽然接口也可以用来描述数组，但是一般不会这么做，因为这种方式比前两种方式复杂,不过有一种情况例外，那就是它常用来表示类数组
 interface NumberArray {
   [index: number]: number;
 }
 let fibonacci: NumberArray = [1, 1, 2, 3, 5];
+
+interface IArr {
+  [num:number]:string
+}
+let arr:IArr = ['a','b','c']
 
 function sum() {
   let args: number[] = arguments;
@@ -955,25 +940,23 @@ let tuple: [name:string, age:number, male:boolean] = ['', 1, true]; // 这里必
 tuple.push(1); // 要求必须是三个类型中的一个，即string或者number或者boolean
 tuple.push({})  // 提示错误，对象类型不是 string或者number或者boolean 中的任意类型
 
-tuple[3]; // 为了安全，限制了不能使用第四个，所以该行代码无法获取数组元素，即使上面追加了 1为索引3对应的值，提示错误：在索引 "3" 处没有元素。
+tuple[3]; // 但是为了安全，限制了不能使用第四个，所以该行代码无法获取数组元素，即使上面追加了 1为索引3对应的值，提示错误：在索引 "3" 处没有元素。
 ```
-
-
 
 
 
 ### 函数
 
 ```ts
-// 给函数的参数、函数的返回值，函数本身添加类型声明
+// 给函数的参数、返回值，函数本身添加类型声明
 
 // 函数声明（Function Declaration）和函数表达式（Function Expression）：
-// 函数声明（Function Declaration）,这种方式不能标注函数类型
+// 函数声明（Function Declaration）,这种方式不能标注函数类型，只能是ts推导的类型
 function sum(x, y) {
   return x + y;
 }
 
-// 函数表达式（Function Expression），可以表示类型
+// 函数表达式（Function Expression），可以标识类型
 let mySum = function (x, y) {
   return x + y;
 };
@@ -985,13 +968,13 @@ function sum(x: string, y: string): string {
 // 上面的sum没有声明类型，虽然ts可以推断为函数，但是没有主动标识函数的类型，这样在开发时就少了对函数的提示信息
 // 输入多余的（或者少于要求的）参数，是不被允许的
 
-//如果要我们现在写一个函数表达式（Function Expression），会写成这样：
+//如果要现在写一个函数表达式（Function Expression），会写成这样：
 let mySum = function (x: number, y: number): number {
   return x + y;
 };
-// 这是可以通过编译的，不过事实上，上面的代码只对等号右侧的匿名函数进行了类型定义，而等号左边的 mySum，是通过赋值操作进行类型推论而推断出来的。如果需要我们手动给 mySum 添加类型，则应该是这样：
+// 这是可以通过编译的，不过事实上，上面的代码只对等号右侧的匿名函数进行了类型定义，而等号左边的 mySum，是通过赋值操作进行类型推论而推断出来的。如果需要手动给 mySum 添加类型，则应该是这样：
 
-let mySum: (x: number, y: number) => number = function (x: number, y: number): number {
+let mySum: (a: number, b: number) => number = function (x: number, y: number): number {
   return x + y;
 };
 
@@ -1033,7 +1016,6 @@ defaultFn(undefined, '2');
 // 必填参数不能位于可选参数后面, 在TS中函数的形参和实参必须一样，不一样就要配置可选参数,而且必须是最后一个参数
 
 // 剩余运算符
-// 数组里面的东西一般要求得能表述出来，数组存放一类东西的集合
 function spreadArguments(...args: number[]) {
   return args.reduce((start, current) => {
     return (start += current);
@@ -1047,19 +1029,23 @@ function spreadArguments(...args: any[]) {
   }, 0);
 }
 
-
-// 可以取值的类型
+// 可以取一个具体值的类型
 let thisObj = { name: 'zf', age: 18 };
 type MyThis = typeof thisObj; // typeof 是ts中的，表示取出值对应的ts类型
-type IKeys = keyof MyThis  // => 'name'|'age'
+// 即:
+type MyThis = {
+    name: string;
+    age: number;
+}
+
+type IKeys = keyof MyThis  // => type IKeys = 'name'|'age'
 callThis.call(thisObj, 'abc');
 // 使用函数this必须要标明this的类型
 
 // this类型必须放置第一个参数上，并且表示的形参参数名字必须叫this
 function callThis(this: MyThis, value: string) {
-  // 在ts中函数使用必须要标识this的类型
+  // 在ts中函数使用this时必须要标识this的类型
 }
-
 
 
 // 函数的重载     根据参数来决定这个函数是做什么的  只能用function关键字来实现，箭头函数不能用重载
@@ -1103,7 +1089,7 @@ export {};
 
 实现签名的参数的类型和返回值的类型都需要使用更通用的类型，且包含函数部分，一个函数只能有一个实现签名。
 
-将重载签名和实现签名结合后就是函数重载。 在调用函数时，传参只能时重载签名中的某一个。当 ts 编译器处理函数重载时它会查找重载签名列表，尝试使用第一个符合重载的定义。
+将重载签名和实现签名结合后就是函数重载。 在调用函数时，传参只能时重载签命中的某一个。当 ts 编译器处理函数重载时它会查找重载签名列表，尝试使用第一个符合重载的定义。
 
 **除了重载普通函数外，也可以对类中的方法进行重载**
 
@@ -1113,7 +1099,7 @@ export {};
 
 （! 或者 as typeName 或者` <xxx>`value）
 
-在 TypeScript 中，有两种主要的断言方式：类型断言（Type Assertion）和非空断言（Non-null Assertion）。
+TS有两种主要的断言方式：类型断言（Type Assertion）和非空断言（Non-null Assertion）。
 
 1. 类型断言（Type Assertion）：
 
@@ -1124,23 +1110,29 @@ export {};
    ```ts
    let value: any = "hello";
    let length: number = (<string>value!).length;
-   
-   // as 语法：使用`value as Type`将值断言为特定类型。
-   let value: any = "hello";
-   let length: number = (value! as string).length;
    ```
+
+   - as 语法：使用`value as Type`将值断言为特定类型。
+
+     ```ts
+     let value: any = "hello";
+     let length: number = (value! as string).length;
+     ```
+
+     
 
 2. 非空断言（Non-null Assertion）：
 
    非空断言用于告诉编译器一个值肯定不为 null 或 undefined。非空断言使用后缀感叹号!来表示。
 
-   ~~~ts
+   ```ts
    let element: HTMLElement | null = document.getElementById("myElement");
    element!.classList.add("active");
+   
+   let element = document.getElementById("myElement")!;
    ```
-   ~~~
 
-需要注意的是，使用断言时需要谨慎，确保断言的类型与实际值的类型相符，以避免潜在的运行时错误。同时，过度使用断言可能会破坏 TypeScript 的类型检查机制。
+需要注意的是，使用断言时需要谨慎，确保断言的类型与实际值的类型相符，以避免潜在的**运行时错误**。同时，过度使用断言可能会破坏TS的类型检查机制。
 
 
 
@@ -1156,9 +1148,6 @@ let el: HTMLElement | null = document.getElementById('root'); // 可以通过判
 el!.style.background = 'red'; // 出错后果自负
 
 el?.style.backgroundColor; // 这个是es10的 链判断运算符  这个是取值运算符没有赋值的功能
-
-// ?? 排除掉 false和空字符串的情况
-// ?? 只要不是false 和 '' 就继续执行符号后面的代码部分
 
 // as 语法
 function getVal(el: IValue) {
@@ -1180,7 +1169,7 @@ interface Person {
   name: string;
   age: number;
 }
-const person = 'zhufeng' as any as Person; // ok
+const person = 'zhufeng' as any as Person; 
 
 export {};
 ```
@@ -1207,7 +1196,6 @@ function isFish(animal: Cat | Fish) {
   }
   return false;
 }
-
 // index.ts:11:23 - error TS2339: Property 'swim' does not exist on type 'Cat | Fish'.
 //   Property 'swim' does not exist on type 'Cat'.
 
@@ -1250,10 +1238,8 @@ const tom: Cat = {
   }
 };
 swim(tom);
-// Uncaught TypeError: animal.swim is not a function`
-
 // 上面的例子编译时不会报错，但在运行时会报错：
-// Uncaught TypeError: animal.swim is not a function`
+// Uncaught TypeError: animal.swim is not a function
 
 // 原因是 (animal as Fish).swim() 这段代码隐藏了 animal 可能为 Cat 的情况，将 animal 直接断言为 Fish 了，而 TypeScript 编译器信任了我们的断言，故在调用 swim() 时没有编译错误。
 
@@ -1343,13 +1329,6 @@ function isApiError(error: Error) {
 - any 可以被断言为任何类型
 
 类型断言的限制：若 `A` 兼容 `B`，那么 `A` 能够被断言为 `B`，`B` 也能被断言为 `A`。
-
-```
-微[7 3]
-宏[5]
-
-1 6 2 8 7 3 4 5
-```
 
 
 
@@ -1583,6 +1562,8 @@ let c: Component = new Component();
 let f: typeof Component = com;
 ```
 
+
+
 类的原型属性(get 和 set)：
 
 ```ts
@@ -1646,12 +1627,10 @@ console.log(user.name);
   tom.id = 9527;
   
   // 只读的属性的约束存在于第一次给对象赋值的时候，而不是第一次给只读属性赋值的时候
-  // index.ts(8,5): error TS2322: Type '{ name: string; gender: string; }' is not assignable to type 'Person'.
-  //   Property 'id' is missing in type '{ name: string; gender: string; }'.
   // index.ts(13,5): error TS2540: Cannot assign to 'id' because it is a constant or a read-only property.
   ```
-
-- readonly 实际上只是在`编译`阶段进行代码检查。而 const 则会在`运行时`检查（在支持 const 语法的 JavaScript 运行时环境中）
+  
+- readonly 实际上只是在`编译`阶段进行代码检查。而 const 则会在`运行时`检查
 
 ```ts
 class Animal {
@@ -1907,22 +1886,24 @@ age属性装饰器
  */
 ```
 
+
+
 ### 接口
 
 接口：
 
-- 用来描述复杂数据（对象，类，函数等）的结构，组成
+- 用来描述复杂数据（对象，类，函数等）的结构、组成
 - 接口没有具体的实现（抽象）
 - 接口可以描述函数，对象和类等，和 type 有一定的类似
 - 把一些类中共有的属性和方法抽象出来,可以用来约束实现此接口的类
-- 一个类可以继承另一个类并实现多个接口
+- 一个类可以继承另一个，实现多个接口
 - interface 中可以用分号或者逗号分割每一项，也可以什么都不加
 
 接口和 type 的区别：
 
 1.  type 可以使用联合类型 interface 不支持联合类型
 
-```js
+```ts
 interface ISum {
     (a: string, b: string): string
 } | number  // 这会提示报错，因为interface不支持联合类型
@@ -1938,7 +1919,7 @@ type ISum = ((a: string, b: string) => string) | number;   // type支持联合�
      color: string;
      taste: 'sweet' | 'sour'; // 枚举
    }
-   // 2) 声明一个同名接口就使用了接口的 自动合并 会将接口合并在一起。
+   // 2) 声明一个同名接口就使用了接口的自动合并，会将接口合并在一起。
    interface IFruit {
      // 在上面的 IFruit的接口基础上声明一个同名的接口，只是接口中规定的内容不同
      age: number;
@@ -1959,11 +1940,12 @@ type ISum = ((a: string, b: string) => string) | number;   // type支持联合�
      color: string;
      taste: 'sweet' | 'sour';
    }
-
+   
+   // 可以继承一个或者多个其他接口
    interface myFruit extends IFruit {
      age: number;
    }
-
+   
    let fruit1: MyFruit = {
      //不会提示错误
      name: 'zf',
@@ -1985,14 +1967,14 @@ type ISum = ((a: string, b: string) => string) | number;   // type支持联合�
        name:number
    }
 
-   type Spread<T extends object> = { // 循环类型  for(let k in T)
-       [K in keyof T]: T[K]
+   type Spread<T extends object> = { 
+       [K in keyof T]: T[K]  // 循环类型  for(let k in T)
    }
    type IPerson3 = Spread<IPerson1 & IPerson2>
 
    // ---------------------------------------------------------------------
 
-   interface Spread<T extends object> = { // 循环类型  for(let k in T)
+   interface Spread<T extends object>  { 
        [K in keyof T]: T[K]   // 报错，语法不支持
    }
 
@@ -2009,22 +1991,10 @@ type ISum = ((a: string, b: string) => string) | number;   // type支持联合�
    ```
 
 ```ts
-// 接口的概念是： 1） 是用来描述数据的形状的  2) 接口中没有具体的实现 （抽象的）
-// 2) 接口可以描述函数 ， 描述对象 ， 描述类等
-
-
-// 1） 和type的第一个区别就是 type可以使用联合类型  interface不支持联合类型
-interface ISum {
-    (a: string, b: string): string
-} | number  // 这会提示报错，因为interface不支持联合类型
-
-
 interface ISum { // 混合接口 即描述函数又描述函数上的属性
     (a: string, b: string): string
     a: number
 }
-
-// type ISum = ((a: string, b: string) => string) | number;   type支持联合类型
 
 const fn =  (x: string, y: string): string => x + y;
 fn.a = 100
@@ -2035,10 +2005,7 @@ const sum: ISum = (x: string, y: string): string => x + y;
 sum.a = 100;
 
 
-
-
 // 最多的情况是用接口来描述对象
-
 interface IFruit {
     color: () => string // 接口的值都是类型，不能有具体的实现
     size: number
@@ -2047,47 +2014,18 @@ interface IFruit {
 let fruit1: IFruit =  {  // 这种情况ts会校验赋值给fruit1的对象符不符合iFruit接口，赋值的时候，变量的形状必须和接口的形状保持一致
     color: () => 'abc',
     size: 13,
-    xxx:123  //该行提示错误---------------------
-}
-
-// 1）接口返回的数据中 可能比我预想的数据多一些, 可以利用ts的兼容性来解决
-let o = {
-    color: () => 'abc',
-    size: 13,
-    xxx:123
-}
-let fruit1: IFruit = o; // 这种方式可以解决问题，这种情况ts会校验赋值给fruit1的对象符满不满足iFruit接口
-
-let fruit2: IFruit = (
-    {
-        color: () => 'abc',
-        size: 13,
-        xxx:123
-    }
-) as IFruit // 2) 利用断言要保证断言成一个已经存在的属性，也就是说在开发中无法通过变量提示访问xxx属性
-
-
-
-interface INewFruit extends IFruit {
-    xxx?:number // 这个选项可有可无 之后的变量就可以访问xxx属性了
-}
-let fruit3:INewFruit = { // 接口的的继承
-    color: () => 'abc',
-    size: 13,
-    xxx:123
+    xxx:123  // 该行提示错误---------------------
 }
 
 
 export { }
 ```
 
-接口常用的情况是用接口来描述对象，比如对象有哪些属性，在用该接口规范定义的变量后，在之后的代码代发中使用该接口定义的变量时，就有提示功能。
+
 
 ```ts
 
 // 用户经常会编写对应的接口 接口中有对应的数据
-
-let data: object = {}  // 这样写后，之后代码就没法 提示该对象中有哪些属性或者方法
 
 // 接口中也有自己的修饰符  —— ？ readonly
 // 1）和type的第一个区别就是 type可以使用联合类型  interface 不支持联合类型
@@ -2096,43 +2034,43 @@ let data: object = {}  // 这样写后，之后代码就没法 提示该对象�
 // 4) type可以在内部使用in语法 interface不能使用in
 
 interface IV {
-    readonly color: string   //可读不可改
-    taste: string,
-    size?: number  // 如果变成了可选属性，对应的值可能是 number | undefined 和函数的可选参数是一样的
+  readonly color: string   //可读不可改
+  taste: string,
+  size?: number  // 如果变成了可选属性，对应的值可能是 number | undefined 和函数的可选参数是一样的
 }
-let veg = {
-    color: 'red', // 仅读属性只要声明完毕后就无法再次修改了
-    taste: 'sweet',
+let veg:IV = {
+  color: 'red', // 仅读属性只要声明完毕后就无法再次修改了
+  taste: 'sweet',
 }
 veg.size?.toFixed()  // ts语法可以自动提示并自动加上?
 // veg.color = 'green' // 仅读属性也是不能修改的
+
 
 // ts 中有一个语法 as const 将某个变量（变量是对象的话），对应的值全部作为常量存在，只能读不能改
 let obj = {name:'jack',age:17} as const
 obj.name = 'tom'  //该行提示错误，因为属性只读不能改 -------------------------
 
-// const x = {name:'zf',age:13} as const; // 可以来表示属性是仅读的
-
 
 // 接口中的属性如果没有加？ 标识表示是必填的属性， 赋值的时候属性必须要存在
 interface IFruit {
-    name: string
-    color: string,
-    taste: 'sweet' | 'sour',  // 枚举
+  name: string
+  color: string,
+  taste: 'sweet' | 'sour',  // 枚举
 }
+
 // 对于接口没有规定的属性和方法的解决方式：
 // 1) 可以利用ts中的兼容性来解决, 如果类型不兼容则无法赋值  （兼容：你的要求我都满足就可以）  能力弱
 // ---------------------------------------------------
 interface IFruit {
-    name: string
-    color: string,
-    taste: string,  // 枚举
+  name: string
+  color: string,
+  taste: string,  // 枚举
 }
 let obj = {
-    name:'abc',
-    color:'green',
-    taste:'sour',
-    age:18
+  name:'abc',
+  color:'green',
+  taste:'sour',
+  age:18
 }
 let fruit: IFruit = obj
 // ---------------------------------------------------
@@ -2142,18 +2080,18 @@ let fruit: IFruit = obj
 // 2) 声明一个同名接口就使用了接口的 自动合并 会将接口合并在一起。
 // ---------------------------------------------------
 interface IFruit {
-    name: string
-    color: string,
-    taste: 'sweet' | 'sour',  // 枚举
+  name: string
+  color: string,
+  taste: 'sweet' | 'sour',  // 枚举
 }
 interface IFruit {  // 在上面的 IFruit的接口基础上声明一个同名的接口，只是接口中规定的内容不同，破环最初的接口类型，导致后面用该接口是必须设置age属性  ，所以尽量不要使用
-    age:number
+  age:number
 }
 let fruit1: IFruit = {
-    name: 'zf',
-    color: 'green',
-    taste: 'sweet',
-    age: 18,
+  name: 'zf',
+  color: 'green',
+  taste: 'sweet',
+  age: 18,
 }
 // 这样就是使用了接口的 自动合并 会将接口合并在一起。 尽量在编写类型的时候不要接口重名
 // ---------------------------------------------------
@@ -2162,18 +2100,18 @@ let fruit1: IFruit = {
 // 3) 可以基于原有的类型在进行扩展出新的类型，继承
 // ---------------------------------------------------
 interface IFruit {
-    name: string
-    color: string,
-    taste: 'sweet' | 'sour',  // 枚举
+  name: string
+  color: string,
+  taste: 'sweet' | 'sour',  // 枚举
 }
 interface MFruit extends IFruit{
-    age:number
+  age:number
 }
 let fruit1: MFruit = {
-    name: 'zf',
-    color: 'green',
-    taste: 'sweet',
-    age: 18,
+  name: 'zf',
+  color: 'green',
+  taste: 'sweet',
+  age: 18,
 }
 // ---------------------------------------------------
 
@@ -2181,15 +2119,15 @@ let fruit1: MFruit = {
 // 4) 直接断言成一个已经存在的实现 可以实现兼容
 // ---------------------------------------------------------
 interface IFruit { // 接口中的属性如果没有加？ 标识表示是必填的属性， 赋值的时候属性必须要存在
-    name: string
-    color: string,
-    taste: 'sweet' | 'sour',  // 枚举
+  name: string
+  color: string,
+  taste: 'sweet' | 'sour',  // 枚举
 }
 let fruit1: IFruit = {
-    name: 'zf',
-    color: 'green',
-    taste: 'sweet',
-    age: 18,
+  name: 'zf',
+  color: 'green',
+  taste: 'sweet',
+  age: 18,
 } as  IFruit // 断言，但是对于age属性没法提示，且提示错误，因为不安全
 // ---------------------------------------------------------
 
@@ -2197,41 +2135,41 @@ let fruit1: IFruit = {
 // 5) 定义任意接口  可以通过 [key:string]:any
 // ---------------------------------------------------------
 interface IFruit { // 接口中的属性如果没有加？ 标识表示是必填的属性， 赋值的时候属性必须要存在
-    name: string
-    color: string,
-    taste: 'sweet' | 'sour',  // 枚举
+  name: string
+  color: string,
+  taste: 'sweet' | 'sour',  // 枚举
 }
 interface IVegetables {
-    type: string,
+  type: string,
 }
 interface MyFruit extends IFruit, IVegetables {  // 多继承
-    [key: string]: any // 可以接收任意类型 +++++++++++++++++++++++++++++
+  [key: string]: any // 可以接收任意类型 +++++++++++++++++++++++++++++
 }
 let fruit1: MyFruit = {
-    type: '水果',
-    name: 'zf',
-    color: 'green',
-    taste: 'sweet',
-    age: 18,
-    xxx: 123,
-    1: 100,
-    [Symbol()]: 299
+  type: '水果',
+  name: 'zf',
+  color: 'green',
+  taste: 'sweet',
+  age: 18,
+  xxx: 123,
+  1: 100,
+  [Symbol()]: 299
 }
 // ---------------------------------------------------------
 
 
 // 一个接口中只能定义一个任意属性。如果接口中有多个类型的属性，则可以在任意属性中使用联合类型
-// 一旦定义了任意属性，那么确定属性和可选属性的类型都必须是它的类型的子集：
+// 一旦定义了任意属性，那么以确定的属性和可选属性的类型都必须是它的类型的子集：
 interface Person {
-    name: string;
-    age?: number;  //报错
-    [propName: string]: string;
+  name: string;
+  age?: number;  //报错
+  [propName: string]: string;
 }
 
 let tom: Person = {
-    name: 'Tom',
-    age: 25,   // 报错
-    gender: 'male'
+  name: 'Tom',
+  age: 25,   // 报错
+  gender: 'male'
 };
 
 // index.ts(3,5): error TS2411: Property 'age' of type 'number' is not assignable to string index type 'string'.
@@ -2244,65 +2182,124 @@ let tom: Person = {
 
 
 interface IArr { // 可索引接口 就是可以通过索引来取值
-    [key: number]: any
+  [xxx: number]: any
 }
 let myArr1: IArr = [1,2,3,'abc']
 let myArr2: IArr = { 0: 1, 1: 2, 2: 3 }
 
+
+interface IArr { 
+  [key: number]: any
+	push():void 
+}
+
+// 声明的接口还可以通过索引的方式访问它的类型
+// 接口嵌套
+interface ResponseData{
+  username:string,
+  token:string
+}
+
+interface ReturnVal{
+  code:number,
+  data: ResponseData
+}
+
+type ICode = ReturnVal['code'];
+type IUsername = ReturnVal['data']['username']; // 可以用于取值的类型
+type IKeys = ReturnVal[keyof ReturnVal]; // 取值的类型, 可以采用这种方式
+
+
+interface Speakable{
+  speak:()=>void  // 表示的是实例方法
+  speak():void // 表示的是原型方法
+}
+
+class Speaker implements Speakable {
+  speak:()=>void
+  constructor(){
+    this.speak = ()=>{}
+  }
+  
+  // 原型方法
+  speak():void{
+    
+  }
+}
+
 // -------------------以上是描述对象的------------------------------
 
 
+// 一个接口可以继承多个接口， 接口可以用于继承类
+interface SpeakChinese {
+    speakChinese(): void
+}
+interface SpeakEnglish {
+    speakEnglish(): void
+}
+class Speak {
+    public a!: string;
+}
+interface Speakable extends SpeakEnglish, SpeakChinese, Speak {
+    speak(): void // 实现的是原型方法
+    //  speak:()=>void // 实现的是实例方法
+}
+class Speaker implements Speakable {
+    public a!: string;
+    speakEnglish(): void {
+        throw new Error("Method not implemented.");
+    }
+    speakChinese(): void {
+        throw new Error("Method not implemented.");
+    }
+    speak() {
+        return 100
+    }
+}
 
 
-
-
-// 抽象类也具有一定的约束能力，继承抽象类的其他类的实例必须实现抽象类中的抽象属性和方法，对于抽象类中的非抽象方法和属性其他类的实例直接就能继承
 
 // 接口还可以用于描述类和类的实例  可以采用抽象类来进行一个描述
 // 在没有编写具体类的时候就能限制某个类中必须有一些具体的方法和属性等。
 
-
-// --------------抽象类可以起到一定的描述类的作用,约束继承抽象类的其他类必须具有哪些属性或者方法----------------
 // 抽象类要增加abstract关键字， 增加后此类不能被new. 抽象类可以定义抽象方法。 定义后的抽象方法或者属性必须要子类实现
-// 抽象类中可以存着非抽象的方法或者属性
-// 抽象方法只能出现在抽象类中
+// 抽象类中可以存着非抽象的方法或者属性，对于抽象类中的非抽象方法和属性其他类的实例直接就能继承
+// 抽象方法只能出现在抽象类中，不能出现在非抽象类中
 abstract class Animal {
-    public a:number
+  public a:number
+  abstract name: string
+  abstract eat(): void
+  abstract drink(): void
 
-    abstract name: string
+  constructor(){
+    this.a = 1
+  }
 
-    abstract eat(): void
-    abstract drink(): void
-
-    constructor(){
-        this.a = 1
-    }
-
-    speak() { // 已经实现好的
-        console.log('speak')
-    }
+  speak() { // 已经实现好的
+    console.log('speak')
+  }
 }
 // --------------------------------------------------
 class Cat extends Animal {
-    name = '猫'
-    eat(): void {
-        throw new Error("Method not implemented.")
-    }
-    drink(): void {
-        throw new Error("Method not implemented.")
-    }
+  name = '猫'
+  eat(): void {
+    throw new Error("Method not implemented.")
+  }
+  drink(): void {
+    throw new Error("Method not implemented.")
+  }
 }
 // --------------------------------------------------
 
 
 abstract class Cat extends Animal {
-    name = '猫'
-    eat(): void {
-        throw new Error("Method not implemented.")
-    }
-    drink(): void {
-        throw new Error("Method not implemented.")
-    }
+  name = '猫'
+  eat(): void {
+    throw new Error("Method not implemented.")
+  }
+  drink(): void {
+    throw new Error("Method not implemented.")
+  }
 }
 
 
@@ -2315,39 +2312,40 @@ abstract class Cat extends Animal {
 
 // ----------------------------------------------------------
 interface IEat {  //这种写法描述的理应是实例上的属性
-    eat: () => void // 在接口中约束类的话都是描述的实例  实例上的 还是原型上的呢？
+  eat: () => void // 在接口中约束类的话都是描述的实例  实例上的 还是原型上的呢？
 
-    //eat:()=>{   // 这就是具体实现，但是在抽象类中会有具体的实现
-    //    // 代码....
-    //}
+  //eat:()=>{   // 这就是具体实现，但是在抽象类中会有具体的实现
+  //    // 代码....
+  //}
 }
 class Tom implements IEat, IDrink {
-    public eat: () => void // 等价于eat: () => void
-    public constructor() {
-        this.eat = () => { }
-    }
+  public eat: () => void // 等价于eat: () => void
+  public constructor() {
+    this.eat = () => { }
+  }
 }
 // ----------------------------------------------------------
 
 
 
 interface IEat {
-    eat: () => void
+  eat: () => void
 }
+
 interface IDrink {  // 这种方法描述的理应是原型上的属性
-    drink(): void
+  drink(): void
 }
 
 // 上面两种写法是可以混淆使用的 ts不会区分是原型还是实例 只要有就行。 但是提示上`drink():void`是原型上的
 // 用接口限制类 的类型，需要使用的是implements（实现）关键字而不是extends
 class Tom implements IEat, IDrink {
-    public eat: () => void // 等价于eat: () => void
-    public constructor() {
-        this.eat = () => { }
-    }
-    public drink(): void {
-        throw new Error("Method not implemented.")
-    }
+  public eat: () => void // 等价于eat: () => void
+  public constructor() {
+    this.eat = () => { }
+  }
+  public drink(): void {
+    throw new Error("Method not implemented.")
+  }
 }
 let tom = new Tom
 // ? 表示的是取值 （js语法）  !非空 赋值 （ts的断言）
@@ -2355,19 +2353,26 @@ let tom = new Tom
 
 
 
-// ------------------------------------------接口来描述类中的构造函数--------------------------------------------
-// 接口来描述l类中的构造函数 如何做？
+// ----------------------------------------接口来描述类中的构造函数---------------------------------------
+// 接口来描述类中的构造函数 如何做？
 // 类只能描述实例， 不能描述类本身
 // 想描述类本身 需要采用typeof 来进行米描述
 
 // ----------------------------------------------
 class Mouse {
-    constructor(public name: string, public age: number) { }
+  constructor(public name: string, public age: number) { }
 }
 class Dog {
-    constructor(public type: string) {}
+  constructor(public type: string) {}
 }
-function getInstance(clazz:typeof Mouse){}     // 取构造函数的字面量来描述，限制类     方式一
+
+function getInstance(clazz: Mouse){  // 报错，类只能描述实例， 不能描述类本身
+  return new clazz
+}   
+
+function getInstance(clazz:typeof Mouse){
+  return new clazz
+}     // 取构造函数的字面量来描述，限制类     方式一
 let instance = getInstance(Mouse)
 
 let instance = getInstance(Dog) // 提示错误，因为取的是  typeof Mouse的类型，传入Dog，则Dog类的构造函数必须有name和age属性
@@ -2375,7 +2380,7 @@ let instance = getInstance(Dog) // 提示错误，因为取的是  typeof Mouse�
 
 
 
-function getInstance(class:{new (name:string,age:number):Mouse|Dog}):void{}  //   方式二，    不同typeof 类名，而用new {key:type,...}:className  来表示
+function getInstance(class:{new (name:string,age:number):Mouse|Dog}):void{}  //   方式二，    不同typeof 类名，而用new (key:type,...):className  来表示
 
 // 用来描述构造函数的， 构造函数中需要返回一个any的实例
 function getInstance(class:{new (name:string,age:number):any}):void{}
@@ -2386,11 +2391,11 @@ type IClazz2 = new (...args: any[]) => Mouse | Dog   //  方式三  使用 type 
 
 
 interface IClazz3 {             // 方式四 ， 使用接口
-    new(name: string, age: number): any
+  new(name: string, age: number): any
 }
 
 function getInstance(clazz: IClazz3, name: string, age: number) {
-    return new clazz(name, age)
+  return new clazz(name, age)
 }
 let instance = getInstance(Mouse, 'jerry', 10)
 // 上面的instance实例没法明确指明实例是Mouse类型实例还是Dog类型实例
@@ -2403,7 +2408,7 @@ type IClazz = new (...args: any[]) => Mouse | Dog
 function getInstance(class:{new( name: string, age: number):Mouse}, name: string, age: number):Mouse
 function getInstance(class:{new( type:string):Dog}, name: string, age: number):Dog
 function getInstance(clazz: IClazz, name: string, age: number):Dog|Mouse {
-    return new clazz(name, age)
+  return new clazz(name, age)
 }
 let instance = getInstance(Mouse, 'jerry', 10)
 
@@ -2419,9 +2424,9 @@ class Dog {
 type cla1 = new (...args: any[]) => Mouse | Dog;
 
 function getInstance(
-  clazz: { new (name: string, age: number): Mouse },
-  name: string,
-  age: number,
+clazz: { new (name: string, age: number): Mouse },
+ name: string,
+ age: number,
 ): Mouse;
 function getInstance(clazz: { new (type: string): Dog }, name: string, age: number): Dog;
 function getInstance(clazz: cla1, name: string, age: number): Mouse | Dog {
@@ -2437,34 +2442,36 @@ let instance2 = getInstance(Mouse,'tom',18);
 export { }
 ```
 
-![image-20220118093253634](..\typora-user-images\image-20220118093253634.png)
 
-用接口和抽象类限制限制类的不同点：
 
-- 接口中的不能有非抽象类的方法（接口中都是抽象的），但是抽象类中的方法可以有具体实现（逻辑）并能和被子类继承
+用接口和抽象类的不同点：
 
-```ts
-abstract class Animal {
-  public a: number;
-  abstract name: string;
-  abstract eat(): void;
-  abstract drink(): void;
-  constructor() {
-    this.a = 1;
+- 接口中只能是抽象类的方法，但是抽象类中的方法可以有具体实现（逻辑）并能和被子类继承
+
+  ```ts
+  abstract class Animal {
+    public a: number;
+    abstract name: string;
+    abstract eat(): void;
+    abstract drink(): void;
+    constructor() {
+      this.a = 1;
+    }
+    speak() {
+      // 这就是抽象类中的具体实现
+      console.log('speak');
+    }
   }
-  speak() {
-    // 这就是抽象类中的具体实现
-    console.log('speak');
+  
+  interface IEat {
+    eat: () => void; // 这就是抽象，不能有具体实现
+    //eat:()=>{   // 这就是具体实现，但是在抽象类中会有具体的实现
+    //    // 代码....
+    //}
   }
-}
+  ```
 
-interface IEat {
-  eat: () => void; // 这就是抽象，不能有具体实现
-  //eat:()=>{   // 这就是具体实现，但是在抽象类中会有具体的实现
-  //    // 代码....
-  //}
-}
-```
+  
 
 - 类不能继承接口，只能实现，并且类可以实现多个接口；但是类可以继承抽象类，类只能一次继承一个类
 
@@ -2533,34 +2540,14 @@ type A = Subtypeof<V1, V2>; // false
 
 了解 TS 中的类型和 TS 所采用的结构化类型系统是 TS 进阶的关键。
 
+
+
 ### 泛型变量
 
-类型占位符。
+类型占位符。泛形可以用在函数，接口，类和type类型别名中。
 
 ```ts
 // 泛型的作用：就是在定义类型的时候，还不能确定是什么类型，需要等待使用的时候才能确定类型
-// 一般泛型都有一个单独的大写字母来表示, 类型变量
-
-// ----------------------------------------------
-class Cat {
-  constructor(public name: string, public age: number) {}
-}
-class Dog {
-  constructor(public name: string) {}
-}
-function getInstance<T>(clazz: new (...args: any[]) => T, name: string, age?: number): K {
-  if (clazz instanceof Dog) {
-    return new clazz(name); // new Dog 返回的就是T  -> Dog的实例
-  } else {
-    return new clazz(name, age); // new Cat -> T ->  Cat的实例
-  }
-  // return new clazz()
-  // return name
-}
-let result1 = getInstance<Dog>(Dog, 'tom');
-let result2 = getInstance<Cat>(Cat, 'tom');
-// ----------------------------------------------
-
 class Cat {
   constructor(public name: string, public age: number) {}
 }
@@ -2581,6 +2568,8 @@ function getInstance<T, K>(clazz: new (...args: any[]) => T, name: K, age?: numb
   return name;
 }
 // ts 具备推到的功能 "猜一猜“, 根据位置推断对应的类型
+let result1 = getInstance<Dog>(Dog, 'tom');
+let result2 = getInstance<Cat>(Cat, 'tom');
 let r = getInstance(Cat, 123);
 
 function createArray<T>(times: number, val: T): T[] {
@@ -2593,14 +2582,7 @@ function createArray<T>(times: number, val: T): T[] {
 createArray(5, 'abc');
 createArray(5, 123);
 
-const createArray = <T>(times: number, val: T) => {
-  let arr = [];
-  for (let i = 0; i < times; i++) {
-    arr.push(val);
-  }
-  return arr;
-};
-
+ 
 // -------------------------------------------------------  接口中使用泛型
 interface ICreateArra {
   <T>(times: number, val: T): T[];
@@ -2636,16 +2618,15 @@ const createArray: ICreateArra<T> = (times, val) => {
 
 // 区分接口泛型
 
-// 接口后面+泛型意味着使用接口的时候就能确定类型了
-// 如果在函数签名+泛型表示调用函数才能确定类型
 
+// 在函数签名前面声明的泛型表示调用的时候才会确定类型
 interface ICallback {
-  //接口
-  <T>(item: T): void; // 在函数前面声明的泛型表示调用的时候才会确定类型
+  <T>(item: T): void; 
 }
 
+// 接口后面加泛型意味着使用接口的时候就能确定类型了
 interface ICallback<T> {
-  (item: T): void; // 在函数前面声明的泛型表示调用的时候才会确定类型
+  (item: T): void;
 }
 
 // ---------------------------------------------
@@ -2676,7 +2657,7 @@ let arr = swap([1, 'abc']);
 // 泛型约束 ， 约束泛型值的一个范围
 
 // 所谓的满足 就是拥有他的特性, 只要涵盖要求的属性即可
-// function getVal<T extends {toString:()=>string}>(val:T){}`
+// function getVal<T extends {toString:()=>string}>(val:T){}
 // getVal(123);
 
 // function sum<T extends string>(a: T, b: string){
@@ -2703,10 +2684,55 @@ let val = getValueFromKey(o1, 'age');
 export {};
 ```
 
+
+
+**泛型默认值**
+
+```ts
+type IUnion<T = boolean> = T | string | number 
+```
+
+
+
+**泛型约束**
+
+使用的TS关键字是：extends
+
+```ts
+function getVal<T>(val:T){
+  return val
+}
+
+// 针对上面的函数，要求不能传入对象类型的数据。  要实现这个需求，以前是使用联合类型加上函数重载实现，即：
+function getVal(val:string):string
+function getVal(val:number):number
+function getVal(val:string|number):string|number{
+  return val
+}
+
+// 如果使用泛形的话，就需要对泛形进行约束，即：
+function getVal<T extends string|number>(val:T){
+  return val
+}
+
+// 约束传参至少必须有length属性
+function getLen<T extends {length:number}>(val:T){
+  return val.length
+}
+z
+function getVal<T extends object, K extends keyof T>(obj:T,key:K){
+  return obj[key]
+}
+```
+
+
+
+
+
 ### 交叉类型
 
 ```ts
-// 联合类型:可以是A 或者 B且只能是其中一类 并集     交叉类型 交集
+// 联合类型:可以是A或者B且只能是其中一类 并集     交叉类型 交集
 interface IPerson1 {
   handsome: string;
 }
@@ -2734,7 +2760,7 @@ type Spread<T extends object> = {
   // 循环类型  for(let k in T)
   [K in keyof T]: T[K];
 };
-type IPerson3 = Spread<IPerson1 & IPerson2>;
+type IPerson3 = Spread<IPerson1 & IPerson2>;  // 对于有冲突的类型，那就取never
 
 // typeof 取js中对应的类型的   keyof 可以用来取类型中的key  extends 约束
 let name!: never;
@@ -2796,6 +2822,24 @@ let p0: p2 = {
 
 export {};
 ```
+
+
+
+### 条件类型
+
+TS中使用的是三元表达式，这个表达式只能在type中去使用，无法在接口中使用。
+
+类型的级别：谁能赋给谁
+
+```ts
+// 子类型 extends 父类型 就为true
+
+type StatusCode<T> = T extends 200 | 201d  ? 'success' : 'fail'
+```
+
+
+
+
 
 ### 内置类型
 
@@ -2997,6 +3041,8 @@ let mapResult = mapping({ a: 1, b: 2, c: 'abc' }, (key, value) => {
 export {};
 ```
 
+
+
 ### merge
 
 ```ts
@@ -3030,6 +3076,8 @@ let obj = merge(person1, person2);
 
 export {};
 ```
+
+
 
 ### 类型保护
 

@@ -461,7 +461,7 @@ js 变量的特点：松散类型的变量。
     	let i='abc'
     	console.log(i)
     }
-  
+    
     输出结果：
     abc
     abc
@@ -545,7 +545,7 @@ Boolean(' ') //true
   - 对于非数字类型的参数，isNaN( ) 先通过调用 Number( ) 函数将数据进行转换，再用 isNaN 方法进行判断。
 
         + Number( )函数的转换规则：
-      
+          
           + 参数是布尔值，true转为1，false转为0
           + **参数是null，返回 0**
           + **参数是undefined，返回 NaN**
@@ -623,6 +623,10 @@ parseInt('') // NaN
   Object.is（-0，+0）=> false
 
 ### String
+
+JS中使用UTF-19编码来表示一个字符，该编码以两个字节作为一个编码单元，每个字符使用一个或者两个编码单元来表示。
+
+在获取字符串长度的时候，返回的是字符串中含有的编码单元的数量。所以如果字符串中使用了需要两个编码单元表示的字符，那么需要注意返回的字符串长度可能和预期的不一致。比如符号 `♥`的length就是2.
 
 - 单引号或双引号或者反引号包裹
   - es6 新增了模板字符串，用反引号（``）包裹
@@ -3054,7 +3058,7 @@ Object.defineProperty(Person.prototype, "constructor", {
                ......
            }
        }
-    
+        
        方式二:
        for(let key in obi){
            if(obj.hasOwnProperty (key)){
@@ -4772,10 +4776,10 @@ p.then(
     - 先改变状态并存放异步任务的结果给实例对象，再指定回调函数并立即执行回调函数
 
            - 如何做到改变状态再指定回调函数
-          
+              
              - 在 executor 函数中直接调用 resolve（）或者 reject（）或者 抛出错误。
              - 让实例的 then 方法延迟到 executor 内部的的异步任务执行完成之后再执行
-          
+              
              ```javascript
              let p = new Promise(function (resolve, reject) {
                resolve(1);
