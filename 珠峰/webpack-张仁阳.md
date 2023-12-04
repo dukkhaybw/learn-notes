@@ -1,6 +1,14 @@
 # 前端工程化
 
+- webpoack使用，原理和优化
+- rollup使用和手写实现
+- vite3的实现
+
+
+
 ## Webpack
+
+webpack 是一个JavaScript 应用程序的静态打包工具。
 
 在 webpack 中会将各种各样的文件都看作一个模块，模块之间可能相互依赖。webpack 打包所有的这些资源文件编译为一些前端环境(浏览器环境)能识别的一些文件（静态资源），比如 js，css，png 等。
 
@@ -9,16 +17,27 @@ npm init -y
 npm install webpack webpack-cli --save-dev
 ```
 
-webpack 是 JavaScript 应用程序的静态打包工具。
-
 - webpack：核心包
 - webpack-cli：命令行工具，主要是在执行 webpack 命令时，解析命令行中设置的一些列参数，加载 webpack 配置文件（默认 webpack.config.js），它提供了一组命令和选项，用于配置和运行Webpack的构建过程。通过webpack-cli，可以在命令行中指定Webpack的配置文件、执行不同的构建模式（如开发模式或生产模式）、观察文件变化并自动重新构建等。
+
+在命令行中输入 `webpack` 并附带一些选项时，Webpack CLI会执行以下步骤来处理命令：
+
+1. 解析命令行参数：Webpack CLI会解析命令行中输入的选项和参数，并根据它们的值进行配置。
+2. 加载配置文件：Webpack CLI会尝试加载默认的配置文件 `webpack.config.js`，如果存在的话。如果命令行中使用了 `--config` 选项指定了其他配置文件，Webpack CLI会加载该文件。
+3. 合并配置：Webpack CLI会将命令行选项和配置文件中的配置合并，以形成最终的Webpack配置对象。
+4. 创建Webpack编译器：Webpack CLI使用合并后的配置创建一个Webpack编译器，该编译器将负责处理打包过程。
+5. 执行Webpack编译器：Webpack编译器开始执行打包过程。它会根据配置中的入口文件和依赖关系，递归地解析和处理各个模块，并将它们打包成最终的输出文件。
+6. 输出打包结果：一旦Webpack编译器完成打包过程，它会将生成的输出文件写入指定的输出目录。
+
+在执行过程中，Webpack CLI还可以根据命令行选项和配置文件中的其他配置，执行一些额外的操作，例如启动开发服务器、监听文件变化并自动重新打包等。
+
+
 
 ## 浏览器直接使用 ES module
 
 ```html
 <script src="./src/index.js" type="module"></script>
-//这样就可以了
+// 这样就可以了，必须指明type为module
 ```
 
 ES6 模块化语法：
@@ -42,27 +61,45 @@ export const mul =(num1,num2)=>{
 }
 ```
 
-**ES6 的模块化语法是需要发起网络请求：**
+**ES6 的模块化规范在浏览器中是需要发起网络请求：**
 
 ![image-20220310071821033](..\typora-user-images\image-20220310071821033.png)
 
 ![image-20220310072112724](..\typora-user-images\image-20220310072112724.png)
 
-在上面，直接使用 file 协议打开本地的 index.html 文件，产生跨域请求。说明 ES6 的 import 语法是需要发起网络请求的。
-
-```
-npx webpack --entry ./src/main.js --output-path ./build
-
-npx webpack --config  ./xxx/xxx.js
-```
+在上面，直接使用 file 协议打开本地的 index.html 文件，产生跨域请求，同时网络面板中也有针对index.js的网络请求。说明 ES6 的 import 语法是需要发起网络请求的。
 
 
 
 ## entry
 
 - 入口(entry point)告诉 webpack 使用哪个模块，来作为构建其内部依赖图(dependency graph) 的开始。进入入口后，webpack 会找出有哪些模块和库是入口起点（直接和间接）依赖的
+
 - 默认值是 `./src/index.js`，但可以通过在 `webpack configuration` 中配置 `entry` 属性，来指定一个（或多个）不同 src 入口起点
-- webpack 的配置文件中的 entry 中配置的相对路径会以脚本命令执行时所在的路径（process.cwd()）作为基准路径。
+
+- **webpack 的配置文件中的 entry 中配置的相对路径会以脚本命令执行时所在的路径（process.cwd()）作为基准路径。**
+
+  比如：当前项目根目录为test，该目录下有webpack.config.js文件，其中的entry字段值为：'./src/index.js'，如果跳转到test的上级目录下，执行webpack --config  ./test/webpack.config.js，那么将因为找不到入口文件而报错。
+
+  报错信息如下： 
+
+  
+
+  ```
+  PS C:\Users\dukkha\Desktop\webpack202208\test> cd ..
+  PS C:\Users\dukkha\Desktop\webpack202208> npx webpack --config .\test\webpack.config.js
+  Active code page: 65001
+  asset index.html 2.62 KiB [emitted]
+  asset main.js 99 bytes [emitted] (name: main)
+  
+  ERROR in main
+  Module not found: Error: Can't resolve './src/index.js' in 'C:\Users\dukkha\Desktop\webpack202208'
+  resolve './src/index.js' in 'C:\Users\dukkha\Desktop\webpack202208'
+    using description file: C:\Users\dukkha\package.json (relative path: ./Desktop/webpack202208)
+      Field 'browser' doesn't contain a valid alias configuration
+  ```
+
+  
 
 ```js
 entry: './src/index.js';
@@ -80,7 +117,9 @@ entry: {
 
 - output 中的 path 路径则是一个绝对路径，具体打包后生成的打包文件夹在哪里取决于 path 的值。
 
-- 如果不配置 output 中的 path 选项，则该项的默认值是：process.cwd()，而不是'./dist'这种相对路径或者 path.resolve(\_\_dirname, "dist")。
+- **如果不配置 output 中的 path 选项，则该项的默认值是：process.cwd()，而不是'./dist'这种相对路径或者 path.resolve(\_\_dirname, "dist")。**
+
+
 
 
 
@@ -105,20 +144,20 @@ loader 的几种使用方式：
 
 - webpack 配置文件中写 loader
 
-对应规则下面的 loader 是从右向左执行的，最右侧的 loader 接收到是对应类型的文件的源码，最左侧的 loader 一定会返回一个 js 模块。
+  对应规则下面的 loader 是从右向左执行的，最右侧的 loader 接收到是对应类型的文件的源码，最左侧zz的 loader 一定会返回一个 js 模块。
 
-```js
-module.exports ={
-    module:{
-        rule:[
-            {
-                test:/.css$/,
-                use:['style-loader','css-loader']
-            }
-        ]
-    }
-}
-```
+  ```js
+  module.exports ={
+      module:{
+          rule:[
+              {
+                  test:/.css$/,
+                  use:['style-loader','css-loader']
+              }
+          ]
+      }
+  }
+  ```
 
 
 
@@ -212,11 +251,14 @@ module.exports ={
 
 - 一套构建时使用，生成打包文件直接应用于线上的，即代码都是压缩后，运行时不打印 debug 信息，不包括 sourcemap，可能需要分离 CSS 成单独的文件，以便多个页面共享同一个 CSS 文件
 
-- webpack 4.x 版本引入的 [mode](https://webpack.docschina.org/configuration/mode/) 的概念
+- webpack 4.x 版本引入的 [mode](https://webpack.docschina.org/configuration/mode/) 的概念  
 
 - 当指定使用 production mode 时，默认会启用各种性能优化的功能，包括构建结果优化以及 webpack 运行性能优化
 
 - 如果是 development mode 的话，则会开启 debug 工具，运行时打印详细的错误信息，以及更加快速的增量编译构建
+
+
+
 
 | 选项 | 描述 |
 | :-- | :-- |
@@ -615,7 +657,7 @@ Browserlist 可以编写的位置：
 
 | 类别 | 配置名称 | 描述 |
 | :-- | :-- | :-- |
-| output | path | 指定输出到硬盘上的目录 |
+| output | path | 指定打包生成的输出到硬盘上的目录 |
 | output | publicPath | 表示的是打包生成的 index.html 文件里面引用资源的前缀 |
 | devServer | publicPath | 表示的是打包生成的静态文件所在的位置(若是 devServer 里面的 publicPath 没有设置，则会认为是 output 里面设置的 publicPath 的值) |
 | devServer | static | 用于配置提供额外静态文件内容的目录 |
@@ -623,23 +665,25 @@ Browserlist 可以编写的位置：
 内部依赖的是 express 框架。onBeforeSetupMiddleware 在 webpack-dev-server 静态资源中间件处理之前，可以用于拦截部分请求返回特定内容，或者实现简单的数据 mock。
 
 ```js
-devServer:{
-	static:path.resolve(__dirname,'public'),
+module.exports ={
+    devServer:{
+        static:path.resolve(__dirname,'public'),
         port:8080,
         open:true,
         proxy:{
-          '/api':'http://localhost:3000',
-          '/api2':{
-              target:'http://localhost:3001',
-              pathRewrite:{"^/api":''}
-          }
-    },
-    // webpack-dev-server 内部就是一个express服务器，devServer就是express执行返回值
-    onBeforeSetupMiddleware(devServer){// express()
-       // 简单模拟一个后端接口
-       devServer.app.get('/api/users', (req, res) => {
-         res.json([{ id: 1 }, { id: 2 }]);
-       });
+            '/api':'http://localhost:3000',
+            '/api2':{
+                target:'http://localhost:3001',
+                pathRewrite:{"^/api":''}
+            }
+        },
+        // webpack-dev-server 内部就是一个express服务器，devServer就是express执行返回值
+        onBeforeSetupMiddleware(devServer){// express()
+            // 简单模拟一个后端接口
+            devServer.app.get('/api/users', (req, res) => {
+                res.json([{ id: 1 }, { id: 2 }]);
+            });
+        }
     }
 }
 ```
@@ -873,27 +917,26 @@ output:{
 - asset 在导出一个 data URI 和发送一个单独的文件之间自动选择。之前通过使用 `url-loader`，并且配置资源体积限制实现
 
   ```js
-
-output:{
-  filename:'bundle.js',
-  path:path.resolve(__dirname,"./build")
-}
-
-{
-  test:/\.(jpg|png|svg|gif|jpeg)$/,
-  type:"asset",
-  generator:{
-    filename:"img/[name].[hash:6][ext]"
-  },
-  parser:{
-    dataUrlCondition:{
-      maxSize: 10 *1024   // 小于该体积（10kb）则打包为base64
+  output:{
+    filename:'bundle.js',
+    path:path.resolve(__dirname,"./build")
+  }
+  
+  {
+    test:/\.(jpg|png|svg|gif|jpeg)$/,
+    type:"asset",
+    generator:{
+      filename:"img/[name].[hash:6][ext]"
+    },
+    parser:{
+      dataUrlCondition:{
+        maxSize: 10 *1024   // 小于该体积（10kb）则打包为base64
+      }
     }
   }
-}
-  ```
 
-```diff
+
+  ```diff
 module.exports = {
 	output:{
 		path:path.resolve(__dirname,'dist')
@@ -935,7 +978,7 @@ module.exports = {
     asset: true
   },
 };
-```
+  ```
 
 
 
@@ -1235,6 +1278,8 @@ Object.defineProperty(myExports, Symbol.toStringTag, { value: 'Module' });
 console.log(Object.prototype.toString.call(myExports)); //[object Module]   自定义某个数据的标识
 ```
 
+
+
 webpack.config.js
 
 ```js
@@ -1259,6 +1304,8 @@ module.exports = {
 };
 ```
 
+
+
 入口文件 index.js
 
 ```js
@@ -1266,11 +1313,15 @@ let title = require('./title.js');
 console.log(title);
 ```
 
+
+
 title.js:
 
 ```js
 module.exports = 'title';
 ```
+
+
 
 打包后生成文件：
 
@@ -1476,6 +1527,8 @@ export const age = 'title_age'; // 命名导出
   console.log(title.age);
 })();
 ```
+
+
 
 ### ES6 modules 加载 ES6 modules
 
