@@ -1891,7 +1891,7 @@ require
 
 - 抽象语法树（Abstract Syntax Tree，AST）是源代码结构的一种抽象表示
 - 它以树状的形式表现编程语言的代码结构，树上的每个节点都表示源代码中的一种结构
-- 原理都是通过`JavaScript Parser`把代码转化为一颗抽象语法树（AST），这颗树定义了代码的结构，通过操纵这颗树，可以精准的定位到声明语句、赋值语句、运算语句等，实现对代码的分析、优化、变更等操作
+- 原理都是通过`JavaScript Parser`把代码转化为一颗抽象语法树（AST），这颗树定义了代码的结构，通过操作这颗树，可以精准的定位到声明语句、赋值语句、运算语句等，实现对代码的分析、优化、变更等操作
 
 ### 用途
 
@@ -1933,6 +1933,53 @@ require
   - VariableDeclarator
   - FunctionDeclaration，函数声明
   - BlockStatement，块级语句
+
+
+
+```js
+var ast = 'test'
+```
+
+上面的js代码使用acorn解析器生成的ast内容如下：
+
+```js
+{
+  "type": "Program",
+  "start": 0,
+  "end": 16,
+  "body": [
+    {
+      "type": "VariableDeclaration",
+      "start": 0,
+      "end": 16,
+      "declarations": [
+        {
+          "type": "VariableDeclarator",
+          "start": 4,
+          "end": 16,
+          "id": {
+            "type": "Identifier",
+            "start": 4,
+            "end": 7,
+            "name": "ast"
+          },
+          "init": {
+            "type": "Literal",
+            "start": 10,
+            "end": 16,
+            "value": "test",
+            "raw": "'test'"
+          }
+        }
+      ],
+      "kind": "var"
+    }
+  ],
+  "sourceType": "module"
+}
+```
+
+
 
 
 
@@ -2061,7 +2108,7 @@ Babel Parser 和 Esprima 是两个独立的 JavaScript 解析器，它们具有�
 - [@babel/template](https://www.npmjs.com/package/@babel/template)可以简化 AST 的创建逻辑，快速创建结点
 - [@babel/code-frame](https://www.npmjs.com/package/@babel/code-frame)可以打印代码位置
 - [@babel/core](https://www.npmjs.com/package/@babel/core) Babel 的编译器，核心 API 都在这里面，比如常见的 transform、parse,并实现了插件功能，在 Babel 转换过程中，`@babel/parser` 被 `@babel/core` 使用，用于解析输入的 JavaScript 代码。`@babel/parser` 将代码解析为 AST，并将 AST 传递给 `@babel/core`，后者在 AST 上应用各种 Babel 插件和转换规则，执行代码转换操作。因此，`@babel/parser` 是 `@babel/core` 的一个重要依赖模块，用于提供代码解析的功能。
-- [babylon](https://www.npmjs.com/package/babylon) Babel 的解析器，以前叫 babel parser,是基于 acorn 扩展而来，扩展了很多语法,可以支持 es2020、jsx、typescript 等语法
+- [babylon](https://www.npmjs.com/package/babylon) Babel 的解析器，以前的babel parser,是基于 acorn 扩展而来，扩展了很多语法,可以支持 es2020、jsx、typescript 等语法
 - [babel-types-api](https://babeljs.io/docs/en/next/babel-types.html)
 - [Babel 插件手册](https://github.com/brigand/babel-plugin-handbook/blob/master/translations/zh-Hans/README.md#asts)
 - [babeljs.io](https://babeljs.io/en/repl.html) babel 可视化编译器
@@ -2078,14 +2125,14 @@ Babel Parser 和 Esprima 是两个独立的 JavaScript 解析器，它们具有�
 - 访问者模式 Visitor 对于某个对象或者一组对象，不同的访问者，产生的结果不同，执行操作也不同
 - **Visitor 的对象中定义了用于 AST 中获取具体节点的方法**
 - **Visitor 上挂载以节点的 `type` 命名的方法，当遍历 AST 的时候，如果匹配上 type，就会执行对应的方法**
-- 说白了 Visitor 就是一个对象，该对象可以提供许多不同的方法（这些方法的名字就是 AST 中不同节点的名字），供给不同的访问者调用不同的方法
+- **说白了 Visitor 就是一个对象，该对象可以提供许多不同的方法（这些方法的名字就是 AST 中不同节点的名字），供给不同的访问者调用不同的方法**
 - 插件就是一个访问器对象，每个插件只关注一个 AST 中不同的节点类型，并对这些关注的节点进行操作
 
 
 
 javascript中的另一种访问器模式代码例子：
 
-访问器模式（Accessor Pattern）通过定义访问器方法来封装对对象属性的访问和修改操作。访问器模式提供了一种间接访问对象属性的方式，以便在访问和修改属性时可以执行额外的逻辑或进行验证。
+访问器模式（Accessor Pattern）通过定义访问器方法来**封装对对象属性的访问和修改操作**。访问器模式提供了一种间接访问对象属性的方式，以便在访问和修改属性时可以执行额外的逻辑或进行验证。 
 
 在访问器模式中，有两种类型的访问器方法：
 
@@ -2172,11 +2219,12 @@ const types = require('@babel/types');
 const arrowFunctionPlugin = require('@babel/plugin-transform-arrow-functions').default;
 
 let arrowFunctionPlugin2 = {
+  // visitor属性是固定的，babel内部就是写死取的这个属性
   visitor: {
+    // 这个个的方法名字就是抽象语法树中各种节点对应的类型type
     ArrowFunctionExpression(path) {
       const { node } = path;
       node.type = 'FunctionExpression';
-      
      
       const body = node.body;
       //判断body节点是不是BlockStatement
@@ -2226,6 +2274,7 @@ function getThisPaths(path) {
   });
   return thisPaths;
 }
+
 //这是JS源代码，用字符串表示
 const sourceCode = `
 const sum = (a,b)=>{
@@ -2262,7 +2311,7 @@ const core = require('@babel/core');
 const types = require('@babel/types');
 const pathLib = require('path');
 //state代表状态，用在在插件处理的过程传递一些值或者变量
-let arrowFunctionPlugin2 = {
+let consolePlugin = {
   visitor: {
     CallExpression(path, state) {
       state.age = 100;
@@ -2289,7 +2338,7 @@ const sourceCode = `
 `;
 const result = core.transform(sourceCode, {
   filename: 'main.js',
-  plugins: [arrowFunctionPlugin2]
+  plugins: [consolePlugin]
 });
 console.log(result.code);
 ```
@@ -2297,8 +2346,6 @@ console.log(result.code);
 
 
 要实现在每个 console.log 语句中添加打印文件、行数和列数的信息，你可以编写一个自定义的 Babel 插件。以下是一个简单的示例插件，可实现该功能：
-
-
 
 在项目根目录下创建一个名为 `.babelrc` 的文件，配置 Babel 的转换规则和插件：
 
@@ -2365,7 +2412,7 @@ module.exports = function ({ types }) {
 
 打印表示：
 
-<img src="C:\Users\dukkha\Desktop\study-notes\珠峰\images\image-20230824171919123.png" alt="image-20230824171919123" style="zoom:200%;" />
+<img src=".\images\image-20230824171919123.png" alt="image-20230824171919123" style="zoom:200%;" />
 
 
 
@@ -2403,7 +2450,7 @@ module.exports = function ({ types }) {
 
 打印表示：
 
-<img src="C:\Users\dukkha\Desktop\study-notes\珠峰\images\image-20230824172327152.png" alt="image-20230824172327152" style="zoom:200%;" />
+<img src=".\images\image-20230824172327152.png" alt="image-20230824172327152" style="zoom:200%;" />
 
 
 
@@ -2578,6 +2625,8 @@ function eslintPlugin({ fix }) {
 }
 module.exports = eslintPlugin;
 ```
+
+
 
 ### 代码压缩
 
@@ -6308,6 +6357,8 @@ let defaultChunk = {
 [maxAsyncRequests](http://www.zhufengpeixun.com/front/html/103.13.splitChunks.html)：用于设置 Async Chunk 最大并行请求数。
 
 请求数是指加载一个`Chunk`时所需要加载的所有的分包数量,包括`Initial Chunk`，但不包括`Async Chunk`和`runtimeChunk`
+
+
 
 ## Rollup
 
