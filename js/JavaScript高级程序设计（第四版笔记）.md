@@ -3307,6 +3307,8 @@ console.log(c2.a); //undefined
 Object.assing 是不能拷贝到继承或原型上的方法的。
 ```
 
+
+
 ### 类
 
 #### 定义类
@@ -3324,6 +3326,17 @@ Object.assing 是不能拷贝到继承或原型上的方法的。
 - 类存在块级作用域
 
 - typeof 类名 // function
+
+  ```js
+  class Ponit{
+      
+  }
+  
+  typeof Point  // 'function'
+  Point === Point.prototype.constructor  // true
+  ```
+
+  
 
 - 实例名 instanceof 类名
 
@@ -3363,7 +3376,7 @@ Object.assing 是不能拷贝到继承或原型上的方法的。
 
 在子类构造函数（constructor）中使用 super 可以调用父类构造函数。
 
-```
+```js
 class Vehicle {
  constructor() {
  this.hasEngine = true;
@@ -3382,7 +3395,7 @@ new Bus( );
 
 在子类的静态方法中可以通过 super 调用继承的父类上定义的静态方法
 
-```
+```js
 class Vehicle {
  static identify() {
  console.log('vehicle');

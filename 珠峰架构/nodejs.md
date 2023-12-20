@@ -71,7 +71,7 @@ const sum = arr.reduce((prev, current) => prev + current, 0);
 
 **函数式编程的优势**
 
-- 可维护性:函数式编程的程序通常更加简洁和可读，因为它们避免了状态变化和副作用。
+- 可维护性:函数式编程的程序通常更加简洁，因为它们避免了状态变化和副作用。
 - 可测试性:由于函数式编程程序通常是**无副作用（输入相同输出就一定相同，不会改变函数外的任何变量，不调用输出语句之类的函数等）**的，所以可以很容易地对其进行单元测试。
 - 并发性:函数式编程程序通常是无副作用的，所用函数之间彼此独立，可以同时执行而不彼此影响
 - 扩展性:函数式编程程序通常是纯函数，可以很容易地**组合和重用**。
@@ -116,22 +116,10 @@ Vue3 拥抱函数式编程，函数式编程可以抛弃 this，打包过程中�
        }
    }
    ```
+   
+   
 
 ```js
-Array.prototype.reduce = function reduce(callback, initialValue) {
-  for (let index = 0; index < this.length; index++) {
-    if (initialValue === undefined) {
-      initialValue = this[index];
-      initialValue = callback(initialValue, this[index + 1], index + 1, this);
-      index++;
-    } else {
-      initialValue = callback(initialValue, this[index], index, this);
-    }
-  }
-  return initialValue;
-};
-
-
 Array.prototype.reduce = function(callback,initalValue){
     let array = this
     let acc = typeof initalValue === 'undefined' ? array[0]:initalValue;
@@ -206,6 +194,10 @@ function perform(fn, wrappers) {
 <img src="..\typora-user-images\image-20211113222830481.png" alt="image-20211113222830481" style="zoom:67%;" />
 
 **AOP:主要作用就是将一些跟核心业务逻辑模块无关的功能抽离，其实就是给原函数增加一层，不影响原函数内部的逻辑。**
+
+
+
+函数自身不再定义函数时所在的词法作用域中执行就能形成闭包。
 
 
 
@@ -466,7 +458,7 @@ function getTime() {
 
 ### 函数组合
 
-函数的组合可以将高细粒度的函数重新组合成一个新的函数。最终将数据传入组合后的新函数，得到最终的结果。针对同一批参数，需要依次进行一些列的处理，最后生成所需的数据。
+函数的组合可以将**高细粒度的函数**重新组合成一个新的函数。最终将数据传入组合后的新函数，得到最终的结果。针对同一批参数，需要依次进行一些列的处理，最后生成所需的数据。
 
 > 早期常⻅的函数组合写法：洋葱模型`c(b(a()))`、过滤器 `a() | b() | c()`
 
@@ -510,6 +502,8 @@ const composed = flowRight(addPrefix, toFixed, double); // Pointed Free
 const r = composed(10000);
 console.log(r);
 ```
+
+
 
 函数柯里化和组合应用：
 
@@ -587,6 +581,8 @@ fs.readFile(path.resolve(__dirname, 'age.txt'), 'utf8', function (err, age) {
 // 异步并发，最终需要一起获得到结果
 ```
 
+
+
 **异步代码是无法通过 try catch 捕获异步任务中的错误**（除了async + await），所以在 node 中的异步回调函数内部处理错误并作为回调函数的第一个参数返回。
 
 ```js
@@ -623,8 +619,6 @@ fs.readFile(path.resolve(__dirname, 'name.txt'), 'utf8', function (err, data) {
 const fs = require('fs');
 const path = require('path');
 
-// 函数是为了组合的时候方法
-// 类用来封装逻辑的 高内聚
 const events = {
   _arr: [], // 用来存放订阅的事
   on(callback) {
@@ -794,7 +788,7 @@ Promise 本身还是基于回调函数实现异步的。
 
 - 如果 then 方法执行时，对应的 promises 实例的状态仍是 pending，则将对应的 onFulfilled 函数和 onRejected 函数订阅到 promise 实例的对应属性上存放起来
 
-- then 方法执行后，返回一个新的 promise
+- then 方法执行后，返回一个新的 promise 
 
 - onFulfilled 函数和 onRejected 函数是两个异步执行的任务，原生中是微任务
 
@@ -1038,18 +1032,6 @@ Promise.deferred = function () {
 // npm install promises-aplus-tests -g 全局安装只能在命令行中使用
 // promises-aplus-tests promise-3.js
 
-Promise.reject = function (reason) {
-  return new Promise((resolve, reject) => {
-    reject(reason);
-  });
-};
-
-Promise.resolve = function (value) {
-  return new Promise((resolve, reject) => {
-    resolve(value);
-  });
-};
-
 module.exports = Promise;
 ```
 
@@ -1086,6 +1068,8 @@ function readFile(...args) {
   // })
 }
 ```
+
+
 
 #### resolve 和 reject
 
@@ -1179,6 +1163,8 @@ Promise.reject = function (reason){
 }
 ```
 
+
+
 #### catch
 
 注意点：
@@ -1192,6 +1178,8 @@ class Promise {
   }
 }
 ```
+
+
 
 #### finally
 
@@ -1309,16 +1297,6 @@ Promise.all = function (promises) {
 
 
 
-```js
-Promise.race = function(values){
-  return new Promise((resolve,reject)=>{
-    for(let i=0i<values.length;i++){
-			Promise.resolve(values[i]).then(resolve,reject)
-    }
-  })
-} 
-```
-
 #### race
 
 **`Promise.race(iterable)`** 方法返回一个 promise，一旦迭代器中的某个 promise 解决或拒绝，返回的 promise 就会解决或拒绝。
@@ -1390,6 +1368,8 @@ p.then((data) => {
 });
 ```
 
+
+
 #### allSettled
 
 `Promise.allSettled()`方法返回 在**所有**给定的 promise 都已经`fulfilled`或`rejected`后的 promise，并带有一个对象数组，每个对象表示对应的 promise 结果。
@@ -1452,34 +1432,7 @@ if (!Promise.allSettled) {
 }
 ```
 
-Promise 可以使用链式调用解决回调地狱的问题，但是本身还是有依赖回调函数的，有代码嵌套问题。
 
-```js
-Promise.resolve().then(() => {
-    console.log(0);
-    return new Promise((resolve)=>{ // queueMircroTask(()=>x.then((y)=>resolve(y))
-        resolve('a');
-    })
-}).then(res => {
-    console.log(res)
-})
-Promise.resolve().then(() => {
-    console.log(1);
-}).then(() => {
-    console.log(2);
-}).then(() => {
-    console.log(3);
-}).then(() => {
-    console.log(4);
-}).then(() => {
-    console.log(5);
-})
-
-
-答案：
-// 0 1 2 3  'a' 4 5 这个结果是符合我们promiseA+规范
-// 在ecmascript规范中，如果返回了一个promise， 会将这个promise再次包装一个微任务  0 1 2 'a' 3 4 5
-```
 
 扩展：
 
@@ -1595,16 +1548,16 @@ Promise 串行通过 then 链解决；并行通过 Promise.all 来解决。如�
 
 ````js
 function* read() {
-try {
- let a = yield 'vue';
- consloe.log(a);
- let b = yield 'vite';
- consloe.log(b);
- let c = yield 'node';
- consloe.log(c);
-} catch (error) {
- console.log(error);
-}
+    try {
+        let a = yield 'vue';
+        consloe.log(a);
+        let b = yield 'vite';
+        consloe.log(b);
+        let c = yield 'node';
+        consloe.log(c);
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 let it = read(); // 生成一个迭代器  （协程）
@@ -1633,23 +1586,19 @@ function* read() {
 let it = read();
 let { value, done } = it.next();
 if (!done) {
-    value
-        .then((data) => {
+    value.then((data) => {
         let { value, done } = it.next(data);
         if (!done) {
-            value
-                .then((data) => {
+            value.then((data) => {
                 let { value, done } = it.next(data);
                 if (done) {
                     console.log(value);
                 }
-            })
-                .catch((error) => {
+            }).catch((error) => {
                 it.throw(error);
             });
         }
-    })
-        .catch((error) => {
+    }).catch((error) => {
         it.throw(error);
     });
 }
@@ -1799,7 +1748,7 @@ console.log(it.next('ccc'));
 ### async + await
 
 - async + await = generator + co
-- async 函数默认执行后就会返回一个 promise，
+- async 函数默认执行后就会返回一个 promise
 - 内部是支持 tryCatch,当内部有 tryCatch 时，内部抛错会别捕获，外出的 promise 则不会再触发 onRejected
 
 ```js
@@ -2018,6 +1967,14 @@ promise.then((res) => {
 });
 asy();
 console.log(8);
+
+
+
+async function asy() {
+  console.log(2);
+  await console.log(3);  // yeild Promise.resolve(console.log(3)).then(console.log(4))
+  console.log(4);
+}
 ```
 
 
@@ -2027,7 +1984,7 @@ console.log(8);
 ```js
 Promise.resolve().then(() => {
     console.log(0);
-    return new Promise((resolve)=>{
+    return new Promise((resolve)=>{    // queueMircroTask(()=>x.then((y)=>resolve(y))
         resolve('a');
     })
 }).then(res => {
@@ -2044,6 +2001,12 @@ Promise.resolve().then(() => {
 }).then(() => {
     console.log(5);
 })
+
+
+
+答案：
+// 0 1 2 'a' 3  4 5 这个结果是符合我们promiseA+规范
+// 在ecmascript规范中，如果返回了一个promise， 会将这个promise再次包装一个微任务  0 1 2 3 'a' 4 5
 ```
 
 
@@ -2146,7 +2109,9 @@ VSCode 提供了两种启动模式：
 
 ## 介绍
 
-Node 能干什么？特点？node 中模块的实现原理？require 引用一个文件的原理？被引入文件导出原理？
+Node 能干什么？特点(事件驱动，非阻塞I/O)？node 中模块的实现原理？require 引用一个文件的原理？被引入文件导出原理？
+
+
 
 ### 是什么
 
@@ -2155,6 +2120,8 @@ nodejs：是一个 js 运行环境，让 js 能跑在服务器上。
 在浏览器端 JavaScript 由：ECMAScript + BOM + DOM 组成
 
 在 nodejs 中 JavaScript 由：ECMAScript + 内置模块 + 第三方模块 组成(没有 window，document 等对象)
+
+
 
 ### 特点
 
@@ -2239,7 +2206,7 @@ commonjs 规范：
 
 使用 commonjs 规范引入一个文件，通过 node 内置的功能去先找到并读取文件，将读取的文件内容包在一个立即执行的函数中，该立即执行函数中返回 module.exports。
 
-node 原生不支持 ES6 的模块化语法，即直接在 js 文件中书写 import 'xxxxx.js'，是没法识别的，如果想要 node 支持 import 语法，则需要先将 js 后缀改为 mjs，同时在 package.json 中添加"type":"module"。
+node 原生不支持 ES6 的模块化语法，即直接在 js 文件中书写 import 'xxxxx.js'，是没法识别的，如果想要 node 支持 import 语法，则需要先将 js 后缀改为 mjs，或者在 package.json 中添加"type":"module"。
 
 package.json:
 
@@ -2467,16 +2434,10 @@ console.log(path.resolve('note.md')); //js文件内部内容
 
 path.extname(a.min.js); // .js
 
-path.basename('a.js', '.js'); // a
+path.basename('a.js', '.js'); // a   path.basename(path,base)
 
 path.dirname(); // 取处路径中的路径部分
 ```
-
-
-
-**path.dirname(path)**：获取这个路径的上一级目录路径。
-
-**path.extname(path)、path.basename(path,base)**
 
 
 
@@ -2715,6 +2676,8 @@ module.exports = 'a';
 
 
 
+module-b.js：
+
 ```js
 let a = require('./module-a.js');
 console.log('b中打印的a', a);
@@ -2732,9 +2695,13 @@ a中打印的b b
 
 
 
-在上面的commonjs模块化模拟实现的代码中，如果module-a.js作为模块执行的入口，会是先创建b模块并加入缓存，然后才是在b模块中引入a模块时创建a模块，然后再缓存a模块。但是在node源码中，会一上来就先创建**入口模块**对应的Module实例对象，并缓存到Module._cache中，然后a中执行过程中引入了b模块，则又创建了b模块并缓存，然后继续执行完b模块的代码，但由于b模块代码中引入了a，则会去加载a模块，但是a模块已经被缓存了，只是因为a模块没有执行到a模块自己的module.exports = 'a'，所以a模块是一个空对象，所以打印了：“b中打印的a {}”，当b模块执行完后，b模块对应的module.exports = 'b'，然后执行上下文回到a模块代码中继续执行，这时a模块中打印b模块时，就有值存在了：“a中打印的b b”，最后才是给module-a的module.export 赋值为‘a'。
+在上面的commonjs模块化模拟实现的代码中，如果module-a.js作为模块执行的入口，一上来就创建好的a模块的module.exports为一个空对象并且同时加入到缓存中，该空对象只有a模块彻底执行完后才会被赋值。a中引入b模块会先创建b模块并加入缓存，然后执行b模块中的代码，然后在b模块中引入a模块时，之前的a模块已经被放入到了缓存中，只是值为一个空对象而已。
+
+在node源码中，会一上来就先创建**入口模块**对应的Module实例对象，并缓存到Module._cache中，然后a中执行过程中引入了b模块，则又创建了b模块并缓存，然后继续执行完b模块的代码，但由于b模块代码中引入了a，则会去加载a模块，但是a模块已经被缓存了，只是因为a模块没有执行到a模块自己的module.exports = 'a'，所以a模块是一个空对象，所以打印了：“b中打印的a {}”，当b模块执行完后，b模块对应的module.exports = 'b'，然后执行上下文回到a模块代码中继续执行，这时a模块中打印b模块时，就有值存在了：“a中打印的b b”，最后才是给module-a的module.export 赋值为‘a'。
 
 **对于commonjs规范来说，可以实现部分加载。**
+
+
 
 如果非要两个模块之间相互调用，则使用下面的方法：
 
@@ -2745,7 +2712,7 @@ function say(){
 
 let moduleB; // 你告诉我，我依赖的是谁
 module.exports = {
-    say,
+    say,  // 闭包防止销毁say
     save(mod){
         moduleB = mod
     },
@@ -2764,10 +2731,10 @@ function say(){
 
 let moduleA; // 你告诉我，我依赖的是谁
 module.exports = {
+    say,  // 闭包防止销毁say
     save(mod){
         moduleA = mod
     },
-    say,
     init(){
         moduleA.say()
     }
@@ -2801,9 +2768,7 @@ process 进程对象中的重要属性：
 
   process.platform平台标识win32和darwin
 
-- nextTick(cb)：
-
-  浏览器的事件环是每执行一个宏任务就会清空微任务。
+- nextTick(cb)：浏览器的事件环是每执行一个宏任务就会清空微任务。
 
 - cwd：current working directory 当前的执行工作目录，运行打包时，找对应的配置文件，在当前目录下寻找执行路径。 process.cwd() ，可以通过执行process.chdir(path)，来修改process.cwd() 的路径。
 
@@ -2844,7 +2809,7 @@ process 进程对象中的重要属性：
   process.chdir('../../../');
   ```
 
-index.js
+
 
 ```js
 // node index.js --port 3000
@@ -2942,7 +2907,7 @@ setImmediate
 
 
 
-每⼀个阶段都对应⼀个事件队列,当event loop执⾏到某个 阶段时会将当前阶段对应的队列依次执⾏。当该队列已⽤尽或达到回调限制，事件循环将移动到下⼀阶段。
+每⼀个阶段都对应⼀个事件队列(专门用于IO的队列，专门放定时器任务的队列等)，当event loop执⾏到某个阶段时会将当前阶段对应的队列依次执⾏。当该队列已⽤尽或达到回调限制，事件循环将移动到下⼀阶段。
 
 
 
@@ -3003,9 +2968,9 @@ node 中 v8 引擎负责解析 js 语法，而且可以直接调用 node 中的 
 
 libuv 是负责执行 node 提供中的 api，执行过程会开启多个线程，执行完毕后放到队列中，会开启一个单独的事件线程来处理任务。 libuv 决定调用的任务是同步还是异步，如果是异步的话，执行后推入对应的任务队列依次执行。
 
-微任务：微任务队列在每次宏任务执行完毕一个后就会被清空（这点和浏览器一样）。
+**微任务：微任务队列在每次宏任务执行完毕一个后就会被清空（这点和浏览器一样）。**
 
-注意在 node10 以前的版本中，是一个宏任务队列中的所有任务清空完后，再去清空微任务。
+**注意在 node10 以前的版本中，是一个宏任务队列中的所有任务清空完后，再去清空微任务。**
 
 ```js
 setImmediate(() => {
@@ -3039,10 +3004,6 @@ fs.readFile(__filename, () => {
 $ node timeout_vs_immediate.js
 immediate
 timeout
-
-$ node timeout_vs_immediate.js
-immediate
-timeout
 ```
 
 
@@ -3050,6 +3011,184 @@ timeout
 ## 模块查找流程
 
 ![image-20210418105915555](..\typora-user-images\image-20210418105915555.png)
+
+内置模块的在源码中最先尝试被加载。然后会去加尝试判断是否是相对路径的模块，再后才判断是否是第三方模块，如果是第三方模块，内部会去依次列出从当前目录一直到磁盘根目录的node_modules路径，同时附加在当前主机用户磁盘下的node_modules
+
+![image-20231219104824066](images\image-20231219104824066.png)
+
+一个模块会不会被打包取决于我们在项目中是否引入了该模块，跟该模块放在`dependencies`中还是`devDependencies`并没有关系。
+
+
+
+`package.json`中的`dependencies`和`devDependencies`的区别，`peerDependencies`、`bundledDependencies`、`optionalDependencies`
+
+`peerDependencies`
+
+它用来表明如果你想要使用此插件，此插件要求宿主环境所安装的包。比如项目中用到的`veui1.0.0-alpha.24`版本中：
+
+```
+"peerDependencies": {
+    "vue": "^2.5.16"
+ }
+```
+
+这表明如果你想要使用`veui`的`1.0.0-alpha.24`版本，所要求的`vue`版本需要满足`>=2.5.16`且`<3.0.0`。如果安装结束后宿主环境没有满足`peerDependencies`中的要求，会在控制台打印出警告信息。
+
+
+
+bundledDependencies
+
+当想在本地保留一个`npm`完整的包或者想生成一个压缩文件来获取`npm`包的时候，会用到`bundledDependencies`。本地使用`npm pack`打包时会将`bundledDependencies`中依赖的包一同打包，当`npm install`时相应的包会同时被安装。需要注意的是，`bundledDependencies`中的包不应该包含具体的版本信息，具体的版本信息需要在`dependencies`中指定。
+
+例如一个`package.json`文件如下：
+
+```json
+{
+  "name": "awesome-web-framework",
+  "version": "1.0.0",
+  "bundledDependencies": [
+    "renderized", 
+    "super-streams"
+  ]
+}
+```
+
+当执行`npm pack`后会生成`awesome-web-framework-1.0.0.tgz`文件。该文件中包含`renderized`和`super-streams`这两个依赖，当执行`npm install awesome-web-framework-1.0.0.tgz`下载包时，这两个依赖会被安装。
+
+当使用`npm publish`来发布包的话，这个属性不会起作用。
+
+
+
+optionalDependencies
+
+这是可选依赖。如果有包写在`optionalDependencies`中，即使`npm`找不到或者安装失败了也不会影响安装过程。需要注意的是，`optionalDependencies`中的配置会覆盖`dependencies`中的配置，所以不要将同一个包同时放在这两个里面。
+
+如果使用了`optionalDependencies`，一定记得要在项目中做好异常处理，获取不到的情况下应该怎么办。
+
+
+
+
+
+为什么有的命令写在`package.json`中的`script`中就可以执行，但是通过命令行直接执行就不行？
+
+npm run  `<command>`：如果不加`command`，则会列出当前目录下可执行的所有脚本。test`、`start`、`restart`、`stop`这几个命令执行时可以不加`run。
+
+通过`http-server`启动一个服务器，如果事先没有全局安装过`http-server`包，只是安装在对应项目的`node_modules`中。在命令行中输入`http-server`会报`command not found`，但是如果在`scripts`中增加如下一条命令就可以执行成功。
+
+```json
+scripts: {
+    "server": "http-server"
+}
+```
+
+**`npm run`命令会将`node_modules/.bin/`加入到`shell`的环境变量`PATH`中，这样即使局部安装的包也可以直接执行而不用加`node_modules/.bin/`前缀。当执行结束后，再将其删除。**
+
+
+
+为什么需要`package-lock.json`文件？
+
+在理想情况下，`npm`应该是一个纯函数，无论何时执行相同的`package.json`文件都应该产生完全相同的`node_modules`树。在一些情况下，这确实可以做到。但是在大多情况下，都实现不了。主要有以下几个原因：
+
+- 不同的`npm`版本有着不同的安装算法
+- 自上次安装之后，有些符合`semver-range`的包已经有新的版本发布。这样再有别人安装的时候，会安装符合要求的最新版本。比如引入`vue`包：`vue:^2.6.1`。A小伙伴下载的时候是`2.6.1`，过一阵有另一个小伙伴B入职在安装包的时候，`vue`已经升级到`2.6.2`，这样`npm`就会下载`2.6.2`的包安装在他的本地
+- 针对第二点，一个解决办法是固定自己引入的包的版本，但是通常我们不会这么做。即使这样做了，也只能保证自己引入的包版本固定，也无法保证包的依赖的升级。比如`vue`其中的一个依赖`lodash`，`lodash：^4.17.4`，A下载的是`4.17.4`, B下载的时候有可能已经升级到了`4.17.21`
+
+为了解决上述问题，`npm5.x`开始增加了`package-lock.json`文件。每当`npm install`执行的时候，`npm`都会产生或者更新`package-lock.json`文件。`package-lock.json`文件的作用就是锁定当前的依赖安装结构，与`node_modules`中下所有包的树状结构一一对应。
+
+下面是`less`的`package-lock.json`文件结构：
+
+```json
+"less": {
+    "version": "3.13.1",
+    "resolved": "https://registry.npmjs.org/less/-/less-3.13.1.tgz",  // 包的安装源
+    "integrity": "sha512-SwA1aQXGUvp+P5XdZslUOhhLnClSLIjWvJhmd+Vgib5BFIr9lMNlQwmwUNOjXThF/A0x+MCYYPeWEfeWiLRnTw==",
+    "dev": true,
+    "requires": {
+      "copy-anything": "^2.0.1",
+      "errno": "^0.1.1",
+      "graceful-fs": "^4.1.2",
+      "image-size": "~0.5.0",
+      "make-dir": "^2.1.0",
+      "mime": "^1.4.1",
+      "native-request": "^1.0.5",
+      "source-map": "~0.6.0",
+      "tslib": "^1.10.0"
+    }，
+    dependencies: {  // 结构与外层结构相同，存在于包自己的node_modules中的依赖（不是所有的包都有，当子依赖的依赖版本与根目录的node_modules中的依赖冲突时，才会有）
+     "copy-anything": {
+          "version": "2.0.3",
+          "resolved": "https://registry.npmjs.org/copy-anything/-/copy-anything-2.0.3.tgz",
+          "integrity": "sha512-GK6QUtisv4fNS+XcI7shX0Gx9ORg7QqIznyfho79JTnX1XhLiyZHfftvGiziqzRiEi/Bjhgpi+D2o7HxJFPnDQ==",
+          "dev": true,
+          "requires": {
+            "is-what": "^3.12.0"
+          }
+       }
+    }
+ }
+```
+
+有的包可以被安装在根目录的`node_modules`中，有的包却只能安装在自己包下面的`node_modules`中，这涉及到`npm`的安装机制。
+
+
+
+一个包在项目中有可能需要不同的版本，最后安装到根目录`node_modules`中的具体是哪个版本？
+
+npm从`3.x`开始，采用了扁平化的方式来安装`node_modules`。在安装时，npm会遍历整个依赖树，不管是项目的直接依赖还是子依赖的依赖，都会优先安装在根目录的`node_modules`中。遇到相同名称的包，如果发现根目录的`node_modules`中存在但是不符合`semver-range`，会在子依赖的`node_modules`中安装符合条件的包。
+
+以`npm`官网的例子举例，假设`package{dep}`结构代表包和包的依赖，现有如下结构：`A{B,C}`, `B{C}`, `C{D}`，按照上述算法执行完毕后，生成的`node_modules`结构如下：
+
+```
+A
++-- B
++-- C
++-- D
+```
+
+对于`B`,`C`被安装在顶层很好理解，因为是`A`的直接依赖。但是`B`又依赖`C`，安装`C`的时候发现顶层已经有`C`了，所以不会在`B`自己的`node_modules`中再次安装。`C`又依赖`D`，安装`D`的时候发现根目录并没有`D`，所以会把`D`提升到顶层。
+
+换成`A{B,C}`, `B{C,D@1}`, `C{D@2}`这样的依赖关系后，产生的结构如下：
+
+```go
+A
++-- B
++-- C
+   +-- D@2
++-- D@1
+```
+
+`B`又依赖了`D@1`，安装时发现根目录的`node_modules`没有，所以会把`D@1`安装在顶层。`C`依赖了`D@2`，安装`D@2`时，因为`npm`不允许同层存在两个名字相同的包，这样就与跟目录`node_modules`的`D@1`冲突，所以会把`D@2`安装在`C`自己的`node_modules`中。
+
+模块的安装顺序决定了当有相同的依赖时，哪个版本的包会被安装在顶层。首先项目中主动引入的包肯定会被安装在顶层，然后会按照包名称排序(a-z)进行依次安装，跟包在`package.json`中写入的顺序无关。因此，如果上述将`B{C,D@1}`换成`E{C,D@1}`，那么`D@2`将会被安装在顶层。
+
+有一种情况，当我们项目中所引用的包版本较低，比如`A{B@1，C}`，而`C`所需要的是`C{B@2}`版本，现在的结构应该如下：
+
+```
+A
++-- B@1
++-- C
+   +-- B@2
+```
+
+有一天我们将项目中的`B`升级到`B@2`，理想情况下的结构应该如下：
+
+```
+A
++-- B@2
++-- C
+ 
+```
+
+但是现在`package-lock.json`文件的结构却是这样的：
+
+```go
+A
++-- B@2
++-- C
+   +-- B@2
+```
+
+`B@2`不仅存在于根目录的`node_modules`下，`C`下也同样存在。这时需要我们手动执行`npm dedupe`进行去重操作，执行完成后会发现`C`下面的`B@2`会消失。优化一下`package-lock.json`文件的结构。
 
 
 
@@ -3069,14 +3208,14 @@ util.inherits(Girl, EventEmitter); // 现在可以不强求使用这个方法，
 let girl = new Girl(); // once
 
 // 批处理 例如多次修改数据只更新一次页面
-
- // 内部的提供的newListener，会在每次绑定一个事件的时候出触发，但是本次绑定的事件的回调函数还没有被添加的待触发的数组中。
+// 内部的提供的newListener，会在每次绑定一个事件的时候出触发，但是本次绑定的事件的回调函数还没有被添加的待触发的数组中。
 let flag = false;
 girl.on('newListener', (type) => { 
   // 此方法可以监控到用户绑定了哪些事件
   if (!flag) {
     process.nextTick(() => {
-      girl.emit(type); // ?
+      girl.emit(type); 
+      flag = false
     });
     flag = true;
   }
@@ -3110,6 +3249,8 @@ girl.on('女生失恋了', () => {
 // girl.emit('女生失恋了') // 第一次执行完毕后在列表中移除了哭的这件事
 // girl.emit('女生失恋了')
 ```
+
+
 
 让构造函数继承另一个构造函数的原型方法：
 
@@ -3197,7 +3338,7 @@ module.exports = EventEmitter
 ```json
 "bin": {
   'key': 'bin/www',    // 表示执行key命令对应的执行文件是bin目录下的www文件
-	'xxx':'bin/yyy'
+  'xxx':'bin/yyy'
 }
 
 "bin": 'bin/www'  // 这样写的话，执行的命令就默认使用package.json中的name字段执行命令
@@ -3292,6 +3433,8 @@ npm 提供了 pre 和 post 两种钩⼦机制，可以定义某个脚本 前后�
 
 npm采⽤了semver规范作为依赖版本管理⽅案。semver 约定 ⼀个包的版本号必须包含3个数字 
 
+主版本号.次版本号.修订号
+
 - MAJOR，主版本号
 - MINOR，⼩版本号
 - PATCH，修订版本号
@@ -3351,7 +3494,7 @@ const buf1 = Buffer.allocated(size[, value])  // size是字节数  每个字节�
 
 const buf2 = Buffer.from(arrayBuffer)  // 根据arrayBuffer自行指定buffer中每一项的存储内容
 
-const buf3 = Buffer.form(string)  // 将字符串转为二进制存储到buffer中
+const buf3 = Buffer.from(string)  // 将字符串转为二进制存储到buffer中
 
 ```
 
@@ -3363,13 +3506,13 @@ buffer合并：
 
 ```js
 // buffer类似数组，可以通过索引和长度来访问每个字节
-const buf1 = Buffer.form('hello')
-const buf2 = Buffer.form('world')
+const buf1 = Buffer.from('hello')
+const buf2 = Buffer.from('world')
 
 const buf3 = Buffer.alloc(buf1.length+buf2.length)
 // buf1.copy(target,targetStart,sourceStart,sourceEnd)
-buf1.copy(buf3,0,0,6)
-buf2.copy(buf3,6,0,6)
+buf1.copy(buf3,0,0,5)
+buf2.copy(buf3,5,0,5)
 
 
 parseInt('10111001',2) // 二进制的数转为 10 进制
@@ -3434,7 +3577,7 @@ code += code.toLowerCase();
 code += '0123456789+/';
 console.log(code[57] + code[56] + code[62] + code[32]); // 54+g  base32 将值限制到32位以下这样就可以实现32位编码了
 
-Buffer.from('珠').toString('base64')
+Buffer.from('珠').toString('base64')  // 直接转为base64的图片的语法糖
 ```
 
 Buffer 就是内存，Buffer 一旦声明就不能改变大小。声明 buffer 时需要一个固定的长度作为声明的依据。Buffer 的长度是以字节为单位。
@@ -3601,7 +3744,6 @@ Buffer.prototype.split = function (sep) {
 
 buffer 的应用主要就是文件读取，node 中对文件进行读取后重写，读取后进行渲染等都需要对文件进行读取。
 
-- fs 操作和作用
 - 流读取数据，操作文件大部分时候还是使用流方式读取
 
 node 中的文件模块一般提供两种方式的方法：同步（性能高，阻塞）和异步（非阻塞）
@@ -3612,7 +3754,7 @@ node 中的文件模块一般提供两种方式的方法：同步（性能高，
 const fs = require('fs')
 const path = require('path')
 
-fs.readfile(path.resolve(__dirname),name.txt,['utf8',]function(err,data){   // 将一个文件的内容都读到内存中，不指定编码时，data为buffer格式
+fs.readfile(path.resolve(__dirname,'name.txt'),['utf8',]function(err,data){   // 将一个文件的内容都读到内存中，不指定编码时，data为buffer格式
     fs.writeFile(path.resolve(__dirname,'copt.txt'),data,function(error,data){
         // 清空后写入或者创建后写入
     })
@@ -3622,7 +3764,7 @@ fs.readfile(path.resolve(__dirname),name.txt,['utf8',]function(err,data){   // �
 
 
 // 目的：读取一部分处理一部分，处理完后释放那部分（流）
-// w:write 如果写入的文件不存在，就创建，存在就清空写入
+// w:write 如果写入的文件不存在，就创建；存在就清空写入
 // r:read 文件不存在会报错  fs.readFile
 // a:append 在原有基础上增加
 // w+ 如果读取的文件不存在不会报错
@@ -3639,7 +3781,7 @@ fs.open(path.resolve(__dirname,'name.txt'),'r',function(err,fd){  // 打开文�
     // 读取文件的位置 ReadPosition
     fs.read(fd,buf,0,3,0,function(error,bytesRead){
         // bytesRead 真实读取到的个数
-        fs.open(path.resolve(__dirname,'copy.txt','w',[mode],function(error,wfd){
+        fs.open(path.resolve(__dirname,'copy.txt','w',function(error,wfd){
             // 向wfd文件写入buf，从buf的第0个字节开始取出，取出bytesRead个字节，从wfd的第0个字节位置开始写入
             fs.write(wfd,buf,0,bytesRead,0,function(err，written){
                 // written 真正写入的个数
@@ -3655,6 +3797,7 @@ fs.open(path.resolve(__dirname,'name.txt'),'r',function(err,fd){  // 打开文�
 function copy(source,target,cb){
     const BUFFER_SIZE = 5
     let readPosition = 0;
+    let writePosition = 0;
     const buffer = Buffer.alloc(BUFFER_SIZE); // 这个是内存中的内容
     // 读和写没有分离，强依赖
     fs.open(path.resolve(__dirname, source), 'r', function (err, rfd) {
@@ -3675,8 +3818,9 @@ function copy(source,target,cb){
                         }
                         return destroy();
                     }
-                    fs.write(wfd, buffer, 0, bytesRead, function (err, written) {
+                    fs.write(wfd, buffer, 0, bytesRead, writePosition, function (err, written) {
                         readPosition += written; // 维护读取的长度
+                        writePosition = readPosition
                         next()
                     });
                 })
@@ -3693,6 +3837,8 @@ function copy(source,target,cb){
 
 
 ## 文件可读流
+
+还有其他的可读流，比如http的可读流。
 
 ```js
 const fs = rquire('fs');
@@ -3711,16 +3857,19 @@ let res = fs.createReadStream(path.resolve(__dirname, 'note.md'), {
 // 读4 写2 执行1  和为7   777表示：自己可读可写可执行， 所在组的可读可写可执行， 其他人可读可写可执行
 
 // 可读流底层是基于event模块实现的
+// 底层一旦监听到绑定了data事件，内部会在newListener事件中触发emit事件
 res.on('data', function (chunk) {
   // 内部每次的可读流都会触发该方法
   res.pause(); // 本次读取流触发后，执行该行则暂停直流对指定文件的读取
-
-  // rs.resume()  // 回复读取流
+  // rs.resume()  // 恢复读取流
 });
 
 res.on('end', function () {
   // 可读流读取文件内容完毕后会触发该end事件
 });
+
+res.on('error', function (error) {});
+// 可读流可以控制速率和暂停读取
 
 res.on('close', function () {});
 
@@ -3728,8 +3877,6 @@ res.on('open', function (fd) {
   // 只有文件才有open和close
 });
 
-res.on('error', function (error) {});
-// 可读流可以控制速率和暂停读取
 ```
 
 提示：当在 node 项目中看到 xxx.on('data',function(){ ... }) , xxx.on('end',function(){....})的代码的话，说明一定是一个基于发布定于event模块的代码。
@@ -3768,6 +3915,7 @@ rs.pipe(ws); // 管道就是将文件读取出来传递到其它地方
 ```js
 const EventEmitter = require('events');
 const fs = require('fs');
+
 class ReadStream extends EventEmitter {
   constructor(path, options) {
     super();
@@ -3779,7 +3927,7 @@ class ReadStream extends EventEmitter {
     this.autoClose = !!options.autoClose;
     this.emitClose = !!options.emitClose;
     this.flowing = false; // 默认叫非流动模式
-    this.open(); // 默认打开文件 //1s
+    this.open(); // 默认打开文件 
     this.on('newListener', (type) => {
       if (type === 'data') {
         this.flowing = true;
@@ -3870,7 +4018,7 @@ module.exports = createReadStream;
 
 可写流有两个典型的事件：
 
-- write('()=>{})
+- write(()=>{})
 - end(()=>{})
 
 **典型的可读和可写流**
