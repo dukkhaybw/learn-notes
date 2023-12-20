@@ -13,49 +13,51 @@
 3. 采用定位后不利于之后的布局
 4. 中间列背景有部分被左右两列定位所覆盖
 
-> `CSS部分`
->
-> ```<style>
->  * {
->    margin: 0;
->    padding: 0;
->  } 
->  div {
->      height: 50px;
->  }
->
-> .left {
->    position: absolute;
->    top: 0;
->    left: 0;
->    width: 100px;
->    background-color: orchid;
->    opacity: 0.5;
-> }
->
-> .right {
->    position: absolute;
->    top: 0;
->    right: 0;
->    width: 100px;
->    background-color: rebeccapurple;
->    opacity: 0.5;
-> }
->
-> .middle {
->    margin: 0 100px;
->    background-color: orange;
-> }
->
->
->     HTML部分
->
+> ```html
+> <style>
+>     * {
+>         margin: 0;
+>         padding: 0;
+>     } 
+>     div {
+>         height: 50px;
+>     }
+> 
+>     .left {
+>         position: absolute;
+>         top: 0;
+>         left: 0;
+>         width: 100px;
+>         background-color: orchid;
+>         opacity: 0.5;
+>     }
+> 
+>     .right {
+>         position: absolute;
+>         top: 0;
+>         right: 0;
+>         width: 100px;
+>         background-color: rebeccapurple;
+>         opacity: 0.5;
+>     }
+> 
+>     .middle {
+>         margin: 0 100px;
+>         background-color: orange;
+>     }
+> </style>
+> 
+> 
+> HTML部分
+> 
 > <body style="opsition:relative">
->   <div class="left">left内容</div>
->   <div class="middle">middle内容</div>
->   <div class="right">right内容</div>
+>     <div class="left">left内容</div>
+>     <div class="middle">middle内容</div>
+>     <div class="right">right内容</div>
 > </body>
 > ```
+
+
 
 #### 浮动方式
 
@@ -67,7 +69,7 @@
 
 > `CSS部分`
 >
-> ``` <style>
+> ``` css
 > * {
 >   margin: 0;
 >   padding: 0;
@@ -96,11 +98,13 @@
 >
 > `HTML部分`
 >
-> ```
+> ```html
 > <div class="left">left内容</div>
 > <div class="right">right内容</div>
 > <div class="middle">middle内容</div>
 > ```
+
+
 
 #### 圣杯布局
 
@@ -114,53 +118,51 @@
 
  margin-top 和 margin-bottom 在盒子没有浮动的情况下，能实现盒子的上下移动。
 
-> `CSS部分`
->
 > ```css
-> * {
+>* {
 >   margin: 0;
 >   padding: 0;
 > }
->
+> 
 > .content {
->   margin: 0 100px; //最好使用padding
+>  margin: 0 100px; //最好使用padding
 > }
->
+> 
 > .content > div {
->   float: left;
+>  float: left;
 >   height: 100px;
 > }
->
+> 
 > .left {
->   position: relative;
+>  position: relative;
 >   top: 0;
 >   left: -100px;
 >   margin-left: -100%; //left是相对定位时，百分比单位的参照对象时最近一级父块级元素的padding+content的宽度
 >   width: 100px;
 >   background-color: orange;
 > }
->
+> 
 > .right {
->   position: relative;
+>  position: relative;
 >   top: 0;
 >   right: -100px;
 >   margin-left: -100px;
 >   width: 100px;
 >   background-color: orchid;
 > }
->
+> 
 > .middle {
->   width: 100%; //middle是静态定位时，百分比单位的参照对象时最近一级父块级元素的padding+content的宽度
+>  width: 100%; //middle是静态定位时，百分比单位的参照对象时最近一级父块级元素的padding+content的宽度
 >   background-color: paleturquoise;
 > }
->
+> 
 > footer {
->   height: 100px;
+>  height: 100px;
 >   background-color: coral;
 > }
->
+> 
 > .clearfix::after {
->   content: '';
+>  content: '';
 >   display: block;
 >   clear: both;
 > }
@@ -168,11 +170,11 @@
 >   *zoom: 1;
 > }
 > ```
->
+> 
 > `HTML部分`
 >
-> ```
-> <div class="content clearfix">
+> ```html
+><div class="content clearfix">
 >     <div class="middle">middle内容</div>
 >     <div class="left">left内容</div>
 >     <div class="right">right内容</div>
@@ -184,64 +186,64 @@
 
 > `CSS部分`
 >
-> ```
-> 	* {
+> ```css
+> * {
 >     margin: 0;
 >     padding: 0;
->   }
+> }
 >
->   .content {
->  	 overflow:hidden;   //伪等高布局加入
->      padding: 0 100px;
->   }
+> .content {
+>     overflow:hidden;   //伪等高布局加入
+>     padding: 0 100px;
+> }
 >
->   .content>div {
+> .content>div {
 >     float: left;
 >     padding-bottom: 10000px;  //伪等高布局加入
 >     margin-bottom: -10000px;  //伪等高布局加入
->   }
+> }
 >
->   .left {
+> .left {
 >     position: relative;
 >     top: 0;
 >     left: -100px;
 >     margin-left: -100%;   //left是相对定位时，百分比单位的参照对象时最近一级父块级元素的padding+content的宽度
 >     width: 100px;
 >     background-color: orange;
->   }
+> }
 >
->   .right {
+> .right {
 >     position: relative;
 >     top: 0;
 >     left: 100px;
 >     margin-left: -100px;
 >     width: 100px;
 >     background-color: orchid;
->   }
+> }
 >
->   .middle {
+> .middle {
 >     width: 100%; //middle是静态定位时，百分比单位的参照对象时最近一级父块级元素的padding+content的宽度
 >     background-color: paleturquoise;
->   }
+> }
 >
->   footer {
+> footer {
 >     height: 100px;
 >     background-color: coral;
->   }
+> }
 >
->   .clearfix::after {
+> .clearfix::after {
 >     content: '';
 >     display: block;
 >     clear: both;
->   }
->   .clearfix{
+> }
+> .clearfix{
 >     *zoom:1;
->   }
+> }
 > ```
 >
 > `HTML部分`
 >
-> ```
+> ```html
 > <div class="content clearfix">
 >     <div class="middle">
 >       middle内容
@@ -256,57 +258,59 @@
 > <footer></footer>
 > ```
 
+
+
 #### 双飞翼布局
 
 > `CSS部分`
 >
-> ```
-> 	* {
->    margin: 0;
->    padding: 0;
->  }
+> ```css
+> * {
+>     margin: 0;
+>     padding: 0;
+> }
 >
->  .content {
->    color: black;
->  }
+> .content {
+>     color: black;
+> }
 >
->  .content>div {
->    float: left;
->  }
+> .content>div {
+>     float: left;
+> }
 >
->  .middle {
->    width: 100%;
->    background-color: #afc;
->  }
+> .middle {
+>     width: 100%;
+>     background-color: #afc;
+> }
 >
->  .left {
->    margin-left: -100%;
->    width: 100px;
->    background-color: blueviolet;
->    opacity: 0.2;
+> .left {
+>     margin-left: -100%;
+>     width: 100px;
+>     background-color: blueviolet;
+>     opacity: 0.2;
 >
->  }
+> }
 >
->  .right {
->    margin-left: -100px;
->    width: 100px;
->    background-color: coral;
->    opacity: 0.2;
->  }
+> .right {
+>     margin-left: -100px;
+>     width: 100px;
+>     background-color: coral;
+>     opacity: 0.2;
+> }
 >
->  .middle_inner {
->    margin: 0 100px;
->    background-color: crimson;
->  }
->   .clearfix {
->    *zoom: 1
->  }
+> .middle_inner {
+>     margin: 0 100px;
+>     background-color: crimson;
+> }
+> .clearfix {
+>     *zoom: 1
+> }
 >
->  .clearfix::after {
->    content: '';
->    display: block;
->    clear: both;
->  }
+> .clearfix::after {
+>     content: '';
+>     display: block;
+>     clear: both;
+> }
 > ```
 >
 > `HTML部分`
@@ -320,6 +324,8 @@
 >   <div class="right">right内容</div>
 > </div>
 > ```
+
+
 
 #### 利用 flex
 
@@ -410,7 +416,7 @@
 >
 > .content {
 >   min-height: 100%;
->   overfl: hidde; //清除浮动
+>   overflow: hidde; //清除浮动
 > }
 >
 > .footer {
@@ -426,7 +432,7 @@
 >
 > `HTML部分`
 >
-> ```
+> ```html
 > <div class="content">
 >   <div class="inner">
 >     <h2>阿斯弗</h2>
@@ -437,6 +443,8 @@
 >   footer
 > </div>
 > ```
+
+
 
 ### 两列布局
 
@@ -536,25 +544,74 @@
 
 #### 方式四：浮动
 
-> ```javascript
-> <div class="left"></div><div class="right">asdasd</div><style> .left {   float: left;   width: 200px;   height: 500px;   background-color: rgba(145, 22, 196, 0); } .right {   margin-left: 200px;   height: 500px;   background-color: greenyellow; }</style>
+> ```html
+> <div class="left"></div>
+> <div class="right">asdasd</div>
+> <style> 
+>     .left {   
+>         float: left;   
+>         width: 200px;   
+>         height: 500px;   
+>         background-color: rgba(145, 22, 196, 0); 
+>     } 
+>     .right {   
+>         margin-left: 200px;   
+>         height: 500px;   
+>         background-color: greenyellow; 
+>     }
+> </style>
 > ```
 >
 > 注意点：右侧盒子没有给到具体宽度
 
 #### 方式五：
 
-> ```javascript
-> <div class="left"></div><div class="right">asdasd</div>.left {   float: left;   width: 200px;   height: 500px;   background-color: rgba(145, 22, 196, 0); } .right {   width: calc(100%-200px);   margin-left: 200px;   height: 500px;   background-color: greenyellow; }
+> ```html
+> <div class="left"></div>
+> <div class="right">asdasd</div>
+> <style> 
+>     .left {   
+>         float: left;   
+>         width: 200px;   
+>         height: 500px;   
+>         background-color: rgba(145, 22, 196, 0); 
+>     } 
+>     .right {   
+>         width: calc(100%-200px);   
+>         margin-left: 200px;   
+>         height: 500px;   
+>         background-color: greenyellow; 
+>     }
+> </style>
 > ```
 >
 > 注意点：右侧盒子采用了 css 计算方式动态计算宽度。
 
 #### 方式六(grid 布局)：
 
+> ```html
+> <style> 
+>     .box{ 
+>         height: 400px;
+>         border: 1px solid red;
+>         margin: 20px auto;
+>         display: grid; 
+>         grid-template-columns: 100px  auto;
+>         grid-template-rows: 100%;}
+>     .left{
+>         background-color: #afc;
+>     }
+>     .right{
+>         background-color: #ccc;
+>     }
+> </style>
+> <div class="box"> 
+>     <div class="left"></div> 
+>     <div class="right"></div>
+> </div>
 > ```
-> .box{ height: 400px;border: 1px solid red;margin: 20px auto;display: grid; grid-template-columns: 100px  auto;grid-template-rows: 100%;}.left{background-color: #afc;}.right{background-color: #ccc;}<div class="box"> <div class="left"></div> <div class="right"></div></div>
-> ```
+
+
 
 ### 0.5px 边框
 
@@ -570,11 +627,13 @@
 linear-gradient([ [ [ <angle> | to [top | bottom] || [left | right] ],]? <color-stop>[, <color-stop>]+);
 ```
 
-<img src=".\typora-user-images\image-20210316112147418.png" alt="image-20210316112147418" style="zoom:80%;" />
+<img src="..\typora-user-images\image-20210316112147418.png" alt="image-20210316112147418" style="zoom:80%;" />
 
 background-image: linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);
 
 第一个 rgba(255,255,255,.15) 25%,说的是从左下角开始起到 25%为 rgba(255,255,255,.15),这里默认隐藏了起始点的设定，然后 transparent 25%到 50%是透明的( transparent),然后就是 50%到 75%为 rgba(255,255,255,.15)这个颜色，接着就是从 75%到 100%为 transparent,这里又省略了一个 100%他是默认值
+
+
 
 #### 单边框
 
@@ -612,6 +671,8 @@ background-image: linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transpare
 注意：上面这种情况高度实际可见的为199.5px，有0.5px为伪元素的高度。
 ```
 
+
+
 #### 多边框
 
 **定位 + 伪元素 + transform（缩放 scale）**
@@ -642,6 +703,8 @@ background-image: linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transpare
 
 注意点：transform :scale（）会对元素的可见区域进行缩放，包括 content、padding、border。
 
+
+
 ### css 画基本图形
 
 #### 圆形
@@ -652,6 +715,8 @@ background-image: linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transpare
 (或者50%、大于宽和高的一半的数值px都会得到一样的效果)}
 ```
 
+
+
 #### 三角形
 
 ```html
@@ -661,9 +726,13 @@ border-bottom-color: red;}.box{ width: 0; height: 0; border-left: 20px solid tra
 border-right: 20px solid transparent; border-bottom: 20px solid teal;}
 ```
 
+
+
 #### clip-path 属性实现任何图形
 
 不支持 IE 和 Firefox，支持 webkit 浏览器，在现代浏览器中需要使用`-webkit-`前缀。
+
+
 
 ##### 圆形
 
@@ -674,7 +743,9 @@ clip-path: circle(50%); //50%表示}创建圆形，需要给circle传入三个�
 y），用at关键字来定义圆心坐标。
 ```
 
-![image-20210321085229533](.\typora-user-images\image-20210321085229533.png)
+![image-20210321085229533](..\typora-user-images\image-20210321085229533.png)
+
+
 
 ##### 三角形
 
@@ -703,6 +774,8 @@ y），用at关键字来定义圆心坐标。
 
 注意：clip-path：polygon（）通过定义多个点，自动连接后，最后取闭合后形成任意形状的图形。点的取值可以是固定值或百分比，而且点的数量也可以固定。
 
+
+
 ##### 扇形
 
 ```html
@@ -729,15 +802,19 @@ y），用at关键字来定义圆心坐标。
 <div class="box"></div>
 ```
 
+
+
 ### 垂直水平居中
 
-已知父元素宽高固定和子元素的宽高
+**已知父元素宽高固定和子元素的宽高**
 
 - 方式一：父元素开启 BFC（防止子元素外边距塌陷），给子元素设置父元素宽高减去子元素宽高的 margin-top 与 margin-left 值
 
 - 方式二：给父元素开启怪异盒子模型（box-sizing：border-box），设置父元素的 padding-top 与 padding-left
 
-未知子元素的宽高
+**未知子元素的宽高**
+
+
 
 #### 方式一:flex
 
@@ -756,21 +833,9 @@ y），用at关键字来定义圆心坐标。
     background-color: pink;
   }
 </style>
-
-<div style="width: 300px;height: 300px;" class="wrap">
-  <div style="width: 100px;height: 100px;" class="box"></div>
-</div>
-<style>
-  .wrap {
-    display: flex;
-    background-color: #afc;
-  }
-  .box {
-    margin: auto;
-    background-color: pink;
-  }
-</style>
 ```
+
+
 
 #### 方式二：table-cell
 
@@ -794,15 +859,27 @@ display:
 table-cell;它本身是为了控制文本的水平和垂直居中的，所以要让子元素转为行内块元素。它要求父元素必须有固定宽高。
 ```
 
+
+
 #### 方式三：inline-block + vertical-align（近似水平垂直居中）
 
 ```html
 <div style="width: 300px;height: 300px;" class="wrap">
-  <div style="width: 100px;height: 100px;" class="box"></div>
+    <div style="width: 100px;height: 100px;" class="box"></div>
 </div>
-.wrap{ text-align:center; line-height: 300px; } .box{ display: inline-block; vertical-align: middle;
-}
+<style>
+    .wrap{ 
+        text-align:center; 
+        line-height: 300px; 
+    } 
+    .box{ 
+        display: inline-block; 
+        vertical-align: middle;
+    }
+</style>
 ```
+
+
 
 #### 方式四:abslute + 负 margin （知道子元素宽高）
 
@@ -831,6 +908,8 @@ table-cell;它本身是为了控制文本的水平和垂直居中的，所以要
 //将盒子基于当前位置往左上方移动自己宽高的一般}不足，这种情况开发者必须知道子元素的宽高，以用于设置margin负值。
 ```
 
+
+
 #### 方式五:abslute + margin:auto（ 不知道子元素宽高）
 
 ```html
@@ -858,9 +937,10 @@ table-cell;它本身是为了控制文本的水平和垂直居中的，所以要
     background-color: #afc;
   }
 </style>
-//
-这种情况也必须要知道子元素的宽高，如果宽高不固定，首先会默认让子元素的宽高调到最大以满足布局约束。
+// 这种情况也必须要知道子元素的宽高，如果宽高不固定，首先会默认让子元素的宽高调到最大以满足布局约束。
 ```
+
+
 
 #### 方式六：abslute + transform：translate(-50%,-50%)
 
@@ -887,6 +967,8 @@ table-cell;它本身是为了控制文本的水平和垂直居中的，所以要
 //CSS3属性，-50%是相对于子元素自身的宽高，兼容性不够好}
 ```
 
+
+
 #### 方式七:grid
 
 ```html
@@ -904,9 +986,15 @@ table-cell;它本身是为了控制文本的水平和垂直居中的，所以要
 </style>
 ```
 
+
+
 #### 方式八：用 JS 来实现
 
-### 问题：
+
+
+
+
+### 问题
 
 #### margin 纵向重叠问题
 
@@ -923,28 +1011,193 @@ p {
 <p></p>
 <p>BBB</p>
 问题：元素AAA与元素BBB之间的距离是多少？答案：15px考查点： 1.相邻元素中，前一个节点的margin-bottom与后一个节点的margin-top会发生重叠；2。空元素也会重叠。
+
+
+.box {
+    margin: 50px;
+}
+<p>123123</p>
+<div class="box"></div>
+<p>123123</p>
+
+两个p之间间隔50px
 ```
+
+
 
 #### BFC 的理解与应用
 
-BFC，块级格式化上下文，一个开启了新 BFC 的盒子是独立布局的，盒子里面的子元素的样式不会影响到外面的元素
+css核心概念=>核心概念相关面试题=>实际开发如何使用这些特性。
 
-在同一个 BFC 中的两个毗邻的块级盒在垂直方向（和布局方向有关系）的 margin 会发生折叠。
+只要不是响应式相关的布局，一般的普通布局都会受到BFC（block formatting context）概念的影响。平时清除浮动，伪类操作，边距塌陷都可以借助BFC来解决。
 
-一个页面是由很多个 Box 组成的,元素的类型和 display 属性,决定了这个 Box 的类型 W。
+BFC，块级格式化**上下文**，既然是上下文，那就可以在页面的多个地方创建不同的彼此独立的上下文区域，**一个开启了新 BFC 的盒子是独立布局的，盒子里面的子元素的样式不会影响到外面的元素，且盒子内部有一套自己的渲染规则**。
+
+
+
+一个页面是由很多个 Box 组成的,元素的类型和 display 属性,决定了这个 Box 的类型。
 
 不同类型的 Box,会参与不同的 Formatting Context（决定如何渲染文档的容器）,因此 Box 内的元素会以不同的方式渲染,也就是说 BFC 内部的元素和外部的元素不会互相影响。
 
-##### 如何开启 BFC，作用
 
-- 1、浮动元素，float 除 none 以外的值
-- 2、绝对定位元素，position（absolute，fixed）
-- 3、display 为以下其中之一的值 inline-blocks，table-cells，table-captions
+
+#### BFC盒子内部布局规则
+
+1. 开启BFC的盒子，内部的块级元素默认垂直方向上排布，一个块级元素独占一行，行类元素，水平排布
+
+2. 在同一个 BFC 中的两个毗邻的块级盒在**垂直方向**（和布局方向有关系）的 margin 会发生折叠
+
+3. 计算BFC盒子的高度的时候，该bfc盒子内浮动的元素的高度也是会被计算进去的（用于清除浮动）
+
+4. 开启BFC的盒子不会和其他同层级的开启浮动的盒子产生重叠的区域（可以用于双列布局）
+
+   ````html
+   <style>
+       .flo {
+           float: left;
+           width: 100px;
+           height: 100px;
+           opacity: 0.3;
+           background-color: aquamarine;
+       }
+       .box {
+           background-color: red;
+       }
+   </style>
+   
+   <body>
+       <div class="flo"></div>
+       <div class="box">
+           <span>123</span>
+           <span>456</span>
+       </div>
+   </body>
+   ````
+
+   ![image-20231214152228260](C:\Users\dukkha\Desktop\learn-notes\css\images\image-20231214152228260.png)
+
+   
+
+   开启box盒子的BFC后：
+
+   ```html
+   <style>
+       .flo {
+           float: left;
+           width: 100px;
+           height: 100px;
+           opacity: 0.3;
+           background-color: aquamarine;
+       }
+       .box {
+           /* 开启box盒子的BFC后 */
+           overflow: auto;
+           background-color: red;
+       }
+   </style>
+   ```
+
+   ![image-20231214152412061](C:\Users\dukkha\Desktop\learn-notes\css\images\image-20231214152412061.png)
+
+   
+
+   
+
+##### 如何开启 BFC
+
+- 1、浮动元素，float 除 none 以外的值（导致开启BFC的块级元素的宽度失效）
+- 2、绝对定位元素，position（absolute，fixed）（导致开启BFC的块级元素的宽度失效）
+- 3、display 为以下其中之一的值 inline-blocks，table-cells，table-captions，flex （导致开启BFC的块级元素的宽度失效）
 - 4、overflow 除了 visible 以外的值（hidden，auto，scroll）
 
-- 1、可以阻止边距折叠（margin collapsing）
-- 2、可以包含内部元素的浮动
-- 3、可以阻止元素被浮动覆盖(用于两列布局)
+
+
+
+
+### IFC
+
+Inline Formatting Context：行内格式化上下文。
+
+块级元素中的行内元素就采用IFC机制布局。布局规则有:
+
+1. 子元素水平方向横向排列，并且垂直方向起点为元素顶部。
+2. 子元素只会计算横向样式空间，【padding、border、margin】，垂直方向样式空间不会被计算，【padding、border、margin】。
+3. 在垂直方向上，子元素会以不同形式来对齐（vertical-align）
+4. 能把在一行上的框都完全包含进去的一个矩形区域，被称为该行的行框（line box）。行框的宽度是由包含块（containing box）和与其中的浮动来决定。
+5. **IFC中的“line box”一般左右边贴紧其包含块，但float元素会优先排列**。
+6. IFC中的“line box”高度由 CSS 行高计算规则来确定，同个IFC下的多个line box高度可能会不同。
+7. 当 inline-level boxes的总宽度少于包含它们的line box时，其水平渲染规则由 text-align 属性值来决定。
+8. 当一个“inline box”超过父元素的宽度时，它会被分割成多个boxes，这些 boxes 分布在多个“line box”中。如果子元素未设置强制换行的情况下，“inline box”将不可被分割，将会溢出父元素。
+
+
+
+```html
+<div>
+    <span>213</span>
+    <span>213</span>
+</div>
+<div>asd</div>
+
+<style>
+    span {
+        border: 200px solid #ccc;
+    }
+</style>
+```
+
+![image-20231214172501245](C:\Users\dukkha\Desktop\learn-notes\css\images\image-20231214172501245.png)
+
+IFC应用：
+
+1. 解决元素（行内元素或者行内块元素）垂直居中，水平居中使用text-align，垂直居中使用line-hight属性定于父元素高度
+2. 多个文本元素行高不一致排列混乱vertical-align
+3. float元素优先排列（在文章段落开头添加“tag”可以用到）
+4. 多个元素水平居中（水平排列规则根据IFC容器的text-align值来排列，可以用来实现多个子元素的水平居中）
+
+元素采用flex布局的话，上下文就是FFC。
+
+
+
+
+
+#### 相邻元素外边距问题
+
+ 垂直外边距重叠的条件：
+
+- 相邻
+
+- 垂直方向
+
+- 外边距
+
+  为了解决外边距重叠的情况，只要破坏上面三者中的一个条件就能满足。
+
+ 两个或多个相邻的文档流中的块元素垂直方向上的 margin 会折叠。当两者都是正数时，真实的垂直外边距取两者中较大者；当两者都是负数时，真实的垂直外边距取两者中绝对值较大者；当两者一正一负时，真实的垂直外边距取两者之和。水平方向的 margin 不会发生折叠的现象。 浮动元素、inline-block 元素、绝对定位元素的 margin 不会和垂直方向上其他元素的 margin 折叠（开启了 BFC）
+
+![image-20210315143021921](..\typora-user-images\image-20210315143021921.png)
+
+![image-20210315143112939](..\typora-user-images\image-20210315143112939.png)
+
+![image-20210315143203401](..\typora-user-images\image-20210315143213536.png)
+
+![image-20210315143233786](..\typora-user-images\image-20210315143233786.png)
+
+解决相邻元素垂直外边距合并的方法有：
+
+1. 在两个元素之间插入一个BFC元素，分隔开两个元素
+2. 将其中一个元素外面套一个父级块元素，并开启父级元素的BFC
+3. 将其中一个元素外面套一个父级块元素（外边距塌陷），同时给该父级元素设置一个边框进行隔离
+4. 将其中一个元素外面套一个父级块元素（外边距塌陷），并通过该父级元素的伪类来隔离开两个元素
+
+
+
+**父子元素**之间垂直外边距塌陷：父元素没有设置 margin-top 而内部的第一个子元素设置了 margin-top:50px，那么这个外边距会作用在父元素上，而不是把子元素设置为距离父元素上边框 50px; 如果父子元素同时设置了 margin-top，那么父元素的外边距取它们中较大者的值。
+
+ 解决方法：1. 给父元素开启 BFC ； 2.给父元素加上边框 ； 3.子元素不用外边距而改为父元素用 padding
+
+
+
+
 
 #### 溢出文本显示省略号
 
@@ -962,24 +1215,66 @@ display:-webkit-box;
 -webkit-box-orient:vertical;
 ```
 
+
+
 ## 响应式板块
 
  响应式布局指的是同一页面在不同屏幕尺寸下有不同的布局。传统的开发方式是 PC 端开发一套，手机端再开发一套，而使用响应式布局只要开发一套就够，缺点就是`CSS`比较重。
 
  响应式设计与自适应设计的区别：响应式开发一套界面，通过检测视口分辨率，针对不同客户端在客户端做代码处理，来展现不同的布局和内容；自适应需要开发多套界面，通过检测视口分辨率，来判断当前访问的设备是 pc 端、平板、手机，从而请求服务层，返回不同的页面。
 
+
+
 ### 响应式布局的实现方案
 
 #### 1. 媒体查询
 
-![image-20210317191806567](.\typora-user-images\image-20210317191806567.png)
+![image-20210317191806567](..\typora-user-images\image-20210317191806567.png)
 
 不管是移动优先还是 PC 优先，都是依据当随着屏幕宽度增大或减小的时候，后面的样式会覆盖前面的样式。因此，移动端优先首先使用的是`min-width`，PC 端优先使用的`max-width`。
 
 **移动优先:**
 
-```
-/* iphone6 7 8 */body {    background-color: yellow;}/* iphone 5 */@media screen and (max-width: 320px) {    body {      background-color: red;    }}/* iphoneX */@media screen and (min-width: 375px) and (-webkit-device-pixel-ratio: 3) {    body {      background-color: #0FF000;    }}/* iphone6 7 8 plus */@media screen and (min-width: 414px) {    body {      background-color: blue;    }}/* ipad */@media screen and (min-width: 768px) {    body {      background-color: green;    }}/* ipad pro */@media screen and (min-width: 1024px) {    body {      background-color: #FF00FF;    }}/* pc */@media screen and (min-width: 1100px) {    body {      background-color: black;    }}
+```css
+/* iphone6 7 8 */
+body {    
+    background-color: yellow;
+}
+/* iphone 5 */
+@media screen and (max-width: 320px) {    
+    body {      
+        background-color: red;    
+    }}
+/* iphoneX */
+@media screen and (min-width: 375px) and (-webkit-device-pixel-ratio: 3) {    
+    body {      
+        background-color: #0FF000;    
+    }
+}
+/* iphone6 7 8 plus */
+@media screen and (min-width: 414px) {    
+    body {      
+        background-color: blue;    
+    }
+}
+/* ipad */
+@media screen and (min-width: 768px) {    
+    body {      
+        background-color: green;    
+    }
+}
+/* ipad pro */
+@media screen and (min-width: 1024px) {    
+    body {      
+        background-color: #FF00FF;
+    }
+}
+/* pc */
+@media screen and (min-width: 1100px) {    
+    body {
+        background-color: black; 
+    }
+}
 ```
 
 **PC 优先：**
@@ -1195,6 +1490,8 @@ white-space:nowrap;overflow:hidden;text-overflow:ellipisis;
 
 自动变成 display:block; `absolute`和`float`都会隐式改变 display；
 
+
+
 #### 清除浮动
 
 原因与目的：
@@ -1226,28 +1523,23 @@ white-space:nowrap;overflow:hidden;text-overflow:ellipisis;
   缺点：ie6-7不支持伪元素：after，使用zoom:1触发hasLayout.
 
 
-  .clearfix:after,.clearfix:before{
-  	content: "";
-  	display: block;
-  }
-  .clearfix:after{
-  	clear: both;
-  }
-  .clearfix{
-  	*zoom: 1;
-  }
-  既清除了浮动，又实现了内部子元素的外边距问题导致父元素外边距一起塌陷的问题。
+
+```css
+.clearfix:after,.clearfix:before{
+    content: "";
+    display: block;
+}
+.clearfix:after{
+    clear: both;
+}
+.clearfix{
+    *zoom: 1;
+}
+```
+
+既清除了浮动，又实现了内部子元素的外边距问题导致父元素外边距一起塌陷的问题。
 
 
-  .clearfix:after,.clearfix:before{
-  	content: "";
-  	display: block;
-  	clear: both;
-  }
-  .clearfix{
-  	*zoom: 1;  /*开启haslayout*/
-  }
-  ```
 
 - 利用 overflow 不为 visible 清除浮动，触发 BFC
 
@@ -1257,9 +1549,13 @@ white-space:nowrap;overflow:hidden;text-overflow:ellipisis;
 
 - 父元素内部的最后加空标签清浮动`<div style="clear: both;"></div>`
 
+
+
 #### 系统默认滚动条
 
 html 标签上不会出现滚动条，系统滚动条默认是设置在文档上的。
+
+
 
 #### CSS 中 link 与@import 的区别
 
@@ -1275,7 +1571,7 @@ html 标签上不会出现滚动条，系统滚动条默认是设置在文档上
 
 **6.书写位置不同**
 
-```css
+```html
 <head>
 	<link rel="stylesheet" type="text/css" href="theme.css" />
 </head>
@@ -1283,7 +1579,9 @@ html 标签上不会出现滚动条，系统滚动条默认是设置在文档上
         @import url("URL1");    //@import必须写在开头
         @import url("URL2");    //@import必须写在开头
 </style>
-  ```
+```
+
+
 
 #### CSS hack
 
@@ -1301,13 +1599,13 @@ html 标签上不会出现滚动条，系统滚动条默认是设置在文档上
 
 5.line-height 也可以被定义为纯数字， body{line-height:1.2}
 
-![image-20210317184243648](.\typora-user-images\image-20210317184243648.png)
+![image-20210317184243648](..\typora-user-images\image-20210317184243648.png)
 
-![image-20210317184302870](.\typora-user-images\image-20210317184302870.png)
+![image-20210317184302870](..\typora-user-images\image-20210317184302870.png)
 
-![image-20210317184316121](.\typora-user-images\image-20210317184316121.png)
+![image-20210317184316121](..\typora-user-images\image-20210317184316121.png)
 
-![image-20210317184329949](.\typora-user-images\image-20210317184329949.png)
+![image-20210317184329949](..\typora-user-images\image-20210317184329949.png)
 
 一般来说，设置行高为值：纯数字是最理想的方式。因为其会随着对应的 font-size 而放缩。
 
@@ -1335,11 +1633,13 @@ html 标签上不会出现滚动条，系统滚动条默认是设置在文档上
 
  优雅降级（Graceful Degradation）：一开始就构建站点的**完整功能**，然后再针对低版本浏览器进行兼容。比如一开始使用 CSS3 的特性构建了一个应用，然后逐步针对各大浏览器进行 hack 使其可以在低版本浏览器上正常浏览。
 
-![image-20210317175921269](.\typora-user-images\image-20210317175921269.png)
+![image-20210317175921269](..\typora-user-images\image-20210317175921269.png)
 
 渐进增强的写法，优先考虑老版本浏览器的可用性，最后才考虑新版本的可用性。而在现在前缀 CSS3 和正常 CSS3 都可用的情况下，**正常 CSS3 会覆盖前缀 CSS3。**
 
 优雅降级的写法，优先考虑新版本浏览器的可用性，最后才考虑老版本的可用性。而在现在前缀 CSS3 和正常 CSS3 都可用的情况下，**前缀 CSS3 会覆盖正常的 CSS3。**
+
+
 
 #### 如何消除图片底部的空白缝隙
 
@@ -1350,6 +1650,8 @@ html 标签上不会出现滚动条，系统滚动条默认是设置在文档上
 方式 3：font-size：0；
 
 方式 4：.box {line-height ：0； }
+
+
 
 #### 如何控制一个元素的显示和隐藏
 
@@ -1380,8 +1682,42 @@ html 标签上不会出现滚动条，系统滚动条默认是设置在文档上
 #### 自定义单选框外观样式
 
 ```css
-/* 考察的知识点：  如何隐藏一个盒子内的子元素； */        label {    position: relative;    overflow: hidden;    float: left;    width: 100px;    height: 100px;    margin: 5px;}label>input {    position: absolute;    top: -999px;    left: -999px;}label>div {    width: 100%;    height: 100%;    background-color: pink;    border-radius: 50%;    border: 1px solid red;    box-sizing: border-box;}<label>    <input type="radio" name="hobby">    <div></div></label><label>    <input type="radio" name="hobby">    <div></div></label><label>    <input type="radio" name="hobby">    <div></div></label>
+/* 考察的知识点：  如何隐藏一个盒子内的子元素； */        
+label {    
+    position: relative;    
+    overflow: hidden;   
+    float: left;  
+    width: 100px; 
+    height: 100px; 
+    margin: 5px;
+}
+label>input {  
+    position: absolute;   
+    top: -999px;  
+    left: -999px;
+}
+label>div {   
+    width: 100%;  
+    height: 100%; 
+    background-color: pink;   
+    border-radius: 50%;  
+    border: 1px solid red;  
+    box-sizing: border-box;
+}
+<label>   
+<input type="radio" name="hobby">  
+<div></div>
+</label>
+
+<label>    
+<input type="radio" name="hobby">    
+<div></div></label><label>    
+<input type="radio" name="hobby">   
+<div></div>
+</label>
 ```
+
+
 
 #### css 中的变量
 
@@ -1392,6 +1728,8 @@ css 中变量的定义：变量名前面加两个 ”--“
 ```css
 .header {  --color: white;  color: var(--color);  // the color is black  --color: black;}
 ```
+
+
 
 #### display:inline-block 的缺陷
 
@@ -1491,31 +1829,7 @@ document.addEventListener('contextmenu',function(e){ e.preventDefault() })//取�
 document.addEventListener('selectstart',function(e){ e.preventDefault() })//禁止鼠标选中文本
 ```
 
-#### 相邻元素外边距问题
 
- 垂直外边距重叠的条件：
-
-- 相邻
-
-- 垂直方向
-
-- 外边距
-
-  为了解决外边距重叠的情况，只要破坏上面三者中的一个条件就能满足。
-
- 两个或多个相邻的文档流中的块元素垂直方向上的 margin 会折叠。当两者都是正数时，真实的垂直外边距取两者中较大者；当两者都是负数时，真实的垂直外边距取两者中绝对值较大者；当两者一正一负时，真实的垂直外边距取两者之和。水平方向的 margin 不会发生折叠的现象。 浮动元素、inline-block 元素、绝对定位元素的 margin 不会和垂直方向上其他元素的 margin 折叠（开启了 BFC）
-
-![image-20210315143021921](.\typora-user-images\image-20210315143021921.png)
-
-![image-20210315143112939](.\typora-user-images\image-20210315143112939.png)
-
-![image-20210315143203401](.\typora-user-images\image-20210315143213536.png)
-
-![image-20210315143233786](.\typora-user-images\image-20210315143233786.png)
-
- 父子元素之间垂直外边塌陷：父元素没有设置 margin-top 而内部的第一个子元素设置了 margin-top:50px，那么这个外边距会作用在父元素上，而不是把子元素设置为距离父元素上边框 50px; 如果父子元素同时设置了 margin-top，那么父元素的外边距取它们中较大者的值。
-
- 解决方法：1. 给父元素开启 BFC ； 2.给父元素加上边框 ； 3.子元素不用外边距而改为父元素用 padding
 
 ### display:none 和 visibility:hidden 的区别
 
@@ -1523,6 +1837,8 @@ document.addEventListener('selectstart',function(e){ e.preventDefault() })//禁�
 - 不同之处在于 display:none 隐藏后的元素不占据任何空间它各边的元素会合拢，而 visibility:hidden 隐藏的元素空间依旧存在
 - **display:none 隐藏产生 reflow 和 repaint(回流与重绘)，而 visibility:hidden 没有这个影响前端性能的问题**
 - **“连带性”，display:none； 一旦父节点元素应用了 display:none，父节点及其子孙节点元素全部不可见，而且无论其子孙元素如何设置都没用。 visibility:hidden；父级设计 hidden，子元素默认不现实，但是可以用过 visibility:visible 显示出子元素，无渲染与回流。**
+
+
 
 ### CSS3 有哪些新特性
 
@@ -1644,7 +1960,7 @@ box-shadow: h-shadow v-shadow blur spread color inset，h-shadow1 v-shadow1 blur
 }
 ```
 
-![image-20210315183946743](.\typora-user-images\image-20210315183946743.png)
+![image-20210315183946743](..\typora-user-images\image-20210315183946743.png)
 
 #### 边界 border`和轮廓`outline
 
@@ -1691,7 +2007,7 @@ box-shadow: h-shadow v-shadow blur spread color inset，h-shadow1 v-shadow1 blur
 渲染结果：
 ```
 
-<img src=".\typora-user-images\image-20210319234112668.png" alt="image-20210319234112668" style="zoom:80%;" />
+<img src="..\typora-user-images\image-20210319234112668.png" alt="image-20210319234112668" style="zoom:80%;" />
 
 #### 自定义检测低版本 ie 的函数
 
@@ -1839,7 +2155,7 @@ function commonParentNode(Node1, Node2) {
 
 1. 前往字体图标库中选择并下载到本地，解压将文件目录命名为 font（约定）后放在项目的根目录下，目录中的可能文件组成有一下部分
 
-![image-20210528195552880](.\typora-user-images\image-20210528195552880.png)
+![image-20210528195552880](..\typora-user-images\image-20210528195552880.png)
 
 2. 在使用到的页面引入上图中的 iconfont.css 文件
 
@@ -1887,9 +2203,9 @@ function commonParentNode(Node1, Node2) {
    <i class="iconfont">&#x33;</i>  //&#x33;是字体图标对应的编码，可以在文件目录的案例中找到或者在字体图标下载的那个网站下载的那个页面找到  ，同时，类名也是必不可少的，因为css中定义了该类选中的元素应该使用的是指定的字体族，上例中字体组叫：’iconfont'
    ```
 
-   ![image-20210528200518574](.\typora-user-images\image-20210528200518574.png)
+   ![image-20210528200518574](..\typora-user-images\image-20210528200518574.png)
 
-![image-20210528200549426](.\typora-user-images\image-20210528200549426.png)
+![image-20210528200549426](..\typora-user-images\image-20210528200549426.png)
 
 方式二：font-class 引用（常用方式）
 
@@ -1904,7 +2220,7 @@ font-class 是 unicode 使用方式的一种变种，主要是解决 unicode 书
 
 1. 引入项目下面生成的 fontclass 代码
 
-   ![image-20210528195552880](.\typora-user-images\image-20210528195552880.png)
+   ![image-20210528195552880](..\typora-user-images\image-20210528195552880.png)
 
    ```html
    <link rel="stylesheet" href="font/iconfont.css" /> //对应上图中的iconfont.css

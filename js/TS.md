@@ -1,36 +1,6 @@
 
 
-基本使用，基础类型。
 
-TS的特点和为什么出现TS
-
-
-
-
-
-## 数组类型
-
-TS中又两种方式来表示数组类型：
-
-1. type[]方式
-
-   ```ts
-   const digits:number[] = [1,2,3,4]
-   
-   const color:(number|string)[] = ['red',0]
-   ```
-
-   
-
-2. `Array<Type>`
-
-   ```ts
-   const digits:Array<number> = [4,5,6,7]
-   
-   const red:Array<number|string> = ['red',0]
-   ```
-
-   
 
 **只读数组**
 
