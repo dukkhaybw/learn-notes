@@ -2,14 +2,14 @@
 
 - Vue3开发环境搭建，设计理念（和Vue2一样）和整体框架
 - 响应式原理，reactive，effect，watch，computed，ref原理
--  Vue3源码调试技巧，响应式中数组，map和set处理
+-  Vue3源码调试技巧，响应式数组，map和set处理
 - 自定义渲染器原理及RuntimeDOM中的属性、事件处理
 - 虚拟DOM原理、手写Vue3中diff算法及最长递增子序列实现原理
 - 组件渲染原理、组件挂载流程、及异步渲染原理
 - Vue3中生命周期原理，props、emit、slot、provide、inject实现原理
 - Vue3中编译优化、patchFlags、blockTree，实现靶向更新（面试常考）
 - 模板转化ast语法树，编译原理的转化逻辑、及代码生成原理
-- Vue中异步组件原理、Teleport、keep-alive实现原理
+- Vue中异步组件原理、Teleport、keep-alive，transition组件实现原理
 - Pinia和VurRouter源码原理
 - Vue3中单元测试和服务端渲染
 
@@ -18,8 +18,8 @@
 ## Vue设计思想
 
 - Vue3.0更注重模块上的拆分，在2.0中无法单独使用部分模块。需要引入完整的Vuejs(例如只想使用使用响应式部分，但是需要引入完整的Vuejs)， Vue3中的模块之间耦合度低，模块可以独立使用。 **拆分模块**
-- Vue2中很多方法挂载到了实例中导致没有使用也会被打包（还有很多组件也是一样）。Vue3重写方法后， 通过构建工具Tree-shaking机制实现按需引入，减少用户打包后体积。 **重写API**
-- Vue3的核心部分根据虚拟DOM和开发者提供的一些列渲染方法执行渲染工作，其中Vue3又将和具体环境相关的渲染方法单独抽离，   允许自定义渲染器，扩展能力强。不会发生以前的事情：改写Vue源码改造渲染方式。 **扩展更方便**
+- Vue2中很多方法挂载到了实例中导致没有使用也会被打包（还有很多组件也是一样）。Vue3重写方法后， 通过构建工具Tree-shaking机制实现按需引入，减少用户打包后体积。vue2中的optionsAPI中没有用到的属性与方法都会一并被打包。Vue3中的组合式api能解决这个问题。 **重写API**
+- Vue3的核心部分根据虚拟DOM和开发者提供的一些列渲染方法执行渲染工作，其中Vue3又将和具体环境相关的渲染方法单独抽离，允许自定义渲染器，扩展能力强。以前需要改写Vue源码改造渲染方式。 **扩展更方便**
 
 
 
@@ -30,7 +30,7 @@
    - JQ的时代编写的代码都是命令式的，命令式框架重要特点就是关注过程
    - 声明式框架更加关注结果。命令式的代码封装到了Vuejs中，过程靠vuejs来实现
 
-   > 声明式代码更加简单，不需要关注实现，按照要求填代码就可以 （给上原材料就出结果）
+   > 声明式代码更加简单，不需要关注实现，按照要求填代码就可以 
    >
    > ```js
    > - 命令式编程：
@@ -48,7 +48,7 @@
    > console.log(total2)
    > ```
 
-2. 虚拟DOM。传统更新页面，拼接一个完整的字符串innerHTML全部重新渲染，添加虚拟DOM后，可以比较新旧虚拟节点，找到变化再进行更新。虚拟DOM就是一个对象，用来描述真实DOM的，下面是一个虚拟DOM的属性情况：
+2. 虚拟DOM。传统更新页面，每次数据更新都拼接一个完整的字符串innerHTML全部重新渲染，添加虚拟DOM后，操作真实DOM之前，可以比较新旧虚拟节点（DOM DIFF算法），找到变化再进行更新。小程序，单元测试并没有真实DOM概念，可以借助虚拟DOM模拟真实DOM，借助虚拟DOM可以跨平台，虚拟DOM就是一个对象，用来描述真实DOM的，下面是一个虚拟DOM的属性情况：
 
    ```js
    const vnode = {
@@ -68,11 +68,13 @@
    } 
    ```
 
+   
+
 3. 区分编译时和运行时
 
    在编写代码时，直接手写虚拟DOM树来描述页面UI是很繁琐的。都是通过编写.vue文件模板来开发项目，在打包编译时，将模板直接编译为js函数调用，函数执行后返回虚拟DOM。
 
-   专门写个编译时可以将模板编译成虚拟DOM （在构建的时候进行编译性能更高，不需要在运行的时候进行编译，而且vue3在编译中做了很多优化）
+   专门写个编译时可以将模板编译成函数，函数执行后返回虚拟DOM （在构建的时候进行编译性能更高，不需要在运行的时候进行编译，而且vue3在编译中做了很多优化）
 
 
 
@@ -84,7 +86,7 @@
 
 #### 宏观区别：
 
-- vue3.0 的源码采用 monorepo 方式进行管理（将多个项目的代码存储到同一个仓库中），但将模块拆到不同的 package 目录中，多个包本身相互独立，有自己的功能逻辑，单元测试又方便管理等。vue2.0 整个项目的框架包含了许多包，这些包都在一个仓库下进行管理（一个项目就一个仓库），但项目复杂时或追求扩展的时候，很难进行。（**模块拆分**）
+- vue3.0 的源码采用 monorepo 方式进行管理（将多个项目的代码存储到同一个仓库中），将包拆到不同的 package 目录中，多个包本身相互独立，有自己的功能逻辑，单元测试又方便管理，可以独立打包发布等。vue2.0 整个项目的框架包含了许多包，这些包都在一个仓库下进行管理（一个项目就一个仓库），但项目复杂时或追求扩展的时候，很难进行。（**模块拆分**）
 - vue3.0 的性能优化大幅提高，支持 tree-shaking，不使用就不会被打包（依靠函数式的 api 实现）， vue3.0 中主要就是在写函数；在 vue2.0 中写的代码都是写在一个配置对象（options API）中的，这个对象中哪些属性需要，哪些代码需要都是无法被 vue2.0 判断的，自然没有 tree-shaking 一说，并且Vue2中很多方法（$nextTick）挂载到了实例中导致没有使用也会被打包（一些组件(transition组件，)也一样）
 - Vue3允许自定义渲染器，扩展能力强。不会发生以前的事情，改写Vue源码改造渲染方式。 **扩展更方便**
 - vue3.0 采用 ts 开发增强了类型检测，vue2.0 采用的时 flow 进行类型检测
@@ -104,7 +106,7 @@
 
   三、当给对象添加或者删除属性时，没法劫持和监听，导致 vue 中提供了\$set、\$delete API
 
-  proxy 专门用于对象拦截代理的，它性能本来就更高，它也不需要给属性设置 get 或者 set 方法（即不用重新定义原有属性），也不用一开始就对 data 对象进行完整的递归，只有开发者在具体取到某一层时，才会再使用 proxy 进行代理。
+  proxy 专门用于对象，数组拦截代理的，它性能本来就更高，它也不需要给属性设置 get 或者 set 方法（即不用重新定义原有属性），**也不用一开始就对 data 对象进行完整的递归，只有开发者在具体取到某一层时，才会再使用 proxy 进行代理。**
 
 - Vue3.0 中对模板编译进行了优化，编译时生成了 Block tree，哪些数据不需要更新就进行标记， 可以对子节点的动态节点进行收集，可以减少比较并且采用了 patchFlag 标记动态节点
 
@@ -134,9 +136,9 @@
 
 ## Vue3.0 架构分析
 
-vue3.0 的源码采用 monorepo 方式进行管理，monorepo 是管理项目代码的一种方式，指在一个项目仓库（repo）中管理多个模块或者包（package）。
+vue3.0 的源码采用 monorepo 方式进行管理，monorepo 是管理项目代码的一种方式，指在一个项目仓库（repo）中管理多个模块或者包（package）。一个个独立的包有自己的功能，最后组合他们实现一个完整的功能。
 
-- 一个仓库可以维护多个模块，不用到处跳转找仓库
+- 一个仓库可以维护多个模块（包），他们各自可以独立的发布，不用到处跳转找仓库
 
 - 方便版本管理和依赖管理，模块之间的引用非常方便
 
@@ -146,21 +148,38 @@ vue3.0 的源码采用 monorepo 方式进行管理，monorepo 是管理项目代
 
 ### vue3.0 的项目结构
 
-- reactivity:响应式系统
-- runtime-core:与平台无关的运行时核心（可以创建争对特定平台的运行时——自定义渲染器）
+左边是vue2的源码结构，右边是vue3的源码结构
+
+![image-20231222175825575](images\image-20231222175825575.png)
+
+
+
+- reactivity：响应式系统
+- server-renderer：用于服务端渲染
+
+运行时：
+
+- runtime-core：与平台无关的运行时核心（可以创建争对特定平台的运行时——自定义渲染器）
 - runtime-dom：针对浏览器的运行时，包括 DOM API，属性和事件处理等
 - runtime-test：用于测试
-- server-renderer：用于服务端渲染
+
+编译时：
+
 - compiler-core：与平台无关的编译器核心
 - compiler-dom：针对浏览器的编译模块
 - compiler-ssr：针对服务端渲染的编译模块
 - compiler-sfc：针对单文件解析
+
+
+
 - size-check：用于测试代码体积
 - template-explorer：用于调试编译器输出的开发工具
 - shared：多包共享内容
 - vue：完整版本，包含运行时和编译器
 
-vue2.0 中的数据响应式是无感的，开发者只需要将数据放在 data 中就能是实现响应式能力，但 vue3.0 中就不一样了，我要把哪个数据变为响应式的，有开发者自行决定，用特定的 API 封装。
+
+
+**vue2.0 中的数据响应式是无感的，开发者只需要将数据放在 data 中就能是实现响应式能力，但 vue3.0 中就不一样了，我要把哪个数据变为响应式的，有开发者自行决定，用特定的 API 封装。**
 
 
 
@@ -222,7 +241,9 @@ Vue 3的运行时包含了以下关键功能：
 
 
 
-![image-20211121152327938](C:\Users\dukkha\Desktop\study-notes\vue\images\image-20211121152327938.png)
+![image-20231222181009824](C:\Users\dukkha\Desktop\learn-notes\vue\images\image-20231222181009824.png)
+
+
 
 在 Vue 3 中，"runtime-dom" 和 "runtime-core" 是两个独立的包，它们分别承担了不同的角色和功能。
 
@@ -584,22 +605,6 @@ function trigger(target, key, value, oldValue) {
 
 
 
-
-
-### packages/shared
-
-packages/shared/src/index.ts
-
-```ts
-export function isObject(val) {
-  return typeof val === "object" && val !== null;
-}
-```
-
-
-
-
-
 ## 基本使用
 
 ```html
@@ -682,45 +687,30 @@ export function isObject(val) {
 
 vue3.0 中核心的 4 个 api：
 
-- reactive：使得不管多少层的对象都有响应式能力
+- reactive：使得不管多少层的对象都有响应式能力，也就是能实现多层代理
 - shallowReactive：对于多层对象，只对第一层实现响应式能力
 - readonly：对象的任何属性都只能读不能改
 - shallowReadonly：对象的第一层属性都只能读不能改，第二层以及内部层的可以修改
 - 在effect的回调函数中使用的响应式数据会自动收集该effect
 
-![image-20211122204315506](..\typora-user-images\image-20211122204315506.png)
+```js
+let { reactive, shallowReactive, readonly, shallowReadonly } = vue
 
-![image-20211121211012157](..\typora-user-images\image-20211121211012157.png)
+let state = reactive({name:'tom', age:{n:11}})  // state.age仍旧是一个代理对象proxy实例
 
-![image-20211121211040817](..\typora-user-images\image-20211121211040817.png)
 
-![image-20211121211055108](..\typora-user-images\image-20211121211055108.png)
+let state = shallowReactive({name:'tom', age:{n:11}})  // state.age只是一个普通对象
 
-![image-20211121211112387](..\typora-user-images\image-20211121211112387.png)
 
-![image-20211121211137797](..\typora-user-images\image-20211121211137797.png)
+let state = readonly({name:'tom', age:{n:11}})  // state是一个代理对象
+state.name = 'jack'  // 提示警告信息说name是仅读属性，且修改不成功
 
-![image-20211121211128746](..\typora-user-images\image-20211121211128746.png)
 
-![image-20211121211149770](..\typora-user-images\image-20211121211149770.png)
-
-![image-20211121211157544](..\typora-user-images\image-20211121211157544.png)
-
-![image-20211121211207301](..\typora-user-images\image-20211121211207301.png)
-
-![image-20211121211219400](..\typora-user-images\image-20211121211219400.png)
+let state = shallowReadonly({name:'tom', age:{n:11}})  // state是一个代理对象
+state.age.n = 100  // 可以修改非第一层的属性
+```
 
 只读属性的话只能读不能改，则 Vue 源码中就不用收集依赖的变化。
-
-![image-20211121211252997](..\typora-user-images\image-20211121211252997.png)
-
-![image-20211121211301079](..\typora-user-images\image-20211121211301079.png)
-
-![image-20211121211316932](..\typora-user-images\image-20211121211316932.png)
-
-![image-20211121211341597](..\typora-user-images\image-20211121211341597.png)
-
-可以修改非第一层的属性。
 
 
 

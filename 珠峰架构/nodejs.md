@@ -4005,6 +4005,52 @@ module.exports = createReadStream;
 
 
 
+### 管道流
+
+```js
+const fs = require('fs');
+const path = require('path');
+let rs = fs.createReadStream(path.resolve(__dirname, 'test'), {
+    highWaterMark: 4 // 每次读取4个
+});
+let ws = fs.createWriteStream(path.resolve(__dirname, 'test1'), { //  createWriteStream 有缓存的概念
+    highWaterMark: 1 // 期望使用一个字节的内存大小来控制
+});
+
+// pipe
+rs.pipe(ws); // 看不到写入的过程， 此方法是异步的方法
+
+```
+
+
+
+可读流（Reable Streams）
+
+可写流（Writable Streams）
+
+Duplex流：即双工流，既能读也能写。
+
+转化流：Transform
+
+```js
+// a  -> 转化过程（转化流）  -> b
+const { Transform } = require('stream')
+class MyTransform extends Transform {
+    _transform(chunk, encoding, clearBuffer) {// 具备_write的参数 也具备可读流的push方法
+        this.push(chunk.toString().toUpperCase())
+        clearBuffer();
+    }
+}
+const transform = new MyTransform()
+
+process.stdin.pipe(transform).pipe(process.stdout)
+
+```
+
+
+
+
+
 ## 其他流
 
 流的核⼼就是可以对数据进⾏分块处理。读取一部分，操作一部分。
@@ -4342,11 +4388,9 @@ module.exports = Queue;
 
 二叉树主要是优化了数据的查找，删除和修改的效率。
 
-最坏复杂度，最好复杂度和平均复杂度。
+数组查询的平均复杂度是 O(n)
 
-数组的平均复杂度是 O(n)
-
-树的平均复杂度是 O(logn)
+树插入和查询的平均复杂度是 O(logn)
 
 在前端中，很多情况下都是后端给一个数据，要格式化成树结构。
 
@@ -4524,11 +4568,21 @@ function copy(source,target,callback){
 }
 
 // 这种拷贝文件的方式适合小文件的拷贝，建议64k以下，因为是一次性将文件内容读取到内存中，然后再写入target中，所以如果文件体积过大，会占用大量内存空间 （node中的文件流每次默认读取64kb）
+
+fs.exits(path,(boolean)=>{})
+
+fs.stat(path,(err,state)=>{
+    state.isFile()
+    state.isDirectory()
+})  //判断文件夹|文件存不存在   得到文件（夹）信息
+fs.access(path,(err,obj)=>{})  //判断文件夹|文件存不存在   重点在看能不能访问到
 ```
 
 
 
 ## http
+
+http模块的基本用法，如何解析客户端传递的报文，如何向客户端响应报文。
 
 http-server：该包可以启动一个本地服务，预览文件夹，启动文件。
 
@@ -4600,6 +4654,11 @@ const server = http.createServer((request, response) => {
   }
 });
 
+// 底层是基于事件发布订阅模式的
+server.on('request',()=>{
+    
+})
+
 server.listen(3000, function () {
   console.log(`server start 3000`); // 监听成功就会触发此函数
 });
@@ -4627,6 +4686,10 @@ server.on('error', function (err) {
   }
 });
 ```
+
+
+
+
 
 ```js
 const http = require('http');
