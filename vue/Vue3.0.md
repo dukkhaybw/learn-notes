@@ -72,7 +72,7 @@
 
 3. 区分编译时和运行时
 
-   在编写代码时，直接手写虚拟DOM树来描述页面UI是很繁琐的。都是通过编写.vue文件模板来开发项目，在打包编译时，将模板直接编译为js函数调用，函数执行后返回虚拟DOM。
+   在编写代码时，直接手写虚拟DOM树对象来描述页面UI是很繁琐的。都是通过编写.vue文件模板来开发项目，在打包编译时，将模板直接编译为js函数调用，函数执行后返回虚拟DOM。
 
    专门写个编译时可以将模板编译成函数，函数执行后返回虚拟DOM （在构建的时候进行编译性能更高，不需要在运行的时候进行编译，而且vue3在编译中做了很多优化）
 
@@ -305,11 +305,7 @@ packages:
 
 
 
-`pnpm install xxx -w` 在一个使用 pnpm 管理的 monorepo 仓库中表示:
-
-`-w` 相当于设置了一个工作目录过滤器，使依赖的安装仅安装在monorep项目的根目录中，实现了 monorepo 中不同包或项目的依赖隔离。所以 `-w` 是 pnpm 在 monorepo 中实现依赖隔离的一个重要机制。
-
-
+`pnpm install xxx -w` 在一个使用 pnpm 管理的 monorepo 仓库中表示：`-w` 相当于设置了一个工作目录过滤器，使依赖的安装仅安装在monorep项目的根目录中，实现了 monorepo 中不同包或项目的依赖隔离。所以 `-w` 是 pnpm 在 monorepo 中实现依赖隔离的一个重要机制。
 
 pnpm 作为一个 monorepo 的包管理工具,可以对一个仓库的不同包或项目进行独立的依赖管理。`-w` 或 `--filter` 选项可以指定只在当前工作目录下安装依赖,而不影响仓库中的其他包。
 
@@ -386,152 +382,218 @@ esbuild
 
 
 
-## 源码文件
+vue3源码打包后的生成的文件的格式说明：
 
-### packages/reactivity
+1. esm-bundler：开发项目时一般使用这个包，它不会将依赖的其他模块的打包到一起，内部用过import语句去引入其他依赖的模块中的方法或者函数
 
-packages/reactivity/src/index.ts
+   ![image-20231224192454865](images\image-20231224192454865.png)
 
-```ts
-export * from "./effect";
-export * from "./reactive";
+   
+
+2. esm-browser：一般用于在浏览器中使用，它是将它依赖的其他模块的代码一并打包生成一个大的文件，可以直接使用这个文件
+
+   ![image-20231224192557427](images\image-20231224192557427.png)
+
+3. global（IIFE）
+
+4. commonjs
+
+![image-20231224192255802](images\image-20231224192255802.png)
+
+## 基本使用
+
+```html
+<div id="app"></div>
+<script src="./reactivity.global.js"></script>
+<script>
+    const { reactive, effect, } = VueReactivity;
+    const state = reactive({ name: 'jw', age: 30})
+    effect(() => { // 副作用函数 (effect执行渲染了页面)
+        app.innerHTML = state.name + '今年' + state.age + '岁了'
+    });
+    setTimeout(() => {
+        state.age++;
+    }, 1000)
+</script>
 ```
 
-packages/reactivity/src/effect.ts
+
+
+
+
+- 传为reactive的对象会被代理，代理对象能拦截属性的取值，设置，删除和访问等操作
+- 传给effect函数的回调函数默认会一开始就先执行一次
+- 一旦传给effect函数的回调函数中依赖过的响应式数据发生改变，该回调函数会再次执行
+- 如果一个响应式对象不再effect中使用，则该属性就不会收集effect
+
+effect函数是库内部的底层函数，库中的其他常用的方法很多都基于它来实现的。
+
+
+
+为什么使用反射Reflect：
 
 ```js
-export let activeEffect = undefined;
-
-function cleanupEffect(effect) {
-  // {name:set(effect)} 属性对应的effect
-
-  // 找到 deps中的set 清理掉effect才可以
-  let deps = effect.deps;
-  for (let i = 0; i < deps.length; i++) {
-    // effect.deps = [newSet(),newSet(),newSet()]
-    deps[i].delete(effect); // 删除掉 set中的effect
-  }
-  effect.deps.length = 0; // 让effect中的deps直接清空
-}
-class ReactiveEffect {
-  parent = undefined;
-  constructor(public fn) {}
-  deps = []; // effect中要记录哪些属性是在effect中调用的
-  run() {
-    // 当运行的时候 我们需要将属性和对应的effect关联起来
-    // 利用js是单线程的特性，先放在全局，在取值
-    try {
-      this.parent = activeEffect;
-      activeEffect = this;
-
-      cleanupEffect(this);
-      return this.fn(); // 触发属性的get
-    } finally {
-      activeEffect = this.parent;
-      this.parent = undefined;
+const person = {
+    name: 'tom',
+    
+     // 属性访问器
+    get aliasName() {
+        return 'handsome' + this.name
     }
-  }
-}
-// 属性和effect之间是什么样的关系 依赖收集
-// 1:1
-// 1:n
-// n:n ✅
-
-export function effect(fn) {
-  // 将用户的函数，拿到变成一个响应式的函数
-  const _effect = new ReactiveEffect(fn);
-  // 默认让用户的函数执行一次
-  _effect.run();
 }
 
-/*
-// activeEffect = null
-// effect(() => { //effect1.parent = activeEffect ;activeEffect = effect1
-//     state.name;
-//     effect(() => { //  effect2.parent = activeEffect
-//         // activeEffect = effect2
-//         state.age
-//     })  // activeEffect = effect2.parent
-//     state.address;
-// })
-
-// activeEffect = null
-effect(() => {
-  // effect1
-  // activeEffect = effect1
-  // effect1.parent = null
-  // a
-  effect(() => {
-    // effect2
-    // activeEffect = effect2
-    // effect2.parent = effect1
-    // b
-    effect(() => {
-      // effect3
-      // activeEffect = effect3
-      // effect3.parent = effect2
-      // c
-    });
-    // activeEffect = effect2
-    // activeEffecteffect1
-  });
-  // d -> effect1
+const proxy = new Proxy(person, {
+    get(target, key, recevier) {
+        console.log(key)
+        // target[key]  -> this = person
+        // Reflect.get(target, key, recevier); -> this = receiver
+        return Reflect.get(target, key, recevier);
+    },
+    set(target, key, value, recevier) {
+        target[key] = value;
+        return Reflect.set(target, key, value,recevier);;
+    },
 });
-*/
+console.log(proxy.aliasName)
 
+effect(() => {
+    console.log(proxy.aliasName)
+})
+proxy.name = 'jack'  // 如果用户修改了name属性 ，是无法监控到的
+```
+
+在vue3源码中，依赖的收集逻辑是在getter访问器中实现的，如果一个属性被访问了，但是没有走依赖访问器，那么该属性就不会收集到该effect。如果不用Reflect，那么在访问aliasName的时候，会触发aliasName收集effect，但是aliasName属性访问器内部有访问了原对象的name属性，原对象并不具备getter拦截，所以name就没办法收集effect，这样当通过代理对象徐修改name（proxy.name=‘xxx’）则有可能不触发effect的重新执行。  所以就需要使用Reflect来取值，这样aliasName中的this就指向的是代理对象了。
+
+
+
+- 同一个对象不能被进行多次代理，多次代理返回同一个值（源码中使用原对象和代理对象的映射WeakMap来处理的）
+
+```js
+import { reactive, effect } from './reactivity.js'
+const data = { name: 'jw', age: 30, flag: true }
+const state1 = reactive(data);
+const state2 = reactive(data);
+state1 === state2  // true
+```
+
+- 一个已经代理过的对象将不再被代理（源码中是为代理对象增加一个唯一标识来识别对象是否被代理过）
+
+  ```js
+  import { reactive, effect } from './reactivity.js'
+  const data = { name: 'jw', age: 30, flag: true }
+  const state1 = reactive(data);
+  const state2 = reactive(state1);
+  state1 === state2  // true
+  ```
+
+
+
+
+
+effect
+
+effect接收一个可能需要被反复执行的函数，所以这个函数是需要被存放下来的。在源码中，是创建了一个ReactiveEffect实例对象来存放该函数，同时该实例对象原型上都是实现了run方法，在run方法中调用传递给effect的那个函数，实现对该函数的执行。只是执行之前，需要进行自己的一些业务逻辑，比如将该ReactiveEffect实例对象挂载到全局，这样在回调函数中访问了响应式对象的属性时，就能对该ReactiveEffect实例对象进行收集，后面该响应式对象的属性有变，则可以直接调用该ReactiveEffect实例对象上的run方法，实现对传给effect函数的再次执行。
+
+
+
+```js
+effect(() => {
+    state.name 
+    effect(() => {
+        state.age
+    })
+    state.address  // 为了保证address属性也能收集到effect，则需要维护一个effect链  （vue2是用的栈结构）
+})
 ```
 
 
 
+如果一个响应式数据在effct中多次使用，该属性只需要收集一次该effect就可以
 
-
-packages/reactivity/src/reactive.ts
-
-```ts
-import { isObject } from "@vue/shared";
-import { ReactiveFlags, mutableHandlers } from "./baseHandler";
-
-export function reactive(target) {
-  return createReactiveObject(target);
-}
-const reactiveMap = new WeakMap(); // 防止内存泄露的
-// 响应式对象的核心逻辑
-
-function createReactiveObject(target) {
-  if (!isObject(target)) {
-    return;
-  }
-  if (target[ReactiveFlags.IS_REACTIVE]) {
-    return target;
-  }
-  // 防止同一个对象被代理两次，返回的永远是同一个代理对象
-  let exitstingProxy = reactiveMap.get(target);
-  if (exitstingProxy) {
-    return exitstingProxy;
-  }
-  // 返回的是代理对象
-  const proxy = new Proxy(target, mutableHandlers);
-  reactiveMap.set(target, proxy);
-  // 代理前 代理后做一个映射表
-  // 如果用同一个代理对象像做代理，直接返回上一次的代理结果
-
-  // 代理前 -> 代理后
-  // 代理后 -> 代理前
-  return proxy;
-}
-
-// 1.缓存结果
-// 2.增添自定义属性
-
+```js
+effect(()=>{
+    state.name; 
+    state.name;
+    state.name;
+})
 ```
 
 
 
+同一个effect不停的在执行，则会屏蔽
+
+```js
+effect(()=>{
+    state.age = Math.random()
+    console.log(stat.age)
+})
+
+state.age = 100
+```
 
 
-packages/reactivity/src/baseHandler.ts
 
-```ts
+```js
+effect(()=>{
+
+    console.log(stat.age)
+    effect(()=>{
+        state.age = Math.random()
+        console.log(stat.age)
+    })
+})
+
+state.age = 100
+```
+
+
+
+```js
+effect(() => {
+    app1.innerHTML = state.flag ? state.name : state.age
+    console.log('run')
+})
+
+setTimeout(() => {
+    state.flag = false; // 会显示age
+    setTimeout(() => {
+        console.log('改了name，原则不应该触发effect')
+        state.name = 'abc'; // 需要更新吗？   
+    }, 1000)
+}, 1000)
+```
+
+为了解决上面这种未使用的响应式属性也能触发更新的情况，需要在每次effect执行run时，先清空该所有响应式数据收集过的该effect自身。
+
+
+
+
+
+```js
+class ReactiveEffect {
+    parent = undefined;  // 用于组成effect链
+    deps = []; // effect中要记录那些属性的set中有该effect
+    constructor(public fn) {}
+    run() {
+        // 当运行的时候 需要将属性和对应的effect关联起来
+        // 利用js是单线程的特性，先放在全局，在取值
+        try {
+            this.parent = activeEffect;
+            activeEffect = this;
+
+            cleanupEffect(this);
+            return this.fn(); // 触发属性的get
+        } finally {
+            activeEffect = this.parent;
+            this.parent = undefined;
+        }
+    }
+}
+```
+
+
+
+```js
 import { activeEffect } from "./effect";
 
 export enum ReactiveFlags {
@@ -544,9 +606,10 @@ export const mutableHandlers = {
     if (key === ReactiveFlags.IS_REACTIVE) {
       return true;
     }
-    track(target, key);
+    track(target, key);  // 依赖收集
     return Reflect.get(target, key, recevier);
   },
+    
   set(target, key, value, recevier) {
     let oldValue = target[key];
     let flag = Reflect.set(target, key, value, recevier);
@@ -556,6 +619,7 @@ export const mutableHandlers = {
     return flag;
   },
 };
+
 // Map1 = {({ name: 'jw', age: 30 }):Map2}
 // Map2 = {name: set()}
 //  { name: 'jw', age: 30 } -> {name => [effect,effect]}
@@ -568,10 +632,12 @@ function track(target, key) {
     if (!depsMap) {
       targetMap.set(target, (depsMap = new Map()));
     }
+      
     let dep = depsMap.get(key);
     if (!dep) {
       depsMap.set(key, (dep = new Set()));
     }
+      
     let shouldTrack = !dep.has(activeEffect);
     if (shouldTrack) {
       dep.add(activeEffect);
@@ -580,6 +646,7 @@ function track(target, key) {
     }
   }
 }
+
 //  { name: 'jw', age: 30 } -> {name => [effect,effect]}
 function trigger(target, key, value, oldValue) {
   // 找到effect执行即可
@@ -589,41 +656,20 @@ function trigger(target, key, value, oldValue) {
   }
   let effects = depsMap.get(key);
   if (effects) {
-    effects = [...effects]; // vue2中的是数组，先拷贝在魂环
+    effects = [...effects]; 
     effects.forEach((effect) => {
-      // 当前正在执行的和现在要执行的是同一个我就屏蔽掉
+      // 当前正在执行的和现在要执行的是同一个就屏蔽掉
       if (activeEffect !== effect) {
         effect.run(); // 里面有删除+添加的逻辑
       }
     });
   }
 }
-
 ```
 
 
 
 
-
-## 基本使用
-
-```html
-<div id="app"></div>
-<script src="./reactivity.global.js"></script>
-<script>
-    const { reactive, effect, shallowReactive, shallowReadonly, readonly } = VueReactivity;
-    // let state = reactive({ name: 'jw', age: 30 });
-    // const state = shallowReactive({ name: 'jw', age: 30 })
-    // const state = readonly({ name: 'jw', age: 30 })
-    const state = reactive({ name: 'jw', age: 30})
-    effect(() => { // 副作用函数 (effect执行渲染了页面)
-        app.innerHTML = state.name + '今年' + state.age + '岁了'
-    });
-    setTimeout(() => {
-        state.age++;
-    }, 1000)
-</script>
-```
 
 
 
@@ -718,6 +764,7 @@ state.age.n = 100  // 可以修改非第一层的属性
 
 ### effect
 
+- 每个组件其实都是一个effect
 - effect的回调函数默认会执行一次，如果内部依赖的响应式数据，响应式数据变化，该回调会再次执行
 - effect的回调函数中还可以继续嵌套effect函数的调用
 - effect的回调函数会在依赖的响应式数据发生改变时就立即执行，不表现出异步批量更新的机制
@@ -745,6 +792,15 @@ effect(()=>{
     app.innerHTML = state.name
 })
 
+effect(()=>{
+    console.log('effect')  // 这个会打印1次
+    app.innerHTML = state.name
+}, {
+    scheduler(){
+        console.log('scheduler')   // 这个会打印3次
+    }
+})
+
 state.name = 1
 state.name = 2
 state.name = 3
@@ -760,7 +816,8 @@ const runner = effect(()=>{
     console.log('effect')  // 这个会打印1次
     app.innerHTML = state.name
 },{
-    scheduler(){
+    // 可以去调用响应式数据更新后的任务逻辑
+    scheduler(){ 
         if(!isFlushing){
             Promise.resolve().then(()=>{
                 runner()
@@ -780,9 +837,86 @@ state.name = 3
 
 
 
+effect函数可以接收第二个参数。这第二个参数中的scheduler函数默认不会一开始就执行，而是在响应式数据发生改变的情况下才会执行，不然就是执行原来的run方法。
+
+```js
+export function effect(fn, options: any = {}) {
+    const _effect = new ReactiveEffect(fn, options.scheduler);
+    // 默认让用户的函数执行一次
+    _effect.run();
+
+    const runner = _effect.run.bind(_effect);
+    return runner;
+}
+```
+
+
+
+```js
+function trigger(target, key, value, oldValue) {
+    // 找到effect执行即可
+    const depsMap = targetMap.get(target);
+    if (!depsMap) {
+        return;
+    }
+    let effects = depsMap.get(key);
+    triggerEffects(effects);
+}
+
+export function triggerEffects(effects) {
+    if (effects) {
+        effects = [...effects]; // vue2中的是数组，先拷贝在魂环
+        effects.forEach((effect) => {
+            // 当前正在执行的和现在要执行的是同一个我就屏蔽掉
+            if (activeEffect !== effect) {
+                if (effect.scheduler) {
+                    // 应该执行的是scheduler
+                    effect.scheduler();
+                } else {
+                    effect.run(); // 里面有删除+添加的逻辑
+                }
+            }
+        });
+    }
+}
+```
+
+vue中多次修改数据，页面只渲染一次也是因为内部自己实现了scheduler方法。
+
+
+
+深度懒代理：
+
+````js
+reactive({name:'abc',age:18,msg:{address:'asd'}})
+````
+
+
+
+```js
+export const mutableHandlers = {
+  get(target, key, recevier) {
+    if (key === ReactiveFlags.IS_REACTIVE) {
+      return true;
+    }
+    track(target, key);
+    let result = Reflect.get(target, key, recevier);
+    if (isObject(result)) {
+      // 如果取到的是一个对象 则需要继续将这个对象作为代理对象
+      return reactive(result);
+    }
+    return result;
+  }
+}
+```
+
+
+
+
+
 ### computed
 
-computed是基于源码的effect方法的，本质也是一个ComputedRefImpl实例对象，该对象实例上挂载了一个effect，并且他有一个dep属性会收集他依赖的effect。 
+computed是基于源码中的effect方法的，本质是一个ComputedRefImpl实例对象，该对象实例上挂载了一个effect，并且他有一个dep属性会收集他依赖的effect。 
 
 计算属性是可以在effect中使用的，挡在effect的回调函数中访问了计算属性的值（xxx.value）后，当计算属性依赖的其他响应式数据发生变化时，会触发计算属性收集的effect的run方法。
 
@@ -792,14 +926,10 @@ computed是基于源码的effect方法的，本质也是一个ComputedRefImpl实
 - 计算属性必须同步返回一个值，而无法使用异步回调中的返回值
 - 有缓存能力，依赖的值不变就不重新计算
 - 计算属性可以设置get和set，但是set并不是修改计算属性自身的值，而是在设置值时，处理其他逻辑
-- 可以在模板中当作数据使用
+- 可以在模板中当作数据使用，watchapi则不行
 - 依赖于其他响应式数据
 
-
-
 ```js
-const state = reactive({firstName:'tom',lastName:'king'})
-
 // 只提供了get的写法
 const fullName = computed(()=>{
     return state.firstName + state.lastName
@@ -815,15 +945,98 @@ const fullName = computed({
     }
 })
 
-// 取计算属性的值的方式：
-console.log(fullName.value)
+```
 
-effect(()=>{
-    console.log(fullName.value)  // 触发执行
+取计算属性的值的时候，使用的computedPro.value，必须使用.value才可以，因为计算属性是可以在effect中使用的，且具备响应式特点，所以不访问属性就无法触发getter进行依赖收集。
+
+```js
+import { computed, reactive, effect } from './reactivity.js'
+
+const state = reactive({ firstname: 'j', lastname: 'w', age: 30 });
+const fullname = computed({
+    get: () => { // get
+        console.log('computed~~~')
+        return state.firstname + state.lastname
+    },
+    set: (val) => {
+        console.log(val); // vuex
+    }
 })
 
-state.firstName = 'jack'
+// 计算属性也是一个effect， 依赖的状态会收集计算属性的effect
+// 计算属性会触发他收集的effect
+effect(() => { // 计算属性也可以收集effect
+    console.log(fullname.value, 'effect')
+})
+
+setTimeout(() => {
+    state.firstname = 'x'
+}, 1000)
 ```
+
+为什么修改了传给计算属性的ge方法中使用到的响应式依赖发生改变，会触发计算属性的更新？
+
+原因是计算属性也是一个effect，计算属性使用到的响应式状态也会收集该计算属性对应的effect实例，每当响应式状态发生改变，会触发响应式状态的setter，依次触发该状态收集的effect的**run方法或者scheduler方法**，其中计算属性的effect在源码内部自行实现了一个scheduler方法，该方法会去调用该计算属性收集的其他effect，并触发他们的更新（整个机制类似一个不断向上传递的过程）。
+
+
+
+```js
+import { isFunction } from "@vue/shared";
+import { ReactiveEffect, activeEffect } from "./effect";
+import { trackEffects, triggerEffects } from "./baseHandler";
+
+class ComputedRefImpl {
+    effect;
+    _value;
+    dep = new Set();
+    _dirty = true;
+    constructor(public getter, public setter) {
+        // 计算属性就是一个effect 会让getter中的属性收集这个effect
+        this.effect = new ReactiveEffect(getter, () => {
+            // 重点看这段，可以看出计算属性中自己实现了一个scheduler，它会在响应式对象发生改变的情况下被执行
+            if (!this._dirty) {
+                this._dirty = true; // 让计算属性标记为脏值
+                triggerEffects(this.dep);
+            }
+        });
+    }
+    get value() {
+        if (activeEffect) {
+            // value => [effect]
+            trackEffects(this.dep);
+        }
+        if (this._dirty) {
+            this._dirty = false;
+            // 取值让getter执行拿到返回值，作为计算属性的值
+            this._value = this.effect.run();
+        }
+        return this._value;
+    }
+    set value(val) {
+        // 修改时触发setter即可
+        this.setter(val);
+    }
+}
+
+export function computed(getterOrOptions) {
+    const isGetter = isFunction(getterOrOptions);
+    let getter;
+    let setter;
+    if (isGetter) {
+        getter = getterOrOptions;
+        setter = () => {
+            console.warn("computed is readoly");
+        };
+    } else {
+        getter = getterOrOptions.get;
+        setter = getterOrOptions.set;
+    }
+
+    return new ComputedRefImpl(getter, setter);
+}
+```
+
+
 
 
 
@@ -833,7 +1046,7 @@ state.firstName = 'jack'
 
 watch也是基于effect方法的。
 
-computed重在基于已有的数据产生一个新的值且有缓存；watch更倾向于监控某个属数据的变化，数据变化后执行一些任务，没有缓存，每次页面渲染都重新执行。
+computed重在基于已有的数据产生一个新的值且有缓存；watch更倾向于监控某个属数据的变化，数据变化后执行一些任务，没有缓存。
 
 在Vue3源码中watch API不再放在响应式模块（reactivity）中，而是在runtime-core模块中。
 
@@ -880,13 +1093,437 @@ state.firstName = 'abc'
 
 
 
+watchApi会将传递给它的第一个参数作为ReactiveEffect构造函数的第一个参数。当响应式数据改变后直接走回调。
+
+```js
+import { isReactive } from './reactive';
+import { ReactiveEffect } from './effect';
+import { isFunction, isObject } from '@vue/shared';
+// 对象的深拷贝  {...source}浅拷贝
+function traverse(source, seen = new Set()) {
+    if (!isObject(source)) {
+        return source;
+    }
+    if (seen.has(source)) {
+        return source;
+    }
+    seen.add(source);
+    for (let k in source) {
+        // 这里访问了对象中的所有属性
+        traverse(source[k], seen);
+    }
+    return source;
+}
+
+/**
+ *
+ * @param source 可能是一个响应式对象或者一个包含响应式数据的函数
+ * @param cb // 响应式数据发生变化后需要执行的回调函数，该回调就收新旧值且接收第三个参数
+ * @param options
+ */
+function doWatch(source, cb, options) {
+    let getter;
+    //必须式响应式对象或者含有响应式数据的函数
+    if (isReactive(source)) {
+        getter = () => traverse(source);
+    } else if (isFunction(source)) {
+        getter = source;
+    }
+
+    let oldValue;
+    let clean;
+    const onCleanup = (fn) => {
+        clean = fn;
+    };
+
+    const job = () => {
+        if (cb) {
+            if (clean) clean();
+            const newValue = effect.run();
+            cb(newValue, oldValue, onCleanup);
+            oldValue = newValue;
+        } else {
+            effect.run();
+        }
+    };
+    
+    //  本质也是一个内部实现了一个scheduler函数的effect
+    const effect = new ReactiveEffect(getter, job);
+
+    if (options.immediate) {
+        job();
+    }else{
+        oldValue = effect.run();
+    }
+}
+export function watchEffect(effect, options: any = {}) {
+    doWatch(effect, null, options); // === effect
+}
+export function watch(source, cb, options: any = {}) {
+    doWatch(source, cb, options);
+}
+```
+
+
+
+竞态问题：
+
+```js
+const map = {
+    1: { timer: 3000, returnVal: 'abc' },
+    2: { timer: 2000, returnVal: 'bcd' }
+}
+function getData(newVal) {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve(map[newVal].returnVal)
+        }, map[newVal].timer)
+    })
+}
+
+// 默认watchApi 内部自己实现了scheduler. 我们把他改成了同步了
+let arr = []
+// 闭包：声明函数的作用域和执行的上下文不是同一个
+watch(() => state.n, async (newVal, oldVal, onCleanup) => {
+    let flag = true
+    onCleanup(function () {
+        flag = false
+    })
+    let r = await getData(newVal)
+    flag && (app.innerHTML = r)
+}, { 'flush': 'sync' })
+state.n++;
+state.n++
+// 结果bcd
+```
+
+
+
+
+
 ### watchEffect
 
+watchEffect内部就是effect。
+
+```js
+import { reactive, watch, watchEffect } from './reactivity.js'
+const state = reactive({ firstname: 'j', lastname: 'w', age: 30, n: 0 });
+
+watchEffect(() => {
+    app.innerHTML = state.firstname + state.lastname
+});
+
+setTimeout(() => {
+    state.firstname = 'X'
+}, 1000);
+```
+
+
+
+源码中effect逻辑：
+
+```js
+export function effect(fn, options: any = {}) {
+  const _effect = new ReactiveEffect(fn, options.scheduler);
+  _effect.run();
+    
+  const runner = _effect.run.bind(_effect);
+  return runner;
+}
+
+```
+
+源码中watchEffect的逻辑：
+
+```js
+export function watchEffect(effect, options: any = {}) {
+  doWatch(effect, null, options); // === effect
+}
+
+// 针对watchEffect传参简化后的doWatch逻辑
+function doWatch(source, cb, options) {
+  let getter = source;
+  const job = () =>effect.run()
+  const effect = new ReactiveEffect(getter, job);
+  oldValue = effect.run();
+}
+```
+
+可以看出doWatch本质就是effect。
+
+
+
+### ref
+
+希望对基本数据类型的值提供响应式能力。它和计算属性有些相似。
+
+```js
+const flag = ref(true)
+
+effect(() => {
+    app.innerHTML = flag.value?1:2;
+})
+setTimeout(() => {
+    flag.value = false
+}, 1000)
+```
+
+ref函数可以接受一个基本数据类型的值，也可以接受对象，如果传递的是对象，则直接将对象变为一个响应式对象，然后挂载到value上。
+
+ref不会创建一个effect，但是在获取它的value时，它会收集它依赖的effect，当给value设置值的时候会触发effect重新执行。
+
+```js
+import { trackEffects, triggerEffects } from "./baseHandler";
+import { activeEffect } from "./effect";
+import { toReactive } from "./reactive";
+
+export function ref(value) {
+  return new RefImpl(value);
+}
+
+// computed + watch
+class RefImpl {
+  _value;
+  dep = new Set();
+  // 内部采用类的属性访问器 -》 Object.defineProperty
+  constructor(public rawValue) {
+    this._value = toReactive(rawValue);
+  }
+  get value() {
+    if (activeEffect) {
+      trackEffects(this.dep);
+    }
+    return this._value;
+  }
+  set value(newVal) {
+    if (newVal !== this.rawValue) {
+      this.rawValue = newVal;
+      this._value = toReactive(newVal);
+      triggerEffects(this.dep);
+    }
+  }
+}
+
+// 本质是对reactive数据进行代理
+class ObjectRefImpl {
+  constructor(public object, public key) {}
+  get value() {
+    return this.object[this.key];
+  }
+  set value(val) {
+    this.object[this.key] = val;
+  }
+}
+
+export function toRef(object, key) {
+  return new ObjectRefImpl(object, key);
+}
+
+export function toRefs(object) {
+  let res = {};
+  for (let key in object) {
+    res[key] = toRef(object, key);
+  }
+  return res;
+}
+
+```
+
+
+
+将多个响应式对象变为一个响应式对象：
+
+方式一：
+
+```js
+const state1 = reactive({ name: 'jw' })
+const state2 = reactive({ age: 30 });
+
+const r = { name: ref(state1.name), age: ref(state2.age) }
+watchEffect(() => {
+    app.innerHTML = r.name.value + r.age.value
+})
+setTimeout(() => {
+    r.name.value = 'xxx'
+}, 1000)
+```
+
+
+
+方式二：使用vue3提供的方法 toRef
+
+```js
+const state1 = reactive({ name: 'jw' })
+const state2 = reactive({ age: 30 });
+
+const r = { name: toRef(state1, 'name'), age: toRef(state2, 'age') }
+watchEffect(() => {
+    app.innerHTML = r.name.value + r.age.value
+})
+setTimeout(() => {
+    r.name.value = 'xxx'
+}, 1000)
+```
+
+
+
+方式三：
+
+```js
+const state1 = reactive({ name: 'jw' })
+const state2 = reactive({ age: 30 });
+
+const r = { ...toRefs(state1), ...toRefs(state2) }
+watchEffect(() => {
+    app.innerHTML = r.name.value + r.age.value
+})
+setTimeout(() => {
+    r.name.value = 'xxx'
+}, 1000)
+```
 
 
 
 
 
+## runtime-core / runtime-dom
+
+vue3区分编译时和运行时。
+
+编译时：包含模板编译逻辑，将类html模板编译为js函数调用
+
+- compiler-dom (针对dom的编译)/ compiler-core（进行非平台相关的编译）
+
+
+
+运行时：不包含模板编译，直接基于虚拟DOM实现后续逻辑
+
+- runtime-dom（浏览器操作的一些api,dom的增删改查） / runtime-core(并不关新调用了哪些api)
+
+
+
+之所以又要区分core和dom，是为了方便的跨平台，不同环境核心一样，但逻辑不同。 runtime-dom写好一些关于特定平台的类似DOM的操作方法，传递给core，core内部调用这些方法实现渲染。
+
+
+
+vue在runtime-dom提供的一个方法——createRenderer，这个方法接受用户自定义的渲染方式
+
+像是mpvue就是基于vue改造的一个小程序版本，将vue源码中设计dom操作的方法改为小程序的。
+
+基本使用：
+
+```js
+import { createRenderer, h, render } from '/node_modules/@vue/runtime-dom/dist/runtime-dom.esm-browser.js'
+
+//我们的核心就是利用渲染器来渲染我们的虚拟dom
+const VDom = h('div', {style:{color:'red'}}, 'hello jw')
+const renderer = createRenderer({
+    insert(element, container) {
+        container.appendChild(element)
+    },
+    createElement(element) {
+        return document.createElement(element)
+    },
+    setElementText(element, text) {
+        element.innerHTML = text
+    }
+});
+
+renderer.render(VDom, body); 
+```
+
+利用渲染器来渲染虚拟DOM。
+
+h在vue中就是创建一个虚拟DOM节点的方法，类似于react中createElement方法。
+
+
+
+```ts
+function createRenderer<HostNode, HostElement>(
+options: RendererOptions<HostNode, HostElement>
+): Renderer<HostElement>{
+
+}
+
+interface Renderer<HostElement> {
+    render: RootRenderFunction<HostElement>
+    createApp: CreateAppFunction<HostElement>
+}
+
+interface RendererOptions<HostNode, HostElement> {
+    patchProp(
+    el: HostElement,
+     key: string,
+     prevValue: any,
+     nextValue: any,
+     // 其余部分在大多数自定义渲染器中是不会使用的
+     isSVG?: boolean,
+     prevChildren?: VNode<HostNode, HostElement>[],
+     parentComponent?: ComponentInternalInstance | null,
+     parentSuspense?: SuspenseBoundary | null,
+     unmountChildren?: UnmountChildrenFn
+    ): void
+    insert(
+    el: HostNode,
+     parent: HostElement,
+     anchor?: HostNode | null
+    ): void
+    remove(el: HostNode): void
+    createElement(
+    type: string,
+     isSVG?: boolean,
+     isCustomizedBuiltIn?: string,
+     vnodeProps?: (VNodeProps & { [key: string]: any }) | null
+    ): HostElement
+    createText(text: string): HostNode
+    createComment(text: string): HostNode
+    setText(node: HostNode, text: string): void
+    setElementText(node: HostElement, text: string): void
+    parentNode(node: HostNode): HostElement | null
+    nextSibling(node: HostNode): HostNode | null
+
+    // 可选的, DOM 特有的
+    querySelector?(selector: string): HostElement | null
+    setScopeId?(el: HostElement, id: string): void
+    cloneNode?(node: HostNode): HostNode
+    insertStaticContent?(
+    content: string,
+     parent: HostElement,
+     anchor: HostNode | null,
+     isSVG: boolean
+    ): [HostNode, HostNode]
+}
+```
+
+
+
+在模板中事件是使用的@click来绑定的，比如：
+
+```vue
+<div @click='add'>Hello World</div>
+```
+
+经过模板编译后，得到如下结果：
+
+```js
+import { openBlock as _openBlock, createElementBlock as _createElementBlock } from "vue"
+
+export function render(_ctx, _cache, $props, $setup, $data, $options) {
+  return (_openBlock(), _createElementBlock("div", { onClick: _ctx.add }, "Hello World", 8 /* PROPS */, ["onClick"]))
+}
+
+// Check the console for the AST
+```
+
+其中@click被转为了onClick
+
+
+
+
+
+
+
+vue3内部封装了一个内置了DOM操作的方法——render。render 方法是非常常用，在vue中想渲染一个弹框组件，需要渲染到body。
 
 前端 UI 库将 Modal（模态框）组件渲染到 `<body>` 元素中的主要原因是为了解决一些常见的问题和提供更好的用户体验。
 
@@ -898,6 +1535,12 @@ state.firstName = 'abc'
 需要注意的是，将 Modal 渲染到 `<body>` 中也可能带来一些潜在的问题，例如样式隔离和组件通信。为了解决这些问题，开发者通常会在 Modal 组件内部实现相应的隔离和通信机制，以确保其功能和样式不会对其他组件产生意外的影响。
 
 综上所述，将 Modal 组件渲染到 `<body>` 中是为了解决层级管理、遮罩效果、响应性和全局访问等问题，提供更好的用户体验和开发便利性。
+
+
+
+
+
+
 
 
 
