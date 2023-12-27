@@ -1400,23 +1400,26 @@ vue3区分编译时和运行时。
 
 - runtime-dom（浏览器操作的一些api,dom的增删改查） / runtime-core(并不关新调用了哪些api)
 
-
-
-之所以又要区分core和dom，是为了方便的跨平台，不同环境核心一样，但逻辑不同。 runtime-dom写好一些关于特定平台的类似DOM的操作方法，传递给core，core内部调用这些方法实现渲染。
+在runtime-dom编写了一些列的关于浏览器DOM的增删改查原生方法，传递给runtime-core中的方法，runtime-core内部调用这些方法实现针对浏览器平台的一些DOM操作。
 
 
 
-vue在runtime-dom提供的一个方法——createRenderer，这个方法接受用户自定义的渲染方式
+之所以又要区分core和dom，是为了方便跨平台，不同环境核心一样，但逻辑不同。 runtime-dom写好一些关于特定平台的类似DOM的操作方法，传递给core，core内部调用这些方法实现渲染。
 
-像是mpvue就是基于vue改造的一个小程序版本，将vue源码中设计dom操作的方法改为小程序的。
+
+
+vue在runtime-dom提供的一个方法——createRenderer，这个方法接受用户自定义的渲染方式。runtime-dom基于runtime-core
+
+mpvue就是基于vue改造的一个小程序版本，将vue源码中设计dom操作的方法改为小程序的。
 
 基本使用：
 
 ```js
 import { createRenderer, h, render } from '/node_modules/@vue/runtime-dom/dist/runtime-dom.esm-browser.js'
 
-//我们的核心就是利用渲染器来渲染我们的虚拟dom
+// 核心就是利用渲染器来渲染虚拟dom
 const VDom = h('div', {style:{color:'red'}}, 'hello jw')
+
 const renderer = createRenderer({
     insert(element, container) {
         container.appendChild(element)
@@ -1432,9 +1435,7 @@ const renderer = createRenderer({
 renderer.render(VDom, body); 
 ```
 
-利用渲染器来渲染虚拟DOM。
-
-h在vue中就是创建一个虚拟DOM节点的方法，类似于react中createElement方法。
+h方法在vue中就是创建一个虚拟DOM节点的方法，类似于react中createElement方法。
 
 
 
@@ -1497,6 +1498,49 @@ interface RendererOptions<HostNode, HostElement> {
 
 
 
+runtime-dom模块中提供的createRenderer方法是允许用户自己将节点操作逻辑自行实现后传递给他，于此同时runtime-dom模块中内自己内置实现了一些列关于浏览器dom操作的原生方法，并传递给了createRenderer，然后返回一个render方法，这样用户就可以直接将虚拟DOM传递给render方法，就可以实现针对浏览器的DOM操作了。
+
+render方法可以让用户将自己的指定的虚拟DOM渲染到指定的DOM容器中，而不一定是渲染到div#app中。
+
+
+
+在runtime-dom中对于事件的绑定的思路：
+
+事件可能之前绑定的是一个事件，现在绑定的是另一个事件，不能简单考虑使用addEventlistener，因为不断绑定事件，是能绑定多个事件而不覆盖的。
+
+
+
+```js
+function createInvoler(val) {
+    const invoker = (e) => invoker.val(e);
+    invoker.val = val;
+    return invoker;
+}
+
+
+function patchEvent(el, eventName, nextValue) {
+    // 对于事件而言，我们并不关心之前是什么，而是用最新的结果
+    const invokers = el._vei || (el._vei = {});
+    const exists = invokers[eventName];
+    // click：custormEvent -> e
+    // 通过一个自定义的变量 ， 绑定这个变量，后续更改变量对应的值
+    if (exists && nextValue) {
+        exists.val = nextValue; // 换绑事件
+    } else {
+        const name = eventName.slice(2).toLowerCase();
+        if (nextValue) {
+            const invoker = (invokers[eventName] = createInvoler(nextValue));
+            el.addEventListener(name, invoker);
+        } else if (exists) {
+            el.removeEventListener(name, exists);
+            invokers[eventName] = null;
+        }
+    }
+}
+```
+
+
+
 在模板中事件是使用的@click来绑定的，比如：
 
 ```vue
@@ -1515,11 +1559,7 @@ export function render(_ctx, _cache, $props, $setup, $data, $options) {
 // Check the console for the AST
 ```
 
-其中@click被转为了onClick
-
-
-
-
+其中@click被转为了onClick。
 
 
 
@@ -1540,6 +1580,77 @@ vue3内部封装了一个内置了DOM操作的方法——render。render 方法
 
 
 
+Vue源码中为什么提供一个h方法了，首先h方法的作用是根据传参生成一个虚拟DOM。如果让用户手动去编写虚拟DOM是非常繁琐的，所以才提供了一个h方法来简化虚拟DOM的创建操作。
+
+### h
+
+h方法接受的参数是多种多样的。h方法中调用createVNode方法创建虚拟DOM节点。
+
+```js
+const VDom = h('div')
+const VDom = h('div', 'hello')
+const VDom = h('div', h('span'))
+const VDom = h('div', { style: { color: 'red' } })
+const VDom = h('div', [ h('span'), h('span') ])
+const VDom = h('div', h('span'), h('span')) // 错误写法会被认为第二个参数是属性
+const VDom = h('div', {}, [h('span'), h('span')])
+const VDom = h('div', {}, h('span'), h('span'))
+
+const VDom = h('div',{} ,'hello')
+const VDom = h('div', {},['hello', 'hello', 'hello'])
+const VDom = h('div', {}, 'hello', 'hello', 'hello')
+```
+
+
+
+一个虚拟DOM节点除了标识自己是什么节点以外，还需要连带标识其子节点是什么。为此，vue源码中引入了基于二进制ide形状标识枚举类型。
+
+vue中的形状标识：
+
+```ts
+export const enum ShapeFlags {
+  ELEMENT = 1, // 元素
+  FUNCTIONAL_COMPONENT = 1 << 1, // 函数式组件
+  STATEFUL_COMPONENT = 1 << 2, // 状态组件
+  TEXT_CHILDREN = 1 << 3, // 文本孩子
+  ARRAY_CHILDREN = 1 << 4, // 数组孩子
+  SLOTS_CHILDREN = 1 << 5, // 组件的插槽
+  TELEPORT = 1 << 6, // 传送门组件
+  SUSPENSE = 1 << 7, // 懒加载组件
+  COMPONENT_SHOULD_KEEP_ALIVE = 1 << 8, // keep-alive
+  COMPONENT_KEPT_ALIVE = 1 << 9,
+  COMPONENT = ShapeFlags.STATEFUL_COMPONENT | ShapeFlags.FUNCTIONAL_COMPONENT,
+}
+```
+
+
+
+```js
+export function createVNode(type, props, children = null) {
+    // React.createElement
+    const shapeFlag = isString(type) ? ShapeFlags.ELEMENT : 0;
+    const vnode = {
+        shapeFlag,
+        __v_isVNode: true,
+        type,
+        props,
+        key: props && props.key,
+        el: null, // 每个虚拟节点都对应一个真实节点，用来存放真实节点的后续更新的时候会产生新的虚拟节点，比较差异更新真实DOM
+        children,
+    };
+    if (children) {
+        let type = 0;
+        if (Array.isArray(children)) {
+            type = ShapeFlags.ARRAY_CHILDREN;
+        } else {
+            type = ShapeFlags.TEXT_CHILDREN;
+        }
+        vnode.shapeFlag |= type;
+    }
+    return vnode;
+}
+```
+
 
 
 
@@ -1548,6 +1659,24 @@ vue3内部封装了一个内置了DOM操作的方法——render。render 方法
 
 ## DIFF
 
+1. 新增节点是直接依次深度递归遍布虚拟DOM，依次创建真实DOM并插入到容器节点中
+
+2. 如果新的虚拟DOM不存在，则直接移除老的DOM节点即可
+
+3. 如果父级元素不是同一个节点（类型相同，key也相同），即使后代节点完全一样，也会删除之前得DOM节点重新基于新得虚拟DOM树进行创建
+
+   ```js
+   export function isSameVnode(n1, n2) {
+     return n1.type === n2.type && n1.key === n2.key;
+   }
+   ```
+
+   
+
+
+
+
+
 ### 最长递增子序列
 
 子序列：在一个序列中，一个子序列是指从原序列中选择出来的元素的集合，并且这些元素在原序列中的相对顺序保持不变。换句话说，可以通过在原序列中删除一些元素（可以为空）来获得一个子序列。
@@ -1555,3 +1684,79 @@ vue3内部封装了一个内置了DOM操作的方法——render。render 方法
 例如，对于序列 [1, 3, 5, 2, 4, 6]，它的一些子序列可以是：[1, 3, 5]、[1, 2, 4, 6]、[3, 5, 6] 等。在子序列中，元素之间的相对顺序保持不变，但不一定要求是连续的。
 
 在最长递增子序列问题中，需要找到给定序列中的一个最长的递增子序列，其中递增子序列是指子序列中的元素按照严格递增的顺序排列。
+
+
+
+
+
+## 组件
+
+组件的渲染，特性，插槽，事件，props，更新。
+
+组件能复用，方便维护同时能局部更新。Vue3中每个组件都对应一个自己effect。对于响应式的数据被在一个组件中使用，那么这个响应式数据就会收集该组件的effect。响应式数据变化就能精确的定位到该组件进行更新，提高性能。
+
+this指代不明确，ts无法对this进行推断，同时this不支持tree-shaking。
+
+在vue2中组件同时存在template字段和render字段时，render的优先级更高，只写template本质也是被转为render函数。
+
+模板编译最终是把模板 -> render返回的结果 -> 虚拟dom(h方法返回的是虚拟dom)  -> 渲染成真实的dom
+
+
+
+基本使用：
+
+```js
+const MyComponent = {
+    props: {
+        a: Number,
+        b: Number,
+    },
+    data() {
+        return { name: 'jw', age: 30 }
+    },
+    // 模板编译 最终是把模板 -> render返回的结果 -> 虚拟dom(h方法返回的是虚拟dom)  -> 渲染成真实的dom
+    render(proxy) {
+        console.log(this)
+        return h('div', {}, [h('span', proxy.a), h('span', proxy.b), h('span', proxy.$attrs.c)])
+    }
+}
+// vue2中  attrs(组件标签上的属性) , props(我给你传递的自定义属性不在attrs中的)
+render(h(MyComponent, { a: 1, b: 2, c: 1 }), app);
+```
+
+
+
+针对组件，它对应虚拟DOM节点的children属性的值是插槽。
+
+
+
+
+
+## 面试
+
+### 对Vue的理解
+
+一个数据驱动的用于构建用户见面的渐进式框架，vue的核心是只关注视图层。
+
+1.  声明式渲染
+2. 组件化开发
+3. 客户端路由
+4. 状态管理
+5. 构建工具
+
+
+
+
+
+MVVM模式与MVC模式
+
+目的：职责划分，分层管理。
+
+
+
+
+
+
+
+
+
