@@ -6,7 +6,7 @@
 
 - props
 
-- $on/$emit
+- \$on/\$emit
 
 - eventBus
 
@@ -38,35 +38,35 @@
   		vm:this
   	}
   }
-
-
-  后代组件
-  inject:['vm']
-
-  inject:{
-    vm1:'vm'
-  }
-
-  inject:{
-    vm1:{
-    	from:'vm',
-    	default: '{}'
+  
+    后代组件
+    inject:['vm']
+  
+    inject:{
+      vm1:'vm'
     }
-  }
-  ```
+  
+    inject:{
+      vm1:{
+      	from:'vm',
+      	default: '{}'
+      }
+    }
 
-- $attrs/$listeners：在 ui 组件中常用来实现跨层级组件的传递标签属性
+- \$attrs/\$listeners：在 ui 组件中常用来实现跨层级组件的传递标签属性
 
   在父组件中，对来自上层组件的数据进行自动展开，并传给自己的子组件，
 
   ```
-  <son v-bind="$attrs"></son>
+<son v-bind="$attrs"></son>
+  ```
+对于son组件来说，它内部会将这些数据自动展开，并作为最外层原生dom元素的标签属性，同时在可以直接在自己组件内部通过$attrs.xxx的方式进行取用（class和style除外）
 
-  对于son组件来说，它内部会将这些数据自动展开，并作为最外层原生dom元素的标签属性，同时在可以直接在自己组件内部通过$attrs.xxx的方式进行取用（class和style除外）
+```
+<son v-on="$listeners"></son>
+```
 
-  <son v-on="$listeners"></son>
-
-  $listeners上存放的其实是父组件事件池中的事件。在没有使用v-on展开给子组件时， 子组件想要使用父组件$listeners上的方法时，需要用props$listeners传给子组件。在用v-on展开后，在子组件内可以直接通过this.$emit()触发。
+  \$listeners上存放的其实是父组件事件池中的事件。在没有使用v-on展开给子组件时， 子组件想要使用父组件\$listeners上的方法时，需要用props\$listeners传给子组件。在用v-on展开后，在子组件内可以直接通过this.\$emit()触发。
   ```
 
 ### 插槽
@@ -75,7 +75,7 @@
 
 #### 匿名插槽
 
-```
+  ```
 son:
 <div>
 	<h3>hello vue</h3>
@@ -308,7 +308,7 @@ export default {
   		}).catch(()=>{
   	      cb(false)
   		})
-
+  	
   	}
   }
 }
@@ -348,7 +348,7 @@ rules:{
 
   在 element-ui 中的解决方案是：
 
-  ```
+```
   emitter.js文件：
 
   function broadcast(componentName,eventName,params){
@@ -398,17 +398,17 @@ rules:{
 
 Vue.extend()的具体使用方法：
 
-```
+  ```
 //组件的配置对象  或者 是一个.vue文件
 const compObject = {
 	data(){
 
 	},
 	props:{
-
+	
 	},
 	methods:{
-
+	
 	}
 }
 const CompConstructor = Vue.extend(compObject)   //CompConstructor是一个构造函数
@@ -433,7 +433,7 @@ vue-router 想要实现的情况：
 
   hashchange 事件触发时，去查询 vue-router 插件初始化时，生成的一个路由表，路由表的结构如下：
 
-  ```
+```
   {
   	'/':{},
   	'/home':{},
@@ -468,7 +468,7 @@ vue-router 想要实现的情况：
   - 实现并且注册了两个全局组件 router-link 和 router-view
   - 在 mian.js 中给根实例的配置对象中传入 VueRouter 的实例，该实例起到的作用是什么？
 
-```
+  ```
 let _Vue
 
 class myVueRouter{
@@ -494,7 +494,7 @@ class myVueRouter{
 	}
 	onhashchange(){
 		this.current = window.location.hash.slice(1)
-
+	
 	}
 }
 
@@ -604,10 +604,10 @@ export default new Vuex.Store({
 		}
 	},
 	getter:{
-
+	
 	},
 	modules:{
-
+	
 	}
 })
 ```
@@ -645,7 +645,7 @@ class Store{
 		this.action = function bindActions(type,payload){
 			return actions.call(store, type, payload)
 		}
-
+	
 	}
 	get state(){
 		return this._vm._data.$$state
@@ -653,14 +653,14 @@ class Store{
 	set state(newVal){
 		console.error('please use replaceState to reset state')
 	}
-
+	
 	commit(type,payload){
 		//执行配置对象mutations中的方法去修改数据
 		this._commit[type]? this._commit[type](this.state,payload):null
 	}
 	dispatch(type,payload){
 		this.actions[type] ?  return entry(this,pauload) :null
-
+	
 	}
 }
 
