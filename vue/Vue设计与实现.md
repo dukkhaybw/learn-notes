@@ -1340,7 +1340,7 @@ effect(function effectFn() {
 
 当字段 obj.ok 的值发生变化时， 代码执行的分支会跟着变化，这就是所谓的分支切换。
 
-分支切换可能会产生遗留的副作用函数。拿上面这段代码来说， 字段 obj.ok 的初始值为 true，这时会读取字段 obj.text 的值， 所以当 effectFn 函数执行时会触发字段 obj.ok 和字段 obj.text 这两个属性的读取操作，此时副作用函数 effectFn 与响应式数据之 间建立的联系如下：
+分支切换可能会产生遗留的副作用函数。拿上面这段代码来说， 字段 obj.ok 的初始值为 true，这时会读取字段 obj.text 的值， 所以当 effectFn 函数执行时会触发字段 obj.ok 和字段 obj.text 这两个属性的读取操作，此时副作用函数 effectFn 与响应式数据ok和ytest之间建立的联系如下：
 
 ```js
 data
@@ -1352,11 +1352,11 @@ data
 
 ![image-20231229212010582](C:\Users\dukkha\Desktop\learn-notes\vue\images\image-20231229212010582.png)
 
-副作用函数 effectFn 分别被字段 data.ok 和字段 data.text 所对应的依赖集合收集。当字段 obj.ok 的值修改为 false，并触发副作用函数重新执行后，由于此时字段 obj.text 不 会被读取，只会触发字段 obj.ok 的读取操作，所以理想情况下副作 用函数 effectFn 不应该被字段 obj.text 所对应的依赖集合收集。
+副作用函数 effectFn 分别被字段 data.ok 和字段 data.text 所对应的依赖集合收集。当字段 obj.ok 的值修改为 false，并触发副作用函数重新执行后，由于此时字段 obj.text 不 会被读取，只会触发字段 obj.ok 的读取操作，所以理想情况下副作用函数 effectFn 不应该被字段 obj.text 所对应的依赖集合收集。如下图：
 
 ![image-20231229212131253](C:\Users\dukkha\Desktop\learn-notes\vue\images\image-20231229212131253.png)
 
-但按照前文的实现，还做不到这一点。当把字段 obj.ok 的值修改为 false，并触发副作用函数重新执行之后， 整个依赖关系仍然保持原样，这时就产生了遗留的副作用函数。
+但按照前文的实现，还做不到这一点。当把字段 obj.ok 的值修改为 false，并触发副作用函数重新执行之后， 整个依赖关系仍然保持原样，因为源码的text属性已经收集好了副作用函数而没有被删除过，这时就产生了遗留的副作用函数。
 
 遗留的副作用函数会导致不必要的更新，拿下面这段代码来说：
 
@@ -1375,7 +1375,7 @@ obj.ok 的初始值为 true，当将其修改为 false 后：
  obj.ok = false 
 ```
 
-这会触发更新，即副作用函数会重新执行。但由于此时 obj.ok 的值为 false，所以不再会读取字段 obj.text 的值。换句话说，无 论字段 obj.text 的值如何改变，document.body.innerText 的 值始终都是字符串 'not'。所以最好的结果是，无论 obj.text 的值 怎么变，都不需要重新执行副作用函数。但事实并非如此，如果再尝试修改 obj.text 的值： 
+这会触发更新，即副作用函数会重新执行。但由于此时 obj.ok 的值为 false，所以不再会读取字段 obj.text 的值。换句话说，无论字段 obj.text 的值如何改变，document.body.innerText 的值始终都是字符串 'not'。所以最好的结果是，无论 obj.text 的值怎么变，都不需要重新执行副作用函数。但事实并非如此，如果再尝试修改 obj.text 的值： 
 
 ```js
 obj.text = 'hello vue3' 
@@ -1383,7 +1383,1425 @@ obj.text = 'hello vue3'
 
 这仍然会导致副作用函数重新执行，即使 document.body.innerText 的值不需要变化。
 
-**解决办法：每次副作用函数执行时，可以先把它从所有与之关联的依赖集合中删除。**
+**解决办法：每次副作用函数执行之前，可以先把它从所有与之关联的依赖集合中删除。**
+
+先清空所有包含这个副作用函数的不同响应式属性对应的set中的该副作用函数自身，然后再重新执行该副作用函数，重新建立联系。  
+
+要将一个副作用函数从收集过该副作用函数的依赖集合中移除，就需要明确知道哪些依赖集合中包含它，因此需要重新设计副作用函数，如下面的代码所示。在 effect 内部定义了新的 effectFn 函数，并为其添加了 effectFn.deps 属性，该属性是一个数组，用来存储所有包含当前副作用函数的依赖集合：
+
+```js
+// 用一个全局变量存储被注册的副作用函数
+let activeEffect
+
+function effect(fn) {
+    // aop思想
+    const effectFn = () => {
+        // 当 effectFn 执行时，将其设置为当前激活的副作用函数
+        activeEffect = effectFn
+        fn()
+    }
+    
+    // activeEffect.deps 用来存储所有与该副作用函数相关联的依赖集合
+    effectFn.deps = []
+    
+    // 执行副作用函数
+    effectFn()
+}
+```
+
+那什么时候给effectFn.deps赋值了？在 track 函数中：
+
+track函数就是在触发响应式数据的getter时执行。
+
+```js
+function track(target, key) {
+    // 没有 activeEffect，直接 return
+    if (!activeEffect) return
+    
+    let depsMap = bucket.get(target)
+    if (!depsMap) {
+        bucket.set(target, (depsMap = new Map()))
+    }
+    
+    let deps = depsMap.get(key)
+    if (!deps) {
+        depsMap.set(key, (deps = new Set()))
+    }
+    // 把当前激活的副作用函数添加到依赖集合 deps 中
+    deps.add(activeEffect)
+    
+    // deps 就是一个与当前副作用函数存在联系的依赖集合
+    // 将其添加到 activeEffect.deps 数组中
+    activeEffect.deps.push(deps) // 新增
+}
+```
+
+当副作用函数收集到包含自己的所有依赖集合后，就可以在每次副作用函数执行时，根据 effectFn.deps 获取所有相关联的依赖集合，进而将副作用函数从依赖集合中移除：
+
+```js
+// 用一个全局变量存储被注册的副作用函数
+let activeEffect
+
+function effect(fn) {
+    const effectFn = () => {
+        // 调用 cleanup 函数完成清除工作
+        cleanup(effectFn) // 新增
+        activeEffect = effectFn
+        fn()
+    }
+    effectFn.deps = []
+    effectFn()
+}
+```
+
+cleanup 函数的实现：
+
+```js
+function cleanup(effectFn) {
+    // 遍历 effectFn.deps 数组
+    for (let i = 0; i < effectFn.deps.length; i++) {
+        // deps 是依赖集合
+        const deps = effectFn.deps[i]
+        // 将 effectFn 从依赖集合中移除
+        deps.delete(effectFn)
+    }
+    // 最后需要重置 effectFn.deps 数组
+    effectFn.deps.length = 0
+}
+
+```
+
+至此，响应式数据在分支切换情况下的副作用函数遗留问题就解决了。
+
+但如果尝试运行代码，会发现目前的实现会导致**无限循环执行**，问题出在响应式数据修改时的trigger 函数中：
+
+```js
+function trigger(target, key) {
+    const depsMap = bucket.get(target)
+    if (!depsMap) return
+    const effects = depsMap.get(key)
+    effects && effects.forEach(fn => fn()) // 问题出在这句代码
+}
+```
+
+在 trigger 函数内部，遍历 effects 集合，它是一个 Set 集合，里面存储着副作用函数。当副作用函数执行时，会先调用 cleanup 进行清除，实际上就是从 effects 集合中将当前执行的副作用函数剔除，但是接下来继续副作用函数的执行会导致其重新被收集到集合中，而此时对于 effects 集合的遍历仍在进行。  无线循环的原因是：前脚刚删除，在开启下一轮循环前，又往集合中添加了新数据，所以一直无法完全循环完集合。
+
+**在调用 forEach 遍历 Set 集合 时，如果一个值已经被访问过了，但该值被删除并重新添加到集合， 如果此时 forEach 遍历没有结束，那么该值会重新被访问。**
+
+解决办法：构造另外一个 Set 集合并遍历它。
+
+```js
+function trigger(target, key) {
+    const depsMap = bucket.get(target)
+    if (!depsMap) return
+    const effects = depsMap.get(key)
+
+    const effectsToRun = new Set(effects) // 新增
+    effectsToRun.forEach(effectFn => effectFn()) // 新增
+    // effects && effects.forEach(effectFn => effectFn()) // 删除
+}
+```
+
+
+
+### 嵌套的 effect 与 effect 栈
+
+effect可以嵌套。
+
+```js
+effect(function effectFn1() {
+    effect(function effectFn2() { /* ... */ })
+    /* ... */
+})
+```
+
+什么场景下会 出现嵌套的 effect ? Vue.js 的渲染函数就 是在一个 effect 中执行的：
+
+```js
+// Foo 组件
+const Foo = {
+    render() {
+        return /* ... */
+    }
+}
+
+effect(() => {
+    Foo.render()
+})
+```
+
+当组件发生嵌套时，例如 Foo 组件渲染了 Bar 组件：
+
+```js
+// Bar 组件
+const Bar = {
+    render() { /* ... */ },
+}
+// Foo 组件渲染了 Bar 组件
+const Foo = {
+    render() {
+        return <Bar /> // jsx 语法
+    },
+    }
+
+
+    effect(() => {
+        Foo.render()
+        // 嵌套
+        effect(() => {
+            Bar.render()
+        })
+    })
+```
+
+
+
+如果 effect 不支持嵌套会发生什么？
+
+前面的代码实现就是不支持effect嵌套的。
+
+```js
+// 原始数据
+const data = { foo: true, bar: true }
+// 代理对象
+const obj = new Proxy(data, { /* ... */ })
+
+// 全局变量
+let temp1, temp2
+
+// effectFn1 嵌套了 effectFn2
+effect(function effectFn1() {
+    console.log('effectFn1 执行')
+
+    effect(function effectFn2() {
+        console.log('effectFn2 执行')
+        // 在 effectFn2 中读取 obj.bar 属性
+        temp2 = obj.bar
+    })
+    // 在 effectFn1 中读取 obj.foo 属性
+    temp1 = obj.foo
+})
+```
+
+在理想情况下，希望副作用函数与对象属性之间的联系如下：
+
+```js
+data
+ └── foo
+      └── effectFn1
+ └── bar
+      └── effectFn2
+```
+
+希望当修改 obj.foo 时会触发 effectFn1 执行。由于 effectFn2 嵌套在 effectFn1 里，所以会间接触发 effectFn2 执行，而当修改 obj.bar 时，**只**会触发 effectFn2 执 行。
+
+当尝试修改 obj.foo 的值，会发现输出为：
+
+```js
+初始执行:
+'effectFn1 执行'
+'effectFn2 执行'
+
+修改 obj.foo 的值:
+'effectFn2 执行'
+```
+
+修改了字段 obj.foo 的值，发现 effectFn1 并没有重 新执行，反而使得 effectFn2 重新执行了，这不符合预期。
+
+出现上述问题的原因：全局变量 activeEffect 来存储通过 effect 函数注册的 副作用函数，这意味着同一时刻 activeEffect 所存储的副作用函数 只能有一个。当副作用函数发生嵌套时，内层副作用函数的执行会覆 盖 activeEffect 的值，并且永远不会恢复到原来的值。这时如果再 有响应式数据进行依赖收集，即使这个响应式数据是在外层副作用函 数中读取的，它们收集到的副作用函数也都会是内层副作用函数。
+
+解决办法：维护一个副作用函数栈 effectStack， 在副作用函数执行时，将当前副作用函数压入栈中，待副作用函数执 行完毕后将其从栈中弹出，并始终让 activeEffect 指向栈顶的副作用函数。
+
+```js
+// 用一个全局变量存储当前激活的 effect 函数
+let activeEffect
+// effect 栈
+const effectStack = [] // 新增
+function effect(fn) {
+    const effectFn = () => {
+        cleanup(effectFn)
+        // 当调用 effect 注册副作用函数时，将副作用函数赋值给 activeEffect
+        activeEffect = effectFn
+        // 在调用副作用函数之前将当前副作用函数压入栈中
+        effectStack.push(effectFn) // 新增
+        fn()
+        // 在当前副作用函数执行完毕后，将当前副作用函数弹出栈，并把activeEffect 还原为之前的值
+        effectStack.pop() // 新增
+        activeEffect = effectStack[effectStack.length - 1] // 新增
+    }
+    // activeEffect.deps 用来存储所有与该副作用函数相关的依赖集合
+    effectFn.deps = []
+    // 执行副作用函数
+    effectFn()
+}
+```
+
+
+
+
+
+### 无限递归循环
+
+代码案例：
+
+```js
+const data = { foo: 1 }
+const obj = new Proxy(data, { /*...*/ })
+effect(() => obj.foo++)
+```
+
+在这个语句中，既会读取 obj.foo 的值，又会设置 obj.foo 的 值，而这就是导致问题的根本原因。可以尝试推理一下代码的执 行流程：首先读取 obj.foo 的值，这会触发 track 操作，将当前副作用函数收集到“桶”中，接着将其加 1 后再赋值给 obj.foo，此时会触发 trigger 操作，即把“桶”中的副作用函数取出并执行。但问题是该副作用函数正在执行中，还没有执行完毕，就要开始下一次的执 行。这样会导致无限递归地调用自己，于是就产生了栈溢出。
+
+解决办法：通过分析这个问题能够发现，读取和设置 操作是在同一个副作用函数内进行的。此时无论是 track 时收集的副 作用函数，还是 trigger 时要触发执行的副作用函数，都是 activeEffect。基于此，可以在 trigger 动作发生时增加守卫条件：如果 trigger 触发执行的副作用函数与当前正在执行的副作用函数相同，则不触发执行，如以下代码所示：
+
+```js
+function trigger(target, key) {
+    const depsMap = bucket.get(target)
+    if (!depsMap) return
+    const effects = depsMap.get(key)
+
+    const effectsToRun = new Set()
+    effects && effects.forEach(effectFn => {
+        // 如果 trigger 触发执行的副作用函数与当前正在执行的副作用函数相同，则不触发执行
+        if (effectFn !== activeEffect) { // 新增
+            effectsToRun.add(effectFn)
+        }
+    })
+    effectsToRun.forEach(effectFn => effectFn())
+}
+```
+
+
+
+### 调度执行
+
+可调度指的是当 trigger 动作触发副作用函数重新执行时，有能力决定副作用函数执行的时机、次数以及方式。
+
+例子：如何决定副作用函数的执行方式
+
+```js
+const data = { foo: 1 }
+const obj = new Proxy(data, { /* ... */ })
+
+effect(() => {
+    console.log(obj.foo)
+})
+
+obj.foo++
+
+console.log('结束了')
+
+// 输出结果： 1 2 结束了
+```
+
+现在假设需求有变，输出顺序需要调整为： 1 结束了 2。这时就需要响应系统支持调度。
+
+可以为 effect 函数设计一个选项参数 options，允许用户指定调度器：
+
+```js
+effect(
+    () => {
+        console.log(obj.foo)
+    },
+    // options
+    {
+        // 调度器 scheduler 是一个函数
+        scheduler(fn) {
+            // ...
+        }
+    }
+)
+```
+
+在 effect 函数内部需要把 options 选项挂载到对应的副作用函数上：
+
+```js
+function effect(fn, options = {}) {
+    const effectFn = () => {
+        cleanup(effectFn)
+        activeEffect = effectFn
+        effectStack.push(effectFn)
+        fn()
+        effectStack.pop()
+        activeEffect = effectStack[effectStack.length - 1]
+    }
+    // 将 options 挂载到 effectFn 上
+    effectFn.options = options // 新增
+   
+    effectFn.deps = []
+    effectFn()
+}
+```
+
+有了调度函数，我们在 trigger 函数中触发副作用函数重新执行 时，就可以直接调用用户传递的调度器函数，从而把控制权交给用 户：
+
+```js
+function trigger(target, key) {
+    const depsMap = bucket.get(target)
+    if (!depsMap) return
+    const effects = depsMap.get(key)
+
+    const effectsToRun = new Set()
+    effects && effects.forEach(effectFn => {
+        if (effectFn !== activeEffect) {
+            effectsToRun.add(effectFn)
+        }
+    })
+    effectsToRun.forEach(effectFn => {
+        // 如果一个副作用函数存在调度器，则调用该调度器，并将副作用函数作为参数传递
+        if (effectFn.options.scheduler) { // 新增
+            effectFn.options.scheduler(effectFn) // 新增
+        } else {
+            // 否则直接执行副作用函数（之前的默认行为）
+            effectFn() // 新增
+        }
+    })
+}
+```
+
+这时就能实现前面的打印需求了，如下：
+
+```js
+const data = { foo: 1 }
+const obj = new Proxy(data, { /* ... */ })
+
+effect(
+    () => {
+        console.log(obj.foo)
+    },
+    // options
+    {
+        // 调度器 scheduler 是一个函数
+        scheduler(fn) {
+            // 将副作用函数放到宏任务队列中执行
+            setTimeout(fn)
+        }
+    }
+)
+
+
+obj.foo++
+
+console.log('结束了')
+
+// 打印结果：  1  '结束了'   2
+```
+
+
+
+除了控制副作用函数的执行顺序，通过调度器还可以做到控制它的执行次数。如下例子：
+
+```js
+const data = { foo: 1 }
+const obj = new Proxy(data, { /* ... */ })
+effect(() => {
+    console.log(obj.foo)
+})
+obj.foo++
+obj.foo++
+```
+
+在副作用函数中打印 obj.foo 的值，接着连续对其执行两次 自增操作，在没有指定调度器的情况下，它的输出：1  2  3。
+
+由输出可知，字段 obj.foo 的值一定会从 1 自增到 3，2 只是它 的过渡状态。如果只关心最终结果而不关心过程，那么执行三次 打印操作是多余的，期望的打印结果是： 1  3
+
+基于调度器可以很容易地实现此功能：
+
+```js
+// 定义一个任务队列
+const jobQueue = new Set()
+// 使用 Promise.resolve() 创建一个 promise 实例，我们用它将一个任务添加到微任务队列
+const p = Promise.resolve()
+
+// 一个标志代表是否正在刷新队列
+let isFlushing = false
+function flushJob() {
+    // 如果队列正在刷新，则什么都不做
+    if (isFlushing) return
+    // 设置为 true，代表正在刷新
+    isFlushing = true
+    // 在微任务队列中刷新 jobQueue 队列
+    p.then(() => {
+        jobQueue.forEach(job => job())
+    }).finally(() => {
+        // 结束后重置 isFlushing
+        isFlushing = false
+    })
+}
+
+
+effect(() => {
+    console.log(obj.foo)
+}, {
+    scheduler(fn) {
+        // 每次调度时，将副作用函数添加到 jobQueue 队列中
+        jobQueue.add(fn)
+        // 调用 flushJob 刷新队列
+        flushJob()
+    }
+})
+
+obj.foo++
+obj.foo++
+```
+
+
+
+
+
+### 计算属性与lazy
+
+懒执行的effect。
+
+前面实现的 effect 函数会立即执行传递给它的副作用函数，但在有些场景下，并不希望它立即执行，而是希望它在需要 的时候才执行，例如计算属性。这时可以通过在 options 中添加 lazy 属性来达到目的。
+
+```js
+effect(
+    // 指定了 lazy 选项，这个函数不会立即执行
+    () => {
+        console.log(obj.foo)
+    },
+    // options
+    {
+        lazy: true
+    }
+)
+```
+
+实现逻辑：
+
+```js
+function effect(fn, options = {}) {
+    const effectFn = () => {
+        cleanup(effectFn)
+        activeEffect = effectFn
+        effectStack.push(effectFn)
+        fn()
+        effectStack.pop()
+        activeEffect = effectStack[effectStack.length - 1]
+    }
+    effectFn.options = options
+    effectFn.deps = []
+    // 只有非 lazy 的时候，才执行
+    if (!options.lazy) { // 新增
+        // 执行副作用函数
+        effectFn()
+    }
+    // 将副作用函数作为返回值返回
+    return effectFn // 新增
+}
+
+```
+
+通过上面的代码可以看到，将副作用函数 effectFn 作为 effect 函数的返回值，这就意味着当调用 effect 函数时，通过其返回值能够拿到对应的副作用函数，这样就能手动执行该副作用函数了：
+
+```js
+const effectFn = effect(() => {
+    console.log(obj.foo)
+}, { lazy: true })
+
+// 手动执行副作用函数
+effectFn()
+```
+
+如果仅仅能够手动执行副作用函数，其意义并不大。**但如果把传递给 effect 的函数看作一个 getter，那么这个 getter 函数可以返回任何值**，例如：
+
+```js
+const effectFn = effect(
+    // getter 返回 obj.foo 与 obj.bar 的和
+    () => obj.foo + obj.bar,
+    { lazy: true }
+)
+```
+
+这样在手动执行副作用函数时，就能够拿到其返回值：
+
+```js
+const effectFn = effect(
+    // getter 返回 obj.foo 与 obj.bar 的和
+    () => obj.foo + obj.bar,
+    { lazy: true }
+)
+// value 是 getter 的返回值
+const value = effectFn()
+```
+
+为了实现这个目标，需要再对 effect 函数做一些修改，如以下代码所示：
+
+```js
+function effect(fn, options = {}) {
+    const effectFn = () => {
+        cleanup(effectFn)
+        activeEffect = effectFn
+        effectStack.push(effectFn)
+        // 将 fn 的执行结果存储到 res 中
+        const res = fn() // 新增
+        effectStack.pop()
+        activeEffect = effectStack[effectStack.length - 1]
+        // 将 res 作为 effectFn 的返回值
+        return res // 新增
+    }
+    effectFn.options = options
+    effectFn.deps = []
+    if (!options.lazy) {
+        effectFn()
+    }
+
+    return effectFn
+}
+```
+
+传递给 effect 函数的参数 fn 才是真正的副作用函数，而 effectFn 是包装后的副作用函数。
+
+实现计算属性：
+
+```js
+function computed(getter) {
+    // 把 getter 作为副作用函数，创建一个 lazy 的 effect
+    const effectFn = effect(getter, {
+        lazy: true
+    })
+
+    const obj = {
+        // 当读取 value 时才执行 effectFn
+        get value() {
+            return effectFn()
+        }
+    }
+
+    return obj
+}
+```
+
+上面实现的计算属性代码能做到懒计算，但是做不到对值进行缓存。
+
+添加缓存实现：
+
+```js
+function computed(getter) {
+    // value 用来缓存上一次计算的值
+    let value
+    // dirty 标志，用来标识是否需要重新计算值，为 true 则意味着“脏”，需要计算
+    let dirty = true
+
+    const effectFn = effect(getter, {
+        lazy: true
+    })
+
+    const obj = {
+        get value() {
+            // 只有“脏”时才计算值，并将得到的值缓存到 value 中
+            if (dirty) {
+                value = effectFn()
+                // 将 dirty 设置为 false，下一次访问直接使用缓存到 value 中的值
+                dirty = false
+            }
+            return value
+        }
+    }
+
+    return obj
+}
+```
+
+上面代码存在的问题：修改 obj.foo 或 obj.bar 的值，再访问 sumRes.value 会发现访问到的值没有发 生变化：
+
+```js
+const data = { foo: 1, bar: 2 }
+const obj = new Proxy(data, { /* ... */ })
+
+const sumRes = computed(() => obj.foo + obj.bar)
+
+console.log(sumRes.value) // 3
+console.log(sumRes.value) // 3
+
+// 修改 obj.foo
+obj.foo++
+
+// 再次访问，得到的仍然是 3，但预期结果应该是 4
+console.log(sumRes.value) // 3
+```
+
+这是因为，当第一次访问 sumRes.value 的值后，变量 dirty 会设置为 false，代表不需要计算。即使我们修改了 obj.foo 的 值，但只要 dirty 的值为 false，就不会重新计算，所以导致我们得 到了错误的值。
+
+解决办法很简单，当 obj.foo 或 obj.bar 的值发生变化时，只 要 dirty 的值重置为 true 就可以了。那么应该怎么做呢？这时就用到了 scheduler 选项，如以下代码所示：
+
+```js
+function computed(getter) {
+    let value
+    let dirty = true
+
+    const effectFn = effect(getter, {
+        lazy: true,
+        // 添加调度器，在调度器中将 dirty 重置为 true
+        scheduler() {
+            dirty = true
+        }
+    })
+
+    const obj = {
+        get value() {
+            if (dirty) {
+                value = effectFn()
+                dirty = false
+            }
+            return value
+        }
+    }
+
+    return obj
+}
+```
+
+为 effect 添加了 scheduler 调度器函数，它会在 getter 函数中所依赖的响应式数据变化时执行，这样我们在 scheduler 函 数内将 dirty 重置为 true，当下一次访问 sumRes.value 时，就会重新调用 effectFn 计算值，这样就能够得到预期的结果了。
+
+上面代码存在的问题：当在另外一个 effect 中读取计算属性的值时：
+
+```js
+const sumRes = computed(() => obj.foo + obj.bar)
+
+effect(() => {
+    // 在该副作用函数中读取 sumRes.value
+    console.log(sumRes.value)
+})
+
+// 修改 obj.foo 的值
+obj.foo++
+
+```
+
+sumRes 是一个计算属性，并且在另一个 effect 的副作用函数中读取了 sumRes.value 的值。如果此时修改 obj.foo 的值，我们期望副作用函数重新执行，就像我们在 Vue.js 的 模板中读取计算属性值的时候，一旦计算属性发生变化就会触发重新渲染一样。但是如果尝试运行上面这段代码，会发现修改 obj.foo 的 值并不会触发副作用函数的渲染。
+
+从本质上看这就是一个典型的 effect 嵌套。一个计算属性内部拥有自己的 effect，并且它是懒执 行的，只有当真正读取计算属性的值时才会执行。对于计算属性的 getter 函数来说，它里面访问的响应式数据只会把 computed 内部 的 effect 收集为依赖。而当把计算属性用于另外一个 effect 时， 就会发生 effect 嵌套，外层的 effect 不会被内层 effect 中的响 应式数据收集。
+
+解决办法：当读取计算属性的值时，我们可以手动调用 track 函数进行追踪；当计算属性依赖的响应式数据发生变化时，我 们可以手动调用 trigger 函数触发响应：
+
+```js
+function computed(getter) {
+    let value
+    let dirty = true
+
+    const effectFn = effect(getter, {
+        lazy: true,
+        scheduler() {
+            if (!dirty) {
+                dirty = true
+                // 当计算属性依赖的响应式数据变化时，手动调用 trigger 函数触发响应
+                trigger(obj, 'value')
+            }
+        }
+    })
+
+    const obj = {
+        get value() {
+            if (dirty) {
+                value = effectFn()
+                dirty = false
+            }
+            // 当读取 value 时，手动调用 track 函数进行追踪
+            track(obj, 'value')
+            return value
+        }
+    }
+
+    return obj
+}
+```
+
+
+
+### watch
+
+watch本质就是观测一个响应式数据，当数据发生变化时通知并执行相应的回调函数。
+
+watch 的实现本质上就是利用了 effect 以及 options.scheduler 选项。如以下代码所示：
+
+```js
+effect(() => {
+    console.log(obj.foo)
+}, {
+    scheduler() {
+        // 当 obj.foo 的值变化时，会执行 scheduler 调度函数
+    }
+})
+```
+
+**当响应式数据变化时，会触发副作用函数重新执行。但如果副作用函数存在 scheduler 选项，当响应式数据发生变化时，会触发 scheduler 调度函数执行，而非直接触发副作用函数执行。**
+
+watch基本实现：
+
+```js
+// watch 函数接收两个参数，source 是响应式数据，cb 是回调函数
+function watch(source, cb) {
+    effect(
+        // 触发读取操作，从而建立联系
+        () => source.foo,
+        {
+            scheduler() {
+                // 当数据变化时，调用回调函数 cb
+                cb()
+            }
+        }
+    )
+}
+
+// 使用
+const data = { foo: 1 }
+const obj = new Proxy(data, { /* ... */ })
+watch(obj, () => {
+console.log('数据变化了')
+})
+obj.foo++
+```
+
+上面这段代码能正常工作，但是注意到在 watch 函数的实现中，硬编码了对 source.foo 的读取操作。换句话说，现在只能观测 obj.foo 的改变。为了让 watch 函数具有通用性，需要一个封装一个通用的读取操作：
+
+```js
+function watch(source, cb) {
+    effect(
+        // 调用 traverse 递归地读取
+        () => traverse(source),
+        {
+            scheduler() {
+                // 当数据变化时，调用回调函数 cb
+                cb()
+            }
+        }
+    )
+}
+
+function traverse(value, seen = new Set()) {
+    // 如果要读取的数据是原始值，或者已经被读取过了，那么什么都不做
+    if (typeof value !== 'object' || value === null || seen.has(value)) return
+    // 将数据添加到 seen 中，代表遍历地读取过了，避免循环引用引起的死循环
+    seen.add(value)
+    // 暂时不考虑数组等其他结构
+    // 假设 value 就是一个对象，使用 for...in 读取对象的每一个值，并递归地调用 traverse 进行处理
+    for (const k in value) {
+        traverse(value[k], seen)
+    }
+
+    return value
+}
+```
+
+在 watch 内部的 effect 中调用 traverse 函数进行递归的读取操作，触发响应式数据中各个属性的getter函数，代替硬编码的方式，这样就能读取一个对 象上的任意属性，从而当任意属性发生变化时都能够触发回调函数执行。
+
+
+
+watch函数还可以接收一个getter函数：
+
+```js
+watch(
+    // getter 函数
+    () => obj.foo,
+    // 回调函数
+    () => {
+        console.log('obj.foo 的值变了')
+    }
+)
+```
+
+对getter函数的支持：
+
+```js
+function watch(source, cb) {
+    // 定义 getter
+    let getter
+    // 如果 source 是函数，说明用户传递的是 getter，所以直接把 source 赋值给 getter
+    if (typeof source === 'function') {
+        getter = source
+    } else {
+        // 否则按照原来的实现调用 traverse 递归地读取
+        getter = () => traverse(source)
+    }
+
+    effect(
+        // 执行 getter
+        () => getter(),
+        {
+            scheduler() {
+                cb()
+            }
+        }
+    )
+}
+```
+
+上面代码中传给watch函数的第二个参数回调函数并没有接收任何的新值或者旧值。
+
+新值和旧值的实现：
+
+```js
+function watch(source, cb) {
+    let getter
+    if (typeof source === 'function') {
+        getter = source
+    } else {
+        getter = () => traverse(source)
+    }
+    // 定义旧值与新值
+    let oldValue, newValue
+    // 使用 effect 注册副作用函数时，开启 lazy 选项，并把返回值存储到fectFn 中以便后续手动调用
+    const effectFn = effect(
+        () => getter(),
+        {
+            lazy: true,
+            scheduler() {
+                // 在 scheduler 中重新执行副作用函数，得到的是新值
+                newValue = effectFn()
+                // 将旧值和新值作为回调函数的参数
+                cb(newValue, oldValue)
+                // 更新旧值，不然下一次会得到错误的旧值
+                oldValue = newValue
+            }
+        }
+    )
+    // 手动调用副作用函数，拿到的值就是旧值
+    oldValue = effectFn()
+}
+```
+
+
+
+#### watch函数的立即执行和回调执行
+
+默认情况下，一个 watch 的回调只会在响应式数据发生变化时才执行。在 Vue.js 中可以通过选项参数 immediate 来指定回调是否需要立即执行。
+
+回调函数的立即执 行与后续执行本质上没有任何差别，所以我们可以把 scheduler 调 度函数封装为一个通用函数，分别在初始化和变更时执行它，代码实现如下：
+
+```js
+function watch(source, cb, options = {}) {
+    let getter
+    if (typeof source === 'function') {
+        getter = source
+    } else {
+        getter = () => traverse(source)
+    }
+
+    let oldValue, newValue
+
+    // 提取 scheduler 调度函数为一个独立的 job 函数
+    const job = () => {
+        newValue = effectFn()
+        cb(newValue, oldValue)
+        oldValue = newValue
+    }
+
+    const effectFn = effect(
+        // 执行 getter
+        () => getter(),
+        {
+            lazy: true,
+            // 使用 job 函数作为调度器函数
+            scheduler: job
+        }
+    )
+
+    if (options.immediate) {
+        // 当 immediate 为 true 时立即执行 job，从而触发回调执行
+        job()
+    } else {
+        oldValue = effectFn()
+    }
+}
+```
+
+由于回调函数是立即执 行的，所以第一次回调执行时没有所谓的旧值，因此此时回调函数的 oldValue 值为 undefined，这也是符合预期的。
+
+除了指定回调函数为立即执行之外，还可以通过其他选项参数来 指定回调函数的执行时机，例如在 Vue.js 3 中使用 flush 选项来指 定：
+
+```js
+watch(obj, () => {
+    console.log('变化了')
+}, {
+    // 回调函数会在 watch 创建时立即执行一次
+    flush: 'pre' // 还可以指定为 'post' | 'sync'
+})
+```
+
+flush 本质上是在指定调度函数的执行时机。前文讲解过如何在微任务队列中执行调度函数 scheduler，这与 flush 的功能相同。 当 flush 的值为 'post' 时，代表调度函数需要将副作用函数放到一 个微任务队列中，并等待 DOM 更新结束后再执行，可以用如下代 码进行模拟：
+
+```js
+function watch(source, cb, options = {}) {
+    let getter
+    if (typeof source === 'function') {
+        getter = source
+    } else {
+        getter = () => traverse(source)
+    }
+
+    let oldValue, newValue
+
+    const job = () => {
+        newValue = effectFn()
+        cb(newValue, oldValue)
+        oldValue = newValue
+    }
+
+    const effectFn = effect(
+        // 执行 getter
+        () => getter(),
+        {
+            lazy: true,
+            scheduler: () => {
+                // 在调度函数中判断 flush 是否为 'post'，如果是，将其放到微任务队列中执行
+                if (options.flush === 'post') {
+                    const p = Promise.resolve()
+                    p.then(job)
+                } else {
+                    job()
+                }
+            }
+        }
+    )
+
+    if (options.immediate) {
+        job()
+    } else {
+        oldValue = effectFn()
+    }
+}
+
+```
+
+对于 options.flush 的值为 'pre' 的情况，暂时还没有办法模拟，因为这涉及组件的更新时机，其中 'pre' 和 'post' 原本的语义指的就是组件更新前和更新后，不过这并不影响理解如何控制回调函数的更新时机。
+
+
+
+### 过期的副作用
+
+竞态问题通常在多进程或多线程编程中出现。
+
+```js
+let finalData
+
+watch(obj, async () => {
+    // 发送并等待网络请求
+    const res = await fetch('/path/to/request')
+    // 将请求结果赋值给 data
+    finalData = res
+})
+```
+
+这段代码会发生竞态问题。假设第一次修改 obj 对象的某个字段值，这会导致回调函数执行，同时发送了第一次请求 A。随着时间的推移，在请求 A 的结果返回之前，对 obj 对象的某个字段值进行了第二次修改，这会导致发送第二次请求 B。此时请求 A 和请求 B 都在进行中，那么哪一个请求会先返回结果呢？不确定，如果请求 B 先于请求 A 返回结果，就会导致最终 finalData 中存储的是 A 请求的结果。
+
+![image-20231231110824018](C:\Users\dukkha\Desktop\learn-notes\vue\images\image-20231231110824018.png)
+
+由于请求 B 是后发送的，因此认为请求 B 返回的数据才是 “最新”的，而请求 A 则应该被视为“过期”的，所以希望变量 finalData 存储的值应该是由请求 B 返回的结果，而非请求 A 返回 的结果。
+
+请求 A 是副作用函 数第一次执行所产生的副作用，请求 B 是副作用函数第二次执行所产 生的副作用。由于请求 B 后发生，所以请求 B 的结果应该被视为“最 新”的，而请求 A 已经“过期”了，其产生的结果应被视为无效。通过这 种方式，就可以避免竞态问题导致的错误结果。
+
+归根结底，需要的是一个让副作用过期的手段。为了让问题 更加清晰，先拿 Vue.js 中的 watch 函数来复现场景，看看 Vue.js 是如何帮助开发者解决这个问题的，然后尝试实现这个功能。
+
+在 Vue.js 中，watch 函数的回调函数接收第三个参数 onInvalidate，它是一个函数，类似于事件监听器，可以使用 onInvalidate 函数注册一个回调，这个回调函数会在当前副作用函数过期时执行：
+
+```js
+watch(obj, async (newValue, oldValue, onInvalidate) => {
+    // 定义一个标志，代表当前副作用函数是否过期，默认为 false，代表没有过期
+    let expired = false
+    // 调用 onInvalidate() 函数注册一个过期回调
+    onInvalidate(() => {
+        // 当过期时，将 expired 设置为 true
+        expired = true
+    })
+
+    // 发送网络请求
+    const res = await fetch('/path/to/request')
+
+    // 只有当该副作用函数的执行没有过期时，才会执行后续操作。
+    if (!expired) {
+        finalData = res
+    }
+})
+```
+
+如上面的代码所示，在发送请求之前，定义了 expired 标志变量，**用来标识当前副作用函数的执行是否过期**；接着调用 onInvalidate 函数注册了一个过期回调，当该副作用函数的执行过期时将 expired 标志变量设置为 true；最后只有当没有过期时才采用请求结果，这样就可以有效地避免上述问题了。
+
+换句话说，onInvalidate 的原理 是什么呢？在 watch 内部每次检测到变更后，在副作用 函数重新执行之前，会先调用通过 onInvalidate 函数注册的过期回调，仅此而已，如以下代码所示：
+
+```js
+function watch(source, cb, options = {}) {
+    let getter
+    if (typeof source === 'function') {
+        getter = source
+    } else {
+        getter = () => traverse(source)
+    }
+
+    let oldValue, newValue
+
+    // cleanup 用来存储用户注册的过期回调
+    let cleanup
+    // 定义 onInvalidate 函数
+    function onInvalidate(fn) {
+        // 将过期回调存储到 cleanup 中
+        cleanup = fn
+    }
+
+    const job = () => {
+        newValue = effectFn()
+        // 在调用回调函数 cb 之前，先调用过期回调
+        if (cleanup) {
+            cleanup()
+        }
+        // 将 onInvalidate 作为回调函数的第三个参数，以便用户使用
+        cb(newValue, oldValue, onInvalidate)
+        oldValue = newValue
+    }
+
+    const effectFn = effect(
+        // 执行 getter
+        () => getter(),
+        {
+            lazy: true,
+            scheduler: () => {
+                if (options.flush === 'post') {
+                    const p = Promise.resolve()
+                    p.then(job)
+                } else {
+                    job()
+                }
+            }
+        }
+    )
+
+    if (options.immediate) {
+        job()
+    } else {
+        oldValue = effectFn()
+    }
+}
+```
+
+实际使用案例：
+
+```js
+watch(obj, async (newValue, oldValue, onInvalidate) => {
+    let expired = false
+    onInvalidate(() => {
+        expired = true
+    })
+
+    const res = await fetch('/path/to/request')
+
+    if (!expired) {
+        finalData = res
+    }
+})
+
+// 第一次修改
+obj.foo++
+setTimeout(() => {
+    // 200ms 后做第二次修改
+    obj.foo++
+}, 200)
+```
+
+如以上代码所示，修改了两次 obj.foo 的值，第一次修改是立即执行的，这会导致 watch 的回调函数执行。由于在回调函数内调用了 onInvalidate，所以会注册一个过期回调，接着发送请求 A。假设请求 A 需要 1000ms 才能返回结果，而在 200ms 时第二次修改了 obj.foo 的值，这又会导致 watch 的回调函数执行。这时要注意的是，在实现中，每次执行回调函数之前要先检查过期回调是否存在，如果存在，会优先执行过期回调。由于在 watch 的回调 函数第一次执行的时候，已经注册了一个过期回调，所以在watch 的回调函数第二次执行之前，会优先执行之前注册的过期回调，这会使得第一次执行的副作用函数内闭包的变量 expired 的值变 为 true，即副作用函数的执行过期了。于是等请求 A 的结果返回时， 其结果会被抛弃，从而避免了过期的副作用函数带来的影响，如图：
+
+![image-20231231111951514](C:\Users\dukkha\Desktop\learn-notes\vue\images\image-20231231111951514.png)
+
+
+
+## 第五章
+
+响应式数据本身，实现响应式数据都需要考虑哪些内容，其中的难点又是什么。如何拦截 for...in 循环？track 函数如何追踪拦截到的 for...in 循环？如何对数组进行代理？如何支持集合类型的代理？
+
+
+
+### proxy
+
+Proxy 可以创建一个代理对象。它能够实现对其他对象的代理，Proxy 只能代理对象，无法代理非对象值，例如字符串、布尔值等。代理指的是对一个对象**基本语义**的代理。它允许拦截并重新定义对一个对象的**基本操作**。
+
+基本语义：读取属性值、设置属性值就属于基本语义的操作，即基本操作。
+
+一个函数也是一个对 象，所以调用函数也是对一个对象的基本操作。可以用 Proxy 来拦截函数的调用操作，这里使用 apply 拦截函数的调用：
+
+```js
+const fn = (name) => {
+    console.log('我是：', name)
+}
+
+
+const p2 = new Proxy(fn, {
+    // 使用 apply 拦截函数调用
+    apply(target, thisArg, argArray) {
+        target.call(thisArg, ...argArray)
+    }
+})
+
+p2('hcy') // 输出：'我是：hcy'
+```
+
+Proxy 只能够拦截对一个 对象的基本操作。
+
+那典型的非基本操作：调用对象的方法。（复合操作）
+
+调用一个对象下的方法，是由两个基本语义组成的。第 一个基本语义是 get，即先通过 get 操作得到 obj.fn 属性。第二个基本语义是函数调用，即通过 get 得到 obj.fn 的值后再调用它，也就是上面说到的apply。
+
+
+
+### Reflect
+
+Reflect 是一个全局 对象，其下有许多方法，例如：
+
+```js
+Reflect.get()
+Reflect.set()
+Reflect.apply()
+// ...
+```
+
+Reflect 下的方法与 Proxy 的拦截器方法名字相同，任何在 Proxy 的拦截器中能够找到的方法，都能够在 Reflect 中找到同名函数。
+
+Reflect.get 函数的功能就是提供了访问一个对象属性的默认行为，例如下面两个操作是等价的：
+
+```js
+const obj = { foo: 1 }
+
+// 直接读取
+console.log(obj.foo) // 1
+// 使用 Reflect.get 读取
+console.log(Reflect.get(obj, 'foo')) // 1
+```
+
+既然操作等价，那么它存在的意义是什么？实际上 Reflect.get 函数还能接收第三个参数，即指定接收者 receiver，你可以把它理解为函数调用过程中的 this，例如：
+
+```js
+const obj = { foo: 1 }
+console.log(Reflect.get(obj, 'foo', { foo: 2 })) // 输出的是 2 而不是 1
+```
+
+以前的响应式对象：
+
+```js
+const obj = { foo: 1 }
+
+const p = new Proxy(obj, {
+    get(target, key) {
+        track(target, key)
+        // 注意，这里我们没有使用 Reflect.get 完成读取
+        return target[key]
+    },
+    set(target, key, newVal) {
+        // 这里同样没有使用 Reflect.set 完成设置
+        target[key] = newVal
+        trigger(target, key)
+    }
+})
+```
+
+
+
+新的对象：
+
+```js
+const obj = {
+    foo: 1,
+    get bar() {
+        return this.foo
+    }
+}
+
+const p = new Proxy(obj, {
+    get(target, key) {
+        track(target, key)
+        // 注意，这里我们没有使用 Reflect.get 完成读取
+        return target[key]
+    },
+    set(target, key, newVal) {
+        // 这里同样没有使用 Reflect.set 完成设置
+        target[key] = newVal
+        trigger(target, key)
+    }
+})
+
+effect(() => {
+    console.log(p.bar) // 1
+})
+```
+
+当 effect 注册的副作用函数执行时，会读取 p.bar 属性，它发现 p.bar 是一个访问器属 性，因此执行 getter 函数。由于在 getter 函数中通过 this.foo 读取了 foo 属性值，因此认为副作用函数与属性 foo 之间也会建立联系。当修改 p.foo 的值时应该能够触发响应，使得副作用函数重新执行才对。然而实际并非如此，当尝试修改 p.foo 的值时，副作用函数并没有重新执行。
+
+问题就出在 bar 属性的访问器函数 getter 里：
+
+```js
+const obj = {
+    foo: 1,
+    get bar() {
+        return this.foo
+    }
+}
+```
+
+使用 this.foo 读取 foo 属性值时，这里的 this 指向的 是谁？回顾一下整个流程。首先，通过代理对象 p 访问 p.bar，这会触发代理对象的 get 拦截函数执行：
+
+```js
+const p = new Proxy(obj, {
+    get(target, key) {
+        track(target, key)
+        // 注意，这里我们没有使用 Reflect.get 完成读取
+        return target[key]
+    },
+    set(target, key, newVal) {
+        // 这里同样没有使用 Reflect.set 完成设置
+        target[key] = newVal
+        trigger(target, key)
+    }
+})
+```
+
+在 get 拦截函数内，通过 target[key] 返回属性值。其中 target 是原始对象 obj，而 key 就是字符串 'bar'，所以 target[key] 相当于 obj.bar。因此，当使用 p.bar 访问 bar 属性时，它的 getter 函数内的 this 指向的其实是原始对象 obj， 这说明最终访问的其实是 obj.foo。很显然，在副作用函数内通 过原始对象访问它的某个属性是不会建立响应联系的。
+
+```js
+effect(() => {
+    // obj 是原始数据，不是代理对象，这样的访问不能够建立响应联系
+    obj.foo
+})
+```
+
+因为这样做不会建立响应联系，所以出现了无法触发响应的问题。
+
+解决办法就是：使用Reflect.get 函数。
+
+```js
+const p = new Proxy(obj, {
+    // 拦截读取操作，接收第三个参数 receiver
+    get(target, key, receiver) {
+        track(target, key)
+        // 使用 Reflect.get 返回读取到的属性值
+        return Reflect.get(target, key, receiver)
+    },
+    // 省略部分代码
+})
+```
+
+代理对象的 get 拦截函数接收第三个参数 receiver，它代表谁在读取属性。p.bar 代理对象 p 在读取 bar 属性
+
+使用 Reflect.get(target, key, receiver) 代替 之前的 target[key]，这里的关键点就是第三个参数 receiver。 我们已经知道它就是代理对象 p，所以访问器属性 bar 的 getter 函 数内的 this 指向代理对象 p。
+
+
+
+### 对象
+
+根据 ECMAScript 规范，在 JavaScript 中有两种对象，其 中一种叫作常规对象（ordinary object），另一种叫作异质对象 （exotic object）。这两种对象包含了 js中的所有对象，任何不属于常规对象的对象都是异质对象。
+
+对象的内部方法和内部槽：
+
+在js中函数也是一个对象。假设给出一个对 象 obj，如何区分它是普通对象还是函数呢？实际上，在 JavaScript 中，对象的实际语义是由对象的内部方法（internal method）指定的。 所谓内部方法，指的是当我们对一个对象进行操作时在引擎内部调用的方法，这些方法对于 JavaScript 使用者来说是不可见的。当访问对象属性时，引擎内部会调用 [[Get]] 这个内部方法来读取属性值。（在 ECMAScript 规范中使用 [[xxx]] 来代表内部方法或内部槽）。
+
+对象必要的内部方法：
+
+| 内部方法              | 签名                                              | 描述                                                         |
+| --------------------- | ------------------------------------------------- | ------------------------------------------------------------ |
+| [[GetPrototypeOf]]    | ( ) → Object \| null                              | 查明为该对象提供继承属性的对象， null 代表没有继承属性       |
+| [[SetPrototypeOf]]    | (Object \| Null) → Boolean                        | 将该对象与提供继承属性的另一个对 象相关联。传递 null 表示没有继承属性，返回 true 表示操作成功完 成，返回 false 表示操作失败 |
+| [[IsExtensible]]      | ( ) → Boolean                                     | 查明是否允许向该对象添加其他属性                             |
+| [[PreventExtensions]] | ( ) → Boolean                                     | 控制能否向该对象添加新属性。如果操作成功则返回 true，如果操作失败 则返回 false |
+| [[GetOwnProperty]]    | (propertyKey) → Undefined  \| Property Descriptor | 返回该对象自身属性的描述符，其键 为 propertyKey，如果不存在这样的 属性，则返回 undefined |
+| [[DefineOwnProperty]] | (propertyKey, PropertyDescriptor) → Boolean       | 创建或更改自己的属性，其键为 propertyKey，以具有由 PropertyDescriptor 描述的状态。如 果该属性已成功创建或更新，则返回 true；如果无法创建或更新该属性， 则返回 false |
+| [[HasProperty]]       | (propertyKey) → Boolean                           | 返回一个布尔值，指示该对象是否已 经拥有键为 propertyKey 的自己的或 继承的属性 |
+| [[Get]]               | (propertyKey, Receiver) → any                     | 从该对象返回键为 propertyKey 的属 性的值。如果必须运行 ECMAScript 代码来检索属性值，则在运行代码时 使用 Receiver 作为 this 值 |
+| [[Set]]               | (propertyKey, value, Receiver) → Boolean          | 将键值为 propertyKey 的属性的值设 置为 value。如果必须运行 ECMAScript 代码来设置属性值，则 在运行代码时使用 Receiver 作为 this 值。如果成功设置了属性值，则 返回 true；如果无法设置，则返回 false |
+| [[Delete]]            | (propertyKey) → Boolean                           | 从该对象中删除属于自身的键为 propertyKey 的属性。如果该属性未 被删除并且仍然存在，则返回 false；如果该属性已被删除或不存 在，则返回 true |
+| [[OwnPropertyKeys]]   | ( ) → List of propertyKey                         | 返回一个 List，其元素都是对象自身的属性键                    |
+|                       |                                                   |                                                              |
+| [[Call]]              | (any, a List of any) → any                        | 将运行的代码与 this 对象关联。由函数调用触发。该内部 方法的参数是一个 this 值和参数列表 |
+| [[Construct]]         | (a List of any, Object) → Object                  | 创建一个对象。通过 new 运算符或 super 调用触发。该内 部方法的第一个参数是一个 List，该 List 的元素是构造 函数调用或 super 调用的参数，第二个参数是最初应用 new 运算符的对象。实现该内部方法的对象称为构造函数 |
+
+如果一个对象需要作为函数调用，那么这个对象就必须部署内部方法 [[Call]]。现在就可以回答前面的问题了：如何区分一个 对象是普通对象还是函数呢？一个对象在什么情况下才能作为函数调用呢？答案是，通过内部方法和内部槽来区分对象，例如函数对象会部署内部方法 [[Call]]，而普通对象则不会。
+
+内部方法具有多态性，这类似于面向对象里多态的概念。这就是说，不同类型的对象可能部署了相同的内部方法， 却具有不同的逻辑。例如，普通对象和 Proxy 对象都部署了 [[Get]] 这个内部方法，但它们的逻辑是不同的，普通对象部署的 [[Get]] 内部方法的逻辑是由 ECMA 规范的 10.1.8 节定义的，而 Proxy 对象部署的 [[Get]] 内部方法的逻辑是由 ECMA 规范的 10.5.8 节来定义的。
+
+了解了内部方法，就可以解释什么是常规对象，什么是异质对象了。满足以下三点要求的对象就是常规对象：
+
+- 对于上面列出的内部方法，必须使用 ECMA 规范 10.1.x 节给出 的定义实现； 
+- 对于内部方法 [[Call]]，必须使用 ECMA 规范 10.2.1 节给出的 定义实现； 
+- 对于内部方法 [[Construct]]，必须使用 ECMA 规范 10.2.2 节 给出的定义实现。
+
+所有不符合这三点要求的对象都是异质对象。Proxy 对象的内部方法 [[Get]] 没有使用 ECMA 规范的 10.1.8 节给 出的定义实现，所以 Proxy 是一个异质对象。
+
+通过代理对象访问属性值时：引擎会调用部署在对象 p 上的内部方法 [[Get]]。到这 一步，其实代理对象和普通对象没有太大区别。它们的区别在于对于 内部方法 [[Get]] 的实现，这里就体现了内部方法的多态性，即不同 的对象部署相同的内部方法，但它们的行为可能不同。具体的不同体 现在，如果在创建代理对象时没有指定对应的拦截函数，例如没有指 定 get() 拦截函数，那么当我们通过代理对象访问属性值时，代理对 象的内部方法 [[Get]] 会调用原始对象的内部方法 [[Get]] 来获取 属性值，这其实就是代理透明性质。
+
+创建代理对象时指定的拦截函数，实际上是用来自定义代理对象本身的内部方法和行为的，而不是用来指定 被代理对象的内部方法和行为的。
+
+下面列出了 Proxy 对象部署的所 有内部方法以及用来自定义内部方法和行为的拦截函数名字：
+
+| 内部方法              | 处理器函数               |
+| --------------------- | ------------------------ |
+| [[GetPrototypeOf]]    | getPrototypeOf           |
+| [[SetPrototypeOf]]    | setPrototypeOf           |
+| [[IsExtensible]]      | isExtensible             |
+| [[PreventExtensions]] | preventExtensions        |
+| [[GetOwnProperty]]    | getOwnPropertyDescriptor |
+| [[DefineOwnProperty]] | defineProperty           |
+| [[HasProperty]]       | has                      |
+| [[Get]]               | get                      |
+| [[Set]]               | set                      |
+| [[Delete]]            | deleteProperty           |
+| [[OwnPropertyKeys]]   | ownKeys                  |
+| [[Call]]              | apply                    |
+| [[Construct]]         | construct                |
+
+其中 [[Call]] 和 [[Construct]] 这两个内部方法只有 当被代理的对象是函数和构造函数时才会部署。
+
+当我们要拦截删除属性操作时，可以使用 deleteProperty 拦截函数实现：
+
+```js
+const obj = { foo: 1 }
+const p = new Proxy(obj, {
+    deleteProperty(target, key) {
+        return Reflect.deleteProperty(target, key)
+    }
+})
+
+console.log(p.foo) // 1
+delete p.foo
+console.log(p.foo) // 未定义
+```
+
+deleteProperty 实现的是代理对象 p 的内部方法和行为，所以为了删除被代理对象上的属性值，需要使用 Reflect.deleteProperty(target, key) 来完成。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### Proxy 的工作原理
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
