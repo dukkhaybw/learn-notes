@@ -953,7 +953,7 @@ render() {
 - 避免无限递归
 - 嵌套的副作用函数
 - 副作用函数之间的影响
-- proxy实现响应式数据
+- 基于语言规范，Proxy实现完善一些的响应式数据
 - 响应式系统的设计与实现
 
 
@@ -976,7 +976,7 @@ function effect() {
 obj.text = 'hello vue3' // 修改 obj.text 的值，同时希望副作用函数会重新执行
 ```
 
-如果能实现这个目标，那么对象 obj 就是响应式数据。以上面的代码来看，还做不到这一点，因 为 obj 是一个普通对象，当修改它的值时，除了值本身发生变化之外，不会有任何其他反应。
+如果能实现这个目标，那么对象 obj 就是响应式数据。以上面的代码来看，还做不到这一点，因为 obj 是一个普通对象，当修改它的值时，除了值本身发生变化之外，不会有任何其他反应。
 
 
 
@@ -1008,6 +1008,7 @@ const obj = new Proxy(data, {
         // 返回属性值
         return target[key]
     },
+    
     // 拦截设置操作
     set(target, key, newVal) {
         // 设置属性值
@@ -1084,7 +1085,7 @@ const obj = new Proxy(data, {
 
 
 
-如上面的代码所示，由于副作用函数已经存储到了 activeEffect 中，所以在 get 拦截函数内应该把 activeEffect 收集，这样响应系统就不依赖副作用函数的名字了。
+如上面的代码所示，由于副作用函数执行前已经存储到了 activeEffect 中，接着执行被注册的副作用函数，副作用函数中取了响应式数据的属性，触发 get 拦截函数内把 activeEffect 收集，这样响应系统就不依赖副作用函数的名字了。
 
 
 
@@ -1105,13 +1106,13 @@ setTimeout(() => {
 }, 1000)
 ```
 
-在匿名副作用函数内并没有读取 obj.notExist 属性 的值，所以理论上，字段 obj.notExist 并没有与副作用建立响应联 系，因此，定时器内语句的执行不应该触发匿名副作用函数重新执 行。但如果执行上述这段代码就会发现，定时器到时后，匿名副作用函数却重新执行了，这是不正确的。
+在匿名副作用函数内并没有读取 obj.notExist 属性的值，所以理论上，字段 obj.notExist 并没有与副作用建立响应联系，因此，定时器内语句的执行不应该触发匿名副作用函数重新执行。但如果执行上述这段代码就会发现，定时器到时后，匿名副作用函数却重新执行了，这是不正确的。
 
 
 
 **再次改进**
 
-导致该问题的根本原因是，**没有在副作用函数与被操作的目标字段之间建立明确的联系**。
+导致该问题的根本原因是，**没有在副作用函数与被操作的目标属性之间建立明确的联系**。
 
 例如当读取属性时，无论读取的是哪一个属性，其实都一样，都会把副作用函数收集到“桶”里；当设置属性时，无论设置的是哪一个属性，也都会把“桶”里的副作用函 数取出并执行。副作用函数与被操作的字段之间没有明确的联系。解决方法很简单，只需要在副作用函数与被操作的字段之间建立联系即可，这就需要重新设计“桶”的数据结构，而不能简单地使用一个 Set 类型的数据作为“桶”了。
 
@@ -1377,7 +1378,7 @@ obj.text = 'hello vue3'
 
 这仍然会导致副作用函数重新执行，即使 document.body.innerText 的值不需要变化。
 
-**解决办法：每次副作用函数执行之前，可以先把它从所有与之关联的依赖集合中删除。**
+**解决办法：每次副作用函数执行之前，可以先把它从所有包含该副作用函数的关联的依赖集合中删除。**
 
 先清空所有包含这个副作用函数的不同响应式属性对应的set中的该副作用函数自身，然后再重新执行该副作用函数，重新建立联系。  
 
@@ -1480,7 +1481,7 @@ function trigger(target, key) {
 
 在 trigger 函数内部，遍历 effects 集合，它是一个 Set 集合，里面存储着副作用函数。当副作用函数执行时，会先调用 cleanup 进行清除，实际上就是从 effects 集合中将当前执行的副作用函数剔除，但是接下来继续副作用函数的执行会导致其重新被收集到集合中，而此时对于 effects 集合的遍历仍在进行。  无线循环的原因是：前脚刚删除，在开启下一轮循环前，又往集合中添加了新数据，所以一直无法完全循环完集合。
 
-**在调用 forEach 遍历 Set 集合 时，如果一个值已经被访问过了，但该值被删除并重新添加到集合， 如果此时 forEach 遍历没有结束，那么该值会重新被访问。**
+**在调用 forEach 遍历 Set 集合时，如果一个值已经被访问过了，但该值被删除并重新添加到集合， 如果此时 forEach 遍历没有结束，那么该值会重新被访问。**
 
 解决办法：构造另外一个 Set 集合并遍历它。
 
@@ -1509,7 +1510,7 @@ effect(function effectFn1() {
 })
 ```
 
-什么场景下会 出现嵌套的 effect ? Vue.js 的渲染函数就 是在一个 effect 中执行的：
+什么场景下会出现嵌套的 effect ? Vue.js 的渲染函数就是在一个 effect 中执行的：
 
 ```js
 // Foo 组件
@@ -1536,16 +1537,16 @@ const Foo = {
     render() {
         return <Bar /> // jsx 语法
     },
-    }
+}
 
 
+effect(() => {
+    Foo.render()
+    // 嵌套
     effect(() => {
-        Foo.render()
-        // 嵌套
-        effect(() => {
-            Bar.render()
-        })
+        Bar.render()
     })
+})
 ```
 
 
@@ -1587,7 +1588,7 @@ data
       └── effectFn2
 ```
 
-希望当修改 obj.foo 时会触发 effectFn1 执行。由于 effectFn2 嵌套在 effectFn1 里，所以会间接触发 effectFn2 执行，而当修改 obj.bar 时，**只**会触发 effectFn2 执 行。
+希望当修改 obj.foo 时会触发 effectFn1 执行。由于 effectFn2 嵌套在 effectFn1 里，所以会间接触发 effectFn2 执行，而当修改 obj.bar 时，**只**会触发 effectFn2 执行。
 
 当尝试修改 obj.foo 的值，会发现输出为：
 
@@ -1600,11 +1601,11 @@ data
 'effectFn2 执行'
 ```
 
-修改了字段 obj.foo 的值，发现 effectFn1 并没有重 新执行，反而使得 effectFn2 重新执行了，这不符合预期。
+修改了字段 obj.foo 的值，发现 effectFn1 并没有重新执行，反而使得 effectFn2 重新执行了，这不符合预期。
 
-出现上述问题的原因：全局变量 activeEffect 来存储通过 effect 函数注册的 副作用函数，这意味着同一时刻 activeEffect 所存储的副作用函数 只能有一个。当副作用函数发生嵌套时，内层副作用函数的执行会覆 盖 activeEffect 的值，并且永远不会恢复到原来的值。这时如果再 有响应式数据进行依赖收集，即使这个响应式数据是在外层副作用函 数中读取的，它们收集到的副作用函数也都会是内层副作用函数。
+出现上述问题的原因：全局变量 activeEffect 来存储通过 effect 函数注册的副作用函数，这意味着同一时刻 activeEffect 所存储的副作用函数只能有一个。当副作用函数发生嵌套时，内层副作用函数的执行会覆盖 activeEffect 的值，并且永远不会恢复到原来的值。这时如果再有响应式数据进行依赖收集，即使这个响应式数据是在外层副作用函 数中读取的，它们收集到的副作用函数也都会是内层副作用函数。
 
-解决办法：维护一个副作用函数栈 effectStack， 在副作用函数执行时，将当前副作用函数压入栈中，待副作用函数执 行完毕后将其从栈中弹出，并始终让 activeEffect 指向栈顶的副作用函数。
+解决办法：维护一个副作用函数栈 effectStack， 在副作用函数执行时，将当前副作用函数压入栈中，待副作用函数执行完毕后将其从栈中弹出，并始终让 activeEffect 指向栈顶的副作用函数。
 
 ```js
 // 用一个全局变量存储当前激活的 effect 函数
@@ -1632,8 +1633,6 @@ function effect(fn) {
 
 
 
-
-
 ### 无限递归循环
 
 代码案例：
@@ -1644,9 +1643,9 @@ const obj = new Proxy(data, { /*...*/ })
 effect(() => obj.foo++)
 ```
 
-在这个语句中，既会读取 obj.foo 的值，又会设置 obj.foo 的 值，而这就是导致问题的根本原因。可以尝试推理一下代码的执 行流程：首先读取 obj.foo 的值，这会触发 track 操作，将当前副作用函数收集到“桶”中，接着将其加 1 后再赋值给 obj.foo，此时会触发 trigger 操作，即把“桶”中的副作用函数取出并执行。但问题是该副作用函数正在执行中，还没有执行完毕，就要开始下一次的执 行。这样会导致无限递归地调用自己，于是就产生了栈溢出。
+在这个语句中，既会读取 obj.foo 的值，又会设置 obj.foo 的值，而这就是导致问题的根本原因。可以尝试推理一下代码的执行流程：首先读取 obj.foo 的值，这会触发 track 操作，将当前副作用函数收集到“桶”中，接着将其加 1 后再赋值给 obj.foo，此时会触发 trigger 操作，即把“桶”中的副作用函数取出并执行。但问题是该副作用函数正在执行中，还没有执行完毕，就要开始下一次的执行。这样会导致无限递归地调用自己，于是就产生了栈溢出。
 
-解决办法：通过分析这个问题能够发现，读取和设置 操作是在同一个副作用函数内进行的。此时无论是 track 时收集的副 作用函数，还是 trigger 时要触发执行的副作用函数，都是 activeEffect。基于此，可以在 trigger 动作发生时增加守卫条件：如果 trigger 触发执行的副作用函数与当前正在执行的副作用函数相同，则不触发执行，如以下代码所示：
+解决办法：通过分析这个问题能够发现，读取和设置操作是在同一个副作用函数内进行的。此时无论是 track 时收集的副作用函数，还是 trigger 时要触发执行的副作用函数，都是 activeEffect。基于此，可以在 trigger 动作发生时增加守卫条件：如果 trigger 触发执行的副作用函数与当前正在执行的副作用函数相同，则不触发执行，如以下代码所示：
 
 ```js
 function trigger(target, key) {
@@ -1727,7 +1726,7 @@ function effect(fn, options = {}) {
 }
 ```
 
-有了调度函数，我们在 trigger 函数中触发副作用函数重新执行 时，就可以直接调用用户传递的调度器函数，从而把控制权交给用 户：
+有了调度函数，在 trigger 函数中触发副作用函数重新执行时，就可以直接调用用户传递的调度器函数，从而**把控制权交给用户**：
 
 ```js
 function trigger(target, key) {
@@ -1795,7 +1794,7 @@ obj.foo++
 obj.foo++
 ```
 
-在副作用函数中打印 obj.foo 的值，接着连续对其执行两次 自增操作，在没有指定调度器的情况下，它的输出：1  2  3。
+在副作用函数中打印 obj.foo 的值，接着连续对其执行两次自增操作，在没有指定调度器的情况下，它的输出：1  2  3。
 
 由输出可知，字段 obj.foo 的值一定会从 1 自增到 3，2 只是它 的过渡状态。如果只关心最终结果而不关心过程，那么执行三次 打印操作是多余的，期望的打印结果是： 1  3
 
@@ -1847,7 +1846,7 @@ obj.foo++
 
 懒执行的effect。
 
-前面实现的 effect 函数会立即执行传递给它的副作用函数，但在有些场景下，并不希望它立即执行，而是希望它在需要 的时候才执行，例如计算属性。这时可以通过在 options 中添加 lazy 属性来达到目的。
+前面实现的 effect 函数会立即执行传递给它的副作用函数一次，但在有些场景下，并不希望它立即执行，而是希望它在需要的时候才执行，例如计算属性。这时可以通过在 options 中添加 lazy 属性来达到目的。
 
 ```js
 effect(
@@ -1884,7 +1883,6 @@ function effect(fn, options = {}) {
     // 将副作用函数作为返回值返回
     return effectFn // 新增
 }
-
 ```
 
 通过上面的代码可以看到，将副作用函数 effectFn 作为 effect 函数的返回值，这就意味着当调用 effect 函数时，通过其返回值能够拿到对应的副作用函数，这样就能手动执行该副作用函数了：
@@ -2016,9 +2014,9 @@ obj.foo++
 console.log(sumRes.value) // 3
 ```
 
-这是因为，当第一次访问 sumRes.value 的值后，变量 dirty 会设置为 false，代表不需要计算。即使我们修改了 obj.foo 的 值，但只要 dirty 的值为 false，就不会重新计算，所以导致我们得 到了错误的值。
+这是因为，当第一次访问 sumRes.value 的值后，变量 dirty 会设置为 false，代表不需要计算。即使后面修改了 obj.foo 的 值，但只要 dirty 的值为 false，就不会重新计算，所以导致我们得到了错误的值。
 
-解决办法很简单，当 obj.foo 或 obj.bar 的值发生变化时，只 要 dirty 的值重置为 true 就可以了。那么应该怎么做呢？这时就用到了 scheduler 选项，如以下代码所示：
+解决办法很简单，当 obj.foo 或 obj.bar 的值发生变化时，只 要 dirty 的值重置为 true 就可以了。这时就用到了 scheduler 选项，如以下代码所示：
 
 ```js
 function computed(getter) {
@@ -2064,13 +2062,78 @@ obj.foo++
 
 ```
 
-sumRes 是一个计算属性，并且在另一个 effect 的副作用函数中读取了 sumRes.value 的值。如果此时修改 obj.foo 的值，我们期望副作用函数重新执行，就像我们在 Vue.js 的 模板中读取计算属性值的时候，一旦计算属性发生变化就会触发重新渲染一样。但是如果尝试运行上面这段代码，会发现修改 obj.foo 的 值并不会触发副作用函数的渲染。
+sumRes 是一个计算属性，并且在另一个 effect 的副作用函数中读取了 sumRes.value 的值。如果此时修改 obj.foo 的值，期望副作用函数重新执行，就像在 Vue.js 的模板中读取计算属性值的时候，一旦计算属性发生变化就会触发重新渲染一样。但是如果尝试运行上面这段代码，会发现修改 obj.foo 的 值并不会触发副作用函数的渲染。
 
-从本质上看这就是一个典型的 effect 嵌套。一个计算属性内部拥有自己的 effect，并且它是懒执 行的，只有当真正读取计算属性的值时才会执行。对于计算属性的 getter 函数来说，它里面访问的响应式数据只会把 computed 内部 的 effect 收集为依赖。而当把计算属性用于另外一个 effect 时， 就会发生 effect 嵌套，外层的 effect 不会被内层 effect 中的响 应式数据收集。
+从本质上看这就是一个典型的 effect 嵌套。一个计算属性内部拥有自己的 effect，并且它是懒执行的，只有当真正读取计算属性的值时才会执行。对于计算属性的 getter 函数来说，它里面访问的响应式数据只会把 computed 内部的 effect 收集为依赖。而当把计算属性用于另外一个 effect 时， 就会发生 effect 嵌套，外层的 effect 不会被内层 effect 中的响 应式数据收集。
 
-解决办法：当读取计算属性的值时，我们可以手动调用 track 函数进行追踪；当计算属性依赖的响应式数据发生变化时，我 们可以手动调用 trigger 函数触发响应：
+解决办法：当读取计算属性的值时，可以手动调用 track 函数进行追踪；当计算属性依赖的响应式数据发生变化时，可以手动调用 trigger 函数触发响应：
 
 ```js
+function effect(fn, options = {}) {
+    const effectFn = () => {
+        cleanup(effectFn)
+        activeEffect = effectFn
+        effectStack.push(effectFn)
+        // 将 fn 的执行结果存储到 res 中
+        const res = fn() // 新增
+        effectStack.pop()
+        activeEffect = effectStack[effectStack.length - 1]
+        // 将 res 作为 effectFn 的返回值
+        return res // 新增
+    }
+    effectFn.options = options
+    effectFn.deps = []
+    if (!options.lazy) {
+        effectFn()
+    }
+
+    return effectFn
+}
+
+
+function trigger(target, key) {
+    const depsMap = bucket.get(target)
+    if (!depsMap) return
+    const effects = depsMap.get(key)
+
+    const effectsToRun = new Set()
+    effects && effects.forEach(effectFn => {
+        if (effectFn !== activeEffect) {
+            effectsToRun.add(effectFn)
+        }
+    })
+    effectsToRun.forEach(effectFn => {
+        // 如果一个副作用函数存在调度器，则调用该调度器，并将副作用函数作为参数传递
+        if (effectFn.options.scheduler) { // 新增
+            effectFn.options.scheduler(effectFn) // 新增
+        } else {
+            // 否则直接执行副作用函数（之前的默认行为）
+            effectFn() // 新增
+        }
+    })
+}
+
+function track(target, key) {
+    // 没有 activeEffect，直接 return
+    if (!activeEffect) return
+    
+    let depsMap = bucket.get(target)
+    if (!depsMap) {
+        bucket.set(target, (depsMap = new Map()))
+    }
+    
+    let deps = depsMap.get(key)
+    if (!deps) {
+        depsMap.set(key, (deps = new Set()))
+    }
+    // 把当前激活的副作用函数添加到依赖集合 deps 中
+    deps.add(activeEffect)
+    
+    // deps 就是一个与当前副作用函数存在联系的依赖集合
+    // 将其添加到 activeEffect.deps 数组中
+    activeEffect.deps.push(deps) // 新增
+}
+
 function computed(getter) {
     let value
     let dirty = true
@@ -2148,7 +2211,7 @@ console.log('数据变化了')
 obj.foo++
 ```
 
-上面这段代码能正常工作，但是注意到在 watch 函数的实现中，硬编码了对 source.foo 的读取操作。换句话说，现在只能观测 obj.foo 的改变。为了让 watch 函数具有通用性，需要一个封装一个通用的读取操作：
+上面这段代码能正常工作，但是在 watch 函数的实现中，硬编码了对 source.foo 的读取操作。换句话说，现在只能观测 obj.foo 的改变。为了让 watch 函数具有通用性，需要一个封装一个通用的读取操作：
 
 ```js
 function watch(source, cb) {
@@ -2179,7 +2242,7 @@ function traverse(value, seen = new Set()) {
 }
 ```
 
-在 watch 内部的 effect 中调用 traverse 函数进行递归的读取操作，触发响应式数据中各个属性的getter函数，代替硬编码的方式，这样就能读取一个对 象上的任意属性，从而当任意属性发生变化时都能够触发回调函数执行。
+在 watch 内部的 effect 中调用 traverse 函数进行递归的读取操作，触发响应式数据中各个属性的getter函数，代替硬编码的方式，这样就能读取一个对象上的任意属性，从而当任意属性发生变化时都能够触发回调函数执行。
 
 
 
@@ -2234,6 +2297,7 @@ function watch(source, cb) {
     } else {
         getter = () => traverse(source)
     }
+    
     // 定义旧值与新值
     let oldValue, newValue
     // 使用 effect 注册副作用函数时，开启 lazy 选项，并把返回值存储到fectFn 中以便后续手动调用
@@ -2260,7 +2324,7 @@ function watch(source, cb) {
 
 #### watch函数的立即执行和回调执行
 
-默认情况下，一个 watch 的回调只会在响应式数据发生变化时才执行。在 Vue.js 中可以通过选项参数 immediate 来指定回调是否需要立即执行。
+默认情况下，一个 watch 的第二参数（回调函数）只会在响应式数据发生变化时才执行。在 Vue.js 中可以通过选项参数 immediate 来指定回调是否需要立即执行。
 
 回调函数的立即执 行与后续执行本质上没有任何差别，所以我们可以把 scheduler 调 度函数封装为一个通用函数，分别在初始化和变更时执行它，代码实现如下：
 
@@ -2303,7 +2367,7 @@ function watch(source, cb, options = {}) {
 
 由于回调函数是立即执 行的，所以第一次回调执行时没有所谓的旧值，因此此时回调函数的 oldValue 值为 undefined，这也是符合预期的。
 
-除了指定回调函数为立即执行之外，还可以通过其他选项参数来 指定回调函数的执行时机，例如在 Vue.js 3 中使用 flush 选项来指 定：
+除了指定回调函数为立即执行之外，还可以通过其他选项参数来指定回调函数的执行时机，例如在 Vue.js 3 中使用 flush 选项来指 定：
 
 ```js
 watch(obj, () => {
@@ -2382,11 +2446,11 @@ watch(obj, async () => {
 
 ![image-20231231110824018](C:\Users\dukkha\Desktop\learn-notes\vue\images\image-20231231110824018.png)
 
-由于请求 B 是后发送的，因此认为请求 B 返回的数据才是 “最新”的，而请求 A 则应该被视为“过期”的，所以希望变量 finalData 存储的值应该是由请求 B 返回的结果，而非请求 A 返回 的结果。
+由于请求 B 是后发送的，因此认为请求 B 返回的数据才是 “最新”的，而请求 A 则应该被视为“过期”的，所以希望变量 finalData 存储的值应该是由请求 B 返回的结果，而非请求 A 返回的结果。
 
-请求 A 是副作用函 数第一次执行所产生的副作用，请求 B 是副作用函数第二次执行所产 生的副作用。由于请求 B 后发生，所以请求 B 的结果应该被视为“最 新”的，而请求 A 已经“过期”了，其产生的结果应被视为无效。通过这 种方式，就可以避免竞态问题导致的错误结果。
+请求 A 是副作用函数第一次执行所产生的副作用，请求 B 是副作用函数第二次执行所产 生的副作用。由于请求 B 后发生，所以请求 B 的结果应该被视为“最 新”的，而请求 A 已经“过期”了，其产生的结果应被视为无效。通过这 种方式，就可以避免竞态问题导致的错误结果。
 
-归根结底，需要的是一个让副作用过期的手段。为了让问题 更加清晰，先拿 Vue.js 中的 watch 函数来复现场景，看看 Vue.js 是如何帮助开发者解决这个问题的，然后尝试实现这个功能。
+归根结底，需要的是一个让副作用过期的手段。为了让问题更加清晰，先拿 Vue.js 中的 watch 函数来复现场景，看看 Vue.js 是如何帮助开发者解决这个问题的，然后尝试实现这个功能。
 
 在 Vue.js 中，watch 函数的回调函数接收第三个参数 onInvalidate，它是一个函数，类似于事件监听器，可以使用 onInvalidate 函数注册一个回调，这个回调函数会在当前副作用函数过期时执行：
 
@@ -2412,7 +2476,7 @@ watch(obj, async (newValue, oldValue, onInvalidate) => {
 
 如上面的代码所示，在发送请求之前，定义了 expired 标志变量，**用来标识当前副作用函数的执行是否过期**；接着调用 onInvalidate 函数注册了一个过期回调，当该副作用函数的执行过期时将 expired 标志变量设置为 true；最后只有当没有过期时才采用请求结果，这样就可以有效地避免上述问题了。
 
-换句话说，onInvalidate 的原理 是什么呢？在 watch 内部每次检测到变更后，在副作用 函数重新执行之前，会先调用通过 onInvalidate 函数注册的过期回调，仅此而已，如以下代码所示：
+换句话说，onInvalidate 的原理是什么呢？在 watch 内部每次检测到变更后，在副作用函数重新执行之前，会先调用通过 onInvalidate 函数注册的过期回调，仅此而已，如以下代码所示：
 
 ```js
 function watch(source, cb, options = {}) {
@@ -2510,7 +2574,7 @@ Proxy 可以创建一个代理对象。它能够实现对其他对象的代理�
 
 基本语义：读取属性值、设置属性值就属于基本语义的操作，即基本操作。
 
-一个函数也是一个对 象，所以调用函数也是对一个对象的基本操作。可以用 Proxy 来拦截函数的调用操作，这里使用 apply 拦截函数的调用：
+一个函数也是一个对象，所以调用函数也是对一个对象的基本操作。可以用 Proxy 来拦截函数的调用操作，这里使用 apply 拦截函数的调用：
 
 ```js
 const fn = (name) => {
@@ -2532,13 +2596,13 @@ Proxy 只能够拦截对一个 对象的基本操作。
 
 那典型的非基本操作：调用对象的方法。（复合操作）
 
-调用一个对象下的方法，是由两个基本语义组成的。第 一个基本语义是 get，即先通过 get 操作得到 obj.fn 属性。第二个基本语义是函数调用，即通过 get 得到 obj.fn 的值后再调用它，也就是上面说到的apply。
+调用一个对象方法，是由两个基本语义组成的。第 一个基本语义是 get，即先通过 get 操作得到 obj.fn 属性。第二个基本语义是函数调用，即通过 get 得到 obj.fn 的值后再调用它，也就是上面说到的apply。
 
 
 
 ### Reflect
 
-Reflect 是一个全局 对象，其下有许多方法，例如：
+Reflect 是一个全局对象，其下有许多方法，例如：
 
 ```js
 Reflect.get()
@@ -2701,26 +2765,31 @@ const p = new Proxy(obj, {
 | [[Delete]]            | (propertyKey) → Boolean                           | 从该对象中删除属于自身的键为 propertyKey 的属性。如果该属性未 被删除并且仍然存在，则返回 false；如果该属性已被删除或不存 在，则返回 true |
 | [[OwnPropertyKeys]]   | ( ) → List of propertyKey                         | 返回一个 List，其元素都是对象自身的属性键                    |
 |                       |                                                   |                                                              |
-| [[Call]]              | (any, a List of any) → any                        | 将运行的代码与 this 对象关联。由函数调用触发。该内部 方法的参数是一个 this 值和参数列表 |
-| [[Construct]]         | (a List of any, Object) → Object                  | 创建一个对象。通过 new 运算符或 super 调用触发。该内 部方法的第一个参数是一个 List，该 List 的元素是构造 函数调用或 super 调用的参数，第二个参数是最初应用 new 运算符的对象。实现该内部方法的对象称为构造函数 |
+| [[Call]]              | (any, a List of any) → any                        | 将运行的代码与 this 对象关联。由**函数调用触发**。该内部方法的参数是一个 this 值和参数列表 |
+| [[Construct]]         | (a List of any, Object) → Object                  | 创建一个对象。通过 **new 运算符或 super 调用触发**。该内部方法的第一个参数是一个 List，该 List 的元素是构造函数调用或 super 调用的参数，第二个参数是最初应用 new 运算符的对象。实现该内部方法的对象称为构造函数 |
 
-如果一个对象需要作为函数调用，那么这个对象就必须部署内部方法 [[Call]]。现在就可以回答前面的问题了：如何区分一个 对象是普通对象还是函数呢？一个对象在什么情况下才能作为函数调用呢？答案是，通过内部方法和内部槽来区分对象，例如函数对象会部署内部方法 [[Call]]，而普通对象则不会。
+**如果一个对象需要作为函数调用，那么这个对象就必须部署内部方法 [[Call]]**。现在就可以回答前面的问题了：如何区分一个 对象是普通对象还是函数呢？一个对象在什么情况下才能作为函数调用呢？答案是，通过内部方法和内部槽来区分对象，例如**函数对象会部署内部方法 [[Call]]，而普通对象则不会**。
 
 内部方法具有多态性，这类似于面向对象里多态的概念。这就是说，不同类型的对象可能部署了相同的内部方法， 却具有不同的逻辑。例如，普通对象和 Proxy 对象都部署了 [[Get]] 这个内部方法，但它们的逻辑是不同的，普通对象部署的 [[Get]] 内部方法的逻辑是由 ECMA 规范的 10.1.8 节定义的，而 Proxy 对象部署的 [[Get]] 内部方法的逻辑是由 ECMA 规范的 10.5.8 节来定义的。
 
 了解了内部方法，就可以解释什么是常规对象，什么是异质对象了。满足以下三点要求的对象就是常规对象：
 
-- 对于上面列出的内部方法，必须使用 ECMA 规范 10.1.x 节给出 的定义实现； 
-- 对于内部方法 [[Call]]，必须使用 ECMA 规范 10.2.1 节给出的 定义实现； 
-- 对于内部方法 [[Construct]]，必须使用 ECMA 规范 10.2.2 节 给出的定义实现。
+- 对于上面列出的内部方法，必须使用 ECMA 规范 10.1.x 节给出的定义实现； 
+- 对于内部方法 [[Call]]，必须使用 ECMA 规范 10.2.1 节给出的定义实现； 
+- 对于内部方法 [[Construct]]，必须使用 ECMA 规范 10.2.2 节给出的定义实现。
 
-所有不符合这三点要求的对象都是异质对象。Proxy 对象的内部方法 [[Get]] 没有使用 ECMA 规范的 10.1.8 节给 出的定义实现，所以 Proxy 是一个异质对象。
+所有不符合这三点要求的对象都是异质对象。Proxy 对象的内部方法 [[Get]] 没有使用 ECMA 规范的 10.1.8 节给出的定义实现，所以 Proxy 是一个异质对象。
 
-通过代理对象访问属性值时：引擎会调用部署在对象 p 上的内部方法 [[Get]]。到这 一步，其实代理对象和普通对象没有太大区别。它们的区别在于对于 内部方法 [[Get]] 的实现，这里就体现了内部方法的多态性，即不同 的对象部署相同的内部方法，但它们的行为可能不同。具体的不同体 现在，如果在创建代理对象时没有指定对应的拦截函数，例如没有指 定 get() 拦截函数，那么当我们通过代理对象访问属性值时，代理对 象的内部方法 [[Get]] 会调用原始对象的内部方法 [[Get]] 来获取 属性值，这其实就是代理透明性质。
+```js
+const p = new Proxy(obj,{/* ... */})
+p.foo
+```
 
-创建代理对象时指定的拦截函数，实际上是用来自定义代理对象本身的内部方法和行为的，而不是用来指定 被代理对象的内部方法和行为的。
+通过代理对象访问属性值时：引擎会调用部署在对象 p 上的内部方法 [[Get]]。到这 一步，其实代理对象和普通对象没有太大区别。它们的区别在于内部方法 [[Get]] 的实现，这里就体现了内部方法的多态性，即不同的对象部署相同的内部方法，但它们的行为可能不同。具体的不同体现在，如果在创建代理对象时没有指定对应的拦截函数，例如没有指 定 get() 拦截函数，那么当我们通过代理对象访问属性值时，代理对象的内部方法 [[Get]] 会调用原始对象的内部方法 [[Get]] 来获取 属性值，这其实就是代理透明性质。
 
-下面列出了 Proxy 对象部署的所 有内部方法以及用来自定义内部方法和行为的拦截函数名字：
+创建代理对象时指定的拦截函数，实际上是用来自定义代理对象本身的内部方法和行为的，而不是用来指定被代理对象的内部方法和行为的。
+
+下面列出了 Proxy 对象部署的所有内部方法以及用来**自定义**内部方法和行为的拦截函数名字：
 
 | 内部方法              | 处理器函数               |
 | --------------------- | ------------------------ |
@@ -2738,9 +2807,9 @@ const p = new Proxy(obj, {
 | [[Call]]              | apply                    |
 | [[Construct]]         | construct                |
 
-其中 [[Call]] 和 [[Construct]] 这两个内部方法只有 当被代理的对象是函数和构造函数时才会部署。
+其中 [[Call]] 和 [[Construct]] 这两个内部方法只有当被代理的对象是函数和构造函数时才会部署。
 
-当我们要拦截删除属性操作时，可以使用 deleteProperty 拦截函数实现：
+当要拦截删除属性操作时，可以使用 deleteProperty 拦截函数实现：
 
 ```js
 const obj = { foo: 1 }
@@ -2759,7 +2828,1434 @@ deleteProperty 实现的是代理对象 p 的内部方法和行为，所以为�
 
 
 
-### Proxy 的工作原理
+### 代理对象
+
+**属性读取**
+
+前面给代理对象绑定get函数，实现对被代理对象属性的读取操作的拦截。但是时实际上，读取操作不仅仅只是对象点属性（obj.xxx）这种方式。对于js来说，使用in操作符检查对象上是否有某个属性也是读取操作。
+
+````js
+effect(()=>{
+    'foo' in obj
+})
+````
+
+响应系统应该拦截一切读取操 作，以便当数据变化时能够正确地触发响应。下面列出了对一个普通 对象的所有可能的读取操作。
+
+- 访问属性：obj.foo。
+- 判断对象或原型上是否存在给定的 key：key in obj。
+- 使用 for...in 循环遍历对象：for (const key in obj) {}。
+
+如何拦截这些读取操作？
+
+- 对于属性的读取，例如 obj.foo，通过 get 拦截函数实现
+
+- 对于 in 操作符，寻找与 in 操作符对应的拦截函数，如果找不到直接与in相关的自定义内部方法和行为的拦截函数名字，这时就需要去查看ECMA规范，规范中会明确定义 in 操作符的运行时逻辑
+
+  ![image-20240103114758916](C:\Users\dukkha\Desktop\learn-notes\vue\images\image-20240103114758916.png)
+
+  关键点在第 6 步，可以发现，in 操作符的运算结果是通过调用一 个叫作 HasProperty 的抽象方法得到的。关于 HasProperty 抽象 方法，可以在 ECMA-262 规范的 7.3.11 节中找到，它的操作如图：
+
+  ![image-20240103114837723](C:\Users\dukkha\Desktop\learn-notes\vue\images\image-20240103114837723.png)
+
+  在第 3 步中，可以看到 HasProperty 抽象方法的返回值是通过 调用对象的内部方法 [[HasProperty]] 得到的。而 [[HasProperty]] 内部方法对应的拦截函数名叫 has，因此可以通过 has 拦截函数实现对 in 操作符的代理。
+
+  ```js
+  const obj = { foo: 1 }
+  const p = new Proxy(obj, {
+      has(target, key) {
+          track(target, key)
+          return Reflect.has(target, key)
+      }
+  })
+  ```
+
+- 拦截 for...in 循环，一个对象的任何操作其实都是由基本语义方法及其组合实现的， for...in 循环也不例外。为了搞清楚 for...in 循环依赖哪些基本语义方法，需要看规范。
+
+  在规范的 14.7.5.6 节中定义了 for...in 头部的执行规则：
+
+  ![image-20240103115348142](C:\Users\dukkha\Desktop\learn-notes\vue\images\image-20240103115348142.png)
+
+  其中的关键点在于 EnumerateObjectProperties(obj)。这 里的 EnumerateObjectProperties 是一个抽象方法，该方法返回 一个迭代器对象，规范的 14.7.5.9 节给出了满足该抽象方法的示例实现，如下面的代码所示：
+
+  ```js
+  function* EnumerateObjectProperties(obj) {
+      const visited = new Set();
+      for (const key of Reflect.ownKeys(obj)) {
+          if (typeof key === "symbol") continue;
+          const desc = Reflect.getOwnPropertyDescriptor(obj, key);
+          if (desc) {
+              visited.add(key);
+              if (desc.enumerable) yield key;
+          }
+      }
+      const proto = Reflect.getPrototypeOf(obj);
+      if (proto === null) return;
+      for (const protoKey of EnumerateObjectProperties(proto)) {
+          if (!visited.has(protoKey)) yield protoKey;
+      }
+  }
+  ```
+
+  可以看到，该方法是一个 generator 函数，接收一个参数 obj。实际上，obj 就是被 for...in 循环遍历的对象，其关键点在 于使用 Reflect.ownKeys(obj) 来获取只属于对象自身拥有的键。 有了这个线索，如何拦截 for...in 循环的答案已经很明显了，我们 可以使用 ownKeys 拦截函数来拦截 Reflect.ownKeys 操作：
+
+  ```js
+  const obj = { foo: 1 }
+  const ITERATE_KEY = Symbol()
+  
+  const p = new Proxy(obj, {
+      ownKeys(target) {
+          // 将副作用函数与 ITERATE_KEY 关联
+          track(target, ITERATE_KEY)
+          return Reflect.ownKeys(target)
+      }
+  })
+  ```
+
+  将 ITERATE_KEY 作为追踪的 key是因为 ownKeys 拦截函数与 get/set 拦截函数不同，在 set/get 中，可以得到具体操作的 key，但是在 ownKeys 中，只能拿到目标对象 target。ownKeys 用来获取一个对象的所有属于自己的键值，这个操作明显不与任何具体的键进行绑定，因此只能够构造唯一的 key 作为标识，即 ITERATE_KEY。
+
+  追踪的是 ITERATE_KEY，那么相应地，在触发响应的时候也 应该触发它才行：
+
+  ```js
+  trigger(target, ITERATE_KEY)
+  ```
+
+  但是在什么情况下，对数据的操作需要触发与 ITERATE_KEY 相 关联的副作用函数重新执行？当为对象添加新属性时，会对 for...in 循环产生影响，所以需要触发与 ITERATE_KEY 相关联的 副作用函数重新执行。
+
+
+
+**属性删除**
+
+规范的 13.5.1.2 节中明确定 义了 delete 操作符的行为：
+
+![image-20240103123715786](C:\Users\dukkha\Desktop\learn-notes\vue\images\image-20240103123715786.png)
+
+由第 5 步中的 d 子步骤可知，delete 操作符的行为依赖 [[Delete]] 内部方法。该内部方法可以使用 deleteProperty 拦截：
+
+```js
+const p = new Proxy(obj, {
+    deleteProperty(target, key) {
+        // 检查被操作的属性是否是对象自己的属性
+        const hadKey = Object.prototype.hasOwnProperty.call(target,key)
+        // 使用 Reflect.deleteProperty 完成属性的删除
+        const res = Reflect.deleteProperty(target, key)
+
+        if (res && hadKey) {
+            // 只有当被删除的属性是对象自己的属性并且成功删除时，才触发更新
+            trigger(target, key, 'DELETE')
+        }
+
+        return res
+    }
+})
+```
+
+首先检查被删除的属性是否属于对象自身，然 后调用 Reflect.deleteProperty 函数完成属性的删除工作，只有 当这两步的结果都满足条件时，才调用 trigger 函数触发副作用函数 重新执行。需要注意的是，在调用 trigger 函数时，我们传递了新的 操作类型 'DELETE'。由于删除操作会使得对象的键变少，它会影响 for...in 循环的次数，因此当操作类型为 'DELETE' 时，我们也应 该触发那些与 ITERATE_KEY 相关联的副作用函数重新执行。
+
+```js
+function trigger(target, key, type) {
+    const depsMap = bucket.get(target)
+    if (!depsMap) return
+    const effects = depsMap.get(key)
+
+    const effectsToRun = new Set()
+    effects && effects.forEach(effectFn => {
+        if (effectFn !== activeEffect) {
+            effectsToRun.add(effectFn)
+        }
+    })
+
+    // 当操作类型为 ADD 或 DELETE 时，需要触发与 ITERATE_KEY 相关联的副作用函数重新执行
+    if (type === 'ADD' || type === 'DELETE') {
+        const iterateEffects = depsMap.get(ITERATE_KEY)
+        iterateEffects && iterateEffects.forEach(effectFn => {
+            if (effectFn !== activeEffect) {
+                effectsToRun.add(effectFn)
+            }
+        })
+    }
+
+    effectsToRun.forEach(effectFn => {
+        if (effectFn.options.scheduler) {
+            effectFn.options.scheduler(effectFn)
+        } else {
+            effectFn()
+        }
+    })
+}
+```
+
+
+
+
+
+### 合理地触发响应
+
+- 当值没有发生变化时， 应该不需要触发响应
+
+为此，需要修改 set 拦截函数的代码，在调用 trigger 函数触发响应之 前，需要检查值是否真的发生了变化：
+
+```js
+const p = new Proxy(obj, {
+    set(target, key, newVal, receiver) {
+        // 先获取旧值
+        const oldVal = target[key]
+
+        const type = Object.prototype.hasOwnProperty.call(target,key) ? 'SET' : 'ADD'
+        const res = Reflect.set(target, key, newVal, receiver)
+        // 比较新值与旧值，只要当不全等的时候才触发响应
+        if (oldVal !== newVal) {
+            trigger(target, key, type)
+        }
+
+        return res
+    },
+})
+
+```
+
+仅仅进行全等比较是有缺陷的，这体现在对 NaN 的处理上。
+
+```js
+NaN === NaN // false
+NaN !== NaN // true
+```
+
+换句话说，如果 p.foo 的初始值是 NaN，并且后续又为其设置了 NaN 作为新值。
+
+优化后的代码：
+
+```js
+const p = new Proxy(obj, {
+    set(target, key, newVal, receiver) {
+        // 先获取旧值
+        const oldVal = target[key]
+
+        const type = Object.prototype.hasOwnProperty.call(target,key) ? 'SET' : 'ADD'
+        const res = Reflect.set(target, key, newVal, receiver)
+        // 比较新值与旧值，只有当它们不全等，并且不都是 NaN 的时候才触发响应
+        if (oldVal !== newVal && (oldVal === oldVal || newVal ===newVal)) {
+            trigger(target, key, type)
+        }
+
+        return res
+    },
+})
+```
+
+
+
+- 原型上的响应式数据，问题说明：
+
+  封装一个 reactive 函数：
+
+  ```js
+  function reactive(obj) {
+      return new Proxy(obj, {
+          // 省略前文讲解的拦截函数
+      })
+  }
+  
+  
+  const obj = {}
+  const proto = { bar: 1 }
+  
+  const child = reactive(obj)
+  const parent = reactive(proto)
+  // 使用 parent 作为 child 的原型， parent也是一个响应式数据
+  Object.setPrototypeOf(child, parent)
+  
+  effect(() => {
+      console.log(child.bar) // 1
+  })
+  // 修改 child.bar 的值
+  child.bar = 2 // 会导致副作用函数重新执行两次
+  ```
+
+  child 本身并没有 bar 属性，因此当访问 child.bar 时，值是从原 型上继承而来的。但无论如何，既然 child 是响应式数据，那么它与副作用函数之间就会建立联系，因此当执行 child.bar = 2 时，期望副作用函数会重新执行。**但如果尝试运行上面的代码，会发现副作用函数不仅执行了，还执行了两次，这会造成不必要的更新。**
+
+
+
+
+
+## 第六章
+
+
+
+### ref
+
+基本数据类型的值要变为响应式数据，必须经过一层包裹。
+
+```js
+let str = 'vue'
+// 无法拦截对值的修改
+str = 'vue3'
+
+
+// 使用一个非原始值去“包裹”原始值
+const wrapper = {
+    value: 'vue'
+}
+// 可以使用 Proxy 代理 wrapper，间接实现对原始值的拦截
+const name = reactive(wrapper)
+name.value // vue
+// 修改值可以触发响应
+name.value = 'vue3'
+```
+
+这样做导致的问题：
+
+1. 用户为了创建一个响应式的原始值，不得不顺带创建一个包裹对象；
+2. 包裹对象由用户定义，而这意味着不规范。用户可以随意命名，例如 wrapper.value、wrapper.val 都是可以的。
+
+为了解决这两个问题，可以封装一个函数，将包裹对象的创建工作都封装到该函数中：
+
+```js
+// 封装一个 ref 函数
+function ref(val) {
+    // 在 ref 函数内部创建包裹对象
+    const wrapper = {
+        value: val
+    }
+    // 将包裹对象变成响应式数据
+    return reactive(wrapper)
+}
+```
+
+把创建 wrapper 对象的工作封装到 ref 函数内部，然后使用 reactive 函数将包裹对象变成响应式数据并返 回。这样就解决了上述两个问题。运行如下测试代码。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## 第七章
+
+渲染器的具体实现，vue中的很多功能都是依赖于渲染器来实现的，比如：
+
+- Transition组件
+- Teleposrt组件
+- Suspense组件
+- template ref
+- 自定义指令
+
+渲染器的性能直接影响框架的整体性能。渲染器模块包含Diff算法，快捷路径更新方式能充分利用编译器提供的信息，大大加快了更新性能。
+
+
+
+### 渲染器和响应式系统的结合
+
+浏览器端的渲染器。利用副作用函数和响应式数据，可以让渲染过程自动化：
+
+```js
+const { effect, ref } = VueReactivity
+
+function renderer(domString, container) {
+    container.innerHTML = domString
+}
+
+const count = ref(1)
+
+effect(() => {
+    renderer(`<h1>${count.value}</h1>`, document.getElementById('app'))
+})
+
+count.value++
+```
+
+
+
+### 渲染器中的基本概念
+
+- renderer：渲染器，把虚拟DOM渲染为指定平台的真实元素
+- render：渲染
+- 虚拟DOM（virtual DOM、vdom）：虚拟DOM是和真实DOM在结构上一一对应的一个JavaScript对象，且是树结构
+- 虚拟节点（virtual node、vnode）
+- 挂载(mount)：渲染器将虚拟DOM节点渲染为真实DOM节点的过程
+- 挂载点（container）：一个真实存在的DOM元素，用于将渲染器创建的真实DOM挂载到它上面
+
+```js
+function createRenderer() {
+    function render(vnode, container) {
+        // ...
+    }
+
+    return render
+}
+```
+
+为什么需要 createRenderer 函数，而不直接定义 render ? 渲染器与渲染是不同的。渲染器是更加宽泛的概念，它包含渲染。渲 染器不仅可以用来渲染，还可以用来激活已有的 DOM 元素，这个过程通常发生在同构渲染的情况下，如以下代码所示：
+
+```js
+function createRenderer() {
+    function render(vnode, container) {
+        // ...
+    }
+
+    function hydrate(vnode, container) {
+        // ...
+    }
+
+    return {
+        render,
+        hydrate
+    }
+}
+
+const renderer = createRenderer() 
+// 首次渲染 首次调用 renderer.render 函数时，只需要创建新的 DOM 元素即可，这个过程只涉及挂载。当多次在同一个 container 上调用 renderer.render 函数进行渲染时，渲染器除了要执行挂载动作外，还要执行更新动作。
+renderer.render(vnode, document.querySelector('#app'))
+```
+
+当调用 createRenderer 函数创建渲染器（就是这个函数返回的那个对象）时，渲染器不仅包含 render 函数，还包含 hydrate 函数。关于 hydrate 函 数，介绍服务端渲染时会详细讲解。这个例子说明，渲染器的内容非常广泛，而用来把 vnode 渲染为真实 DOM 的 render 函数只是其中 一部分。实际上，在 Vue.js 3 中，甚至连创建应用的 createApp 函数也是渲染器的一部分。
+
+```js
+const renderer = createRenderer()
+// 首次渲染
+renderer.render(oldVNode, document.querySelector('#app'))
+// 第二次渲染
+renderer.render(newVNode, document.querySelector('#app'))
+```
+
+如上面的代码所示，由于首次渲染时已经把 oldVNode 渲染到 container 内了，所以当再次调用 renderer.render 函数并尝试 渲染 newVNode 时，就不能简单地执行挂载动作了。在这种情况下， 渲染器会使用 newVNode 与上一次渲染的 oldVNode 进行比较，试图找到并更新变更点。这个过程叫作**“打补丁”（或更新）**，英文通常用 **patch** 来表达。但实际上，挂载动作本身也可以看作一种特殊的打补 丁，它的特殊之处在于旧的 vnode 是不存在的。
+
+```js
+function createRenderer() {
+    function render(vnode, container) {
+        if (vnode) {
+            // 新 vnode 存在，将其与旧 vnode 一起传递给 patch 函数，进行打补丁
+            patch(container._vnode, vnode, container)
+        } else {
+            if (container._vnode) {
+                // 旧 vnode 存在，且新 vnode 不存在，说明是卸载（unmount）操作
+                // 只需要将 container 内的 DOM 清空即可
+                container.innerHTML = ''
+            }
+        }
+        // 把 vnode 存储到 container._vnode 下，即后续渲染中的旧 vnode
+        container._vnode = vnode
+    }
+
+    return {
+        render
+    }
+}
+```
+
+patch 函数是整个渲染器的核心入口，它承载了最重要的渲染逻辑，
+
+```js
+function patch(n1, n2, container) {
+    // ...
+}
+```
+
+- 第一个参数 n1：旧 vnode
+- 第二个参数 n2：新 vnode
+- 第三个参数 container：容器
+
+在首次渲染时，容器元素的 container._vnode 属性是不存在 的，即 undefined。这意味着，在首次渲染时传递给 patch 函数的 第一个参数 n1 也是 undefined。这时，patch 函数会执行挂载动 作，它会忽略 n1，并直接将 n2 所描述的内容渲染到容器中。从这一 点可以看出，patch 函数不仅可以用来完成打补丁，也可以用来执行挂载。
+
+
+
+### 自定义渲染器
+
+通过将渲染器设计为可配置的“通用”渲染器，就可以实现渲染到任意目标平台上。
+
+本节目标：以浏览器作为渲染的目标 平台，编写一个渲染器。通过抽离出针对浏览器的API，使得渲染器的和兴不依赖于具体平台。在此基础上，再为那些被抽离的 API 提供可配置的接口，即可实现渲染器的跨平台能力。
+
+示例：
+
+```js
+const vnode = {
+    type: 'h1',
+    children: 'hello'
+}
+
+// 创建一个渲染器
+const renderer = createRenderer()
+// 调用 render 函数渲染该 vnode
+renderer.render(vnode, document.querySelector('#app'))
+```
+
+对于虚拟DOM对象而言，不同的类型的节点对应的type值是不一样的。
+
+patch函数：
+
+```js
+function createRenderer() {
+    function mountElement(vnode, container) {
+        // 创建 DOM 元素
+        const el = document.createElement(vnode.type)
+        // 处理子节点，如果子节点是字符串，代表元素具有文本节点
+        if (typeof vnode.children === 'string') {
+            // 因此只需要设置元素的 textContent 属性即可
+            el.textContent = vnode.children
+        }
+        // 将元素添加到容器中
+        container.appendChild(el)
+    }
+
+
+    function patch(n1, n2, container) {
+        // 如果 n1 不存在，意味着挂载，则调用 mountElement 函数完成挂载
+        if (!n1) {
+            mountElement(n2, container)
+        } else {
+            // n1 存在，意味着打补丁，暂时省略
+        }
+    }
+
+    function render(vnode, container) {
+        if (vnode) {
+            patch(container._vnode, vnode, container)
+        } else {
+            if (container._vnode) {
+                container.innerHTML = ''
+            }
+        }
+        container._vnode = vnode
+    }
+
+    return {
+        render
+    }
+}
+```
+
+目标是设计一个不依赖于浏览器平台的通用渲染器，mountElement 函数内调用了大量依赖于浏览器 的 API，例如 document.createElement、el.textContent 以 及 appendChild 等。想要设计通用渲染器，第一步要做的就是将这些浏览器特有的 API 抽离。可以将这些操作 DOM 的 API 作为配置项，该配置项可以作为 createRenderer 函数的参数， 如下面的代码所示：
+
+```js
+// 在创建 renderer 时传入配置项
+const renderer = createRenderer({
+    // 用于创建元素
+    createElement(tag) {
+        return document.createElement(tag)
+    },
+    // 用于设置元素的文本节点
+    setElementText(el, text) {
+        el.textContent = text
+    },
+    // 用于在给定的 parent 下添加指定元素
+    insert(el, parent, anchor = null) {
+        parent.insertBefore(el, anchor)
+    }
+})
+
+```
+
+这样，在 mountElement 等函数 内就可以通过配置项来取得操作 DOM 的 API 了：
+
+```js
+function createRenderer(options) {
+
+    // 通过 options 得到操作 DOM 的 API
+    const {
+        createElement,
+        insert,
+        setElementText
+    } = options
+
+    // 在这个作用域内定义的函数都可以访问那些 API
+    function mountElement(vnode, container) {
+        // 调用 createElement 函数创建元素
+        const el = createElement(vnode.type)
+        if (typeof vnode.children === 'string') {
+            // 调用 setElementText 设置元素的文本节点
+            setElementText(el, vnode.children)
+        }
+        // 调用 insert 函数将元素插入到容器内
+        insert(el, container)
+    }
+
+    function patch(n1, n2, container) {
+        // ...
+    }
+
+    function render(vnode, container) {
+        // ...
+    }
+
+    return {
+        render
+    }
+}
+```
+
+以上就实现了能自定义渲染器的能力。通过抽象的手段，让核心代码不再依赖平台特有的 API，再通过支持个性化配置的能力来实现跨平台。
+
+
+
+## 第八章
+
+渲染器的挂载和更新。
+
+### 子节点的挂载和节点属性
+
+虚拟DOM的子节点chilren属性：
+
+- children是一个字符串类型的值，表示虚拟DOM节点的内本内容
+- children是其他元素对应的虚拟DOM节点
+- children是多种类型的值的混合（这时children的值是一个数组，元素是一个个的虚拟DOM子节点）
+
+children的每一个 元素都是一个独立的虚拟节点对象。这样就形成了树型结构，即虚拟 DOM 树。
+
+实现子节点的渲染，修改mountElement：
+
+```js
+function mountElement(vnode, container) {
+    const el = createElement(vnode.type)
+    if (typeof vnode.children === 'string') {
+        setElementText(el, vnode.children)
+    } else if (Array.isArray(vnode.children)) {
+        // 如果 children 是数组，则遍历每一个子节点，并调用 patch 函数挂载它们
+        vnode.children.forEach(child => {
+            patch(null, child, el)
+        })
+    }
+    insert(el, container)
+}
+```
+
+
+
+如何用 vnode 描述一个标签的属性，以及如何渲染这些属性？HTML 标签有很多属 性，其中有些属性是通用的，例如 id、class 等，而有些属性是特定 元素才有的，例如 form 元素的 action 属性。
+
+最基本的属性处理：虚拟 DOM 定义了一个新的 vnode.props 字段，专门用于存放标签的属性。
+
+```js
+
+const vnode = {
+    type: 'div',
+    // 使用 props 描述一个元素的属性
+    props: {
+        id: 'foo'
+    },
+    children: [
+        {
+            type: 'p',
+            children: 'hello'
+        }
+    ]
+}
+```
+
+可以通过遍历 props 对象的方式， 把这些属性渲染到对应的元素上：
+
+```js
+function mountElement(vnode, container) {
+    const el = createElement(vnode.type)
+    // 省略 children 的处理
+
+    // 如果 vnode.props 存在才处理它
+    if (vnode.props) {
+        // 遍历 vnode.props
+        for (const key in vnode.props) {
+            // 调用 setAttribute 将属性设置到元素上
+            el.setAttribute(key, vnode.props[key])
+        }
+    }
+
+    insert(el, container)
+}
+```
+
+除了使用 setAttribute 函数为元素设置属性之外，还 可以通过 **DOM 对象**直接设置：
+
+```js
+function mountElement(vnode, container) {
+    const el = createElement(vnode.type)
+    // 省略 children 的处理
+
+    if (vnode.props) {
+        for (const key in vnode.props) {
+            // 直接设置
+            el[key] = vnode.props[key]
+        }
+    }
+
+    insert(el, container)
+}
+```
+
+实际上，无论是使用 setAttribute 函数， 还是直接操作 DOM 对象，都存在缺陷。在深入之前，需要先了解 HTML Attributes 和 DOM Properties。
+
+
+
+### HTML Attributes 和 DOM Properties
+
+HTML Attributes 和 DOM Properties的差异和联系，目的是正确的设置元素的属性。
+
+```html
+<input id="my-input" type="text" value="foo" />
+```
+
+HTML Attributes 指的就是定义在 HTML 标签上的属性。当浏览器解析这段 HTML 代码后，会创建一个与之相符的 DOM 元素对象，可以通过 JavaScript 代码获取该 DOM 对象。
+
+通过js获取到的DOM对象上有许多的属性（properties），这些属性就是所谓的 DOM Properties。
+
+
+
+HTML Attributes 和 DOM Properties的关系：
+
+- 很多 HTML Attributes 在 DOM 对象上有与之同名的 DOM Properties，例如 id="my-input" 对 应 el.id，type="text" 对应 el.type，value="foo" 对应 el.value 等。
+
+-  DOM Properties 与 HTML Attributes 的名字不总是一 模一样的，例如：
+
+  ```html
+  <div class="foo"></div>
+  ```
+
+  class="foo" 对应的 DOM Properties 则是 el.className。
+
+- 不是所有 HTML Attributes 都有与之对应的 DOM Properties，例如：
+
+  ```html
+  <div aria-valuenow="75"></div>
+  ```
+
+  aria-* 类的 HTML Attributes 就没有与之对应的 DOM Properties。
+
+- 也不是所有 DOM Properties 都有与之对应的 HTML Attributes，例如可以用 el.textContent 来设置元素的文本内容， 但并没有与之对应的 HTML Attributes 来完成同样的工作。
+
+- HTML Attributes 的值与 DOM Properties 的值之间是有关联的，如：
+
+  ```html
+   <div id="foo"></div>
+  ```
+
+  其中的id属性就和DOM properties中的es.id是一一对应的且值也是一致的。把这 种 HTML Attributes 与 DOM Properties 具有相同名称（即 id）的属性 看作直接映射。
+
+- 并不是所有 HTML Attributes 与 DOM Properties 之间 都是直接映射的关系
+
+  ```html
+  <input value="foo" />
+  ```
+
+  如果用户没有修改文 本框的内容，那么通过 el.value 读取对应的 DOM Properties 的值就 是字符串 'foo'。而如果用户修改了文本框的值，那么 el.value 的 值就是当前文本框的值。
+
+  但如果运行下面的代码，会发生“奇怪”的现象：
+
+  ```js
+  console.log(el.getAttribute('value')) // 仍然是 'foo'
+  console.log(el.value) // 'bar'
+  ```
+
+  用户对文本框内容的修改并不会影响 el.getAttribute('value') 的返回值，这个现象蕴含着 HTML Attributes 所代表的意义。实际上，HTML Attributes 的作用是设置与之 对应的 DOM Properties 的初始值。一旦值改变，那么 DOM Properties始终存储着当前值，而通过 getAttribute 函数得到的仍然是初始值。
+
+  但仍然可以通过 el.defaultValue 来访问初始值，如下面的代码所示：
+
+  ```js
+  el.getAttribute('value') // 仍然是 'foo'
+  el.value // 'bar'
+  el.defaultValue // 'foo'
+  ```
+
+  说明一个 HTML Attributes 可能关联多个 DOM Properties。例如 在上例中，value="foo" 与 el.value 和 el.defaultValue 都有关联。
+
+  可以认为 HTML Attributes 是用来设置与之对应的 DOM Properties 的初始值的，但有些值是受限制的，就好像浏览器内部做了 默认值校验。如果你通过 HTML Attributes 提供的默认值不合法，那么 浏览器会使用内建的合法值作为对应 DOM Properties 的默认值。
+
+  ```html
+  <input type="foo" />
+  ```
+
+  为 标签的 type 属性指定字符串 'foo' 是不合法的，因此浏览器会矫正这个不合法的值。所以当尝试读取 el.type 时，得到的其实是矫正后的值，即字符串 'text'，而非字 符串 'foo'。
+
+  
+
+  **HTML Attributes 的作用是设置与之对应的 DOM Pr operties 的初始值。**
+
+
+
+### 设置元素属性
+
+对于普通的 HTML 文件来说，当浏览器解析 HTML 代码后， 会自动分析 HTML Attributes 并设置合适的 DOM Properties。但用户编 写在 Vue.js 的单文件组件中的模板不会被浏览器解析，这意味着，原 本需要浏览器来完成的工作，现在需要框架来完成。
+
+按钮的禁用功能：
+
+```html
+<button disabled>Button</button>
+```
+
+浏览器在解析这段 HTML 代码时，发现这个按钮存在一个叫作 disabled 的 HTML Attributes，于是浏览器会将该按钮设置为禁用状 态，并将它的 el.disabled 这个 DOM Properties 的值设置为 true，这一切都是浏览器帮我们处理好的。但同样的代码如果出现在 Vue.js 的模板中，则情况会有所不同。首先，这个 HTML 模板会被编 译成 vnode，它等价于：
+
+```js
+const button = {
+    type: 'button',
+    props: {
+        disabled: ''
+    }
+}
+```
+
+如果在渲染 器中调用 setAttribute 函数设置属性，则相当于：
+
+```js
+el.setAttribute('disabled', '')
+```
+
+上述代码可行，浏览器会将按钮禁用。但是下面的代码：
+
+```html
+<button :disabled="false">Button</button>
+```
+
+```js
+const button = {
+    type: 'button',
+    props: {
+        disabled: false
+    }
+}
+```
+
+用户的本意是“不禁用”按钮，但如果渲染器仍然使用 setAttribute 函数设置属性值，则会产生意外的效果，即按钮被禁用了。
+
+```js
+el.setAttribute('disabled', false)
+```
+
+这是因为使用 setAttribute 函数设置的值总是会被字符串化。
+
+对于按钮来说，它的 el.disabled 属性值是布尔类型的，并且它不关心具体的 HTML Attributes 的值是什么，只要 disabled 属性存 在，按钮就会被禁用。
+
+所以，渲染器不应该总是使用 setAttribute 函数将 vnode.props 对象中的属性设置到元素上。
+
+一个思路就是优先设置DOM Properties。
+
+但是又有新问题了：
+
+```html
+<button disabled>Button</button>
+```
+
+```js
+const button = {
+    type: 'button',
+    props: {
+        disabled: ''
+    }
+}
+```
+
+如果直接用它设置元素的 DOM Properties，那么相当于：
+
+```js
+el.disabled = ''
+```
+
+由于 el.disabled 是布尔类型的值，所以当我们尝试将它设置 为空字符串时，浏览器会将它的值矫正为布尔类型的值，即 false。 所以上面这句代码的执行结果等价于：
+
+```js
+el.disabled = false
+```
+
+这违背了用户的本意，因为用户希望禁用按钮，而 el.disabled = false 则是不禁用的意思。
+
+无论是使用 setAttribute 函数，还是直接设置元素 的 DOM Properties，都存在缺陷。要彻底解决这个问题，只能做特殊处理，即**优先设置元素的 DOM Properties，但当值为空字符串 时，要手动将值矫正为 true。**只有这样，才能保证代码的行为符合预期。
+
+因为有一些 DOM Properties 是只读的，只能够通过 setAttribute 函数来设 置它。
+
+下面的 mountElement 函数给出了具体的实现：
+
+```js
+
+function shouldSetAsProps(el, key, value) {
+    // 特殊处理
+    if (key === 'form' && el.tagName === 'INPUT') return false
+    // 兜底
+    return key in el
+}
+
+function mountElement(vnode, container) {
+    const el = createElement(vnode.type)
+    // 省略 children 的处理
+
+    if (vnode.props) {
+        for (const key in vnode.props) {
+            const value = vnode.props[key]
+            // 使用 shouldSetAsProps 函数判断是否应该作为 DOM Properties设置
+            if (shouldSetAsProps(el, key, value)) {
+                const type = typeof el[key]
+                if (type === 'boolean' && value === '') {
+                    el[key] = true
+                } else {
+                    el[key] = value
+                }
+            } else {
+                el.setAttribute(key, value)
+            }
+        }
+    }
+
+    insert(el, container)
+}
+
+```
+
+最后，对属性设置逻辑进行抽离：
+
+```js
+const renderer = createRenderer({
+    createElement(tag) {
+        return document.createElement(tag)
+    },
+    setElementText(el, text) {
+        el.textContent = text
+    },
+    insert(el, parent, anchor = null) {
+        parent.insertBefore(el, anchor)
+    },
+    // 将属性设置相关操作封装到 patchProps 函数中，并作为渲染器选项传递
+    patchProps(el, key, prevValue, nextValue) {
+        if (shouldSetAsProps(el, key, nextValue)) {
+            const type = typeof el[key]
+            if (type === 'boolean' && nextValue === '') {
+                el[key] = true
+            } else {
+                el[key] = nextValue
+            }
+        } else {
+            el.setAttribute(key, nextValue)
+        }
+    }
+})
+
+
+function mountElement(vnode, container) {
+    const el = createElement(vnode.type)
+    if (typeof vnode.children === 'string') {
+        setElementText(el, vnode.children)
+    } else if (Array.isArray(vnode.children)) {
+        vnode.children.forEach(child => {
+            patch(null, child, el)
+        })
+    }
+
+    if (vnode.props) {
+        for (const key in vnode.props) {
+            // 调用 patchProps 函数即可
+            patchProps(el, key, null, vnode.props[key])
+        }
+    }
+
+    insert(el, container)
+}
+```
+
+
+
+### 设置class属性
+
+为什么需要对 class 属性进行特殊处理呢？ 这是因为 Vue.js 对 calss 属性做了增强。在 Vue.js 中为元素设置类名有以下几种方式：
+
+1. 指定 class 为一个字符串值。
+
+   ```html
+   <p class="foo bar"></p>
+   ```
+
+2. 指定 class 为一个对象值。
+
+   ```vue
+   const cls = { foo: true, bar: false }
+   <p :class="cls"></p>
+   ```
+
+3. class 是包含上述两种类型的数组。
+
+   ```vue
+   <p :class="arr"></p>
+   
+   const arr = [
+       // 字符串
+       'foo bar',
+       // 对象
+       {
+       baz: true
+       }
+   ]
+   
+   // 对应的vnode
+   const vnode = {
+     type: 'p',
+     props: {
+       class: ['foo bar', { baz: true }]
+     }
+   };
+   
+   ```
+
+因为 class 的值可以是多种类型，所以必须在设置元素的 class 之前将值归一化为统一的字符串形式，再把该字符串作为元素的 class 值去设置。因此，需要封装 normalizeClass 函数，用它来将不同类型的 class 值正常化为字符串。
+
+假设现在已经能够对 class 值进行正常化了。
+
+接下来，如何将正常化后的 class 值设置到元素上。其实，目前实现的渲染器已经能够完成 class 的渲染了。由于 class 属性对应的 DOM Properties 是 el.className，所以表 达式 'class' in el 的值将会是 false，因此，patchProps 函数会使用 setAttribute 函数来完成 class 的设置。但是在浏览器中为一个元素设置 class 有三种方式，即使用 setAttribute、el.className 或 el.classList。那么哪一种 方法的性能更好呢？下图对比了这三种方式为元素设置 1000 次 class 的性能。
+
+![image-20240107182500597](C:\Users\dukkha\Desktop\learn-notes\vue\images\image-20240107182500597.png)
+
+el.className 的性能最优。因此，需要调整 patchProps 函数的实现，如下面的代码所示：
+
+```js
+const renderer = createRenderer({
+    // 省略其他选项
+
+    patchProps(el, key, prevValue, nextValue) {
+        // 对 class 进行特殊处理
+        if (key === 'class') {
+            el.className = nextValue || ''
+        } else if (shouldSetAsProps(el, key, nextValue)) {
+            const type = typeof el[key]
+            if (type === 'boolean' && nextValue === '') {
+                el[key] = true
+            } else {
+                el[key] = nextValue
+            }
+        } else {
+            el.setAttribute(key, nextValue)
+        }
+    }
+})
+```
+
+使用 el.className 代替 setAttribute 函数。其实除了 class 属 性之外，Vue.js 对 style 属性也做了增强，所以也需要对 style 做类似的处理。
+
+通过对 class 的处理，能够意识到，vnode.props 对象中定义的属性值的类型并不总是与 DOM 元素属性的数据结构保持一致， 这取决于上层 API 的设计。Vue.js 允许对象类型的值作为 class 是**为了方便开发者**，在底层的实现上，必然需要对值进行正常化后再使用。另外，正常化值的过程是有代价的，如果需要进行大量的正常化操作，则会消耗更多性能。
+
+
+
+### 卸载
+
+卸载操作发生在更新阶段，更新指的是，在初次挂载完成之后，后续渲 染会触发更新，如下面的代码所示：
+
+```js
+// 初次挂载
+renderer.render(vnode, document.querySelector('#app'))
+// 再次挂载新 vnode，将触发更新
+renderer.render(newVNode, document.querySelector('#app'))
+```
+
+更新的几种情况：
+
+1. 后续调用 render 函数渲 染空内容（即 null）
+
+   ```js
+   // 初次挂载
+   renderer.render(vnode, document.querySelector('#app'))
+   // 再次挂载新 vnode，将触发更新
+   renderer.render(null, document.querySelector('#app'))
+   ```
+
+   卸载时需要考虑的内容：
+
+   1. 容器的内容可能是由某个或多个组件渲染的，当卸载操作发生 时，应该正确地调用这些组件的 beforeUnmount、unmounted 等生命周期函数。 
+   2. 即使内容不是由组件渲染的，有的元素存在自定义指令，我们应 该在卸载操作发生时正确执行对应的指令钩子函数。 
+   3. **使用 innerHTML 清空容器元素内容的另一个缺陷是，它不会移除绑定在 DOM 元素上的事件处理函数。**
+
+不能简单地使用 innerHTML 来完成卸载操作。正确的卸载方式是，根据 vnode 对象获取与其相关联的真实 DOM 元素，然后使用原生 DOM 操作方法将该 DOM 元素移除。为此，**需要在 vnode 与真实 DOM 元素之间建立联系**，修改 mountElement 函数，如下面的代码所示：
+
+```js
+function mountElement(vnode, container) {
+  // 让 vnode.el 引用真实 DOM 元素
+  const el = (vnode.el = createElement(vnode.type));
+    
+  if (typeof vnode.children === 'string') {
+    setElementText(el, vnode.children);
+  } else if (Array.isArray(vnode.children)) {
+    vnode.children.forEach((child) => {
+      patch(null, child, el);
+    });
+  }
+
+  if (vnode.props) {
+    for (const key in vnode.props) {
+      patchProps(el, key, null, vnode.props[key]);
+    }
+  }
+
+  insert(el, container);
+}
+
+```
+
+当调用 createElement 函数创建真实 DOM 元素时，会把真实 DOM 元素赋值给 vnode.el 属性。在 vnode 与真实 DOM 元素之间就建立了联系，我们可以通过 vnode.el 来获取该虚拟节点对应的真实 DOM 元素。当卸载操作发生的时 候，只需要根据虚拟节点对象 vnode.el 取得真实 DOM 元素，再将 其从父元素中移除即可。
+
+```js
+function render(vnode, container) {
+  if (vnode) {
+    patch(container._vnode, vnode, container);
+  } else {
+    if (container._vnode) {
+      // 根据 vnode 获取要卸载的真实 DOM 元素
+      const el = container._vnode.el;
+      // 获取 el 的父元素
+      const parent = el.parentNode;
+      // 调用 removeChild 移除元素
+      if (parent) parent.removeChild(el);
+    }
+  }
+  container._vnode = vnode;
+}
+```
+
+卸载操作是比较常见且基本的操作，可以进行封装：
+
+```js
+function unmount(vnode) {
+  const parent = vnode.el.parentNode;
+  // 后续进行扩展
+  if (parent) {
+    parent.removeChild(vnode.el);
+  }
+}
+```
+
+- 在 unmount 函数内，有机会调用绑定在 DOM 元素上的指令 钩子函数，例如 beforeUnmount、unmounted 等。 
+- 当 unmount 函数执行时，有机会检测虚拟节点 vnode 的类型。如果该虚拟节点描述的是组件，则有机会调用组件相关的生命周期函数。
+
+
+
+### vnode的类型
+
+当非第一次调用render函数时，需要保证新旧 vnode 所描述的内容相同。即vnode的type属性的属性值相同。在这种情况下，正确的更新操作是，先将老元素卸载，再将新元素挂载到容器中。
+
+```js
+function patch(n1, n2, container) {
+  // 如果 n1 存在，则对比 n1 和 n2 的类型
+  if (n1 && n1.type !== n2.type) {
+    // 如果新旧 vnode 的类型不同，则直接将旧 vnode 卸载
+    unmount(n1);
+    n1 = null;
+  }
+
+  if (!n1) {
+    mountElement(n2, container);
+  } else {
+    // 更新
+  }
+}
+```
+
+不同类型的vnode的type属性的值是不同的，不同类型的vnode需要执行的挂载或者更新的逻辑也是不同的。继续补充patch函数：
+
+```js
+function patch(n1, n2, container) {
+    if (n1 && n1.type !== n2.type) {
+        unmount(n1);
+        n1 = null;
+    }
+    // 代码运行到这里，证明 n1 和 n2 所描述的内容相同
+    const { type } = n2;
+    // 如果 n2.type 的值是字符串类型，则它描述的是普通标签元素
+    if (typeof type === 'string') {
+        if (!n1) {
+            mountElement(n2, container);
+        } else {
+            patchElement(n1, n2);
+        }
+    } else if (typeof type === 'object') {
+        // 如果 n2.type 的值的类型是对象，则它描述的是组件
+    } else if (type === 'xxx') {
+        // 处理其他类型的 vnode
+    }
+}
+```
+
+
+
+### 事件处理
+
+如何处理事件，包括如何在虚拟节点中描述事件，如何把事件添加到 DOM 元素上，以及如何更新事件。
+
+
+
+在虚拟DOM中描述事件：事件可以视作一种特殊的属性，可以约定，在 vnode.props 对象中，凡是以字符串 on 开头的属性都视作事件。
+
+虽然在vue的单文件组件的template中使用的是@click这种格式，但是在被编译器编译后，就会编程onClick这种格式了。
+
+```js
+const vnode = {
+  type: 'p',
+  props: {
+    // 使用 onXxx 描述事件
+    onClick: () => {
+      alert('clicked');
+    }
+  },
+  children: 'text'
+};
+```
+
+
+
+如何将事件添加到 DOM 元素上：只需要在 patchProps 中调 用 addEventListener 函数来绑定事件即可。
+
+```js
+patchProps(el, key, prevValue, nextValue) {
+    // 匹配以 on 开头的属性，视其为事件
+    if (/^on/.test(key)) {
+        // 根据属性名称得到对应的事件名称，例如 onClick ---> click
+        const name = key.slice(2).toLowerCase()
+        // 绑定事件，nextValue 为事件处理函数
+        el.addEventListener(name, nextValue)
+    } else if (key === 'class') {
+        // 省略部分代码
+    } else if (shouldSetAsProps(el, key, nextValue)) {
+        // 省略部分代码
+    } else {
+        // 省略部分代码
+    }
+}
+```
+
+
+
+如何处理更新事件?
+
+一般的思路，需要先移除之前添加的事件处理函数，然后再将新的事件处理函数绑定到 DOM 元素上，如下面的代码所示：
+
+```js
+patchProps(el, key, prevValue, nextValue) {
+    if (/^on/.test(key)) {
+        const name = key.slice(2).toLowerCase()
+        // 移除上一次绑定的事件处理函数
+        prevValue && el.removeEventListener(name, prevValue)
+        // 绑定新的事件处理函数
+        el.addEventListener(name, nextValue)
+    } else if (key === 'class') {
+        // 省略部分代码
+    } else if (shouldSetAsProps(el, key, nextValue)) {
+        // 省略部分代码
+    } else {
+        // 省略部分代码
+    }
+}
+
+```
+
+这样做能达到目的，但是还有一种性能更优的方法，**在绑定事件时，可以绑定一个伪造的事件处理函数 invoker，然后把真正的事件处理函数设置为 invoker.value 属性的值。这样当更新事件的时候，将不再需要调用 removeEventListener 函数来移除上一次绑定的事件，只需要更新 invoker.value 的值即可**，如下面的代码所示：
+
+```js
+patchProps(el, key, prevValue, nextValue) {
+    if (/^on/.test(key)) {
+        // 获取为该元素伪造的事件处理函数 invoker
+        let invoker = el._vei
+        const name = key.slice(2).toLowerCase()
+        if (nextValue) {
+            if (!invoker) {
+                // 如果没有 invoker，则将一个伪造的 invoker 缓存到 el._vei 中
+                // vei 是 vue event invoker 的首字母缩写
+                invoker = el._vei = (e) => {
+                    // 当伪造的事件处理函数执行时，会执行真正的事件处理函数
+                    invoker.value(e)
+                }
+                // 将真正的事件处理函数赋值给 invoker.value
+                invoker.value = nextValue
+                // 绑定 invoker 作为事件处理函数
+                el.addEventListener(name, invoker)
+            } else {
+                // 如果 invoker 存在，意味着更新，并且只需要更新 invoker.value的值即可
+                invoker.value = nextValue
+            }
+        } else if (invoker) {
+            // 新的事件绑定函数不存在，且之前绑定的 invoker 存在，则移除绑定
+            el.removeEventListener(name, invoker)
+        }
+    } else if (key === 'class') {
+        // 省略部分代码
+    } else if (shouldSetAsProps(el, key, nextValue)) {
+        // 省略部分代码
+    } else {
+        // 省略部分代码
+    }
+}
+```
+
+事件绑定主要分为两个步骤。 
+
+- 先从` el._vei `中读取对应的 invoker，如果 invoker 不存在， 则将伪造的 invoker 作为事件处理函数，并将它缓存到` el._vei `属性中。 
+- 把真正的事件处理函数赋值给 invoker.value 属性，然后把伪 造的 invoker 函数作为事件处理函数绑定到元素上。可以看到， 当事件触发时，实际上执行的是伪造的事件处理函数，在其内部间接执行了真正的事件处理函数 invoker.value(e)。
+
+当更新事件时，由于` el._vei `已经存在了，所以我们只需要将 invoker.value 的值修改为新的事件处理函数即可。这样，在更新 事件时可以避免一次 removeEventListener 函数的调用，从而提 升了性能。
+
+伪造的事件处理函数的作用不止于此，它还能解 决事件冒泡与事件更新之间相互影响的问题。
+
+**上面的代码中，在同一时刻只能缓存一个事件处理函数。**
+
+这意味着，如果一个元素同时绑定了多种事件，将会出现事件覆盖的 现象。例如同时给元素绑定 click 和 contextmenu 事件：
+
+```js
+const vnode = {
+  type: 'p',
+  props: {
+    onClick: () => {
+      alert('clicked');
+    },
+    onContextmenu: () => {
+      alert('contextmenu');
+    }
+  },
+  children: 'text'
+};
+renderer.render(vnode, document.querySelector('#app'));
+
+```
+
+当渲染器尝试渲染这上面代码中给出的 vnode 时，会先绑定 click 事件，然后再绑定 contextmenu 事件。后绑定的 contextmenu 事件的处理函数将覆盖先绑定的 click 事件的处理函 数。为了解决事件覆盖的问题，我们需要重新设计 `el._vei `的数据结 构。我们应该将 `el._vei `设计为一个对象，它的键是事件名称，它的值则是对应的事件处理函数，这样就不会发生事件覆盖的现象了，如下面的代码所示：
+
+```js
+patchProps(el, key, prevValue, nextValue) {
+    if (/^on/.test(key)) {
+        // 定义 el._vei 为一个对象，存在事件名称到事件处理函数的映射
+        const invokers = el._vei || (el._vei = {})
+        //根据事件名称获取 invoker
+        let invoker = invokers[key]
+        const name = key.slice(2).toLowerCase()
+        if (nextValue) {
+            if (!invoker) {
+                // 将事件处理函数缓存到 el._vei[key] 下，避免覆盖
+                invoker = el._vei[key] = (e) => {
+                    invoker.value(e)
+                }
+                invoker.value = nextValue
+                el.addEventListener(name, invoker)
+            } else {
+                invoker.value = nextValue
+            }
+        } else if (invoker) {
+            el.removeEventListener(name, invoker)
+        }
+    } else if (key === 'class') {
+        // 省略部分代码
+    } else if (shouldSetAsProps(el, key, nextValue)) {
+        // 省略部分代码
+    } else {
+        // 省略部分代码
+    }
+}
+
+```
+
+另外，一个元素不仅可以绑定多种类型的事件，对于同一类型的事件而言，还可以绑定多个事件处理函数。在原生 DOM 编程中，当多次调用 addEventListener 函数为元素绑定同一类型的事件时，多个事件处理函数可以共存。
+
+为了描述同一个事件的多个事件处理函数，需要调整 vnode.props 对象中事件的数据结构，如下面的代码所示：
+
+```js
+const vnode = {
+  type: 'p',
+  props: {
+    onClick: [
+      // 第一个事件处理函数
+      () => {
+        alert('clicked 1');
+      },
+      // 第二个事件处理函数
+      () => {
+        alert('clicked 2');
+      }
+    ]
+  },
+  children: 'text'
+};
+renderer.render(vnode, document.querySelector('#app'));
+
+```
+
+patchProps 函数中事件处理相关的代码：
+
+```js
+patchProps(el, key, prevValue, nextValue) {
+    if (/^on/.test(key)) {
+        const invokers = el._vei || (el._vei = {})
+        let invoker = invokers[key]
+        const name = key.slice(2).toLowerCase()
+        if (nextValue) {
+            if (!invoker) {
+                invoker = el._vei[key] = (e) => {
+                    // 如果 invoker.value 是数组，则遍历它并逐个调用事件处理函数
+                    if (Array.isArray(invoker.value)) {
+                        invoker.value.forEach(fn => fn(e))
+                    } else {
+                        // 否则直接作为函数调用
+                        invoker.value(e)
+                    }
+                }
+                invoker.value = nextValue
+                el.addEventListener(name, invoker)
+            } else {
+                invoker.value = nextValue
+            }
+        } else if (invoker) {
+            el.removeEventListener(name, invoker)
+        }
+    } else if (key === 'class') {
+        // 省略部分代码
+    } else if (shouldSetAsProps(el, key, nextValue)) {
+        // 省略部分代码
+    } else {
+        // 省略部分代码
+    }
+}
+```
+
+
+
+### 事件冒泡和更新时机
+
+事件冒泡与更新时机相结合所导致的问题。问题示例：
+
+```js
+const { effect, ref } = VueReactivity;
+
+const bol = ref(false);
+
+effect(() => {
+    // 创建 vnode
+    const vnode = {
+        type: 'div',
+        props: bol.value
+        ? {
+            onClick: () => {
+                alert('父元素 clicked');
+            }
+        }
+        : {},
+        children: [
+            {
+                type: 'p',
+                props: {
+                    onClick: () => {
+                        bol.value = true;
+                    }
+                },
+                children: 'text'
+            }
+        ]
+    };
+    // 渲染 vnode
+    renderer.render(vnode, document.querySelector('#app'));
+});
+
+```
+
+
 
 
 
