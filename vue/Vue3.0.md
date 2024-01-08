@@ -179,7 +179,7 @@ vue3.0 的源码采用 monorepo 方式进行管理，monorepo 是管理项目代
 
 
 
-**vue2.0 中的数据响应式是无感的，开发者只需要将数据放在 data 中就能是实现响应式能力，但 vue3.0 中就不一样了，我要把哪个数据变为响应式的，有开发者自行决定，用特定的 API 封装。**
+**vue2.0 中的数据响应式是无感的，开发者只需要将数据放在 data 中就能是实现响应式能力，但 vue3.0 中就不一样了，要把哪个数据变为响应式的，有开发者自行决定，用特定的 API 封装。**
 
 
 
@@ -286,8 +286,6 @@ pnpm init
 
 mkdir packages
 
-pnpm install typescript -w  // 用于在指定的项目根目录（workspace）中安装依赖项。
-
 ```
 
 创建多包管理配置文件pnpm-workspace.yaml
@@ -303,11 +301,9 @@ packages:
 
 ![image-20230830183643229](.\images\image-20230830183643229.png)
 
-
-
 `pnpm install xxx -w` 在一个使用 pnpm 管理的 monorepo 仓库中表示：`-w` 相当于设置了一个工作目录过滤器，使依赖的安装仅安装在monorep项目的根目录中，实现了 monorepo 中不同包或项目的依赖隔离。所以 `-w` 是 pnpm 在 monorepo 中实现依赖隔离的一个重要机制。
 
-pnpm 作为一个 monorepo 的包管理工具,可以对一个仓库的不同包或项目进行独立的依赖管理。`-w` 或 `--filter` 选项可以指定只在当前工作目录下安装依赖,而不影响仓库中的其他包。
+pnpm 作为一个 monorepo 的包管理工具,可以对一个仓库的不同包或项目进行独立的依赖管理。`-w` 或 `--filter` 选项可以指定只在当前工作目录下安装依赖，而不影响仓库中的其他包。
 
 例如:
 
@@ -323,9 +319,11 @@ my-monorepo/
 
 在 `foo` 目录下执行:`pnpm install lodash`
 
-这将**只在 `foo` 目录下**的 `node_modules` 里安装 `lodash`,不会影响到 `bar` 目录。这个安装时从互联网中进行安装。
+这将**只在 `foo` 目录下**的 `node_modules` 里安装 `lodash`,不会影响到 `bar` 目录。这个安装是从互联网中进行安装。
 
 **如果在monorepo仓库中，本地的foo仓库需要依赖本地bar仓库，那么需要指定被安装的包在本地monorepo仓库中查找，则使用命令：pnpm install bar@workspace --filter foo**。这样就可以在foo子项目中引入bar提供的方法了。
+
+注意：bar必须是bar包下package.json中name的名字才行。
 
 
 
@@ -417,10 +415,6 @@ vue3源码打包后的生成的文件的格式说明：
 </script>
 ```
 
-
-
-
-
 - 传为reactive的对象会被代理，代理对象能拦截属性的取值，设置，删除和访问等操作
 - 传给effect函数的回调函数默认会一开始就先执行一次
 - 一旦传给effect函数的回调函数中依赖过的响应式数据发生改变，该回调函数会再次执行
@@ -490,7 +484,7 @@ state1 === state2  // true
 
 
 
-effect
+### effect
 
 effect接收一个可能需要被反复执行的函数，所以这个函数是需要被存放下来的。在源码中，是创建了一个ReactiveEffect实例对象来存放该函数，同时该实例对象原型上都是实现了run方法，在run方法中调用传递给effect的那个函数，实现对该函数的执行。只是执行之前，需要进行自己的一些业务逻辑，比如将该ReactiveEffect实例对象挂载到全局，这样在回调函数中访问了响应式对象的属性时，就能对该ReactiveEffect实例对象进行收集，后面该响应式对象的属性有变，则可以直接调用该ReactiveEffect实例对象上的run方法，实现对传给effect函数的再次执行。
 
@@ -1691,13 +1685,13 @@ export function createVNode(type, props, children = null) {
 
 ## 组件
 
-组件的渲染，特性，插槽，事件，props，更新。
+组件的特点、渲染、特性、插槽、事件、props、更新等。
 
-组件能复用，方便维护同时能局部更新。Vue3中每个组件都对应一个自己effect。对于响应式的数据被在一个组件中使用，那么这个响应式数据就会收集该组件的effect。响应式数据变化就能精确的定位到该组件进行更新，提高性能。
+组件能复用，方便维护同时能**局部更新**。Vue3中每个组件都对应一个自己effect。对于响应式的数据被在一个组件中使用，那么这个响应式数据就会收集该组件的effect。响应式数据变化就能精确的定位到该组件进行更新，提高性能。也可以异步加载组件。
 
 this指代不明确，ts无法对this进行推断，同时this不支持tree-shaking。
 
-在vue2中组件同时存在template字段和render字段时，render的优先级更高，只写template本质也是被转为render函数。
+在vue2中组件同时存在template字段和render字段时，render的优先级更高，只写template本质也是被转为render函数（前提是有模板编译部分的程序）。
 
 模板编译最终是把模板 -> render返回的结果 -> 虚拟dom(h方法返回的是虚拟dom)  -> 渲染成真实的dom
 
@@ -1706,27 +1700,69 @@ this指代不明确，ts无法对this进行推断，同时this不支持tree-shak
 基本使用：
 
 ```js
+// 创建组件
 const MyComponent = {
     props: {
         a: Number,
         b: Number,
     },
     data() {
-        return { name: 'jw', age: 30 }
+        return { name: 'tom', age: 30 }
     },
     // 模板编译 最终是把模板 -> render返回的结果 -> 虚拟dom(h方法返回的是虚拟dom)  -> 渲染成真实的dom
     render(proxy) {
-        console.log(this)
+        console.log(this)  // this就是组件实例的代理对象
         return h('div', {}, [h('span', proxy.a), h('span', proxy.b), h('span', proxy.$attrs.c)])
     }
 }
+
 // vue2中  attrs(组件标签上的属性) , props(我给你传递的自定义属性不在attrs中的)
 render(h(MyComponent, { a: 1, b: 2, c: 1 }), app);
 ```
 
+组件对象调用h方法生成它对应的虚拟DOM。针对组件，它的shapeFlag的值是标识的组件的值，组件它对应虚拟DOM节点的children属性的值是插槽。
+
+每个组件都对应一个effect实例，组件的render函数执行后返回的虚拟DOM在源码内部被称作subTree。 
+
+组件除了组件对应的虚拟DOM对象以外，在源码的内部，还为每个组件创建了一个一一对应的组件实例，并增加了一些标识和记录属性。
+
+```js
+const instance = {
+    state,
+    isMounte:false, // 是否挂载
+    vnode:n2, // 该组件对应的虚拟DOM
+    subTree: null, // 组件render函数返回的虚拟DOM
+    update:null, // 用于组件更新的方法
+}
+```
+
+组件的更新分为两种：
+
+1. 组件的父级传给自己的props或者插槽改变触发的更新
+2. 组件自己的state（组件自己的响应式数据）改变导致重新执行自己的render函数的更新
+
+组件对应的effect实现了自己的调度函数，用于在本轮事件循环中，异步渲染更新的结果。即本轮事件循环中，同步多次更改组件的响应式数据，只会触发组件的render函数执行一次。
+
+htnl标签元素的更新如果能复用，复用的是挂载到元素对应的虚拟DOM上的el属性，这个属性的值是在第一次创建虚拟DOM对应的真实DOM节点时绑定的。
+
+组件的更新，如果能复用，复用的是组件对应的instance实例，在组件第一次挂载时，组件实例被绑定到组件对应的虚拟DOM对应的component属性上了。
+
+```js
+let el = n2.el = n1.el
+
+let instance = n2.component = n1.component  // 组件没有真实DOM，只有组件实例，组件的子节点在组件实例的subTree属性上
+instance.subTree.el  (keep-alive也会用到)
+```
 
 
-针对组件，它对应虚拟DOM节点的children属性的值是插槽。
+
+对于父组件传递给子组件的props，在子组件中直接修改这些props的值是不符合规范的，同时在源码中，传递给子组件的props是使用shalloReactive实现响应式的。
+
+
+
+
+
+
 
 
 
@@ -1753,6 +1789,24 @@ MVVM模式与MVC模式
 目的：职责划分，分层管理。
 
 
+
+
+
+
+
+## 扩展
+
+node中默认支持的是commonjs规范。如果在项目的package.json目录下设置type:'module'，将开启项目的esmodule规范而只能使用import和export了。但是在前面这种情况下，如果还是想使用commonjs中的require操作，则就需要借助node:module库的createRequire方法来创建一个模拟的require方法。
+
+node中默认是不持支通过import  ‘xxx/xxx/xx.json’这种方式导入json文件的。
+
+```js
+import {createRequire} from 'node:module'
+const require = createRequire(import.meta.url)  //以当前文件所在目录为基准创建一个require方法
+
+const pkg = require(`../packages/${target}/package.json`)
+
+```
 
 
 
