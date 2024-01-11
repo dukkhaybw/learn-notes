@@ -8,8 +8,8 @@
 - 组件渲染原理、组件挂载流程、及异步渲染原理
 - Vue3中生命周期原理，props、emit、slot、provide、inject实现原理
 - Vue3中编译优化、patchFlags、blockTree，实现靶向更新（面试常考）
-- 模板转化ast语法树，编译原理的转化逻辑、及代码生成原理
-- Vue中异步组件原理、Teleport、keep-alive，transition组件实现原理
+- 模板转化ast语法树，语法树的转化逻辑、优化、代码生成原理
+- Vue中异步组件原理、函数式组件、Teleport、keep-alive，transition组件实现原理
 - Pinia和VurRouter源码原理
 - Vue3中单元测试和服务端渲染
 
@@ -48,7 +48,7 @@
    > console.log(total2)
    > ```
 
-2. 虚拟DOM。传统更新页面，每次数据更新都拼接一个完整的字符串innerHTML全部重新渲染，添加虚拟DOM后，操作真实DOM之前，可以比较新旧虚拟节点（DOM DIFF算法），找到变化再进行更新。小程序，单元测试并没有真实DOM概念，可以借助虚拟DOM模拟真实DOM，借助虚拟DOM可以跨平台，虚拟DOM就是一个对象，用来描述真实DOM的，下面是一个虚拟DOM的属性情况：
+2. 虚拟DOM。传统更新页面，每次数据更新都拼接一个完整的字符串innerHTML全部重新渲染；添加虚拟DOM后，操作真实DOM之前，可以比较新旧虚拟节点（DOM DIFF算法），找到变化再进行更新。小程序，单元测试并没有真实DOM概念，可以借助虚拟DOM模拟真实DOM，借助虚拟DOM可以跨平台，**虚拟DOM就是一个对象，用来描述真实DOM的**，下面是一个虚拟DOM的属性情况：
 
    ```js
    const vnode = {
@@ -91,14 +91,13 @@
 - Vue3允许自定义渲染器，扩展能力强。不会发生以前的事情，改写Vue源码改造渲染方式。 **扩展更方便**
 - vue3.0 采用 ts 开发增强了类型检测，vue2.0 采用的时 flow 进行类型检测
 - vu2.0 写起来有时很被动，必须按照框架的规则在特定部分写特定代码，写代码不够灵活
-- vue2.0 后期引入 RFC，使得每个版本的改动可控 rfcs
 - vue3.0 的源码体积优化，移除了部分 api，比如 filter 过滤器，实例的\$on,\$off,\$onec 和内联模块
 
 
 
 #### 代码区别：
 
-- Vue3.0 数据劫持采用 proxy（proxy 不会改变原对象，而是增加代理，使用方便，性能高，不会一上来就递归对象），而 Vue2.0 数据劫持采用的是 Object.defineProperty。Object.defineProperty 有性能缺陷和问题，该方法在 vue2.0 中会一上来就将对象进行完整的递归并给每个属性（**必须是一开始就存在的属性 **）改写为  get 和 set 方法（所以在 Vue2.0 中写代码时尽量将对象扁平化）,Vue2中**数组**不采用defineProperty来进行劫持 （浪费性能，对所有索引进行劫持会造成性能浪费）需要对数组单独进行处理
+- Vue3.0 数据劫持采用 proxy（proxy 不会改变原对象，而是增加代理，使用方便，性能高，不会一上来就递归对象），而 Vue2.0 数据劫持采用的是 Object.defineProperty。Object.defineProperty 有性能缺陷，该方法在 vue2.0 中会一上来就将对象进行完整的递归并给每个属性（**必须是一开始就存在的属性 **）改写为  get 和 set 方法（所以在 Vue2.0 中写代码时尽量将对象扁平化）,Vue2中**数组**不采用defineProperty来进行劫持 （浪费性能，对所有索引进行劫持会造成性能浪费）需要对数组单独进行处理
 
   一、上来就完整递归的性能差；
 
@@ -126,7 +125,7 @@
 
 - 增加了 Fragment，Teleport，Suspense 组件
 
-  Fragment：虚拟节点 Teleport：组件传送 Suspense：异步组件
+  Fragment：虚拟节点  Teleport：组件传送   Suspense：异步组件
 
 - Hooks 函数增加代码的复用性，编写自己的 Hook 函数，将一部分独立的逻辑提取并且还可以做到响应式能力
 
@@ -197,7 +196,7 @@ vue3.0 的源码采用 monorepo 方式进行管理，monorepo 是管理项目代
 2. 优化：对AST进行优化，例如静态节点提升、静态属性提升、事件处理程序的缓存等。
 3. 代码生成：根据优化后的AST生成可执行的JavaScript代码，其中包括创建虚拟DOM节点的代码、数据绑定的代码、事件处理的代码等。
 
-在构建过程中，模板编译将会将该模板转换为渲染函数的代码。转换后的代码将包含对应的虚拟DOM节点的创建、数据绑定的代码以及事件处理的代码，以后每次组件更新时都可以直接调用渲染函数进行快速的渲染和更新操作，提高了Vue应用的性能和效率。
+在构建过程中，模板编译会将该模板转换为渲染函数的代码。转换后的代码将包含对应的虚拟DOM节点的创建、数据绑定的代码以及事件处理的代码，以后每次组件更新时都可以直接调用渲染函数进行快速的渲染和更新操作，提高了Vue应用的性能和效率。
 
 最终在运行时，Vue 将使用这个渲染函数来生成实际的DOM，并在数据变化时进行更新。
 
@@ -263,16 +262,6 @@ compiler-dom 和 compiler-core 之间的关系是：compiler-dom 构建在 compi
 
 
 
-#### ref 和 reactive 的区别：
-
-ref 是让一个普通数据类型变为响应式，也可以获取节点。
-
-reactive 是让一个复杂对象用 proxy 方式进行拦截。
-
-vue3 和 react 看上去好像有点相同，但是 compositionApi 是靠响应式的原理，而 react 是靠每次的 render。
-
-
-
 
 
 ## 开发环境搭建
@@ -285,7 +274,6 @@ npm install pnpm -g
 pnpm init 
 
 mkdir packages
-
 ```
 
 创建多包管理配置文件pnpm-workspace.yaml
@@ -1727,12 +1715,23 @@ render(h(MyComponent, { a: 1, b: 2, c: 1 }), app);
 组件除了组件对应的虚拟DOM对象以外，在源码的内部，还为每个组件创建了一个一一对应的组件实例，并增加了一些标识和记录属性。
 
 ```js
-const instance = {
-    state,
-    isMounte:false, // 是否挂载
-    vnode:n2, // 该组件对应的虚拟DOM
-    subTree: null, // 组件render函数返回的虚拟DOM
-    update:null, // 用于组件更新的方法
+export function createInstance(n2) {
+  const instance = {
+    // 组件的实例，用它来记录组件中的属性
+    setupState: {},
+    state: {},
+    isMounted: false, // 是否挂栽成功
+    vnode: n2, // 组件的虚拟节点
+    subTree: null, // 组件渲染的虚拟节点
+    update: null, // 用于组件更新的方法
+    propsOptions: n2.type.props, // 用户传递的props
+    props: {},
+    attrs: {},
+    slots: {},
+    render: null,
+    proxy: null, // 帮我们做代理 -> proxyRefs
+  };
+  return instance;
 }
 ```
 
@@ -1764,7 +1763,9 @@ instance.subTree.el  (keep-alive也会用到)
 
 
 
+## setUp
 
+setup函数中返回的对象，如果时ref，在源码的内部会使用proxyRefs方法做代理，代理访问ref数据上的value属性。
 
 
 
