@@ -10,16 +10,8 @@
 - Vue3中编译优化、patchFlags、blockTree，实现靶向更新（面试常考）
 - 模板转化ast语法树，语法树的转化逻辑、优化、代码生成原理
 - Vue中异步组件原理、函数式组件、Teleport、keep-alive，transition组件实现原理
-- Pinia和VurRouter源码原理
+- Pinia和VueRouter源码原理
 - Vue3中单元测试和服务端渲染
-
-
-
-## Vue设计思想
-
-- Vue3.0更注重模块上的拆分，在2.0中无法单独使用部分模块。需要引入完整的Vuejs(例如只想使用使用响应式部分，但是需要引入完整的Vuejs)， Vue3中的模块之间耦合度低，模块可以独立使用。 **拆分模块**
-- Vue2中很多方法挂载到了实例中导致没有使用也会被打包（还有很多组件也是一样）。Vue3重写方法后， 通过构建工具Tree-shaking机制实现按需引入，减少用户打包后体积。vue2中的optionsAPI中没有用到的属性与方法都会一并被打包。Vue3中的组合式api能解决这个问题。 **重写API**
-- Vue3的核心部分根据虚拟DOM和开发者提供的一些列渲染方法执行渲染工作，其中Vue3又将和具体环境相关的渲染方法单独抽离，允许自定义渲染器，扩展能力强。以前需要改写Vue源码改造渲染方式。 **扩展更方便**
 
 
 
@@ -28,9 +20,9 @@
 1. 声明式框架，命令式代码被封装到Vuejs内部，不再需要开发者直接关注
 
    - JQ的时代编写的代码都是命令式的，命令式框架重要特点就是关注过程
-   - 声明式框架更加关注结果。命令式的代码封装到了Vuejs中，过程靠vuejs来实现
+   - 声明式框架关注结果。命令式的代码封装到了Vuejs中，过程靠Vuejs来实现
 
-   > 声明式代码更加简单，不需要关注实现，按照要求填代码就可以 
+   > 声明式代码更加简单，不需要关注实现，按照要求填代码就可以 ，按照框架的要求在特定的部分写代码实现业务逻辑。
    >
    > ```js
    > - 命令式编程：
@@ -78,6 +70,12 @@
 
 
 
+## Vue设计思想
+
+- Vue3.0更注重模块上的拆分，在2.0中无法单独使用部分模块。需要引入完整的Vuejs(例如只想使用使用响应式部分，但是需要引入完整的Vuejs)， Vue3中的模块之间耦合度低，模块可以独立使用。 **拆分模块**
+- Vue2中很多方法挂载到了实例中导致没有使用也会被打包（还有很多组件也是一样）。Vue3重写方法后， 通过构建工具Tree-shaking机制实现按需引入，减少用户打包后体积。vue2中的optionsAPI中没有用到的属性与方法都会一并被打包，而Vue3中的组合式api能解决这个问题。 **重写API**
+- Vue3的核心部分根据虚拟DOM和开发者提供的一些列渲染方法执行渲染工作，其中Vue3又将和具体环境相关的渲染方法单独抽离，允许自定义渲染器，扩展能力强。以前需要改写Vue源码改造渲染方式。 **扩展更方便**
+
 
 
 ## Vue3.0 的构建流程
@@ -86,9 +84,9 @@
 
 #### 宏观区别：
 
-- vue3.0 的源码采用 monorepo 方式进行管理（将多个项目的代码存储到同一个仓库中），将包拆到不同的 package 目录中，多个包本身相互独立，有自己的功能逻辑，单元测试又方便管理，可以独立打包发布等。vue2.0 整个项目的框架包含了许多包，这些包都在一个仓库下进行管理（一个项目就一个仓库），但项目复杂时或追求扩展的时候，很难进行。（**模块拆分**）
+- vue3.0 的源码采用 monorepo 方式进行管理（将多个项目的代码存储到同一个仓库中），将包拆到不同的 package 目录中，多个包本身相互独立，有自己的功能逻辑，单元测试又方便管理，可以独立打包发布等。vue2.0 整个项目的框架包含了许多包，这些包都在一个仓库下进行管理（一个项目就一个仓库），但项目复杂时或追求扩展的时候，很难进行。
 - vue3.0 的性能优化大幅提高，支持 tree-shaking，不使用就不会被打包（依靠函数式的 api 实现）， vue3.0 中主要就是在写函数；在 vue2.0 中写的代码都是写在一个配置对象（options API）中的，这个对象中哪些属性需要，哪些代码需要都是无法被 vue2.0 判断的，自然没有 tree-shaking 一说，并且Vue2中很多方法（$nextTick）挂载到了实例中导致没有使用也会被打包（一些组件(transition组件，)也一样）
-- Vue3允许自定义渲染器，扩展能力强。不会发生以前的事情，改写Vue源码改造渲染方式。 **扩展更方便**
+- Vue3允许自定义渲染器，扩展能力强。不会发生以前的事情，改写Vue源码改造渲染方式。 
 - vue3.0 采用 ts 开发增强了类型检测，vue2.0 采用的时 flow 进行类型检测
 - vu2.0 写起来有时很被动，必须按照框架的规则在特定部分写特定代码，写代码不够灵活
 - vue3.0 的源码体积优化，移除了部分 api，比如 filter 过滤器，实例的\$on,\$off,\$onec 和内联模块
@@ -289,9 +287,9 @@ packages:
 
 ![image-20230830183643229](.\images\image-20230830183643229.png)
 
-`pnpm install xxx -w` 在一个使用 pnpm 管理的 monorepo 仓库中表示：`-w` 相当于设置了一个工作目录过滤器，使依赖的安装仅安装在monorep项目的根目录中，实现了 monorepo 中不同包或项目的依赖隔离。所以 `-w` 是 pnpm 在 monorepo 中实现依赖隔离的一个重要机制。
+`pnpm install xxx -w` 在一个使用 pnpm 管理的 monorepo 仓库中表示：`-w` 相当于设置了一个工作目录过滤器，使依赖的安装仅安装在monorep项目的根目录中。
 
-pnpm 作为一个 monorepo 的包管理工具,可以对一个仓库的不同包或项目进行独立的依赖管理。`-w` 或 `--filter` 选项可以指定只在当前工作目录下安装依赖，而不影响仓库中的其他包。
+pnpm 作为一个 monorepo 的包管理工具，可以对一个仓库的不同包或项目进行独立的依赖管理。`-w` 或 `--filter` 选项可以指定只在当前工作目录下安装依赖，而不影响仓库中的其他包。
 
 例如:
 
@@ -331,6 +329,8 @@ my-monorepo/
 
 ```shell
 pnpm install typescript esbuild minimist -w
+
+pnpm tsc --init
 ```
 
 编写使用esbuild进行打包的脚本文件：
@@ -357,7 +357,7 @@ esbuild
   .context({
     entryPoints: [resolve(__dirname, `../packages/${target}/src/index.ts`)],
     outfile: resolve(__dirname, `../packages/${target}/dist/${target}.js`),
-    bundle: true,
+    bundle: true,  // 将所有的依赖打包到一起
     sourcemap: true,
     format,
     globalName: namesMap[target],
@@ -403,16 +403,34 @@ vue3源码打包后的生成的文件的格式说明：
 </script>
 ```
 
-- 传为reactive的对象会被代理，代理对象能拦截属性的取值，设置，删除和访问等操作
-- 传给effect函数的回调函数默认会一开始就先执行一次
-- 一旦传给effect函数的回调函数中依赖过的响应式数据发生改变，该回调函数会再次执行
-- 如果一个响应式对象不再effect中使用，则该属性就不会收集effect
+- `reactive`方法会为对象变成proxy对象， `effect`中使用`reactive`对象时会进行依赖收集，稍后属性变化时会重新执行`effect`函数。
 
-effect函数是库内部的底层函数，库中的其他常用的方法很多都基于它来实现的。
+- reactive, shallowReactive, shallowReadonly, readonly，这些方法接受的参数必须是一个对象类型。否则没有任何效果
+
+- 同一个对象不能被进行多次代理，多次代理返回同一个值（源码中使用原对象和代理对象的映射WeakMap来处理的）
+
+  ```js
+  import { reactive, effect } from './reactivity.js'
+  const data = { name: 'jw', age: 30, flag: true }
+  const state1 = reactive(data);
+  const state2 = reactive(data);
+  state1 === state2  // true
+  ```
+
+- 一个已经代理过的对象将不再被代理（源码中是为代理对象增加一个唯一标识来识别对象是否被代理过）
+
+  ```js
+  import { reactive, effect } from './reactivity.js'
+  const data = { name: 'jw', age: 30, flag: true }
+  const state1 = reactive(data);
+  const state2 = reactive(state1);
+  state1 === state2  // true
+  ```
+
+  
 
 
-
-为什么使用反射Reflect：
+实现代理对象的get，set等拦截方法为什么使用反射Reflect：
 
 ```js
 const person = {
@@ -448,33 +466,17 @@ proxy.name = 'jack'  // 如果用户修改了name属性 ，是无法监控到的
 
 
 
-- 同一个对象不能被进行多次代理，多次代理返回同一个值（源码中使用原对象和代理对象的映射WeakMap来处理的）
-
-```js
-import { reactive, effect } from './reactivity.js'
-const data = { name: 'jw', age: 30, flag: true }
-const state1 = reactive(data);
-const state2 = reactive(data);
-state1 === state2  // true
-```
-
-- 一个已经代理过的对象将不再被代理（源码中是为代理对象增加一个唯一标识来识别对象是否被代理过）
-
-  ```js
-  import { reactive, effect } from './reactivity.js'
-  const data = { name: 'jw', age: 30, flag: true }
-  const state1 = reactive(data);
-  const state2 = reactive(state1);
-  state1 === state2  // true
-  ```
-
-
-
-
-
 ### effect
 
-effect接收一个可能需要被反复执行的函数，所以这个函数是需要被存放下来的。在源码中，是创建了一个ReactiveEffect实例对象来存放该函数，同时该实例对象原型上都是实现了run方法，在run方法中调用传递给effect的那个函数，实现对该函数的执行。只是执行之前，需要进行自己的一些业务逻辑，比如将该ReactiveEffect实例对象挂载到全局，这样在回调函数中访问了响应式对象的属性时，就能对该ReactiveEffect实例对象进行收集，后面该响应式对象的属性有变，则可以直接调用该ReactiveEffect实例对象上的run方法，实现对传给effect函数的再次执行。
+effect接收一个可能需要被反复执行的函数，所以这个函数是需要被存放下来的。在源码中，是创建了一个ReactiveEffect实例对象来存放该函数，同时该实例对象原型上都是实现了run方法，在run方法中调用传递给effect的那个函数，实现对该函数的执行。只是执行之前，需要进行自己的一些业务逻辑，比如将该ReactiveEffect实例对象挂载到全局，这样在传递给effect的回调函数中访问了响应式对象的属性时，就能对该ReactiveEffect实例对象进行收集，后面该响应式对象的属性有变，则可以直接调用该ReactiveEffect实例对象上的run方法，实现对传给effect函数的再次执行。
+
+
+
+- 传给effect函数的回调函数默认会一开始就先执行一次
+- 一旦传给effect函数的回调函数中依赖过的响应式数据发生改变，该回调函数会再次执行
+- 如果一个响应式对象不在effect中使用，则该属性就不会收集effect
+
+effect函数是库内部的底层函数，库中的其他常用的方法很多都基于它来实现的。
 
 
 
@@ -653,64 +655,6 @@ function trigger(target, key, value, oldValue) {
 
 
 
-
-
-## 重点实现
-
-1. `reactive`方法会将对象变成proxy对象， `effect`中使用`reactive`对象时会进行依赖收集，稍后属性变化时会重新执行`effect`函数。
-
-2. reactive,, shallowReactive, shallowReadonly, readonly，这些方法接受的参数必须是一个对象类型。否则没有任何效果
-
-3. getter和setter中必须要使用Reflect进行操作，保证this指向永远指向代理对象
-
-   ```js
-   // 返回的是代理对象
-   const person = {
-       name: 'jw',
-       get aliasName() { // 属性访问器
-           return 'handsome' + this.name
-       }
-   }
-   
-   const proxy = new Proxy(person, {
-       get(target, key, recevier) {
-           console.log(key)
-           // target[key]  - this = person
-           // Reflect.get(target, key, recevier); - this = receiver
-           return Reflect.get(target, key, recevier);
-       },
-       set(target, key, value, recevier) {
-           target[key] = value;
-           return Reflect.set(target, key, value,recevier);;
-       },
-   });
-   console.log(proxy.aliasName)
-   
-   // 如果用户修改了name属性 ，不用Reflect，我们是无法监控到的
-   
-   
-   // effect(() => {
-   //     console.log(proxy.aliasName)
-   // })
-   // proxy.name = 'wx'
-   ```
-
-   
-
-4. 将对象使用proxy进行代理，如果对象已经被代理过，再次重复代理则返回上次代理结果。
-
-5. 如果将一个代理对象传入，则直接返回
-
-6. 默认执行`effect`时会对属性，进行依赖收集
-
-7. 将属性和对应的effect维护成映射关系，后续属性变化可以触发对应的effect函数重新`run`
-
-8. 触发时会进行清理操作（清理effect），在重新进行收集（收集effect）。在循环过程中会导致死循环
-
-
-
-
-
 ## reactiveApi 实现
 
 vue3.0 中核心的 4 个 api：
@@ -817,8 +761,6 @@ state.name = 3
 
 
 
-
-
 effect函数可以接收第二个参数。这第二个参数中的scheduler函数默认不会一开始就执行，而是在响应式数据发生改变的情况下才会执行，不然就是执行原来的run方法。
 
 ```js
@@ -849,7 +791,7 @@ export function triggerEffects(effects) {
     if (effects) {
         effects = [...effects]; // vue2中的是数组，先拷贝在魂环
         effects.forEach((effect) => {
-            // 当前正在执行的和现在要执行的是同一个我就屏蔽掉
+            // 当前正在执行的和现在要执行的是同一个就屏蔽掉
             if (activeEffect !== effect) {
                 if (effect.scheduler) {
                     // 应该执行的是scheduler
@@ -898,9 +840,13 @@ export const mutableHandlers = {
 
 ### computed
 
+**计算属性就像一个中间人，自己会收集自己依赖的其他effect，同时自己内部也会产生一个effect供给计算属性的getter函数中依赖的响应式数据去收集。当响应式数据变动，触发计算属性内部的effect的scheduler执行，该scheduler中再去触发计算属性自己收集的其他外层的effect去执行。**
+
 computed是基于源码中的effect方法的，本质是一个ComputedRefImpl实例对象，该对象实例上挂载了一个effect，并且他有一个dep属性会收集他依赖的effect。 
 
-计算属性是可以在effect中使用的，挡在effect的回调函数中访问了计算属性的值（xxx.value）后，当计算属性依赖的其他响应式数据发生变化时，会触发计算属性收集的effect的run方法。
+计算属性是可以在其他的effect中使用的，当在effect的回调函数中访问了计算属性的值（xxx.value）后，触发计算属性的value属性的属性访问器函数，函数内部先让计算属性ComputedRefImpl实例对象的deps收集当前的effect副作用函数实例，然后再触发ComputedRefImpl实例对象在初始化时，挂载上的那个effect属性的run方法，该润
+
+方法的执行本质就是就是传递给computed函数的那个getter函数的执行，这样计算属性依赖的其他响应式数据的就会收集计算属性实例上的那个effect实例，当计算属性依赖的其他响应式数据发生变化时，会触发计算属性上的那个effect的scheduler方法，scheduler中再去触发计算属性实例上之前的收集的deps中收集的外层的effect的run方法。
 
 计算属性的特点：
 
@@ -968,9 +914,9 @@ import { ReactiveEffect, activeEffect } from "./effect";
 import { trackEffects, triggerEffects } from "./baseHandler";
 
 class ComputedRefImpl {
-    effect;
-    _value;
-    dep = new Set();
+    effect; // 计算属性自己的effect
+    _value; // 值的缓存
+    dep = new Set();  // 这个计算属性实例收集的使用了该计算属性的effect实例对象
     _dirty = true;
     constructor(public getter, public setter) {
         // 计算属性就是一个effect 会让getter中的属性收集这个effect
@@ -1022,8 +968,6 @@ export function computed(getterOrOptions) {
 
 
 
-
-
 ### watch
 
 watch也是基于effect方法的。
@@ -1049,8 +993,6 @@ state.firstName = 'abc'  // 这时打印的newVal和oldVal他们因为指向同�
 ```
 
 - 对于监控的是对象类型的响应式数据时，是无法区分新值和老值的
-
-
 
 ```js
 const state = reactive({firstName:'tom',lastName:'king'})
@@ -1243,33 +1185,34 @@ function doWatch(source, cb, options) {
 const flag = ref(true)
 
 effect(() => {
-    app.innerHTML = flag.value?1:2;
+    app.innerHTML = flag.value ? 1 : 2;
 })
 setTimeout(() => {
     flag.value = false
 }, 1000)
 ```
 
-ref函数可以接受一个基本数据类型的值，也可以接受对象，如果传递的是对象，则直接将对象变为一个响应式对象，然后挂载到value上。
+ref函数可以接受一个基本数据类型的值，也可以接受对象，如果传递的是对象，则直接将对象变为一个响应式对象，然后访问value时代理访问该响应式对象。
 
 ref不会创建一个effect，但是在获取它的value时，它会收集它依赖的effect，当给value设置值的时候会触发effect重新执行。
 
 ```js
-import { trackEffects, triggerEffects } from "./baseHandler";
-import { activeEffect } from "./effect";
-import { toReactive } from "./reactive";
+import { isObject } from '@vue/shared';
+import { trackEffects, triggerEffects } from './baseHandler';
+import { activeEffect } from './effect';
+import { reactive, toReactive } from './reactive';
 
 export function ref(value) {
   return new RefImpl(value);
 }
-
 // computed + watch
 class RefImpl {
   _value;
+  __v_isRef = true;
   dep = new Set();
   // 内部采用类的属性访问器 -》 Object.defineProperty
   constructor(public rawValue) {
-    this._value = toReactive(rawValue);
+    this._value = isObject(rawValue) ? reactive(rawValue) : rawValue;
   }
   get value() {
     if (activeEffect) {
@@ -1285,8 +1228,7 @@ class RefImpl {
     }
   }
 }
-
-// 本质是对reactive数据进行代理
+// ref 代理的实现
 class ObjectRefImpl {
   constructor(public object, public key) {}
   get value() {
@@ -1296,7 +1238,6 @@ class ObjectRefImpl {
     this.object[this.key] = val;
   }
 }
-
 export function toRef(object, key) {
   return new ObjectRefImpl(object, key);
 }
@@ -1309,6 +1250,23 @@ export function toRefs(object) {
   return res;
 }
 
+export function proxyRefs(target) {
+  return new Proxy(target, {
+    get(target, key, recevier) {
+      let r = Reflect.get(target, key, recevier);
+      return r.__v_isRef ? r.value : r;
+    },
+    set(target, key, value, recevier) {
+      const oldValue = target[key];
+      if (oldValue.__v_isRef) {
+        oldValue.value = value;
+        return true;
+      } else {
+        return Reflect.set(target, key, value, recevier);
+      }
+    },
+  });
+}
 ```
 
 
