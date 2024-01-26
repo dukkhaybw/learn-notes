@@ -1,6 +1,6 @@
 # React 进阶
 
-对 React 源码、底层原理及周边生态深入的探究，将源码和底层原理分开，说明两者的区别。 Vue、React 乃至 Angular 在代码编写层面越发相似，且在设计层面都在朝着 WebComponents 标准靠近。
+将源码和底层原理分开。 Vue、React 乃至 Angular 在代码编写层面越发相似，且在设计层面都在朝着 WebComponents 标准靠近。
 
 在环境无法提供优质的成长环境时，谨记自己创造途径：深挖一个优质的前端框架吃透它的原理，跟开发团队学习框架的思想，编码规范和学习设计模式。
 
@@ -1816,7 +1816,7 @@ react 选择虚拟 DOM 真的是为了性能考虑吗？
 
 虚拟 DOM 在 React 中的结构：
 
-<img src="..\typora-user-images\image-20211201121815904.png" alt="image-20211201121815904" style="zoom:50%;" />
+<img src="..\typora-user-images\image-20211201121815904.png" alt="image-20211201121815904"  />
 
 #### 虚拟 DOM 参与的工作流
 

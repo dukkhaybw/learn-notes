@@ -5,14 +5,14 @@
 1. React是什么？
 
    - [React](https://zh-hans.reactjs.org/)是一个用于构建用户界面的 JavaScript 库
-   - 可以通过组件化的方式构建快速响应的大型`Web`应用程序
+   - 可以通过组件化的方式构建**快速响应**的大型`Web`应用程序
 
 2. 搭建项目，一比一实现React
    1. npm init -y
 
    2. npm install vite @vitejs/plugin-react  -D
 
-   3. 写vite配置文件
+   3. 写vite配置文件：vite.config.js
 
       ```js
       import path from 'path';
@@ -32,9 +32,7 @@
           }
         }
       });
-      
       ```
-
       
 
 3. 认识jsx
@@ -47,7 +45,83 @@
 
 ### JSX及其本质
 
-**React17以后可以不用再主动引入 React 而直接在文件中写 jsx 语法，但是要手动配置开启automatic**。因为新版项目中将 jsx不再转为 React.createElement，但是babel转换后的代码在浏览器中的执行结果是一样的——虚拟DOM对象树。
+react-dom的commit阶段会渲染React元素（虚拟DOM）到页面上。
+
+JSX的编译和后续执行：
+
+![img](https://static.zhufengpeixun.com/virutaldom_1664073330011.jpg)
+
+React项目运行的两个环节：
+
+1. 编译阶段，把使用jsx编写的项目源码通过webacpk或者vite中的babel插件——*@babel/plugin-transform-react-jsx*——编译为普通的js代码（具体是React.createElement或者jsxDEV方法调用），这是在node环境中完成的，和浏览器无关
+2. 运行阶段，将编译打包后的上线到服务器，用户访问服务器后加载对应的html和js文件，而js文件中的内容就是上一阶段生成的js代码，浏览器会加载并执行React.createElement或者jsxDEV方法，得到虚拟DOM树，再根据虚拟DOM树生成Fiber树，再生成真实的DOM挂载的对应fiber节点上，当到提交阶段是将这些fiber节点对应的真实DOM节点插入到其父fiber对应的真实DOM中，最后将最顶级的fiber节点对应的DOM插入到页面一开始提供的容器。
+
+
+
+包含jsxDEV函数调用的代码在发送到浏览器后，浏览器会根据react源码中定义的该jsxDEV方法的代码逻辑进行执行，最后返回一个虚拟DOM树。
+
+```js
+// ReactElement是一个工厂函数，用于创建一个个的虚拟DOM节点对象
+function ReactElement(type, key, ref, props) {
+  // 这就是React元素，也被称为虚拟DOM
+  return {
+    $$typeof: REACT_ELEMENT_TYPE,  // $$typeof，每个虚拟DOM节点都有，表示节点的类型
+    type,// h1 span，如果是函数组件或者类组件，那就是个函数或者类本身
+    key,// 唯一标识
+    ref,// 用来获取真实DOM元素
+    props// 属性 包括：children,style,id...
+  }
+}
+```
+
+​			
+
+jsxDEV函数在浏览器中调用后生成的结构														
+
+```jsx
+<h1>
+  hello<span style={{ color: 'red' }}>world</span>
+</h1>
+```
+
+每个虚拟DOM节点会有一个类型属性——`$$typeof`
+
+![image-20230313211759844](../%E7%8F%A0%E5%B3%B0%E6%9E%B6%E6%9E%84/React18.2.images/image-20230313211759844.png)
+
+
+
+一个虚拟DOM节点的children属性，可能是一个字符串，数字，对象或者数组，其中数组的中的每一项元素可以是前面3中的某一种。有一点需要注意，上面编写的jsx都是直接使用的原生的标签，如h1,span等，所以它们生成的jsxDEV函数调用的第一个参数都是字符串的'h1'或者'span'等。 **如果编写的是一个函数组件，如下代码：**
+
+```jsx
+function FunctionComponent(){
+  return (
+    <h1>
+      hello <span style={{ color: 'red' }}>world!</span>
+    </h1>
+  )
+}
+
+let element = <FunctionComponent number={1}></FunctionComponent>
+
+// 编译后的结果
+function FunctionComponent() {
+  return /*#__PURE__*/React.createElement("h1", null, "hello ", /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: 'red'
+    }
+  }, "world!"));
+}
+
+var element = /*#__PURE__*/React.createElement(FunctionComponent, {
+  number: 1
+});
+```
+
+一定要注意对于函数组件的jsx，生成的函数React.createElement调用中第一个参数就是函数本身，也就是说它是可以直接被执行的。
+
+
+
+**React17及以后可以不用再主动引入 React 而直接在文件中写 jsx 语法，但是要手动配置开启automatic**。因为新版项目中将 jsx不再转为 React.createElement，但是babel转换后的代码在浏览器中的执行结果是一样的——虚拟DOM对象树。
 
 ```jsx
 //在React17以前，babel转换是老的写法
@@ -194,87 +268,11 @@ export default App;
 
 
 
-
-
-JSX的编译和后续执行：
-
-![img](https://static.zhufengpeixun.com/virutaldom_1664073330011.jpg)
-
-React项目运行的两个环节：
-
-1. 编译阶段，把使用jsx编写的项目源码通过webacpk或者vite中的babel插件——*@babel/plugin-transform-react-jsx*——编译为普通的js代码（具体是React.createElement或者jsxDEV方法调用），这是在node环境中完成的，和浏览器无关
-2. 运行阶段，将编译打包后的上线到服务器，用户访问服务器后加载对应的html和js文件，而js文件中的内容就是上一阶段生成的js代码，浏览器会加载并执行React.createElement或者jsxDEV方法，得到虚拟DOM树，再根据虚拟DOM树生成Fiber树，再生成真实的DOM插入到页面中
-
-
-
-包含jsxDEV函数调用的代码在发送到浏览器后，浏览器会根据源码中定义的该jsxDEV方法的代码逻辑进行执行，最后返回一个虚拟DOM树。
-
-```js
-// ReactElement是一个工厂函数，用于创建一个个的虚拟DOM节点对象
-function ReactElement(type, key, ref, props) {
-  // 这就是React元素，也被称为虚拟DOM
-  return {
-    $$typeof: REACT_ELEMENT_TYPE,  // $$typeof，每个虚拟DOM节点都有，表示节点的类型
-    type,// h1 span，如果是函数组件或者类组件，那就是个函数或者类本身
-    key,// 唯一标识
-    ref,// 用来获取真实DOM元素
-    props// 属性 包括：children,style,id...
-  }
-}
-```
-
-​			
-
-jsxEDV函数在浏览器中调用后生成的结构														
-
-```jsx
-<h1>
-  hello<span style={{ color: 'red' }}>world</span>
-</h1>
-```
-
-每个虚拟DOM节点会有一个类型属性——`$$typeof`
-
-![image-20230313211759844](../%E7%8F%A0%E5%B3%B0%E6%9E%B6%E6%9E%84/React18.2.images/image-20230313211759844.png)
-
-
-
-一个虚拟DOM节点的children属性，可能是一个字符串，数字，对象或者数组，其中数组的中的每一项元素可以是前面3中的某一种。有一点需要注意，上面编写的jsx都是直接使用的原生的标签，如h1,span等，所以它们生成的函数调用的第一个参数都是字符串的'h1'或者'span'等。 如果编写的是一个函数组件，如下代码：
-
-```jsx
-function FunctionComponent(){
-  return (
-    <h1>
-      hello <span style={{ color: 'red' }}>world!</span>
-    </h1>
-  )
-}
-
-let element = <FunctionComponent number={1}></FunctionComponent>
-
-// 编译后的结果
-function FunctionComponent() {
-  return /*#__PURE__*/React.createElement("h1", null, "hello ", /*#__PURE__*/React.createElement("span", {
-    style: {
-      color: 'red'
-    }
-  }, "world!"));
-}
-
-var element = /*#__PURE__*/React.createElement(FunctionComponent, {
-  number: 1
-});
-```
-
-一定要注意对于函数组件的jsx，生成的函数React.createElement调用中第一个参数就是函数本身，也就是说它是可以直接被执行的。
-
-
-
 ## 第二节
 
 在编译阶段将编写的jsx经过babel编译后转为jsxDEV(type,config)的方法调用，而前一节就是在实现jsxDEV这个函数方法，该方法返回一个虚拟DOM（JS对象）。
 
-用react-dom将虚拟DOM变为真实DOM插入已经存在的节点上。
+接下来用react-dom将虚拟DOM变为真实DOM插入已经存在的节点上。
 
 ```jsx
 import { createRoot } from "react-dom/client";
@@ -294,17 +292,11 @@ root.render(element)
 
 createRoot函数接受真实的DOM节点，然后去创建整个项目的根。根本质就是一个类（ReactDOMRoot）的对象实例，该对象实例上有一个属性（_internalRoot），该属性的值是的FiberRootNode，FiberRootNode对象上有一个属性containerInfo属性的值就是createRoot接受的真实DOM节点。如下图：
 
-
-
 ![img](https://static.zhufengpeixun.com/ReactDOMRoot_1664038441123.png)
 
-
-
-
+![image-20240117103732125](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240117103732125.png)
 
 ![img](https://static.zhufengpeixun.com/FiberRootNode_1664074436254.jpg)
-
-
 
 简单来说FiberRootNode = containerInfo,它的本质就是一个真实的容器DOM节点 `div#root`,其实就是一个真实的DOM，只是稍微包装了一下，后面会指向根Fiber，而这个根Fiber就是整个Fiber树的根节点，根Fiber的真实DOM节点就指向FiberRootNode——整个项目的根。
 
@@ -407,7 +399,7 @@ React15中的render过程是不可中断的，这就导致JS可能长时间霸�
 
 
 
-## Fiber
+### Fiber
 
 React会将大任务拆分为小任务，如何拆？拆多细？一个任务的代表是什么？
 
@@ -416,9 +408,13 @@ React会将大任务拆分为小任务，如何拆？拆多细？一个任务的
 
 fiber定义（fiber是什么）：
 
-1. **Fiber 是一个执行的最小单元**，每次执行完一个执行单元, React 就会检查现在还剩多少时间，如果没有时间就将控制权让出去
+1. **Fiber 是一个执行的最小单元**，每次执行完一个执行单元, React 就会检查现在还剩多少时间，如果没有时间就将控制权让出去，React中每个工作单元就是一个fiber。
    ![fiberflow](http://img.zhufengpeixun.cn/fiberflow.jpg)
+
+   
+
 2. **Fiber 是一种数据结构**
+
    - React 目前的做法是使用**链表, 根据jsxDEV函数执行后返回的具有层级的虚拟DOM对象生成，虚拟DOM中的每个虚拟节点内部表示为一个`Fiber`** 
    - 从顶点开始遍历
    - 如果有第一个儿子，先遍历第一个儿子
@@ -437,7 +433,7 @@ fiber定义（fiber是什么）：
 
 
 
-## 树遍历
+### 树遍历
 
 深度优先和广度优先遍历
 
@@ -522,7 +518,7 @@ bfs(root)
 
 
 
-## 链表
+### 链表
 
 1. 单向链表
    ![img](https://static.zhufengpeixun.com/dan_xiang_lian_biao_1644749400974.jpg)
@@ -614,13 +610,13 @@ processUpdateQueue(fiber);
 console.log(fiber.memoizedState);
 ```
 
+
+
 Fiber之前：虚拟DOM=>真实DOM
 
 Fiber之后：虚拟DOM=>Fiber链表=>真实DOM
 
-
-
-## Fiber之前的工作模拟
+### Fiber之前的工作模拟
 
 未使用Fiber架构之前的代码逻辑模拟。
 
@@ -637,6 +633,7 @@ let element = (
     <div id="B2"></div>
   </div>
 )
+
 // 下面的jsx转为下面的虚拟DOM结构
 let element = {
   "type": "div",
@@ -694,7 +691,7 @@ render(element, document.getElementById('root'));
 
 
 
-## Fiber之后的工作模拟
+### Fiber之后的工作模拟
 
 ```jsx
 let element = (
@@ -808,9 +805,7 @@ workLoop();
 
 
 
-
-
-## 构建Fiber根节点
+### 构建current根节点
 
 根Fiber对应的DOM节点就是根容器节点。
 
@@ -849,7 +844,7 @@ export function createFiberRoot(containerInfo) {
 export function FiberNode(tag, pendingProps, key) {
   this.tag = tag;
   this.key = key;
-  this.type = null; //fiber类型，来自于 虚拟DOM节点的type  span div p
+  this.type = null; //fiber类型，来自于虚拟DOM节点的type  span div p
   //每个虚拟DOM=>Fiber节点=>真实DOM
   this.stateNode = null; //此fiber对应的真实DOM节点  h1=>真实的h1DOM
 
@@ -871,7 +866,7 @@ export function FiberNode(tag, pendingProps, key) {
   //子节点对应的副使用标识
   this.subtreeFlags = NoFlags;
   //替身，轮替 在后面讲DOM-DIFF的时候会用到
-  this.alternate = null;
+  this.alternate = null;  // 指向的是老的fiber节点
   this.index = 0;
   this.deletions = null;
   this.lanes = NoLanes;
@@ -895,7 +890,7 @@ export function createHostRootFiber() {
 
 每种虚拟DOM都会对应自己的fiber tag类型，其中根fiber对应的tag类型是HostRoot，值为3。
 
-React中表示副作用使用的是二进制数据，在进行diff时，会给fiber节点上的flags或者subtreeFlags进行标记，表示进行何种操作（增删改等）。subtreeFlags表示子节点的操作标记，能进行性能优化。
+React中表示副作用标识，使用的是二进制数据，在进行diff时，会给fiber节点上的flags或者subtreeFlags进行标记，表示进行何种操作（增删改等）。subtreeFlags表示子节点的操作标记，能进行性能优化。
 
 React的执行分为两个阶段：1. render阶段计算副作用。2.commit阶段修改真实DOM，或者说提交副作用。提交阶段是从根节点开始往树下面遍历，如果某一级的Fiber节点上的subtreeFlags为二进制数字0的话，表示该节点下的后代节点都没有任何副作用操作，将不再进行该节点下面的深度遍历，从而优化性能。子节点的副作用通过冒泡层层合并后赋值给祖先节点的subtreeFlags属性。
 
@@ -916,60 +911,22 @@ function bubbleProperties(completedWork) {
 
 
 
-一个Fiber节点含有的典型属性：
-
-```js
-/**
- *
- * @param {*} tag fiber的类型 函数组件0  类组件1 原生组件5 根元素3(HostRoot)
- * @param {*} pendingProps 新属性，等待处理或者说生效的属性
- * @param {*} key 唯一标识
- */
-
-export function FiberNode(tag, pendingProps, key) {
-  this.tag = tag;
-  this.key = key;
-  this.type = null; //fiber类型，来自于 虚拟DOM节点的type  span div p
-  //每个虚拟DOM=>Fiber节点=>真实DOM
-  this.stateNode = null; //此fiber对应的真实DOM节点  h1=>真实的h1DOM
-
-  this.return = null; //指向父节点
-  this.child = null; //指向第一个子节点
-  this.sibling = null; //指向弟弟
-
-  //fiber哪来的？通过虚拟DOM节点创建，虚拟DOM会提供pendingProps用来创建fiber节点的属性
-  this.pendingProps = pendingProps; //等待生效的属性
-  this.memoizedProps = null; //已经生效的属性
-
-  //每个fiber还会有自己的状态，每一种fiber 状态存的类型是不一样的
-  //类组件对应的fiber 存的就是类的实例的状态,HostRoot存的就是要渲染的元素
-  this.memoizedState = null;
-  //每个fiber身上可能还有更新队列
-  this.updateQueue = null;
-  //副作用的标识，表示要针对此fiber节点进行何种操作
-  this.flags = NoFlags; //自己的副作用
-  //子节点对应的副使用标识
-  this.subtreeFlags = NoFlags;
-    
-  //替身，轮替 在后面讲DOM-DIFF的时候会用到
-  this.alternate = null;
-  this.index = 0;
-  this.deletions = null;
-  this.lanes = NoLanes;
-  this.childLanes = NoLanes;
-  this.ref = null;
-}
-```
 
 
+上面的过程已经将页面初始化时对应current给构建好了，接下来需要根据虚拟DOM开始构建workInProgress树。
 
+将虚拟DOM放在current树fiber的更新队列属性updateQueue上。 
 
+调用root.render方法开启的代码流程：
 
-## 构建Fiber树
+### 构建workInProgress树
 
 Fiber树有两棵：
 
 1. current树
+
+   对应的是的当前根容器呈现的DOM内容
+
 2. workInProgress树
 
 ![img](https://static.zhufengpeixun.com/di_gui_gou_jian_fiber_shu_1664076989593.jpg)
@@ -1032,9 +989,9 @@ export function createHostRootFiber() {
 
 
 
-前面已经创建好整个项目的根Fiber节点了，现在要根据虚拟DOM构建一个完整的Fiber树。而虚拟DOM是通过ReactDOM.render方法传入的，所以需要将虚拟DOM方法根Fiber的更新队列上的。对于根节点来说，更新队列上方的是虚拟DOM。 每个fiber节点都有一个更新队列，用于存放需要更新的信息放到队列中。
+前面已经创建好整个项目的根Fiber节点了，现在要根据虚拟DOM构建一个完整的Fiber树。而虚拟DOM是通过ReactDOM.render方法传入的，所以需要**将虚拟DOM方法根Fiber的更新队列上的**。对于根节点来说，更新队列上放的是虚拟DOM。 每个fiber节点都有一个更新队列，用于存放需要更新的信息放到队列中。
 
-
+​	
 
 ### 将虚拟DOM加入根Fiber的更新队列
 
@@ -1061,7 +1018,45 @@ export function updateContainer(element, container) {
   const root = enqueueUpdate(current, update);  // 这里就将虚拟DOM树加入到了根Fiber节点的更新队列中，并返回根节点。
   scheduleUpdateOnFiber(root);
 }
+
+
+export function enqueueUpdate(fiber, update) {
+  const updateQueue = fiber.updateQueue;
+  const pending = updateQueue.shared.pending;
+  if (pending === null) {
+    update.next = update;
+  } else {
+    update.next = pending.next;
+    pending.next = update;
+  }
+  //pending要指向最后一个更新，最后一个更新 next指向第一个更新
+  //单向循环链表
+  updateQueue.shared.pending = update;
+  return markUpdateLaneFromFiberToRoot(fiber);
+}
+
+/**
+ * 本来此文件要处理更新优先级的问题
+ * 目前现在只实现向上找到根节点
+ */
+export function markUpdateLaneFromFiberToRoot(sourceFiber) {
+  let node = sourceFiber;//当前fiber
+  let parent = sourceFiber.return;//当前fiber父fiber
+  while (parent !== null) {
+    node = parent;
+    parent = parent.return;
+  }
+  //一直找到parent为null
+  if (node.tag === HostRoot) {
+    return node.stateNode;
+  }
+  return null;
+}
 ```
+
+markUpdateLaneFromFiberToRoot这是一个被共享的方法，用于标记fiber的更新赛道，并最后返回项目的根节点。
+
+react中的更新优先级是通过赛道来实现的，将更新赛道以32位二进制数来区别，数值越小赛道的优先级越高，每个更新会对应一个赛道的数值。假设某个节点下的后代fiber节点中有自己的lanes的值为2，当处理这个fiber节点时，他的lanes的值会向上冒泡（沿路上的fiber节点的childLanes都会包含这个数值），直到根fiber节点的childLanes收到来自该节点的更新赛道数值。
 
 
 
@@ -1080,25 +1075,27 @@ export function scheduleUpdateOnFiber(root) {
   ensureRootIsScheduled(root);
 }
 
-function scheduleCallback(callback) {
-  requestIdleCallback(callback);
-}
-
 function ensureRootIsScheduled(root) {
   scheduleCallback(performConcurrentWorkOnRoot.bind(null, root));
 }
 
 function performConcurrentWorkOnRoot(root) {
+    // 以同步的方式开始从根节点开启构建fiber链表和渲染
+    // 初次渲染时，不过是在并发模式还是异步模式下都是同步的，为的是初次渲染尽快的渲染出页面
   renderRootSync(root);
+}
+
+function scheduleCallback(callback) {
+  requestIdleCallback(callback);
+}
+
+function renderRootSync(root) {
+  prepareFreshStack(root);
 }
 
 function prepareFreshStack(root) {
   workInProgress = createWorkInProgress(root.current, null);  // 根据老根Fiber创建一个新的根Fiber,并赋值给了workInProgress
   console.log(workInProgress);
-}
-
-function renderRootSync(root) {
-  prepareFreshStack(root);
 }
 
 /**
@@ -1117,17 +1114,16 @@ export function createWorkInProgress(current, pendingProps) {
   let workInProgress = current.alternate;
   if (workInProgress === null) {
     workInProgress = createFiber(current.tag, pendingProps, current.key);
-    workInProgress.type = current.type;
     workInProgress.stateNode = current.stateNode;
     workInProgress.alternate = current;
     current.alternate = workInProgress;
   } else {
     workInProgress.pendingProps = pendingProps;
-    workInProgress.type = current.type;
     workInProgress.flags = NoFlags;
     workInProgress.subtreeFlags = NoFlags;
     workInProgress.deletions = null;
   }
+  workInProgress.type = current.type;
   workInProgress.child = current.child;
   workInProgress.memoizedProps = current.memoizedProps;
   workInProgress.memoizedState = current.memoizedState;
@@ -1268,13 +1264,554 @@ export function beginWork(current, workInProgress) {
 }
 ```
 
-
-
 一个组件中，一般会有很多个Fiber单元。 
 
 
 
+## 函数组件
 
+```jsx
+function FunctionComponent(props) {
+  // hooks 用到更新 更新需要有事件触发
+  return (
+    <h1 id="container" onClick={() => console.log('click')}>
+      hello<span style={{ color: "red" }}>world</span>
+    </h1>
+  )
+}
+let element = <FunctionComponent />
+//old let element = React.createElement(FunctionComponent,{id:'container',onClick:() => console.log('click') });
+//new let element = jsx(FunctionComponent,{id:'container',onClick:() => console.log('click')} );
+const root = createRoot(document.getElementById("root"));
+//把element虚拟DOM渲染到容器中
+root.render(element);
+```
+
+函数组件在使用时由babel编译生成的虚拟DOM：
+
+![image-20240120214129149](images\image-20240120214129149.png)
+
+因为hooks涉及组件的更新，而更新需要由事件触发，所以需要先实现事件系统。
+
+React源码库中的协调库（react-reconciler）处理工作循环（构建fiber链表），组件渲染，DOM Diff，DOM提交
+
+每一个fiber节点实例都有自己的updateQueue属性（更新链表），但是该属性的值却并不完全相同，不同的fiber节点的updateQueue的值并不总是相同，对于根Fiber，他的updateQueue存放的是虚拟DOM树对象；对于函数组件的fiber，它的updateQueue的值是hooks链表。
+
+
+
+## 事件
+
+事件流包含三个阶段
+
+- 事件捕获阶段
+- 处于目标阶段
+- 事件冒泡阶段
+
+事件的目标：
+
+```js
+//w3c浏览器：event.target
+//IE6、7、8： event.srcElement
+let target = event.target || event.srcElement;
+```
+
+
+
+```js
+element.addEventListener(event, function, useCapture)  // useCapture参数是true，则在捕获阶段绑定函数，反之false，在冒泡阶段绑定函数
+```
+
+阻止事件冒泡或者继续向下捕获：
+
+```js
+function stopPropagation(event) {
+    if (!event) {
+        window.event.cancelBubble = true;
+    }
+    if (event.stopPropagation) {
+        event.stopPropagation();
+    }
+}
+```
+
+阻止默认行为：
+
+```js
+function preventDefault(event) {
+    if (!event) {
+        window.event.returnValue = false;
+    }
+    if (event.preventDefault) {
+        event.preventDefault();
+    }
+}
+```
+
+
+
+React的事件系统依赖的是事件代理，利用事件捕获和冒泡来实现的。
+
+- 可以大量节省内存占用，减少事件注册
+- 当新增子对象时无需再次对其绑定
+
+![image-20240121132546816](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240121132546816.png)
+
+
+
+### 事件绑定
+
+自己模式实现react的事件系统。
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+    </head>
+
+    <body>
+        <div id="root">
+            <div id="parent" xx="yy">
+                <div id="child">点击</div>
+            </div>
+        </div>
+    </body>
+    <script>
+        var parentBubble = () => {
+            console.log('父React冒泡');
+        }
+        var parentCapture = () => {
+            console.log('父React捕获');
+        }
+        var childBubble = () => {
+            console.log('子React冒泡');
+        }
+        var childCapture = () => {
+            console.log('子React捕获');
+        }
+        let root = document.getElementById('root');
+        let parent = document.getElementById('parent');
+        let child = document.getElementById('child');
+        parent.onxxClick = parentBubble;
+        parent.onxxClickCapture = parentCapture;
+        child.onxxClick = childBubble;
+        child.onxxClickCapture = childCapture;
+        //模拟React中的事件委托 
+        root.addEventListener('click', (event) => dispatchEvent(event, true), true);
+        root.addEventListener('click', (event) => dispatchEvent(event, false), false);
+        function dispatchEvent(event, isCapture) {
+            let paths = [];//child parent div#root
+            let currentTarget = event.target;
+            while (currentTarget) {
+                paths.push(currentTarget);
+                currentTarget = currentTarget.parentNode;
+            }
+            if (isCapture) {
+                for (let i = paths.length - 1; i >= 0; i--) {
+                    let handler = paths[i].onxxClickCapture;
+                    handler && handler();
+                }
+            } else {
+                for (let i = 0; i < paths.length; i++) {
+                    let handler = paths[i].onxxClick;
+                    handler && handler();
+                }
+            }
+        }
+        parent.addEventListener('click', () => {
+            console.log('父原生捕获');
+        }, true);
+        parent.addEventListener('click', () => {
+            console.log('父原生冒泡');
+        }, false);
+        child.addEventListener('click', () => {
+            console.log('子原生捕获');
+        }, true);
+        child.addEventListener('click', () => {
+            console.log('子原生冒泡');
+        }, false);
+    </script>
+</html>
+```
+
+
+
+React中的合成事件系统分为三个大的阶段：
+
+1. 事件名注册阶段（是在初始化项目时处理），也就是通过react的事件插件系统，向一个变量set集合中添加各种事件名，比如click等
+2. 事件绑定阶段（也是在初始化项目时处理）
+
+![image-20240126130050423](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240126130050423.png)
+
+
+
+3. 事件触发阶段
+
+   1. 事件提取阶段
+
+      ![image-20240126131406962](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240126131406962.png)
+
+   2. 事件执行阶段
+
+      ![image-20240126131420437](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240126131420437.png)
+
+
+
+React中fiber节点如果有对应的真实DOM元素，在根据fiber创建真实的DOM元素时，会将该DOM元素和这个fiber节点建立一个对应关系，以便于后续事件触发时，通过目标元素（event.target）这个真实的DOM元素去获取它的fiber节点，然后再通过Fiber节点的return属性链，依次找到parentNode链，然后依次调用上节点上的事件处理函数。
+
+```js
+const randomKey = Math.random().toString(36).slice(2);
+const internalInstanceKey = '__reactFiber$' + randomKey;
+
+export function createInstance(type, props, internalInstanceHandle) {
+  const domElement = document.createElement(type);
+  precacheFiberNode(internalInstanceHandle, domElement);
+  //把属性直接保存在domElement的属性上
+  updateFiberProps(domElement, props);
+  return domElement;
+}
+
+/**
+ * 提前缓存fiber节点的实例到DOM节点上
+ * @param {*} hostInst 
+ * @param {*} node 
+ */
+export function precacheFiberNode(hostInst, node) {
+  node[internalInstanceKey] = hostInst;
+}
+```
+
+
+
+React中事件代理是绑定在根容器，一般就是div#root那个真实的DOM元素中的。捕获和冒泡阶段会触发一次root的对应事件，每次事件触发都会根据事件源对象，依次往外收集parentNode节点，收集完成后（收集的需要依次触发事件的真实节点放在一个数组中），然后倒叙或者正序循环这些真实DOM，实时地取出DOM中挂载上的对应捕获或者冒泡阶段的事件并执行。
+
+React中的事件代理的绑定只有一次，对于之后如果某个元素更新了或者新增的事件，后面触发源元素的新绑定的事件时，会捕获或者冒泡到根容器上，然后根容器在实时去或者给源元素绑定的那个事件，再取出来执行。
+
+react源码中对于事件系统，为了方便以后的扩展，采用了一个插件系统，将不同事件名的注册和事件的绑定彼此分离，利于扩展和维护。
+
+事件代理的绑定时刻：
+
+```js
+import { listenToAllSupportedEvents } from 'react-dom-bindings/src/events/DOMPluginEventSystem';
+
+export function createRoot(container) {// div#root
+  const root = createContainer(container);
+  listenToAllSupportedEvents(container);  // 这个函数就是在为container容器上绑定代理事件
+  return new ReactDOMRoot(root);
+}
+```
+
+
+
+事件绑定：
+
+```js
+const listeningMarker = `_reactListening` + Math.random().toString(36).slice(2);
+export function listenToAllSupportedEvents(rootContainerElement) {
+    //监听根容器，也就是div#root只监听一次
+    if (!rootContainerElement[listeningMarker]) {
+        rootContainerElement[listeningMarker] = true;
+        // 遍历所有的原生的事件比如click,进行监听
+        allNativeEvents.forEach((domEventName) => {
+            listenToNativeEvent(domEventName, true, rootContainerElement);
+            listenToNativeEvent(domEventName, false, rootContainerElement);
+        });
+    }
+}
+
+/**
+ * 注册原生事件
+ * @param {*} domEventName 原生事件 click
+ * @param {*} isCapturePhaseListener 是否是捕获阶段 true false
+ * @param {*} target 目标DOM节点 div#root 容器节点
+ */
+export function listenToNativeEvent(domEventName, isCapturePhaseListener, target) {
+    let eventSystemFlags = 0;//默认是0指的是冒泡  4是捕获
+    if (isCapturePhaseListener) {
+        eventSystemFlags |= IS_CAPTURE_PHASE;
+    }
+    addTrappedEventListener(target, domEventName, eventSystemFlags, isCapturePhaseListener);
+}
+
+function addTrappedEventListener(
+targetContainer, domEventName, eventSystemFlags, isCapturePhaseListener
+) {
+    const listener = createEventListenerWrapperWithPriority(targetContainer, domEventName, eventSystemFlags);
+    if (isCapturePhaseListener) {
+        addEventCaptureListener(targetContainer, domEventName, listener);
+    } else {
+        addEventBubbleListener(targetContainer, domEventName, listener);
+    }
+}
+
+export function createEventListenerWrapperWithPriority(
+targetContainer,
+ domEventName,
+ eventSystemFlags
+) {
+    // 实际并不这么简单，因为不同的事件，react还为他们区分了优先级，由不同的回调函数的
+    const listenerWrapper = dispatchDiscreteEvent;
+    return listenerWrapper.bind(null, domEventName, eventSystemFlags, targetContainer);
+}
+/**
+ * 派发离散的事件的的监听函数
+ * @param {*} domEventName 事件名 click
+ * @param {*} eventSystemFlags 阶段 0 冒泡 4 捕获
+ * @param {*} container 容器div#root
+ * @param {*} nativeEvent 原生的事件
+ */
+function dispatchDiscreteEvent(domEventName, eventSystemFlags, container, nativeEvent) {
+    dispatchEvent(domEventName, eventSystemFlags, container, nativeEvent);
+}
+/**
+ * 此方法就是委托给容器的回调，当容器#root在捕获或者说冒泡阶段处理事件的时候会执行此函数
+ * @param {*} domEventName 
+ * @param {*} eventSystemFlags 
+ * @param {*} container 
+ * @param {*} nativeEvent 
+ */
+export function dispatchEvent(domEventName, eventSystemFlags, targetContainer, nativeEvent) {
+    function getEventTarget(nativeEvent) {
+        const target = nativeEvent.target || nativeEvent.srcElement || window;
+        return target;
+    }
+
+    /**
+     * 从真实的DOM节点上获取它对应的fiber节点
+     * @param {*} targetNode 
+     */
+    export function getClosestInstanceFromNode(targetNode) {
+        const targetInst = targetNode[internalInstanceKey]
+        return targetInst;
+    }
+    
+    //获取事件源，它是一个真实DOM
+    const nativeEventTarget = getEventTarget(nativeEvent);
+    const targetInst = getClosestInstanceFromNode(nativeEventTarget);  // targetInst为该真实DOM对应的Fiber节点
+    dispatchEventForPluginEventSystem(
+        domEventName,//click
+        eventSystemFlags,//0 4
+        nativeEvent,//原生事件
+        targetInst,//此真实DOM对应的fiber
+        targetContainer//目标容器
+    );
+}
+
+export function addEventCaptureListener(target, eventType, listener) {
+    target.addEventListener(eventType, listener, true);
+    return listener;
+}
+export function addEventBubbleListener(target, eventType, listener) {
+    target.addEventListener(eventType, listener, false);
+    return listener;
+}
+```
+
+如何去获取DOM元素的事件处理函数了？  react源码中会在completeWork中根据fiber创建真实的DOM节点是，为真实的DOM节点添加一个特殊属性internalPropsKey，该属性的值就是fiber的props，而fiber的props就是由jsx经过bable编译后得到的，jsx上就写有元素的事件处理函数。
+
+
+
+
+
+```jsx
+function FunctionComponent() {
+  // hooks 用到更新 更新需要有事件触发
+  return (
+    <h1
+      onClick={() => console.log(`父冒泡`)}
+      onClickCapture={() => console.log(`父捕获`)}
+    >
+      <span
+        onClick={() => console.log(`子冒泡`)}
+        onClickCapture={() => console.log(`子捕获`)}
+      >world</span>
+    </h1>
+  )
+}
+let element = <FunctionComponent />
+```
+
+
+
+```js
+import { jsx as _jsx } from "react/jsx-runtime";
+function FunctionComponent() {
+  // hooks 用到更新 更新需要有事件触发
+  return /*#__PURE__*/_jsx("h1", {
+    onClick: function onClick() {
+      return console.log("\u7236\u5192\u6CE1");
+    },
+    onClickCapture: function onClickCapture() {
+      return console.log("\u7236\u6355\u83B7");
+    },
+    children: /*#__PURE__*/_jsx("span", {
+      onClick: function onClick() {
+        return console.log("\u5B50\u5192\u6CE1");
+      },
+      onClickCapture: function onClickCapture() {
+        return console.log("\u5B50\u6355\u83B7");
+      },
+      children: "world"
+    })
+  });
+}
+var element = /*#__PURE__*/_jsx(FunctionComponent, {});
+```
+
+
+
+### 合成事件
+
+在 React 18 中，"合成事件"（Synthetic Events）是一种事件系统，它是 React 提供的一种跨浏览器的事件处理机制。它在**底层封装了原生浏览器事件**，并提供了一致的 API 和行为，使开发者可以方便地处理和操作事件。
+
+合成事件的出现是**为了解决不同浏览器之间事件系统的差异性**，以及提供更高效的事件处理机制。React 通过合成事件将事件处理逻辑抽象出来，使开发者可以以一种统一的方式处理事件，而不必关心底层的浏览器差异。
+
+合成事件的特点和优势包括：
+
+1. 跨浏览器兼容性：合成事件屏蔽了底层浏览器的差异，使得开发者可以编写一致的事件处理代码，而不必关心不同浏览器之间的差异。
+2. 性能优化：React 的合成事件系统使用了**事件委托**（event delegation）的机制，将事件监听器绑定到顶层容器元素上，减少了事件监听器的数量，提高了性能。
+3. 事件池：合成事件使用了事件池（event pooling）的技术，重用了事件对象，减少了对象创建和销毁的开销，提升了性能。
+4. 事件委托：合成事件利用事件委托的思想，将事件处理交给父级元素处理，通过冒泡机制传递到目标元素，简化了事件绑定和管理的复杂性。
+5. 兼容性扩展：合成事件还提供了一些额外的特性和方法，如阻止事件冒泡、阻止默认行为、获取事件相关信息等，方便开发者处理和操作事件。
+
+总结来说，React 18 中的合成事件是一种封装了原生浏览器事件的高级事件系统，它提供了一致的 API 和行为，解决了浏览器差异性和提升了性能，使开发者能够以一种更简单、高效和可靠的方式处理和管理事件。
+
+
+
+针对不同类型的事件，比如鼠标点击，移动，键盘事件等，需要的合成事件的构建函数是不同的。
+
+```js
+import { registerSimpleEvents, topLevelEventsToReactNames } from '../DOMEventProperties';
+import { IS_CAPTURE_PHASE } from '../EventSystemFlags';
+import { accumulateSinglePhaseListeners } from '../DOMPluginEventSystem';
+import { SyntheticMouseEvent } from '../SyntheticEvent';
+/**
+ * 把要执行回调函数添加到dispatchQueue中
+ * @param {*} dispatchQueue 派发队列，里面放置我们的监听函数
+ * @param {*} domEventName DOM事件名 click
+ * @param {*} targetInst 目标fiber
+ * @param {*} nativeEvent 原生事件
+ * @param {*} nativeEventTarget 原生事件源
+ * @param {*} eventSystemFlags  事件系统标题 0 表示冒泡 4表示捕获
+ * @param {*} targetContainer  目标容器 div#root
+ */
+function extractEvents(
+  dispatchQueue,
+  domEventName,
+  targetInst,
+  nativeEvent,
+  nativeEventTarget,//click => onClick
+  eventSystemFlags,
+  targetContainer) {
+  const reactName = topLevelEventsToReactNames.get(domEventName);//click=>onClick
+  let SyntheticEventCtor;//合成事件的构建函数
+  switch (domEventName) {
+    case 'click':
+      SyntheticEventCtor = SyntheticMouseEvent;
+      break;
+    default:
+      break;
+  }
+  const isCapturePhase = (eventSystemFlags & IS_CAPTURE_PHASE) !== 0;//是否是捕获阶段
+  const listeners = accumulateSinglePhaseListeners(
+    targetInst,
+    reactName,
+    nativeEvent.type,
+    isCapturePhase
+  );
+  //如果有要执行的监听函数的话[onClickCapture,onClickCapture]=[ChildCapture,ParentCapture]
+  if (listeners.length > 0) {
+    const event = new SyntheticEventCtor(
+      reactName, domEventName, null, nativeEvent, nativeEventTarget);
+    dispatchQueue.push({
+      event,//合成事件实例
+      listeners//监听函数数组
+    });
+  }
+}
+```
+
+React源码中，针对不同类型的事件，它定义了一系列的接口，将接口中存在的属性作为作为key，同时基于原事件对象的值重新创建出一个新的event事件对象，同时在这个新的event对象中会扩展一些新的属性和方法。
+
+```js
+import assign from "shared/assign";
+
+function functionThatReturnsTrue() {
+  return true;
+}
+function functionThatReturnsFalse() {
+  return false;
+}
+// 接口
+const MouseEventInterface = {
+  clientX: 0,
+  clientY: 0
+  // ...
+}
+
+function createSyntheticEvent(inter) {
+  /**
+   *合成事件的基类
+   * @param {*} reactName React属性名 onClick
+   * @param {*} reactEventType click
+   * @param {*} targetInst 事件源对应的fiber实例
+   * @param {*} nativeEvent 原生事件对象
+   * @param {*} nativeEventTarget 原生事件源 span 事件源对应的那个真实DOM
+   */
+  function SyntheticBaseEvent(
+    reactName, reactEventType, targetInst, nativeEvent, nativeEventTarget) {
+    this._reactName = reactName;
+    this.type = reactEventType;
+    this._targetInst = targetInst;
+    this.nativeEvent = nativeEvent; // 如果要通过合成事件对象或者原生的事件对象，可以通过这个属性获取
+    this.target = nativeEventTarget;
+    //把此接口上对应的属性从原生事件上拷贝到合成事件实例上
+    for (const propName in inter) {
+      if (!inter.hasOwnProperty(propName)) {
+        continue;
+      }
+      this[propName] = nativeEvent[propName]
+    }
+	
+    //是否已经阻止默认事件
+    this.isDefaultPrevented = functionThatReturnsFalse;
+    //是否已经阻止继续传播
+    this.isPropagationStopped = functionThatReturnsFalse;
+    return this;
+  }
+    
+  // 重写原型链中的部分方法，实现浏览器之间差异的抹平处理
+  assign(SyntheticBaseEvent.prototype, {
+    preventDefault() {
+      const event = this.nativeEvent;
+      if (event.preventDefault) {
+        event.preventDefault();
+      } else {
+        event.returnValue = false;
+      }
+      this.isDefaultPrevented = functionThatReturnsTrue;
+    },
+    stopPropagation() {
+      const event = this.nativeEvent;
+      if (event.stopPropagation) {
+        event.stopPropagation();
+      } else {
+        event.cancelBubble = true;
+      }
+      this.isPropagationStopped = functionThatReturnsTrue;
+    }
+  });
+  return SyntheticBaseEvent;
+}
+export const SyntheticMouseEvent = createSyntheticEvent(MouseEventInterface);
+```
+
+[流程图](https://www.processon.com/diagraming/65b32e8ec1249f2ce98ccdee0)
+
+<img src="C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240126123549339.png" alt="image-20240126123549339"  />
 
 
 
@@ -1282,21 +1819,40 @@ export function beginWork(current, workInProgress) {
 
 ### useReducer
 
+#### 初次挂载
+
 hooks函数是在函数组件（函数体）中调用的。hooks的执行分为初次渲染和更新两个阶段。
 
 Hooks在React的源码中，是在React包下面导出，但是真正的代码逻辑是在React-Reconciler包中实现的。要从React包中关联React-Reconciler中的方法，为此，React框架在源码中设置了一个类似全局共享的变量对象ReactSharedInternals，内部存放了需要被共享的数据。
+
+```js
+const ReactCurrentDispatcher = {
+  current: null
+}
+export default ReactCurrentDispatcher;
+
+const ReactSharedInternals = {
+  ReactCurrentDispatcher
+}
+export default ReactSharedInternals;
+
+export {
+  useReducer,
+  ReactSharedInternals as __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED
+}
+```
 
 
 
 初次挂载阶段：
 
-![image-20231031192649176](C:/Users/shuyi/Desktop/learn-notes/%E7%8F%A0%E5%B3%B0%E6%9E%B6%E6%9E%84/images/image-20231031192649176.png)
+![image-20231031192649176](images/image-20231031192649176.png)
 
 在函数组件执行之前，需要先给全局共享的变量（ReactCurrentDispatcher.current）赋值上相应的hook的实现函数，然后调用函数组件函数，函数体中会调用前一步挂载到全局共享变量上的相应的hook函数。
 
 这里以useReducer的源码来分析，一个函数组件中可以有0或多个useReducer调用，对于每一个useReducer调用，在源码中都会创建一个hook对象，该hook对象上有三个重点属性：memoizedState，queue，next。
 
-重点需要注意，对于每一个函数组件对应的fiber节点，他的memoizedState属性会指向该函数组件的内部第一个调用的hook函数生成的hook对象，见下面代码的第9行。  同时如果一个函数组件中多次调用hook，那么每次调用hook创建的hook对象会通过next属性进行连接，构成一个hook链表。
+重点需要注意，对于每一个函数组件对应的fiber节点的memoizedState属性会指向该函数组件的内部第一个调用的hook函数生成的hook对象，见下面代码的第9行。  同时如果一个函数组件中多次调用hook，那么每次调用hook创建的hook对象会通过next属性进行连接，构成一个hook链表。
 
 ```js
 function mountWorkInProgressHook() {
@@ -1317,11 +1873,88 @@ function mountWorkInProgressHook() {
 
 所以hooks的本质是存放在函数组件对应的fiber节点的memoizedState属性上的链表。
 
+```js
+import ReactSharedInternals from "shared/ReactSharedInternals";
+
+const { ReactCurrentDispatcher } = ReactSharedInternals;
+let currentRenderingFiber = null;
+let workInProgressHook = null;
+
+const HooksDispatcherOnMount = {
+    useReducer: mountReducer
+}
+function mountReducer(reducer, initialArg) {
+    const hook = mountWorkInProgressHook();
+    hook.memoizedState = initialArg;
+    const queue = {
+        pending: null,
+        dispatch: null
+    }
+    hook.queue = queue;
+    const dispatch = (queue.dispatch = dispatchReducerAction.bind(null, currentlyRenderingFiber, queue));
+    return [hook.memoizedState, dispatch];
+}
+
+/**
+ * 执行派发动作的方法，它要更新状态，并且让界面重新更新
+ * @param {*} fiber function对应的fiber
+ * @param {*} queue hook对应的更新队列
+ * @param {*} action 派发的动作
+ */
+function dispatchReducerAction(fiber, queue, action) {
+    //在每个hook里会存放一个更新队列，更新队列是一个更新对象的循环链表update1.next=update2.next=update1
+    const update = {
+        action,//{ type: 'add', payload: 1 } 派发的动作
+        next: null//指向下一个更新对象
+    }
+    //把当前的最新的更添的添加更新队列中，并且返回当前的根fiber
+    const root = enqueueConcurrentHookUpdate(fiber, queue, update);
+    scheduleUpdateOnFiber(root);
+}
+
+/**
+ * 挂载构建中的hook
+ * */
+function mountWorkInProgressHook() {
+    const hook = {
+        memoizedState: null,//hook的状态 
+        queue: null,//存放本hook的更新队列 queue.pending=update的循环链表，当一个事件处理函数中调用同一个useReducer返回的更新还是多次时，并不会触发页面的同步渲染，而是先将这些更新构成一个循环链表
+        next: null //指向下一个hook,一个函数里可以会有多个hook,它们会组成一个单向链表
+    };
+    if (workInProgressHook === null) {
+        // 当前函数组件对应的fiber的状态等于第一个hook对象
+        currentRenderingFiber.memoizedState = workInProgressHook = hook;
+    } else {
+        workInProgressHook = workInProgressHook.next = hook;
+    }
+    return workInProgressHook;
+}
+/**
+ * 渲染函数组件
+ * @param {*} current 老fiber
+ * @param {*} workInProgress 新fiber
+ * @param {*} Component 组件定义
+ * @param {*} props 组件属性
+ * @returns 虚拟DOM或者说React元素
+ */
+export function renderWithHooks(current, workInProgress, Component, props) {
+    currentRenderingFiber = workInProgress; // Function组件对应的fiber
+    ReactCurrentDispatcher.current = HooksDispatcherOnMount;
+    //需要要函数组件执行前给ReactCurrentDispatcher.current赋值
+    const children = Component(props);
+    return children;
+}
+```
 
 
-同时每个fiber内部又有另一个特殊的属性queue，这又是属于该fiber自身的一个更新对象的循环链表，用于存放的是同一个执行上下文中，多次调用setXXX函数来修改hook中存放状态的情况，最后再统一批处理后更新。
+
+因为每一个hook都是在一个具体的函数组件中调用的，这就需要在该函数组件和该函数组件中调用的多个hook之间建立联系（每个函数组件都对应一个Fiber）。源码中函数组件对应Fiber的memoizedState就会指向该函数组件中第一个hook调用时的hook实例。
 
 
+
+#### 更新
+
+![image-20240126195829595](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240126195829595.png)
 
 
 
@@ -1338,4 +1971,269 @@ function mountWorkInProgressHook() {
 React组件复用，代码复用的方案
 
 什么是虚拟DOM，什么需要虚拟DOM
+
+
+
+
+
+
+
+## 如何学习React源码
+
+React的入口函数是：render函数。
+
+React源码难学的原因：入口函数的调用栈非常多和深。
+
+整体可以将函数的调用栈划分为三个阶段：
+
+- 产生更新
+- 决定需要更新什么组件
+- 将更新组件渲染到页面中
+
+三个阶段分别对应了React源码架构体系中的三大模块：调度、协调和渲染。这三大模块分别做了什么？
+
+为什么分为这三大模块？需要了解React框架的设计理念，框架使用者首先关注的是框架的api使用，框架开发者则需要先理解React设计理念。
+
+
+
+理念：
+
+- react设计理念
+
+- 架构演进史
+
+  react15为什么不满足设计理念而别react团队重构，React16又是如何满足设计理念的
+
+- Fiber架构
+
+  Fiber的工作原理，源码结构与调试
+
+框架：
+
+- render阶段
+
+  负责决定当前有哪些组件需要更新，将render阶段分为递和归两个过程
+
+- commit阶段
+
+  负责将需要更新的组件渲染到视图中，分为渲染前（befor mutation），中（mutation），后（layout）
+
+实现：
+
+- diff算法
+
+  树对比算法的局限和react的优化，单一节点diff和多节点diff
+
+- 状态更新
+
+  update和updateQueue数据结构，他们直接与状态更新相关
+
+  update的优先级机制
+
+  render函数的执行流程
+
+  this.setState执行流程
+
+- 生命周期
+
+  类组件生命周期函数
+
+  不再安全的componentWillxxxx和他们的替代方案
+
+- hooks
+
+  useState实现和其他hooks的实现
+
+- 异步调度
+
+  react中的schedule模块
+
+  优先级模型lane模型
+
+  更新的中断，继续和重置
+
+  useTransition产生不同优先级的更新
+
+React大量使用了函数式编程中代数效应的思想，大量使用了链表这种数据结构，调度模块使用了小顶堆数据结构。
+
+
+
+### 设计理念
+
+用于构建**快速响应**的大型web应用的js库。
+
+什么因素不利于快速响应：
+
+- CPU瓶颈（计算能力）
+- IO瓶颈（网络延迟）
+
+为此React就必须考虑优化这两个因素带来的影响。
+
+![image-20240122092717999](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240122092717999.png)
+
+如果一帧中js执行时间超过16.6ms，则本帧中无法进行样式布局和绘制，导致卡顿。
+
+react将同步的更新变为异步的可中断的更新。
+
+
+
+react框架设计的初衷就是为了能快速响应。
+
+React15的架构为什么不能满足快速响应？
+
+React15中整体分为两部分：
+
+1. 决定渲染组件的部分（reconciler）协调器，负责决定本次有哪些组件需要被渲染，diff算法就是其中一个环节，diff算法将上次和本次更新的组件进行对比，更新其中有变化的部分，diff算法的官方名字叫reconcile，经过diff算法被判定为需要更新的组件，会被交给渲染器渲染到页面中。
+
+2. 将组件渲染到页面（renderer）渲染器，不同的渲染器会将组件渲染到不同的宿主环境中，react-dom会将组件渲染到浏览器或者服务端渲染中；react-native会将组件渲染为app的原生组件，reac-test会将组件将渲染纯js对象用于编写单元测试，react-art会将组件渲染到canvas或者svg中。
+
+   ![image-20240121210007720](images\image-20240121210007720.png)
+
+老架构中从事件触发到视图更新的过程：
+
+![image-20240121210132430](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240121210132430.png)
+
+对于每一个组件，协调器和渲染器是依次执行，但是整个更新过程是同步的，所以页面中呈现的效果是在同一时间全部改为更新后的效果。但是在js任务过于耗时时，就会引发卡顿，因为这个过程是无法中断的。
+
+如果react15架构引入步可中断的更新的表现：
+
+![image-20240121210527783](images\image-20240121210527783.png)
+
+老react架构一旦中断则无法再次接续上之前中断的位置继续执行。
+
+
+
+React16的架构是如何做到快速响应的？
+
+新的架构由于可以中断任务，在新的架构中新增了一个模块（scheduler）管理异步更新，每个更新会有一个优先级，高优先级的更新会被优先进行调度
+
+新的架构中，更新会首先被调度器处理（老的架构中更新是首先被协调器处理），调度器确定这些更新的优先级别，高优先级的更新首先被传递给协调器，在协调器正在执行diff算法时，如果这时产生了一个更高优先级的更新，那正在协调的更新会被中断而调度更高优先级的更新。
+
+调度器和协调器都是处理的内存中的数据，并不会影响真实的页面内容，即使中断任务，用户也不会感知到更新不完全的视图。
+
+当某次更新完成在协调器的处理时，协调器通知渲染器本次更新需要执行哪些组件的视图更新，并将结果渲染到页面中。当高优先级的更新最终完成了渲染，调度器就会开启新一轮的调度。
+
+![image-20240121211611546](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240121211611546.png)
+
+React16从事件触发到视图更新的过程：
+
+diff算法的目的是创建一颗虚拟DOM树，每一个视图上真实存在的节点，都有一个虚拟DOM节点与之对应。需要更新的真实DOM对应的虚拟DOM在Diff阶段会被标记副作用标记，最后协调器将标记有副作用的虚拟DOM，传递给渲染器，渲染器再去查找有副作用标记的虚拟DOM，然后对这些虚拟DOM对应的真实DOM进行更新渲染。
+
+
+
+
+
+react16协调器中如何实现异步可中断更新的？
+
+react16协调器引入了新的架构fiber架构。
+
+代数效应是将副作用从函数调用中分离。
+
+async/await是有传染性的。代数效应的应用就是hooks
+
+
+
+fiber架构的实现和工作：
+
+Finer的含义：
+
+1. 作为架构来说，react15的协调器采用递归的方式执行，数据保存在函数调用栈中，所以又成为stack-reconciler；react16的协调器是基于fiber链表实现，所以被称为fiber-reconciler
+
+2. 作为静态的数据结构，每个fiber节点都是一个组件（这里的组件并不是单只函数或者类组件，原生html标签在react源码中也是一个fiber组件），它保存了该组件的类型，对应的真实dom节点等信息（和虚拟DOM几乎一一对应）
+
+   ![image-20240122121508537](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240122121508537.png)
+
+3. 作为动态的工作单元，fiber节点上还会保存组件需要更新的状态以及需要执行的副作用
+
+一个fiber节点对象的结构：
+
+```js
+export function FiberNode(tag, pendingProps, key) {
+    this.tag = tag;  // classComponent  functionComponent  hostComponent（html标签）  textComponent
+    this.key = key; 
+    this.elementType = null  // elementType和type大部分情况下值相同，除了react.memo包裹函数组件时
+    this.type = null; //fiber类型，来自于虚拟DOM节点的type ，函数组件就是函数本身，类组件就是类本身
+    this.stateNode = null; //此fiber对应的真实DOM节点  h1=>真实的h1DOM
+
+
+    // 下面是作为静态的数据结构的属性（链表）
+    this.return = null; //指向父节点
+    this.child = null; //指向第一个子节点
+    this.sibling = null; //指向弟弟
+    this.index = 0;
+
+
+    this.ref = null;
+
+    // 下面是作为动态的工作单元的属性
+    //fiber通过虚拟DOM节点创建，虚拟DOM会提供pendingProps用来创建fiber节点的属性
+    this.pendingProps = pendingProps; //等待生效的属性
+    this.memoizedProps = null; //已经生效的属性
+    //每个fiber还会有自己的状态，每一种fiber 状态存的类型是不一样的
+    //类组件对应的fiber 存的就是类的实例的状态,HostRoot存的就是要渲染的元素
+    this.memoizedState = null;
+    //每个fiber身上可能还有更新队列
+    this.updateQueue = null;
+    //副作用的标识，表示要针对此fiber节点进行何种操作
+    this.flags = NoFlags; //自己的副作用
+    //子节点对应的副使用标识
+    this.subtreeFlags = NoFlags;
+
+    this.deletions = null;
+    this.lanes = NoLanes;  // 优先级调度
+    this.childLanes = NoLanes;
+    
+    //替身，轮替 在后面讲DOM-DIFF的时候会用到
+    this.alternate = null;
+
+}
+```
+
+对于原生html标签对应的fiber，其副作用包括dom节点的增删改查，对应函数组件对应的fiber节点，其副作用代表了函数中使用的useEffect或者useLayoutEffect。
+
+Fiber架构的工作方式：使用的是双缓存工作机制。
+
+
+
+
+
+当首次启动项目时，初始化调用const root = createRoot(document.getElementById("root"));会创建一个根FiberRootNode并创建当前页面对应的fiber链表，因为首次启动页面只有一个根容器，所以有一个只包含一个根节点的fiber链表。
+
+![image-20240122131718206](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240122131718206.png)
+
+接下来开始调用render函数开启首屏渲染，不管是首屏幕渲染，调用this.setState或者调用useState的方法触发的更新，都会从根节点开始创建另一颗fiber链表。
+
+![image-20240122131926755](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240122131926755.png)
+
+
+
+![image-20240122131335493](images\image-20240122131335493.png)
+
+ 
+
+当workInProgress这个fiber链表完成渲染后，FiberRootNode对象的current属性将指向这个fiber链表的根节点，这个数就成为了新的currentfiber链表。
+
+再次触发事件更新，每次触发更新都会重新创建一个workInProgress fiber链表。将最开始的current链表的作为最新的workInProgress链表，开始构建这个链表，但是这时会基于初次渲染时的那个workInProgress的链表进行尽量的复用。
+
+将 current fiber节点与本次更新返回的虚拟DOM进行对比生成新的workInProgress链表的过程就是DOM diff。
+
+首屏渲染和更新最大的区别就是在创建fiber链表的过程中是否有diff算法的过程。
+
+![image-20240122132833600](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240122132833600.png)
+
+
+
+
+
+从调用栈看react的初始化和首屏渲染的具体流程。
+
+首屏渲染的入口函数render。render下的调用栈就是初始化和首屏渲染的执行流程。
+
+1. 调度器工作：创建根fiber节点和管理它的根DOM节点，同时会初始化事件系统
+2. 协调器工作：创建workInprogress Fiber链表，分为递阶段和归阶段（beginWork和completeWork）
+3. 渲染器工作：commit阶段，将变化的节点渲染到页面中
+
+
+
+
 
