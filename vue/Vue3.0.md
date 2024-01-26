@@ -87,7 +87,6 @@
 - vue3.0 的源码采用 monorepo 方式进行管理（将多个项目的代码存储到同一个仓库中），将包拆到不同的 package 目录中，多个包本身相互独立，有自己的功能逻辑，单元测试又方便管理，可以独立打包发布等。vue2.0 整个项目的框架包含了许多包，这些包都在一个仓库下进行管理（一个项目就一个仓库），但项目复杂时或追求扩展的时候，很难进行。
 - vue3.0 的性能优化大幅提高，支持 tree-shaking，不使用就不会被打包（依靠函数式的 api 实现）， vue3.0 中主要就是在写函数；在 vue2.0 中写的代码都是写在一个配置对象（options API）中的，这个对象中哪些属性需要，哪些代码需要都是无法被 vue2.0 判断的，自然没有 tree-shaking 一说，并且Vue2中很多方法（$nextTick）挂载到了实例中导致没有使用也会被打包（一些组件(transition组件，)也一样）
 - Vue3允许自定义渲染器，扩展能力强。不会发生以前的事情，改写Vue源码改造渲染方式。 
-- vue3.0 采用 ts 开发增强了类型检测，vue2.0 采用的时 flow 进行类型检测
 - vu2.0 写起来有时很被动，必须按照框架的规则在特定部分写特定代码，写代码不够灵活
 - vue3.0 的源码体积优化，移除了部分 api，比如 filter 过滤器，实例的\$on,\$off,\$onec 和内联模块
 
@@ -1326,6 +1325,47 @@ setTimeout(() => {
 
 
 
+## Vue3源码的响应式
+
+node中默认支持的是commonjs规范。如果在项目的package.json目录下设置type:'module'，将开启项目的esmodule规范而只能使用import和export了。但是在前面这种情况下，如果还是想使用commonjs中的require操作，则就需要借助node:module库的createRequire方法来创建一个模拟的require方法。
+
+node中默认是不持支通过import  ‘xxx/xxx/xx.json’这种方式导入json文件的。
+
+```js
+import {createRequire} from 'node:module'
+const require = createRequire(import.meta.url)  //以当前文件所在目录为基准创建一个require方法
+
+const pkg = require(`../packages/${target}/package.json`)
+```
+
+
+
+- readonly API 接受一个对象类型值并返回代理对象，如果在effect中访问该代理对象，源码中并不会对这些属性进行依赖收集
+
+
+
+- 如果一个对象上已经有了`__v_skip:true`，那么这个对象就无法被reactive相关方法代理
+
+- toRaw API用于获取一个已经被reactiveAPI代理后的原对象
+
+  ```js
+  let obj = {name:'abc'}
+  let proxy = reactive(obj)
+  obj === toRaw (proxy)  // true
+  ```
+
+- markRaw API 用于标记某个对象不能被reactive API等代理，本质是给传入的对象增加了`__v_skip:true`属性
+
+
+
+
+
+
+
+
+
+
+
 ## runtime-core / runtime-dom
 
 vue3区分编译时和运行时。
@@ -1748,24 +1788,6 @@ MVVM模式与MVC模式
 目的：职责划分，分层管理。
 
 
-
-
-
-
-
-## 扩展
-
-node中默认支持的是commonjs规范。如果在项目的package.json目录下设置type:'module'，将开启项目的esmodule规范而只能使用import和export了。但是在前面这种情况下，如果还是想使用commonjs中的require操作，则就需要借助node:module库的createRequire方法来创建一个模拟的require方法。
-
-node中默认是不持支通过import  ‘xxx/xxx/xx.json’这种方式导入json文件的。
-
-```js
-import {createRequire} from 'node:module'
-const require = createRequire(import.meta.url)  //以当前文件所在目录为基准创建一个require方法
-
-const pkg = require(`../packages/${target}/package.json`)
-
-```
 
 
 

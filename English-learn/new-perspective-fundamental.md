@@ -1365,13 +1365,13 @@ Since time began, *man* has lived in fear of fire. 自古以来，人类就害�
 
 ## 动词
 
-一般来讲，对于一个完整的英语句子来说，谓语是不可或缺的；也就是说，一个完整的英语句子可以没有主语或宾语等成分，但不能没有谓语。谓语部分一般有动词和动词的不同形式来充当。
+一般来讲，对于一个完整的英语句子来说，谓语是不可或缺的；也就是说，一个完整的英语句子可以没有主语或宾语等成分，但不能没有谓语。谓语部分一般有动词和动词短语的不同形式来充当。
 
 英语句子的否定、疑问，五种基本句型，句子谓语的时态、语态、语气，非谓语动词等，都是有关动词的语法规则。
 
 ### 动词分类
 
-1. 句子的谓语构造的基本分类，涉及助动词、情态动词和实义动词，这关系到英语句子的否定和提问等结构变化
+1. 以作谓语的动词在谓语中的基本作用分类，涉及助动词、情态动词和实义动词，这关系到英语句子的否定和提问等结构变化
 2. 实义动词的分类，这关系到英语句子的五种结构类型，关系到英语造句
 
 根据动词的词义和在谓语中的作用分类：
@@ -1386,25 +1386,25 @@ Since time began, *man* has lived in fear of fire. 自古以来，人类就害�
 
 实义动词的特点： 
 
-1．从词义的角度来看，**实义动词具备完整的词汇意义；** 
+1．从单词的具体意思来看，**实义动词具备完整的词汇意义；** 
 
-2．从在谓语中的作用的角度来看，实义动词能**单独**充当句子的谓语。英语中除了助动词和情态动词以外，其他的均为实义动词。
+2．从在谓语中的作用来看，实义动词能**单独**充当句子的谓语。英语中除了助动词和情态动词以外，其他的均为实义动词。
 
 
 
-![image-20221222091111234](C:/Users/shuyi/Desktop/study-notes/English-learn/new-perspective-fundamental.assets/image-20221222091111234.png)
+![image-20221222091111234](new-perspective-fundamental.assets/image-20221222091111234.png)
 
-特殊的实义动词：be，do和have
+特殊的实义动词：be（是），do（做）和have（有、吃）及其变形
 
-三个助动词be，do和have，可以用作实义动词或者助动词。而作为助动词或实义动词，它们在词义和谓语中的作用这两方面是完全不同的。所以，不要混淆be作为系动词和助动词、do作为实义动词和助动词以及have作为实义动词和助动词。
+三个助动词be，do和have 作为助动词或实义动词，**它们在词义和谓语中的作用这两方面是完全不同的**。所以，不要混淆be作为系动词和助动词、do作为实义动词和助动词以及have作为实义动词和助动词。
 
-![image-20221222092545085](C:/Users/shuyi/Desktop/study-notes/English-learn/new-perspective-fundamental.assets/image-20221222092545085.png)
+<img src="new-perspective-fundamental.assets/image-20221222092545085.png" alt="image-20221222092545085" style="zoom:150%;" />
 
 ### 助动词
 
 助动词的特点： 
 
-1．从词义的角度来看，**助动词不具备词汇意义**； 
+1．从单词的具体意思来看，**助动词不具备词汇意义**； 
 
 2．从在谓语中的作用的角度来看，助动词**不能单独**充当句子的谓语，它**必须和实义动词连用，以帮助构成各种时态、语态、语气、否定和疑问等。**
 
@@ -1418,7 +1418,7 @@ Since time began, *man* has lived in fear of fire. 自古以来，人类就害�
 
 同时这些各种形式的助动词还有各种变化形式。
 
-![image-20221222092901259](C:/Users/shuyi/Desktop/study-notes/English-learn/new-perspective-fundamental.assets/image-20221222092901259.png)
+<img src="new-perspective-fundamental.assets/image-20221222092901259.png" alt="image-20221222092901259" style="zoom:150%;" />
 
 
 
@@ -1426,9 +1426,9 @@ Since time began, *man* has lived in fear of fire. 自古以来，人类就害�
 
 情态动词的特点： 
 
-1. 从词义的角度来看，情态动词有其自身的词汇意义，如用来**表示可能、建议、愿望、必要、允许、能力、怀疑**等，以表示说话者对某种行为或状态的看法或态度。 
+1. 从单词的具体意思来看，情态动词有其自身的词汇意义，用来**表示可能、建议、愿望、必要、允许、能力、怀疑**等，以表示说话者对某种行为或状态的看法或态度。 
 
-2. 从在谓语中的作用的角度来看，情态动词在句中**不能单独**作句子的谓语，而必须和实义动词一起构成复合谓语。
+2. 从在谓语中的作用来看，情态动词在句中**不能单独**作句子的谓语，而必须和实义动词一起构成复合谓语。
 
 英文中的情态动词主要有下列10个： can/could, may/might, shall/should, will/would, must和had better。
 
@@ -1447,15 +1447,240 @@ Since time began, *man* has lived in fear of fire. 自古以来，人类就害�
 
 
 
+### 陈述句的否定
+
+陈述句变否定的两种情况：
+
+1. 句子的谓语中含有be动词或者情态动词 + 实义动词
+
+   这种情况下，句子变否定，直接在be动词或者情态动词后面加上 not 即可
+
+   | 肯定句                 | 否定句                     |
+   | ---------------------- | -------------------------- |
+   | He is a teacher.       | He is not a teacher.       |
+   | I can swim.            | I can not swim.            |
+   | He will come to party. | He will not come to party. |
+
+   
+
+2. 句子的谓语中只含有实义动词
+
+   这种情况下，句子的否定需要借助助动词do或它的各个形式的来完成。
+
+   一般现在时的句子变否定是：do（does）+ not + 实义动词的原型
+
+   一般过去时的句子变否定是：did + not + 实义动词的原型
+
+   | 肯定句            | 否定句                    |
+   | ----------------- | ------------------------- |
+   | I like English.   | I do not like English.    |
+   | He likes English. | He does not like English. |
+   | I liked English.  | I did not  like English.  |
+
+   助动词或情态动词与not连用可以使用缩写，am not 和 may not 除外。
+
+
+
+
+
+### 一般疑问句
+
+陈述句对应的一般疑问句两种情况：
+
+1. 句子的谓语中含有be动词或者情态动词 + 实义动词
+
+   这种情况下，只需要将be动词或者情态动词移动到句首即可。
+
+   | 陈述句                 | 疑问句                 | 回答                             |
+   | ---------------------- | ---------------------- | -------------------------------- |
+   | He is a teacher.       | Is he a teacher?       | Yes, he is.<br />No, he isn't.   |
+   | I can swim.            | Can you swim？         | Yes, I can.<br />No, I can't.    |
+   | He will come to party. | Will he come to party. | Yes, he will.<br />No, he won't. |
+
+2. 句子的谓语中只含有实义动词
+
+   这种情况下，如果陈述句是一般现在时，则使用助动词do(does)放在句首；如果是一般过去时，则使用助动词did放在句首；并且这两种情况下实义动词都需要变回原型。
+
+   | 陈述句            | 疑问句                | 回答                               |
+   | ----------------- | --------------------- | ---------------------------------- |
+   | I like English.   | Do you like English?  | Yes, I do.<br />No, I don't.       |
+   | He likes English. | Does he like English? | Yes, He does.<br />No, He doesn't. |
+   | He liked English. | Did he like English?  | Yes, He did.<br />No, He didn't.   |
+
+   
+
+### 特殊疑问句
+
+特殊疑问句是基于一般疑问句得到的。结构是： 特殊疑问词 + 一般疑问句 + ？
+
+英语中的特殊疑问词有：what、how、why、where、when、who、which、whose等。
+
+特殊疑问词后面不接其他名词的情况：
+
+1. 对人提问who
+
+   - He can sing inEnglish.
+
+   - Can he sing in English?
+
+   - Who can sing in English?
+
+     
+
+   - I saw him at the party last night.
+
+   - Did you see him at the party last night?
+
+   - Who did you see at the party last night?
+
+   
+
+2. 对事物或者所做的事的提问what
+
+   - I like English.
+   - Do you like English?
+   - What do you like?
+
+   
+
+   - I am studying English grammar.
+   - Are you studying English grammar (English grammar)?
+   - What are you doing (studying)?
+
+   
+
+   - I'd like to go swimming tomorrow.
+   - Would you like to go swimming tomorrow?
+   - What would you like to do tomorrow?
+
+   
+
+3. 对时间提问when
+
+   - I was born in 1980.
+   - Were you born in 1980?
+   - When were you born?
+
+   
+
+4. 对地点提问where
+
+   - He lives in Beijing.
+
+   - Does he live in Beijing?
+
+   - Where dose he live.
+
+
+
+5. 对方式提问how
+
+   - He goes to school by bus.
+
+   - Does he goes to school by bus?
+
+   - How dose he goes to school?
+
+     
+
+   - Who goes to school by bus?
+
+   
+
+6. 对原因提问why
+
+   - I often study at the library because it's quiet.
+   - Do you often study at the library because it's quiet?
+   - Why do you often study at the library?
+
+
+
+特殊疑问词后面需要接其他名词的情况：
+
+当说话者提供多种选项给听话者选择时，说话者抛出的选择疑问句用which来提问，这种情况下which后面常接一个名词。
+
+- Could you lend me your pen?
+- Sure.I have two pens. This pen has black ink. That pen has red ink. Which pen(one/which) do you want?
+- That red one. thanks.
+
+
+
+当询问谁的什么东西时，使用whose + 名词
+
+- This is his book.
+- Is this his book?
+- Whose books is the?
+
+
+
+- I borrowed Jack's car last night.
+- Did you borrow Jack's car last night?
+- Whose car did you borrow last night?
+
+
+
+
+
+**How的用法**
+
+how单独使用时，表示对动作方法进行提问。
+
+- How do you go to work?
+- I drive/ By car.
+- I take a taxi/By taxi.
+- I walk/On foot.
+
+
+
+- How did he break his leg?
+- He fell off the ladder.
+
+
+
+how还常与形容词或者副词连用：
+
+- How old are you?
+- How tall is he?
+- How well dose he speak English?
+- How quickly can you get here?
+
+
+
+对动作的发生频率提问：how often/ how many times
+
+- I write to my parents once a month.
+- How often do you write to your parents?
+- How many times a month do you write to your parents?
+
+
+
+- I go shopping twice a week.
+- How often do you go shopping?
+- How many times a week do you go shopping?
+
+
+
+表示频率的短语：
+
+<img src="C:\Users\dukkha\Desktop\learn-notes\English-learn\images\image-20240114105059435.png" alt="image-20240114105059435" style="zoom:150%;" />
+
+
+
+
+
 ## 五大基本句型
 
-根据**动词的词义**和其**在谓语中的作用**，把动词分为**实义动词（notional verb）**、**助动词（auxiliary verb）**和**情态助动词（modal verb）**。在三类动词中，能独 立充当句子谓语的只有实义动词。
+根据**动词的词义**和其**在谓语中的作用**，把动词分为**实义动词（notional verb）**、**助动词（auxiliary verb）**和**情态助动词（modal verb）**。在三类动词中，能独立充当句子谓语的只有实义动词。
 
 实义动词不仅是句子谓语的核心成分，更重要的是，**它决定了一个句子的骨架结构**。具体来说，**实义动词决定了一个句子是否有宾语、有几个宾语以及其他的句子成分。**
 
 五大基本句型都直接和**实义动词的分类**直接相关。
 
-英语的语序不如许多其他语言灵活，现在的英语是依赖于较为固定的词序来区分主语和宾语的。
+Journalists say that when a dog bites a man that is not news,but when a man bite a dog that is news.
+
+语言是用来交流信息的。一门语言中不同的单词顺序能导致不同的意思。
+
+英语的语序不如许多其他语言灵活，也没有古代英语灵活，古英语能通过大量的单词变形来表示主语和各种宾语而不需要靠单词的顺序，现在的英语是依赖于较为固定的词序来区分主语和宾语的。
 
 1. A dog bites a man. ：这里的a dog是动作bites的执行者 （agent），语法术语叫做主语；而a man是动作bites的承受者（recipient），语法术语叫做宾语。
 2. A man bites a dog. ：这里的a man是动作bites的执行者，即主语；而a dog则是动作bites的 承受者，即宾语。
@@ -1489,6 +1714,12 @@ Since time began, *man* has lived in fear of fire. 自古以来，人类就害�
 关于主语的问题。汉语不仅是主语可以在宾语之后，而且更多的是省略主语。
 
 英汉语序的差异比较多。汉语说“上网聊天很有趣”，我们就不能按照汉 语的语序把这句话翻译成up net chat very interesting，这根本就不是一个英语句子
+
+
+
+### 句型一
+
+主语 + 谓语
 
 
 
@@ -1581,7 +1812,7 @@ a. 请［带好］［孩子］
 
 分析方式一：
 
-![image-20230209204649899](/Users/wuyi/Desktop/study-note/English-learn/new-perspective-fundamental.assets/image-20230209204649899.png)
+![image-20230209204649899](new-perspective-fundamental.assets/image-20230209204649899.png)
 
 此时的make是一个接单个宾语的及物动词，意为“制作”，在这句话 中的基本搭配是make X from Y，即“用Y来制作X”，X是宾语，Y是状语。形容词短语free online作定语，后置修饰名词classes，相当于一个定语从句that are free online。
 
@@ -1591,7 +1822,7 @@ a. 请［带好］［孩子］
 
 分析方式二：
 
-![image-20230209204848238](/Users/wuyi/Desktop/study-note/English-learn/new-perspective-fundamental.assets/image-20230209204848238.png)
+![image-20230209204848238](new-perspective-fundamental.assets/image-20230209204848238.png)
 
 此时的make是一个接复合宾语（即宾语＋宾补）的及物动词，也就是常说的“使役动词”，是“使什么怎么样”的意思，在这句话中的基 本搭配是make X Y，即“使X成为Y这个样子”，X是宾语，Y是宾语补足语。在本句中，Y就是形容词短语free online，作宾语补足语，补充说明宾语materials。此时，该形容词短语不等于定语从句that are free online。
 
