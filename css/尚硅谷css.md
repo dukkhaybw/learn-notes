@@ -355,7 +355,12 @@ inline-flex：将对象作为内联块级弹性伸缩盒显示，没有给父元
 
 布局视口的宽度设置成了理想视口（浏览器/设备屏幕的宽度）。
 
+```html
  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0,  maximum-scale=1.0, minimum-scale=1.0">
+```
+
+
+
 
 像素单位：
 
