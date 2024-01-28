@@ -1819,6 +1819,35 @@ export const SyntheticMouseEvent = createSyntheticEvent(MouseEventInterface);
 
 ### useReducer
 
+基本使用：
+
+```jsx
+import * as React from 'react';
+import { createRoot } from "react-dom/client";
+
+function counter(state, action) {
+  if (action.type === 'add') return state + action.payload;
+  return state;
+}
+
+function FunctionComponent() {
+  debugger
+  const [number, setNumber] = React.useReducer(counter, 0);
+  return <button onClick={() => {
+    setNumber({ type: 'add', payload: 1 });//update1=>update2=>update3=>update1
+    setNumber({ type: 'add', payload: 2 });//update2
+    setNumber({ type: 'add', payload: 3 });//update3 
+  }}>{number}</button>
+}
+
+let element = <FunctionComponent />
+const root = createRoot(document.getElementById("root"));
+root.render(element);
+
+```
+
+
+
 #### 初次挂载
 
 hooks函数是在函数组件（函数体）中调用的。hooks的执行分为初次渲染和更新两个阶段。
@@ -1955,6 +1984,64 @@ export function renderWithHooks(current, workInProgress, Component, props) {
 #### 更新
 
 ![image-20240126195829595](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240126195829595.png)
+
+
+
+```js
+/**
+ * 执行派发动作的方法，它要更新状态，并且让界面重新更新
+ * @param {*} fiber function对应的fiber
+ * @param {*} queue hook对应的更新队列
+ * @param {*} action 派发的动作
+ */
+function dispatchReducerAction(fiber, queue, action) {
+    //在每个hook里会存放一个更新队列，更新队列是一个更新对象的循环链表update1.next=update2.next=update1
+    const update = {
+        action,//{ type: 'add', payload: 1 } 派发的动作
+        next: null//指向下一个更新对象
+    }
+    //把当前的最新的更添的添加更新队列中，并且返回当前的根fiber
+    const root = enqueueConcurrentHookUpdate(fiber, queue, update);
+    scheduleUpdateOnFiber(root);
+}
+
+const concurrentQueue = [];
+let concurrentQueuesIndex = 0;
+
+/**
+ * 把更新先缓存到concurrentQueue数组中
+ * @param {*} fiber 
+ * @param {*} queue 
+ * @param {*} update 
+ */
+function enqueueUpdate(fiber, queue, update) {
+  //012 setNumber1 345 setNumber2 678 setNumber3
+  concurrentQueue[concurrentQueuesIndex++] = fiber;//函数组件对应的fiber
+  concurrentQueue[concurrentQueuesIndex++] = queue;//要更新的hook对应的更新队列
+  concurrentQueue[concurrentQueuesIndex++] = update; //更新对象
+}
+
+/**
+ * 把更新队列添加到更新队列中
+ * @param {*} fiber 函数组件对应的fiber
+ * @param {*} queue 要更新的hook对应的更新队列
+ * @param {*} update 更新对象
+ */
+export function enqueueConcurrentHookUpdate(fiber, queue, update) {
+  enqueueUpdate(fiber, queue, update);
+  return getRootForUpdatedFiber(fiber);
+}
+
+function getRootForUpdatedFiber(sourceFiber) {
+  let node = sourceFiber;
+  let parent = node.return;
+  while (parent !== null) {
+    node = parent;
+    parent = node.return;
+  }
+  return node.tag === HostRoot ? node.stateNode : null;//FiberRootNode div#root
+}
+```
 
 
 

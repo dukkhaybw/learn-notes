@@ -242,23 +242,23 @@ BFC的概念，特点和开启BFC能解决的问题。
 
   - fill:根据需要压缩或者拉伸图片，以填充满父容器(默认值)
 
-    ![image-20210517225029508](C:/Users/shuyi/Desktop/learn-notes/typora-user-images/image-20210517225029508.png)
+    ![image-20210517225029508](../typora-user-images/image-20210517225029508.png)
 
   - contain:只对一边需要压缩或者拉伸图片，另一边按照原有比例等比例压缩或者拉升。不能保证填充满父容器
 
-    ![image-20210517224846490](C:/Users/shuyi/Desktop/learn-notes/typora-user-images/image-20210517224846490.png)
+    ![image-20210517224846490](../typora-user-images/image-20210517224846490.png)
 
   - cover：对图片进行等比例的压缩或者拉升，确保完全覆盖父容器，但是可能会切掉图片的部分内容
 
-    ![image-20210517224902323](C:/Users/shuyi/Desktop/learn-notes/typora-user-images/image-20210517224902323.png)
+    ![image-20210517224902323](../typora-user-images/image-20210517224902323.png)
 
   - scale-down：对图片进行等比例的压缩或者拉升，当最短的一边占满则不再拉升或者压缩，可能无法完全覆盖父容器
 
-    ![image-20210517224944668](C:/Users/shuyi/Desktop/learn-notes/typora-user-images/image-20210517224944668.png)
+    ![image-20210517224944668](../typora-user-images/image-20210517224944668.png)
 
   - none：保留原有元素内容的长度和宽度，也就是说内容不会被重置。
 
-![image-20210517225007211](C:/Users/shuyi/Desktop/learn-notes/css/images/image-20210517225007211.png)
+![image-20210517225007211](./images/image-20210517225007211.png)
 
 
 
@@ -289,7 +289,7 @@ css:
 
 页面效果：
 
-![image-20231120092206310](C:/Users/shuyi/Desktop/learn-notes/css/images/image-20231120092206310.png)
+![image-20231120092206310](./images/image-20231120092206310.png)
 
 所以就如以上所说的，对于固定宽度的盒子，盒子内部的中文文字超过盒子的宽度时，会自动换行。
 
@@ -307,7 +307,7 @@ html：
 
 css还是和上面一样。这时页面的表现如下：
 
-![image-20231120092103824](C:/Users/shuyi/Desktop/learn-notes/css/images/image-20231120092103824.png)
+![image-20231120092103824](/images/image-20231120092103824.png)
 
 
 

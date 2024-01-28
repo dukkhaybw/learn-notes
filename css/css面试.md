@@ -1332,7 +1332,7 @@ vw 相对于视窗的宽度，1vw 等于视口宽度的 1%，即视窗宽度是 
 <style type="text/css">    *{        margin: 0;        padding: 0;    }    html{        margin: 30px;        border: 1px solid deeppink;    }    body{        margin: 30px;        border: 1px solid yellow;    }    #test{        position: absolute;        left: 10px;        top: 10px;        width: 100px;        height: 100px;        background: pink;    }</style></head><body>    <div id="test">        123    </div></body>渲染结果如下：
 ```
 
-![image-20210319223150288](.\typora-user-images\image-20210319223150288.png)
+![image-20210319223150288](..\typora-user-images\image-20210319223150288.png)
 
 - 固定定位：fixed，相对于浏览器窗口进行定位，其包含块由 viewport（视图窗口） 建立；
 - 粘性定位：sticky，该定位基于用户滚动的位置
