@@ -2045,6 +2045,75 @@ function getRootForUpdatedFiber(sourceFiber) {
 
 
 
+## DOM-DIFF
+
+useReducer hook返回的数组中，第二个元素函数的实现：
+
+```js
+/**
+ * 执行派发动作的方法，它要更新状态，并且让界面重新更新
+ * @param {*} fiber function对应的fiber
+ * @param {*} queue hook对应的更新队列
+ * @param {*} action 派发的动作
+ */
+function dispatchReducerAction(fiber, queue, action) {
+  //在每个hook里会存放一个更新队列，更新队列是一个更新对象的循环链表update1.next=update2.next=update1
+  const update = {
+    action,//{ type: 'add', payload: 1 } 派发的动作
+    next: null//指向下一个更新对象
+  }
+  //把当前的最新的更添的添加更新队列中，并且返回当前的根fiber
+  const root = enqueueConcurrentHookUpdate(fiber, queue, update);
+  scheduleUpdateOnFiber(root);
+}
+```
+
+其中，enqueueConcurrentHookUpdate方法是将fiber实例，hook对应的更新队列queue和update更新对象挂载到一个全局变量concurrentQueue上，然后返回整个项目的根节点，即FiberRootNode对象。
+
+然后从FiberRootNode对象（整个项目的根容器节点）开始调度下一轮更新，所以参考《[React技术揭秘》中说的，react的框架的找不同是直接从根节点开始的，而vue是以组件为单位开始的。
+
+
+
+DOM-DIFF是FIber树和虚拟DOM之间进行的，而并不是虚拟DOM和虚拟DOM之间或者FIber树和FIber树之间进行的。
+
+```js
+  /**
+   * 比较子Fibers  DOM-DIFF 就是用老的子fiber链表和新的虚拟DOM进行比较的过程
+   * @param {*} returnFiber 新的父Fiber
+   * @param {*} currentFirstChild 老fiber的第一个子fiber   current一般来说指的是老（当前页面正展示着的）
+   * @param {*} newChild 新的子虚拟DOM  h1虚拟DOM
+   */
+  function reconcileChildFibers(returnFiber, currentFirstChild, newChild) {
+    //现在需要处理更新的逻辑了，处理dom diff
+    //现在暂时只考虑新的节点只有一个的情况
+    if (typeof newChild === "object" && newChild !== null) {
+      switch (newChild.$$typeof) {
+        case REACT_ELEMENT_TYPE:
+          return placeSingleChild(reconcileSingleElement(returnFiber, currentFirstChild, newChild));
+        default:
+          break;
+      }
+    }
+    //newChild [hello文本节点,span虚拟DOM元素]
+    if (isArray(newChild)) {
+      return reconcileChildrenArray(returnFiber, currentFirstChild, newChild);
+    }
+    return null;
+  }
+  return reconcileChildFibers;
+}
+```
+
+
+
+如果新的子虚拟DOM是唯一的且是一个对象的情况：
+
+![image-20240201105243880](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240201105243880.png)
+
+
+
+
+
 
 
 ## 面试
@@ -2089,7 +2158,7 @@ React源码难学的原因：入口函数的调用栈非常多和深。
 
 - 架构演进史
 
-  react15为什么不满足设计理念而别react团队重构，React16又是如何满足设计理念的
+  react15为什么不满足设计理念而被react团队重构，React16又是如何满足设计理念的
 
 - Fiber架构
 
@@ -2170,7 +2239,7 @@ React15的架构为什么不能满足快速响应？
 
 React15中整体分为两部分：
 
-1. 决定渲染组件的部分（reconciler）协调器，负责决定本次有哪些组件需要被渲染，diff算法就是其中一个环节，diff算法将上次和本次更新的组件进行对比，更新其中有变化的部分，diff算法的官方名字叫reconcile，经过diff算法被判定为需要更新的组件，会被交给渲染器渲染到页面中。
+1. 决定渲染组件的部分（reconciler）协调器，负责决定本次有哪些组件需要被渲染，diff算法就是其中一个环节，diff算法将上次和本次更新的组件进行对比，更新其中有变化的部分，diff算法的官方名字叫reconcile，经过diff算法被判定为需要更新的组件，需要更新的内容都会被标记到组件对应的fiber对象上，会被交给渲染器，浏览器通过识别fiber中的属性实现渲染到页面中。
 
 2. 将组件渲染到页面（renderer）渲染器，不同的渲染器会将组件渲染到不同的宿主环境中，react-dom会将组件渲染到浏览器或者服务端渲染中；react-native会将组件渲染为app的原生组件，reac-test会将组件将渲染纯js对象用于编写单元测试，react-art会将组件渲染到canvas或者svg中。
 
@@ -2204,7 +2273,9 @@ React16的架构是如何做到快速响应的？
 
 React16从事件触发到视图更新的过程：
 
-diff算法的目的是创建一颗虚拟DOM树，每一个视图上真实存在的节点，都有一个虚拟DOM节点与之对应。需要更新的真实DOM对应的虚拟DOM在Diff阶段会被标记副作用标记，最后协调器将标记有副作用的虚拟DOM，传递给渲染器，渲染器再去查找有副作用标记的虚拟DOM，然后对这些虚拟DOM对应的真实DOM进行更新渲染。
+diff算法的目的是编辑一颗含有副作用信息的Fiber树，每一个视图上真实存在的节点，都有一个虚拟DOM节点与之对应。需要更新的真实DOM对应的Fiber对象和新产生的虚拟DOM在Diff阶段会进行对比，将需要改变的部分标记到fiber对象的响应属性中，最后协调器将标记有副作用的Fiber，传递给渲染器，渲染器再去查找有副作用标记的Fiber对象，然后对这些Fiber对象对应的真实DOM进行更新渲染。
+
+![image-20240203092612693](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240203092612693.png)
 
 
 
@@ -2216,7 +2287,12 @@ react16协调器引入了新的架构fiber架构。
 
 代数效应是将副作用从函数调用中分离。
 
-async/await是有传染性的。代数效应的应用就是hooks
+async/await是有传染性的。代数效应的应用就是hooks。
+
+Fiber可以理解为协程的一种实现，在js中协程已经有一种实现方案了，即：generator。react团队之所以没有选择使用generator来实现已不可中断的能力，而是自己实现一套Fiber，原因有：
+
+- generator和async/await一样，是有传染性的
+- 设计fiber架构的初衷是异步可中断的更新和更新可以拥有不同的优先级，高优先级的更新可以打断低优先级的更新，使用generator可以达到异步可中断，但是不能实现优先级
 
 
 
@@ -2276,11 +2352,9 @@ export function FiberNode(tag, pendingProps, key) {
 }
 ```
 
-对于原生html标签对应的fiber，其副作用包括dom节点的增删改查，对应函数组件对应的fiber节点，其副作用代表了函数中使用的useEffect或者useLayoutEffect。
+对于原生html标签对应的fiber，其副作用包括dom节点的增删改查，这些副作用操作在协调器中被发现并保存到updateQueue中；函数组件对应的fiber节点，其副作用代表了函数中使用的useEffect或者useLayoutEffect。
 
 Fiber架构的工作方式：使用的是双缓存工作机制。
-
-
 
 
 
@@ -2288,7 +2362,7 @@ Fiber架构的工作方式：使用的是双缓存工作机制。
 
 ![image-20240122131718206](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240122131718206.png)
 
-接下来开始调用render函数开启首屏渲染，不管是首屏幕渲染，调用this.setState或者调用useState的方法触发的更新，都会从根节点开始创建另一颗fiber链表。
+接下来开始调用render函数开启首屏渲染，不管是首屏幕渲染，调用this.setState或者调用useState的方法触发的更新，都会从**根节点**开始创建另一颗fiber链表。
 
 ![image-20240122131926755](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240122131926755.png)
 
@@ -2298,17 +2372,21 @@ Fiber架构的工作方式：使用的是双缓存工作机制。
 
  
 
-当workInProgress这个fiber链表完成渲染后，FiberRootNode对象的current属性将指向这个fiber链表的根节点，这个数就成为了新的currentfiber链表。
+当workInProgress这个fiber链表完成渲染后，FiberRootNode对象的current属性将指向这个fiber链表的根节点，这个树就成为了新的currentfiber链表。
 
-再次触发事件更新，每次触发更新都会重新创建一个workInProgress fiber链表。将最开始的current链表的作为最新的workInProgress链表，开始构建这个链表，但是这时会基于初次渲染时的那个workInProgress的链表进行尽量的复用。
+再次触发事件更新，每次触发更新都会重新基于原来的那个current fiber树创建一个workInProgress fiber链表。将最开始的current链表的作为最新的workInProgress链表，开始构建这个链表，但是这时会基于初次渲染时的那个workInProgress的链表进行尽量的复用。
 
-将 current fiber节点与本次更新返回的虚拟DOM进行对比生成新的workInProgress链表的过程就是DOM diff。
+**将 current fiber节点与本次更新返回的虚拟DOM进行对比生成新的workInProgress链表的过程就是DOM diff。**
 
 首屏渲染和更新最大的区别就是在创建fiber链表的过程中是否有diff算法的过程。
 
 ![image-20240122132833600](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240122132833600.png)
 
+当workInProgress fiber树被提交给渲染器模块渲染到页面上后，FiberRootNode的current指针就会重新指向刚刚更新的workInProgress fiber树的根节点，将workInProgress fiber树变为了current fiber树。
 
+
+
+-----
 
 
 
@@ -2317,8 +2395,208 @@ Fiber架构的工作方式：使用的是双缓存工作机制。
 首屏渲染的入口函数render。render下的调用栈就是初始化和首屏渲染的执行流程。
 
 1. 调度器工作：创建根fiber节点和管理它的根DOM节点，同时会初始化事件系统
-2. 协调器工作：创建workInprogress Fiber链表，分为递阶段和归阶段（beginWork和completeWork）
-3. 渲染器工作：commit阶段，将变化的节点渲染到页面中
+
+   ![image-20240203121403190](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240203121403190.png)
+
+2. 协调器工作：render阶段（renderRootSync），创建workInprogress Fiber链表，分为递阶段和归阶段（beginWork和completeWork）
+
+   ![image-20240203121726355](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240203121726355.png)
+
+   
+
+3. 渲染器工作：commit阶段（commitRoot），将变化的节点渲染到页面中，渲染到视图之前（commitBeforeMutationEffects），中（commitMutationEffects），后（commitMutationEffects执行完之后的代码逻辑）。
+
+   ![image-20240203122442321](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240203122442321.png)
+
+
+
+### jsx
+
+- jsx和Fiber的关系
+- React Component和React Element和jsx的关系
+
+jsx经过babel编译后变为React.createElement的方法调用。可以配置@babel/plugin-transform-react-jsx这个babel插件，将jsx编译为其他函数的调用。
+
+React.createElement的作用是
+
+```js
+const RESERVED_PROPS = {
+    key: true,
+    ref: true,
+    __self: true,
+    __source: true,
+};
+/**
+ * Create and return a new ReactElement of the given type.
+ * See https://reactjs.org/docs/react-api.html#createelement
+ * type可能是html标签字符串，函数，类
+ */
+export function createElement(type, config, children) {
+    let propName;
+
+    // Reserved names are extracted
+    const props = {};
+
+    let key = null;
+    let ref = null;
+    let self = null;
+    let source = null;
+
+    if (config != null) {
+        if (hasValidRef(config)) {
+            ref = config.ref;
+        }
+        if (hasValidKey(config)) {
+            key = '' + config.key;
+        }
+
+        self = config.__self === undefined ? null : config.__self;
+        source = config.__source === undefined ? null : config.__source;
+        // Remaining properties are added to a new props object
+        for (propName in config) {
+            if (
+                hasOwnProperty.call(config, propName) &&
+                !RESERVED_PROPS.hasOwnProperty(propName)
+            ) {
+                props[propName] = config[propName];
+            }
+        }
+    }
+
+    // Children can be more than one argument, and those are transferred onto
+    // the newly allocated props object.
+    const childrenLength = arguments.length - 2;
+    if (childrenLength === 1) {
+        props.children = children;
+    } else if (childrenLength > 1) {
+        const childArray = Array(childrenLength);
+        for (let i = 0; i < childrenLength; i++) {
+            childArray[i] = arguments[i + 2];
+        }
+        props.children = childArray;
+    }
+
+    // Resolve default props，类组件中类的静态属性defaultProps
+    if (type && type.defaultProps) {
+        const defaultProps = type.defaultProps;
+        for (propName in defaultProps) {
+            if (props[propName] === undefined) {
+                props[propName] = defaultProps[propName];
+            }
+        }
+    }
+
+    return ReactElement(
+        type,
+        key,
+        ref,
+        self,
+        source,
+        ReactCurrentOwner.current,
+        props,
+    );
+}
+
+
+/**
+ * Factory method to create a new React element. This no longer adheres to
+ * the class pattern, so do not use new to call it. Also, instanceof check
+ * will not work. Instead test $$typeof field against Symbol.for('react.element') to check
+ * if something is a React Element.
+ *
+ * @param {*} type
+ * @param {*} props
+ * @param {*} key
+ * @param {string|object} ref
+ * @param {*} owner
+ * @param {*} self A *temporary* helper to detect places where `this` is
+ * different from the `owner` when React.createElement is called, so that we
+ * can warn. We want to get rid of owner and replace string `ref`s with arrow
+ * functions, and as long as `this` and owner are the same, there will be no
+ * change in behavior.
+ * @param {*} source An annotation object (added by a transpiler or otherwise)
+ * indicating filename, line number, and/or other information.
+ * @internal
+ */
+function ReactElement(type, key, ref, self, source, owner, props) {
+    const element = {
+        // This tag allows us to uniquely identify this as a React Element
+        $$typeof: REACT_ELEMENT_TYPE,
+
+        // Built-in properties that belong on the element
+        type: type,
+        key: key,
+        ref: ref,
+        props: props,
+
+        // Record the component responsible for creating this element.
+        _owner: owner,
+    };
+
+    return element;
+}
+
+```
+
+
+
+
+
+### 挂载阶段的beginWork
+
+renderRootSync，render阶段通过遍历fiber链表实现可中断的递归。递阶段执行beginWork，归阶段执行completeWork。
+
+在项目的mount阶段只存在一个包含一个根fiber节点的current树，但在update时存在一个完整的current fiber树。所以mount时和update时的递归逻辑存在差异。
+
+
+
+### 挂载阶段的completeWork
+
+
+
+
+
+### 更新阶段的beginWork
+
+
+
+
+
+### 更新阶段的completeWork
+
+
+
+
+
+commitRoot，commit阶段
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
