@@ -1,12 +1,12 @@
 # React 进阶
 
-将源码和底层原理分开。 Vue、React 乃至 Angular 在代码编写层面越发相似，且在设计层面都在朝着 WebComponents 标准靠近。
+性能优化和前端工程化。技术本身在多数情况下都是一些简单且有趣的东西，人们越是试图神化它，越容易脱离技术本质。将源码和底层原理分开。 Vue、React 乃至 Angular 在代码编写层面越发相似，且在设计层面都在朝着 WebComponents 标准靠近。
 
 在环境无法提供优质的成长环境时，谨记自己创造途径：深挖一个优质的前端框架吃透它的原理，跟开发团队学习框架的思想，编码规范和学习设计模式。
 
 学习 React 的必要性：
 
-- 大厂
+- 大厂使用react的比例更高
 
 - 面试时 React 相关问题的区分度高，提高工作解决问题的能力
 
@@ -41,12 +41,12 @@ React架构设计哲学上：
 其他方面：
 
 - 状态管理机制
-- 事件系统
+- 自建的事件系统
 - 在前端引入 hooks 思想
 
+Vue 知识体系/原理的相关内容多，但 React 知识体系/原理的相关内容却屈指可数。React 知识体系庞大，有精密复杂的底层原理与长的知识链路。
 
-
-React 知识体系庞大，有精密复杂的底层原理与长的知识链路。
+**把复杂的问题简单化、把琐碎的问题系统化。**
 
 大厂的 React 面试是最有效用导向的一个学习依据，将大厂面试的逻辑利用充分，将提升实现面试和应用。
 
@@ -82,7 +82,7 @@ React 知识体系庞大，有精密复杂的底层原理与长的知识链路�
 
 ## jsx 代码映射为 DOM
 
-本节的重点是 jsx 如何转为 DOM。
+本节的重点是 **jsx 如何转为 DOM**。使用 JSX 来描述 React 的组件内容。
 
 jsx 中的三个重点问题（面试）：
 
@@ -97,13 +97,14 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 class App extends React.Component {
-  render() {
-    return (
-      <div>
-        <h1>hello world</h1>
-      </div>
-    );
-  }
+    render() {
+        // render函数的返回值就是jsx代码
+        return (
+            <div>
+                <h1>hello world</h1>
+            </div>
+        );
+    }
 }
 
 ReactDOM.render(<App />, document.getElementById("root"));
@@ -144,6 +145,8 @@ JSX 在被编译后， 会被变为一个针对 React.createElement( ) 的调用
 ![Drawing 1.png](https://s0.lgstatic.com/i/image/M00/5C/73/CgqCHl-Beg-AXBihAA4t3S7nxKc532.png)
 
 在实际功能效果一致的前提下，JSX 代码层次分明、嵌套关系清晰；而 React.createElement 代码则给人一种非常混乱的“杂糅感”，这样的代码不仅读起来不友好，写起来也费劲。
+
+JSX 语法糖允许前端开发者使用熟悉的类 HTML 标签语法来创建虚拟 DOM，在降低学习成本的同时，也提升了研发效率与研发体验。
 
 
 
@@ -341,6 +344,35 @@ const rootElement = document.getElementById("root");
 ReactDOM.render(<App />, rootElement);
 ```
 
+
+
+在每一个 React 项目的入口文件中，都少不了对 React.render 函数的调用。简单介绍下 ReactDOM.render 方法的入参规则：
+```js
+ReactDOM.render(
+    // 需要渲染的元素（ReactElement）
+    element, 
+    // 元素挂载的目标容器（一个真实DOM）
+    container,
+    // 回调函数，可选参数，可以用来处理渲染结束后的逻辑
+    [callback]
+)
+```
+
+ReactDOM.render 方法可以接收 3 个参数，其中第二个参数就是一个真实的 DOM 节点，这个真实的 DOM 节点充当“容器”的角色，React 元素最终会被渲染到这个“容器”里面去。比如，示例中的 App 组件，它对应的 render 调用是这样的：
+```js
+const rootElement = document.getElementById("root");
+ReactDOM.render(<App />, rootElement);
+```
+
+注意，这个真实 DOM 一定是确实存在的。比如，在 App 组件对应的 index.html 中，已经提前预置 了 id 为 root 的根节点：
+```html
+<body>
+    <div id="root"></div>
+</body>
+```
+
+
+
 ![image-20211129195738172.png](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/8ed669c7bafa450eb8929875ee358501~tplv-k3u1fbpfcp-watermark.awebp?)
 
 jsx 语法本质；React 创建一个真实 DOM 的流程；虚拟 DOM 的初步认知。
@@ -363,7 +395,7 @@ React16 为什么要修改生命周期函数？
 
   虚拟 DOM 在整个 React 工作流中的作用
 
-  组件在初始化时，会通过调用生命周期中的 render 方法，生成虚拟 DOM，然后再通过调用 ReactDOM.render 方法，实现虚拟 DOM 到真实 DOM 的转换。当组件更新时，会再次调用 render 方法生成新的虚拟 DOM，然后借助 diff，定位出两次虚拟 DOM 的差异，从而针对发生变化的真实 DOM 作定向更新。 react 框架核心diff算法中虚拟 DOM 是基石。
+  组件在初始化时，会通过调用生命周期中的 render 方法，生成虚拟 DOM，然后再通过调用 ReactDOM.render 方法，实现虚拟 DOM 到真实 DOM 的转换。当组件更新时，会再次调用 render 方法生成新的虚拟 DOM，然后借助 diff，定位出Fiber链表和虚拟 DOM 的差异，从而针对发生变化的真实 DOM 作定向更新。 react 框架核心diff算法中虚拟 DOM 是基石。
 
   ![image-20211129204243978.png](https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/87e29b4c76554decac9e2bc97adb05bb~tplv-k3u1fbpfcp-watermark.awebp?)
 
@@ -397,7 +429,7 @@ componentWillUnmount();
 
 ` getDefaultProps 和 getInitState 这两个方法，它们都是 React.createClass() 模式下初始化数据的方法。由于这种写法在 ES6 普及后已经不常见，不再详细展开。`
 
-<img src="https://s0.lgstatic.com/i/image/M00/5E/31/Ciqc1F-GZbGAGNcBAAE775qohj8453.png" alt="1.png" style="zoom:50%;" />
+<img src="https://s0.lgstatic.com/i/image/M00/5E/31/Ciqc1F-GZbGAGNcBAAE775qohj8453.png" alt="1.png" style="zoom: 150%;" />
 
 
 
@@ -513,9 +545,13 @@ class LifeCycleContainer extends React.Component {
 ReactDOM.render(<LifeCycleContainer />, document.getElementById("root"));
 ```
 
-<img src="https://s0.lgstatic.com/i/image/M00/5D/CC/Ciqc1F-FU-yAMLh0AABeqOeqLek815.png" alt="Drawing 1.png" style="zoom:50%;" />
+<img src="https://s0.lgstatic.com/i/image/M00/5D/CC/Ciqc1F-FU-yAMLh0AABeqOeqLek815.png" alt="Drawing 1.png"  />
 
-<img src="https://s0.lgstatic.com/i/image/M00/5E/32/Ciqc1F-GZ1OAWETTAAA3Am2CwU0383.png" alt="3.png" style="zoom:50%;" />
+
+
+
+
+<img src="https://s0.lgstatic.com/i/image/M00/5E/32/Ciqc1F-GZ1OAWETTAAA3Am2CwU0383.png" alt="3.png"  />
 
 ### 挂载阶段
 
@@ -536,6 +572,8 @@ ReactDOM.render(<LifeCycleContainer />, document.getElementById("root"));
 **componentDidMount 方法**
 
 在挂载阶段被调用一次，componentDidMount 方法在渲染结束后被触发，真实的 DOM 已经挂在到页面上，可以在这个生命周期里执行真实 DOM 相关的操作，异步请求，数据初始化等操作。
+
+下图是 Demo 中的 LifeCycle 组件在挂载过程中控制台的输出：
 
 <img src="https://s0.lgstatic.com/i/image/M00/5D/D8/CgqCHl-FU_6AeWUcAAB8X4bjwqE102.png" alt="Drawing 3.png" style="zoom:50%;" />
 
@@ -562,7 +600,9 @@ componentWillReceiveProps(nextProps){}
 
 正确的认知：**componentReceiveProps 并不是由 props 的变化触发的，而是由父组件的更新触发的。**
 
-<img src="https://s0.lgstatic.com/i/image/M00/5D/E1/Ciqc1F-FaGuADV5vAACZ2YRV6qQ941.png" alt="图片7.png" style="zoom:50%;" />
+<img src="https://s0.lgstatic.com/i/image/M00/5D/E1/Ciqc1F-FaGuADV5vAACZ2YRV6qQ941.png" alt="图片7.png"  />
+
+
 
 **shouldComponentUpdate**
 
@@ -617,7 +657,7 @@ React16.4 以后的生命周期函数：
 
 **Demo：**
 
-```js
+```jsx
 import React from "react";
 import ReactDOM from "react-dom";
 
@@ -727,11 +767,13 @@ class LifeCycleContainer extends React.Component {
 ReactDOM.render(<LifeCycleContainer />, document.getElementById("root"));
 ```
 
-Mounting 阶段：
 
-<img src="https://s0.lgstatic.com/i/image/M00/5D/CE/Ciqc1F-FVW6AAX_PAADMEGvjdFI487.png" alt="Drawing 2.png" style="zoom:50%;" />
 
-<img src="https://s0.lgstatic.com/i/image/M00/5F/B0/Ciqc1F-Klv6AIeOPAADAZZgLu7U105.png" alt="图片1.png" style="zoom:50%;" />
+**Mounting 阶段：**
+
+<img src="https://s0.lgstatic.com/i/image/M00/5D/CE/Ciqc1F-FVW6AAX_PAADMEGvjdFI487.png" alt="Drawing 2.png"  />
+
+<img src="https://s0.lgstatic.com/i/image/M00/5F/B0/Ciqc1F-Klv6AIeOPAADAZZgLu7U105.png" alt="图片1.png"  />
 
 扩展：
 
@@ -816,7 +858,7 @@ React16 以提供特定生命周期函数的形式对这类特定的诉求提供
 
 
 
-Updating 阶段：
+**Updating 阶段：**
 
 ![image-20211129225830182.png](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/bd73ca49291b49e4a3920941adb017e9~tplv-k3u1fbpfcp-watermark.awebp?)
 
@@ -828,6 +870,8 @@ getDerivedStateFromProps 与 componentDidUpdate 一起，这个 getDerivedStateF
 - getDerivedStateFromProps 不完全等于 componentWilllReceiveProps,其特性决定了我们曾经在 componentWillReceiveProps 里面做的事情，不能够百分百迁移到 getDerivedStateFromProps 里
 
 getDerivedStateFromProps 作为静态方法，内部拿不到组件实例 this，这就导致开发者无法在该函数中做任何 this.setStae(),this.fetch()等可能产生副作用的操作。**React16 在强制推行只用 getDerivedStateFromProps 来完成 props 到 state 的映射，意在确保生命周期函数的行为更加能预测可控，从根源上帮助开发者避免不合理的开发方式，避免生命周期函数的滥用，也是在为 Fiber 架构铺路。**
+
+设计模式中，一个 API 并非越庞大越复杂才越优秀。或者说得更直接一点，庞大和复杂的 API 往往会带来维护层面的“灾难”。
 
 
 
@@ -855,7 +899,7 @@ componentDidUpdate(prevProps, prevState, valueFromSnapshot) {
 }
 ```
 
-<img src="./React进阶.assets/image-20221212232753573.png" alt="image-20221212232753573" style="zoom:50%;" />
+<img src="./React进阶.assets/image-20221212232753573.png" alt="image-20221212232753573"  />
 
 那为什么 componentWillUpdata 要被废弃？ 因为 Fiber 架构。
 
@@ -1267,9 +1311,13 @@ function DemoFunction(props) {
 
 
 
+
+
+
+
 #### 为什么采用函数式组件
 
-开发者编写声明式的代码，React 库的主要工作是及时的把声明式的代码转为命令式的 DOM 操作，把数据层的描述映射到用户可见的 UI 变化中去，这就意味着从原则上讲，React 中的数据应该总是紧紧的和渲染绑定到一起，而类组件无法做到。
+React 组件本身的定位就是函数，一个吃进数据、吐出 UI 的函数。作为开发者，编写的是声明式的代码，而 React 框架的主要工作，就是及时地把声明式的代码转换为命令式的 DOM 操作，把数据层面的描述映射到用户可见的 UI 变化中去。这就意味着从原则上来讲，React 的数据应该总是紧紧地和渲染绑定在一起的，而类组件做不到这一点。
 
 **函数组件会捕获 render 内部的状态，这是函数组件和类组件的最大不同**（js 闭包实现）
 
@@ -1345,7 +1393,7 @@ import React from "react";
 
 function ProfilePage(props) {
   const showMessage = () => {
-    alert("Followed " + props.user);
+    alert("Followed " + this.props.user);
   };
 
   const handleClick = () => {
@@ -1368,7 +1416,7 @@ export default ProfilePage;
 
 因为虽然 props 本身是不可变的，但 this 却是可变的，this 上的数据是可以被修改的，this.props 的调用每次都会获取最新的 props，而这正是 React 确保数据实时性的一个重要手段。
 
-多数情况下，在 React 生命周期对执行顺序的调控下，this.props 和 this.state 的变化都能够和预期中的渲染动作保持一致。但在这个案例中，我们通过 setTimeout 将预期中的渲染推迟了 3s，打破了 this.props 和渲染动作之间的这种时机上的关联，进而导致渲染时捕获到的是一个错误的、修改后的 this.props。
+多数情况下，在 React 生命周期对执行顺序的调控下，this.props 和 this.state 的变化都能够和预期中的渲染动作保持一致。但在这个案例中，通过 setTimeout 将预期中的渲染推迟了 3s，打破了 this.props 和渲染动作之间的这种时机上的关联，进而导致渲染时捕获到的是一个错误的、修改后的 this.props。
 
 但如果我们把 ProfilePage 改造为一个像这样的函数组件：
 
@@ -1393,8 +1441,6 @@ props 会在 ProfilePage 函数执行的瞬间就被捕获，而 props 本身有
 函数组件是一个更加匹配其设计理念、也更有利于逻辑拆分与重用的组件表达形式。
 
 
-
-**React Hooks 是一套能够使函数组件更强大灵活的钩子函数。**
 
 **React Hooks 产生的原因和设计动机是什么？**
 
@@ -1483,6 +1529,8 @@ useEffect(callBack, []);
   // 示意数组是 [num1, num2, num3]。首先需要说明，数组中的变量一般都是来源于组件本身的数据（props 或者 state）。若数组不为空，那么 React 就会在新的一次渲染后去对比前后两次的渲染，查看数组内是否有变量发生了更新（只要有一个数组元素变了，就会被认为更新发生了），并在有更新的前提下去触发 useEffect 中定义的副作用逻辑。
   ```
 
+
+
 #### 为什么需要 React Hooks？
 
 函数组件相比于类组件来说，有着不少利好 React 组件化开发的特性，而 React-Hooks 的出现正是为了强化函数组件的能力。
@@ -1501,7 +1549,7 @@ useEffect(callBack, []);
 
 - 解决业务逻辑难以拆分的问题
 
-- 逻辑常与生命周期函数耦合在一起,在这样的前提下，生命周期函数常常做一些奇奇怪怪的事情：比如在 componentDidMount 里获取数据，在 componentDidUpdate 里根据数据的变化去更新 DOM 等。如果说你只用一个生命周期做一件事，那好像也还可以接受，但是往往在一个稍微成规模的 React 项目中，一个生命周期不止做一件事情
+- 逻辑常与生命周期函数耦合在一起，在这样的前提下，生命周期函数常常做一些奇奇怪怪的事情：比如在 componentDidMount 里获取数据，在 componentDidUpdate 里根据数据的变化去更新 DOM 等。如果说你只用一个生命周期做一件事，那好像也还可以接受，但是往往在一个稍微成规模的 React 项目中，一个生命周期不止做一件事情
 
 ```js
 componentDidMount() {
@@ -1556,7 +1604,7 @@ React 官方不建议在 useEffect 中执行 DOM 操作，因为 useEffect 的�
 
 ### React-Hooks 工作机制
 
-**React 团队面向开发者给出了两条 React-Hooks 的使用原则：**
+**两条 React-Hooks 的使用原则：**
 
 - **只在函数组件中使用 hooks，在普通函数中引入意义不大**
 
@@ -1660,15 +1708,17 @@ export default PersonalInfoComponent;
 
 ![image-20211201111307509](..\typora-user-images\image-20211201111307509.png)
 
+
+
 初次挂载时，不合理代码的控制台输出：
 
 ![image-20211201111542420](..\typora-user-images\image-20211201111542420.png)
 
 单击修改姓名按钮，二次渲染时：
 
-![image-20211201111629417](..\typora-user-images\image-20211201111629417.png)
+![image-20240208194021562](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240208194021562.png)
 
-可以从输出结果看出一下情况：
+可以从输出结果看出以下情况：
 
 在点击按钮修改姓名时，调用的是 setName 方法，所以修改的应该是 name 数据对应的值（事实上修改也确实是 name 的值），但是在二次渲染时，在打印 career 数据时，打印的却是 name 对应的值，也就是说这个 useState 返回的是 name 对应的数据。
 
@@ -1691,7 +1741,7 @@ React Hooks 在源码层面和 Fiber 关系密切。所以针对关键方法做�
 ```js
 function mountState(initialState) {
   // 将新的hook对象追加进链表尾部
-  var hooks = mountWorkInProgressHook();
+  var hook = mountWorkInProgressHook();
 
   // initialState可以是一个回调函数，若是回调函数，则取回调执行后的结果作为initialState
   if (typeof initialState === "function") {
@@ -1721,7 +1771,7 @@ function mountState(initialState) {
 }
 ```
 
-从这段源码中可以看出，mounState 的zz主要工作是初始化 Hooks。在整段源码中，最需要关注的是 mountWorkInProgressHook 方法，它道出了 Hooks 背后的数据结构组织形式。
+从这段源码中可以看出，mounState 的主要工作是初始化 Hooks。在整段源码中，最需要关注的是 mountWorkInProgressHook 方法，它道出了 Hooks 背后的数据结构组织形式。
 
 **mountWorkInProgressHook 源码：**
 
@@ -1757,6 +1807,8 @@ function mountWorkInProgressHook(){
 
 ![image-20211201115451558](..\typora-user-images\image-20211201115451558.png)
 
+首次渲染和更新渲染的区别，在于调用的是 mountState，还是 updateState。
+
 updateState 之后的操作链路，虽然涉及的代码有很多，但其实做的事情很容易理解：**按顺序去遍历之前构建好的链表，取出对应的数据信息进行渲染。**
 
 **mountState（首次渲染）构建链表并渲染；updateState 依次遍历链表并渲染。hooks 的渲染是通过“依次遍历”来定位每个 hooks 内容的。如果前后两次读到的链表在顺序上出现差异，那么渲染的结果自然是不可控的。**
@@ -1765,7 +1817,7 @@ updateState 之后的操作链路，虽然涉及的代码有很多，但其实�
 
 回看前面不合理的代码：
 
-三个 hooks 首次渲染时都会执行
+三个 hooks **首次渲染**时都会执行
 
 ```js
 [name, setName] = useState("修言");
@@ -1850,6 +1902,19 @@ jQuery:
 
 由于模板引擎更倾向于点对点解决烦琐 DOM 操作的问题，它在能力和定位上既不能够、也不打算替换掉 jQuery，两者是和谐共存的。
 
+```html
+<table>
+  {% staff.forEach(function(person){ %}
+  <tr>
+    <td>{% person.name %}</td>
+    <td>{% person.career %}</td>
+  </tr>
+  {% }); %}
+</table>
+```
+
+模板语法其实就是把 JS 和 HTML 结合在一起的一种规则，而模板引擎做的事情也非常容易理解。把 staff 这个数据源读进去，塞到预置好的 HTML 模板里，然后把两者融合在一起，吐出一段目标字符串。这段字符串的内容，其实就是一份标准的、可用于渲染的 HTML 代码，它将对应一个 DOM 元素。最后，将这个 DOM 元素挂载到页面中去，整个模板的渲染流程也就走完了。
+
 模板引擎一般需要做下面几件事情：
 
 1. 读取 HTML 模板并解析它，分离出其中的 JS 信息；
@@ -1866,6 +1931,8 @@ with 加上 new Function。
 数据驱动视图
 
 模板引擎的数据驱动视图方案，核心问题在于对真实 DOM 的修改过于“大刀阔斧”，导致了 DOM 操作的范围过大、频率过高，进而可能会导致糟糕的性能。既然操作真实 DOM 对性能损耗这么大，那操作假的 DOM 不就行了？由此逐渐衍生出虚拟 DOM。
+
+
 
 **虚拟 DOM 如何解决问题？**
 
@@ -1887,6 +1954,8 @@ with 加上 new Function。
 
 > 图中的 diff 和 patch 其实都是函数名，这些函数取材于一个独立的[虚拟 DOM 库](https://github.com/Matt-Esch/virtual-dom)。之所以写明了具体流程对应的函数名,很多面试官习惯于用函数名指代过程，但不少人不清楚这个对应关系（尤其是 patch），会非常影响作答。
 
+
+
 #### React 选用虚拟 DOM，真的是为了更好的性能吗？
 
 在整个 DOM 操作的演化过程中，主要矛盾并不在于性能，在于研发体验/研发效率。虚拟 DOM 正是前端开发们为了追求更好的研发体验和研发效率而创造出来的高阶产物。
@@ -1901,9 +1970,9 @@ with 加上 new Function。
 
 从图中可以看出，模板渲染的步骤 1 和虚拟 DOM 渲染的步骤 1、2 都属于 JS 范畴的行为，这两者是具备可比性的，放在一起来看：动态生成 HTML 字符串的过程本质是对字符串的拼接，对性能的消耗是有限的；而虚拟 DOM 的构建和 diff 过程逻辑则相对复杂，它不可避免地涉及递归、遍历等耗时操作。因此在 JS 行为这个层面，模板渲染胜出。
 
-模板渲染的步骤二 和虚拟 DOM 渲染的步骤三都是 DOM 范畴的行为，两者具备可比性，因此我们仍然可以进行性能对比。模板渲染的步骤二是全量更新，虚拟 DOM 渲染的步骤三是差量更新。 初始一看一定觉得差量更新优于全量更新。但特殊的情况是：
+模板渲染的步骤二 和虚拟 DOM 渲染的步骤三都是 DOM 范畴的行为，两者具备可比性，因此仍然可以进行性能对比。模板渲染的步骤二是全量更新，虚拟 DOM 渲染的步骤三是差量更新。 初始一看一定觉得差量更新优于全量更新。但特殊的情况是：
 
-数据内容变化非常大（或者说整个发生了改变），促使差量更新计算出来的结果和全量更新极为接近（或者说完全一样）。
+**数据内容变化非常大（或者说整个发生了改变），促使差量更新计算出来的结果和全量更新极为接近（或者说完全一样）。**
 
 在这种情况下，DOM 更新的工作量基本一致，而虚拟 DOM 却伴随着开销更大的 JS 计算，此时会出现的一种现象就是模板渲染和虚拟 DOM 在整体性能上难分伯仲：若两者最终计算出的 DOM 更新内容完全一致，那么虚拟 DOM 大概率不敌模板渲染；但只要两者在最终 DOM 操作量上拉开那么一点点的差距，虚拟 DOM 就将具备战胜模板渲染的底气。**因为虚拟 DOM 的劣势主要在于 JS 计算的耗时，而 DOM 操作的能耗和 JS 计算的能耗根本不在一个量级，极少量的 DOM 操作耗费的性能足以支撑大量的 JS 计算（极少量的 DOM 操作耗费的性能远远大于 JS 计算）。**
 
@@ -1944,9 +2013,11 @@ with 加上 new Function。
 
 React 的源码从大板块来划分的话，划分为：Core，Render 和 Reconciler 三部分。
 
-调和器所做的工作是一系列的，包括组件的挂载、卸载、更新等过程，其中更新过程涉及对 Diff 算法的调用。在如今大众的认知里，当我们讨论调和的时候，其实就是在讨论 Diff。这样的认知也有其合理性，因为**Diff 确实是调和过程中最具代表性的一环**。
+调和器所做的工作是一系列的，包括组件的挂载、卸载、更新等过程，其中更新过程涉及对 Diff 算法的调用。在如今大众的认知里，当讨论调和的时候，其实就是在讨论 Diff。这样的认知也有其合理性，因为**Diff 确实是调和过程中最具代表性的一环**。
 
 **根据 Diff 实现形式的不同，调和过程被划分为以 React15 为代表的栈调和以及 React16 中的 Fiber 调和。在实际的面试过程中当面试官抛出 Reconciliation 相关问题时，多半也是在考察候选人对 Diff 的了解程度。**
+
+
 
 React15 中的 Diff 算法（栈调和）：
 
@@ -1962,13 +2033,13 @@ Diff 算法基于上面的三点书写的算法中的要点：
 
 1. DOM 节点之间的跨层级操作并不多，同层级操作是主流（实践规律）
 
-- **Diff 算法性能突破的关键点在于“分层对比”，改变算法的时间复杂度量级，只针对同层级的节点进行对比**
+- **Diff 算法性能突破的关键点在于“分层对比”，改变算法的时间复杂度量级，Diff 过程直接放弃了跨层级的节点比较，只针对同层级的节点进行对比**
 
   ![image-20211201160413600](..\typora-user-images\image-20211201160413600.png)
 
   只需要从上到下的一次遍历，就可以完成对整棵树的对比，这是降低复杂度量级的最重要的设计，虽然栈调和将传统的树对比算法优化为分层对比，但整个算法仍然是以递归的形式运行的，分层递归也是递归。
 
-  如果发生跨层级的节点操作，这种情况就是次要矛盾，在这种情况下，react 并不能判断下图移动的这个行为，他只能机械的认为移除子树那层的组件消失了，对应子树需要被销毁，而移入子树的那层则新建一个组件（设计组件的销毁和重建，性能不高），所以不建议做跨层级操作，保持 DOM 结构的稳定性。
+  如果发生跨层级的节点操作（比如将以 B 节点为根节点的子树从 A 节点下面移动到 C 节点下面，如下图所示），这种情况就是次要矛盾，在这种情况下，react 并不能判断下图移动的这个行为，他只能机械的认为移除子树那层的组件消失了，对应子树需要被销毁，而移入子树的那层则新建一个组件（设计组件的销毁和重建，性能不高），所以不建议做跨层级操作，保持 DOM 结构的稳定性。
 
   ![image-20211201160947912](..\typora-user-images\image-20211201160947912.png)
 
@@ -1977,6 +2048,8 @@ Diff 算法基于上面的三点书写的算法中的要点：
 - **类型一致的节点才有继续 Diff 的必要性**
 
   ![image-20211201162709719](..\typora-user-images\image-20211201162709719.png)
+
+虽不能反推“不同类型的组件 DOM 结构不同”，但在大部分的情况下，这个结论都是成立的。毕竟，实际开发中遇到两个 DOM 结构完全一致、而类型不一致的组件的概率确实太低了。
 
 如果参与 Diff 的两个节点类型不同，那直接放弃对他们及其子节点的比较 ，直接整体替换节点，只有确认节点类型相同后，react 才会在保留组件对应 DOM 树的基础上尝试深入遍历和递归。
 
@@ -2145,17 +2218,21 @@ test = () => {
 
 React15 中 setState 的源码：
 
-主流程图 
+阅读任何框架的源码，都应该带着问题、带着目的去读。React 中对于功能的拆分是比较细致的，setState 这部分涉及了多个方法。主流程图：
 
 <img src="..\typora-user-images\image-20211201171540153.png" alt="image-20211201171540153" style="zoom:50%;" />
 
 setState 入口函数：
 
-入口函数在这里充当分发器的角色，根据入参（对象或者函数）不同分发  到不同的功能函数中去，下图是对象传参的分发情况：
+入口函数在这里充当分发器的角色，根据入参（对象或者函数）不同分发到不同的功能函数中去，下图是对象传参的分发情况：
 
 setState 函数接受两种类型的参数，一种是函数，另一种是对象。下面的代码给出的是对象类型的参数的源码流程。
 
 ```js
+// this 类组件实例对象
+// partialState setState接受的传参
+// callback状态更新完成后的回调
+
 ReactComponent.prototype.setState = function (partialState, callback) {
   // this表示的是React组件实例
   // 将组件和组件自身对应的setState需要修改的状态数据一并入队
@@ -2174,6 +2251,8 @@ enqueueSetState:
 - 用 enqueueUpdate 来处理将要更新的实例对象
 
 ```js
+// publicInstance 类组件实例对象
+// partialState setState接受的传参
 enqueueSetState: function (publicInstance, partialState) {
     // 根据 this 拿到对应的组件实例
     // publicInstance组件实例
@@ -2291,6 +2370,8 @@ Transaction 在源码中就是一个核心类。 就像是一个“盒子”，�
 
 它首先会将目标函数用 wrapper（一组 initialize 及 close 方法称为一个 wrapper） 封装起来，同时需要使用 Transaction 类暴露的 perform 方法去执行它。如上面的注释所示，在 anyMethod 执行之前，perform 会先执行所有 wrapper 的 initialize 方法，执行完后，再执行所有 wrapper 的 close 方法。这就是 React 中的事务机制。
 
+
+
 同步现象的本质：
 
 结合对事务机制的理解看 ReactDefaultBatchingStrategy 对象。ReactDefaultBatchingStrategy 其实就是一个批量更新策略事务。 它的 wrapper 有两个，见下图：
@@ -2349,6 +2430,8 @@ dispatchEvent: function (topLevelType, nativeEvent) {
 }
 ```
 
+
+
 ### 为什么 setState 是异步的原因
 
 isBatchingUpdates 这个变量，在 React 的生命周期函数以及合成事件执行前，已经被 React 修改为了 true，这时所做的 setState 操作自然不会立即生效。当函数执行完毕后，事务的 close 方法会再把 isBatchingUpdates 改为 false。
@@ -2369,7 +2452,7 @@ increment = () => {
 };
 ```
 
-很明显，在 isBatchingUpdates 的约束下，setState 只能是异步的。而当 setTimeout 从中作祟时，事情就会发生一点变化：
+很明显，在 isBatchingUpdates 的约束下，setState 只能是异步的。而当 setTimeout 中时，事情就会发生一点变化：
 
 ```js
 reduce = () => {
@@ -2387,7 +2470,7 @@ reduce = () => {
 };
 ```
 
-前面开头锁上的那个 isBatchingUpdates，对 setTimeout 内部的执行逻辑完全没有约束力。因为 isBatchingUpdates 是在同步代码中变化的，而 setTimeout 的逻辑是异步执行的。当 this.setState 调用真正发生的时候，isBatchingUpdates 早已经被重置为了 false，这就使得当前场景下的 setState 具备了立刻发起同步更新的能力。所以etState 并不是具备同步这种特性，只是在特定的情境下，它会从 React 的异步管控中“逃脱”掉。这就使得当前场景下的 setState 具备了立刻发起同步更新的能力。
+前面开头锁上的那个 isBatchingUpdates，对 setTimeout 内部的执行逻辑完全没有约束力。因为 isBatchingUpdates 是在同步代码中变化的，而 setTimeout 的逻辑是异步执行的。当 this.setState 调用真正发生的时候，isBatchingUpdates 早已经被重置为了 false，这就使得当前场景下的 setState 具备了立刻发起同步更新的能力。所以setState 并不是具备同步这种特性，只是在特定的情境下，它会从 React 的异步管控中“逃脱”掉。这就使得当前场景下的 setState 具备了立刻发起同步更新的能力。
 
 ```js
 reduce = () => {
@@ -2415,15 +2498,15 @@ React 16 以来，整个 React 核心算法被重写，setState 也不可避免�
 
 
 
-## Fiber 架构的迭代动机和设计思想
+## Fiber 架构
 
-随着时间的推移和业务复杂度的提升，React 曾经的 Stack Reconciler（栈调和架构） 在用户体验方面显出疲态。为了更进一步贯彻“快速响应”的原则，React 团队在 16.x 版本中将其最为核心的 Diff 算法整个重写，使用“Fiber Reconciler（Fiber 架构）”。
+React 的 Stack Reconciler（栈调和架构） 在用户体验方面存在缺陷。为了“快速响应”的原则，React 团队在 16.x 版本中将其最为核心的 Diff 算法整个重写，使用“Fiber Reconciler（Fiber 架构）”。
 
 **Stack Reconciler 有着怎样的局限性，使得 React 从架构层面做出改变？**
 
 **Fiber 架构又是什么，基于它来实现的调和过程又有什么不同呢？**
 
-对于多进程多线程的浏览器来说，它除了要处理 JavaScript 线程以外，还需要处理包括事件系统、定时器/延时器、网络请求等各种各样的任务线程，这其中，自然也包括负责处理 DOM 的 UI 渲染线程。而 JavaScript 线程是可以操作 DOM 的，JavaScript 线程和渲染线程必须是互斥的，这两个线程不能够穿插执行，必须串行。当其中一个线程执行时，另一个线程只能挂起等待。
+对于多进程多线程的浏览器来说，它除了要处理 JavaScript 线程以外，还需要处理包括事件系统、定时器/延时器、网络请求等各种各样的任务线程，处理 DOM 的 UI 渲染线程。而 JavaScript 线程是可以操作 DOM 的，JavaScript 线程和渲染线程必须是互斥的，这两个线程不能够穿插执行，必须串行。当其中一个线程执行时，另一个线程只能挂起等待。
 
 浏览器的 Event Loop 机制决定了事件任务是由一个异步队列来维持的，当事件被触发时，对应的任务并不会立即被执行，而是由 I/O 线程将任务进行入队，在上一轮 js 同步代码执行完毕后，在空闲的时间里由事件循环机制将任务队列中的任务出队到主线程中进行执行。如果 js 线程长时间占用主线程，那么渲染线程将长时间等待，UI 界面将长时间不能更新，造成卡顿现象。
 
@@ -2431,15 +2514,17 @@ React 16 以来，整个 React 核心算法被重写，setState 也不可避免�
 
 Stack Reconciler 下 javascript 代码可能超时占用主线程，因为 Stack Reconciler 是一个同步的递归过程，无法中断。
 
-栈调和机制下的 Diff 算法，其实是树的深度优先遍历的过程。而树的深度优先遍历，总是和递归脱不了关系。
+栈调和机制下的 Diff 算法，其实是树的深度优先遍历的过程。而树的深度优先遍历，总是递归。
 
 <img src="https://s0.lgstatic.com/i/image/M00/6E/D8/CgqCHl-zlcmATw-hAAD1942js64663.png" alt="Drawing 1.png" style="zoom:50%;" />
 
 在 React 15 及之前的版本中，虚拟 DOM 树的数据结构是“树”，其 Diff 算法的遍历思路，也是沿 袭了传统计算机科学中“对比两棵树”的算法，在此基础上优化得来。因此从本质上来说，**栈调和机制下的 Diff 算法，其实是树的深度优先遍历的过程。**而树的深度优先遍历，总是递归。
 
-拿这棵树来举例，若 A 组件发生了更新，那么栈调和的工作过程是这样的：对比第 1 层的两个 A，确认节点可复用，继续 Diff 其子组件。当 Diff 到 B 的时候，对比前后的两个 B 节点，发现可复用，于是继续 Diff 其子节点 D、E。待 B 树最深层的 Diff 完成、逐层回溯后，再进入 C 节点的 Diff 逻辑......调和器会重复“父组件调用子组件”的过程，直到最深的一层节点更新完毕，才慢慢向上返回。
+若 A 组件发生了更新，那么栈调和的工作过程是这样的：对比第 1 层的两个 A，确认节点可复用，继续 Diff 其子组件。当 Diff 到 B 的时候，对比前后的两个 B 节点，发现可复用，于是继续 Diff 其子节点 D、E。待 B 树最深层的 Diff 完成、逐层回溯后，再进入 C 节点的 Diff 逻辑......调和器会重复“父组件调用子组件”的过程，直到最深的一层节点更新完毕，才慢慢向上返回。
 
-这个过程的致命性在于它是同步的，不可以被打断。当处理结构相对复杂、体量相对庞大的虚拟 DOM 树时，Stack Reconciler 需要的调和时间会很长，这就意味着 JavaScript 线程将长时间地霸占主线程，进而导致渲染卡顿/卡死、交互长时间无响应等问题。
+**这个过程它是同步的，不可以被打断。当处理结构相对复杂、体量相对庞大的虚拟 DOM 树时，Stack Reconciler 需要的调和时间会很长，这就意味着 JavaScript 线程将长时间地霸占主线程，进而导致渲染卡顿/卡死、交互长时间无响应等问题。**
+
+
 
 #### Fiber 解决问题
 
@@ -2447,13 +2532,13 @@ Stack Reconciler 下 javascript 代码可能超时占用主线程，因为 Stack
 
 **从架构角度来看，**Fiber 是对 React 核心算法（即调和过程）的重写。
 
-**从编码角度来看**，Fiber 是 React 内部定义的**一种数据结构**，它是 **Fiber 树结构的节点单位**，也就是 React16 新架构下的虚拟 DOM； 
+**从编码角度来看**，Fiber 是 React 内部定义的**一种数据结构**，它是 **Fiber 树结构的节点单位**，也就是 React16 新架构下的“虚拟 DOM”； 
 
 **从工作流的角度来看，**Fiber 节点保存了组件需要更新的状态和副作用，一个 Fiber 同时对应着一个工作单元。
 
 站在架构角度理解 Fiber：
 
-Fiber 架构的应用目的是实现“**增量渲染**”，所谓的“增量渲染”就是把一个渲染任务分解为多个渲染任务，而后将这些任务分散到多个帧中。增量渲染只是一种手段，实现增量渲染的目的是为了**实现任务的可中断和可恢复**，并**给不同的任务赋予不同的优先级**，最终达成更加顺滑的用户体验。
+Fiber 架构的目的是实现“**增量渲染**”，所谓的“增量渲染”就是把一个渲染任务分解为多个渲染任务，而后将这些任务分散到多个帧中。增量渲染只是一种手段，实现增量渲染的目的是为了**实现任务的可中断和可恢复**，并**给不同的任务赋予不同的优先级**，最终达成更加顺滑的用户体验。
 
 Fiber架构的核心：
 
@@ -2471,6 +2556,18 @@ React16 以前的下图，React 的渲染和更新阶段依赖于下图中的两
 
 <img src="..\typora-user-images\image-20211201205219857.png" alt="image-20211201205219857" style="zoom:50%;" />
 
+
+
+![image-20240210212625995](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240210212625995.png)
+
+1. render 阶段：纯净且没有副作用，可能会被 React 暂停、终止或重新启动。
+2. pre-commit 阶段：可以读取 DOM。
+3. commit 阶段：可以使用 DOM，运行副作用，安排更新。
+
+其中 pre-commit 和 commit 从大阶段上来看都属于 commit 阶段。
+
+
+
 render 阶段主要是在内存中计算，明确 DOM 树的更新点，而 commit 阶段则负责把 render 阶段生成的更新真正的执行。
 
 <img src="..\typora-user-images\image-20211201210023652.png" alt="image-20211201210023652" style="zoom:50%;" />
@@ -2484,14 +2581,14 @@ render 阶段主要是在内存中计算，明确 DOM 树的更新点，而 comm
 
 **把 React 架构分层的变化与生命周期的变化建立联系，从而对两者的设计动机都形成更加深刻的理解。**
 
+
+
 问题：
 
 - React16 在所有情况下都是异步渲染的吗？
 - Fiber 架构中的可中断，可恢复到底如何实现？
 - Fiber 树和传统虚拟 DOM 树有什么不同？
 - 优先级调度如何实现的？
-
- 
 
 ## ReactDOM.render 渲染链路
 
@@ -2533,7 +2630,7 @@ Demo 启动后，渲染出的界面如下图所示：
 
 <img src="https://s0.lgstatic.com/i/image/M00/6E/D9/CgqCHl-zmFKAFeHBAAQn6ZuFPrI619.png" alt="Drawing 2.png" style="zoom:200%;" />
 
-ReactDOM.render 方法对应的调用栈，如下图所示：
+定位“src/index.js”这个文件路径，就可以找到 ReactDOM.render 方法对应的调用栈，如下图所示：
 
 ![Drawing 3.png](https://s0.lgstatic.com/i/image/M00/6E/CE/Ciqc1F-zmFmAXkYlAAI2ONTKc9s081.png)
 
@@ -2631,7 +2728,7 @@ function legacyRenderSubtreeIntoContainer(
 
 总结一下首次渲染过程中 legacyRenderSubtreeIntoContainer 方法的主要逻辑：
 
-<img src="..\typora-user-images\image-20211202133135821.png" alt="image-20211202133135821" style="zoom:50%;" />
+<img src="..\typora-user-images\image-20211202133135821.png" alt="image-20211202133135821"  />
 
 其中的 fiberRoot 到底是什么呢？运行时的 root 和 fiberRoot ，其中 root 对象的结构如下图所示：
 
@@ -2645,7 +2742,7 @@ current 对象是一个 FiberNode 实例，**而 FiberNode，正是 Fiber 节点
 
 current 属性对应的 FiberNode 节点，在调用栈中实际是由 createHostRootFiber 方法创建的，React 源码中也有多处以 rootFiber 代指 current 对象，因此下文中将以 rootFiber 指代 current 对象。
 
-<img src="https://s0.lgstatic.com/i/image/M00/6F/F8/Ciqc1F-3mh-AZrlvAABgy8S1u44402.png" alt="Lark20201120-182610.png" style="zoom:50%;" />
+<img src="https://s0.lgstatic.com/i/image/M00/6F/F8/Ciqc1F-3mh-AZrlvAABgy8S1u44402.png" alt="Lark20201120-182610.png"  />
 
 fiberRoot 的关联对象是真实 DOM 的容器节点；而 rootFiber 则作为虚拟 DOM 的根节点存在。**这两个节点，将是后续整棵 Fiber 树构建的起点**。 
 
@@ -2819,13 +2916,13 @@ render 阶段在整个渲染链路中的定位，如下图所示：（diff 算�
 
 **beginWork 方法开始调用的过程就是 Fiber 树的构建过程。**
 
-> beginWork、completeWork 这两个方法需要注意，它们串联起的是一个“模拟递归”的过程。
+> beginWork、completeWork 串联起的是一个“模拟递归”的过程。
 
 React 15 下的调和过程是一个递归的过程。 Fiber 架构下的调和过程，虽然并不是依赖递归来实现的，但在 ReactDOM.render 触发的同步模式下，它仍然是一个深度优先搜索的过程。这个过程中，**beginWork 将创建新的 Fiber 节点**，而 **completeWork 则负责将 Fiber 节点映射为 DOM 节点**。上一讲中 Fiber 树只有根节点。
 
-<img src="..\typora-user-images\image-20220425200420687.png" alt="image-20220425200420687" style="zoom:50%;" />
+<img src="..\typora-user-images\image-20220425200420687.png" alt="image-20220425200420687" style="zoom: 80%;" />
 
-workInProgress 节点的创建（另一个workInProgress 树）：
+workInProgress 节点的创建（另一个Fiber树）：
 
 performSyncWorkOnRoot (render 阶段的起点) 调用了 renderRootSync，renderRootSync 被调用后的情况：
 
@@ -2994,11 +3091,11 @@ function beginWork(current, workInProgress, renderLanes) {
 
 当前的 current 节点是 rootFiber，而 workInProgress 则是 current 的副本，它们的 tag 都是 3，如下图所示：
 
-![Drawing 6.png](https://s0.lgstatic.com/i/image/M00/71/0B/CgqCHl-8xHmAV2FMAABmLqBlHD0379.png)
+<img src="https://s0.lgstatic.com/i/image/M00/71/0B/CgqCHl-8xHmAV2FMAABmLqBlHD0379.png" alt="Drawing 6.png" style="zoom:150%;" />
 
 而 3 正是 HostRoot 所对应的值，因此第一个 beginWork 将进入 updateHostRoot 的逻辑。
 
-在整段 switch 逻辑里，包含的形如“update+类型名”这样的函数是非常多的。在专栏示例的 Demo 中，就涉及了对 updateHostRoot、updateHostComponent 等的调用，十来种 updateXXX。这些函数之间不仅命名形式一致，工作内容也相似。就 render 链路来说，它们共同的特性，就是都会**通过调用 reconcileChildren 方法，生成当前节点的子节点**。
+在整段 switch 逻辑里，包含的形如“update+类型名”这样的函数是非常多的。在Demo 中，就涉及了对 updateHostRoot、updateHostComponent 等的调用，十来种 updateXXX。这些函数之间不仅命名形式一致，工作内容也相似。就 render 链路来说，它们共同的特性，就是都会**通过调用 reconcileChildren 方法，生成当前节点的子节点**。
 
 reconcileChildren 的源码如下：
 
@@ -3026,6 +3123,8 @@ function reconcileChildren(current, workInProgress, nextChildren, renderLanes) {
 ```
 
 从源码来看，reconcileChildren 也只是做逻辑的分发，具体的工作还要到 **mountChildFibers** 和 **reconcileChildFibers** 里去看。
+
+
 
 ### ChildReconciler，处理 Fiber 节点
 
@@ -3078,13 +3177,13 @@ function ChildReconciler(shouldTrackSideEffects) {
 }
 ```
 
-由于原本的代码量着实巨大，可以点开[这个文件](https://github.com/facebook/react/blob/56e9feead0f91075ba0a4f725c9e4e343bca1c67/packages/react-reconciler/src/ReactChildFiber.old.js#L253)查看细节，此处仅针对与主流程强相关的逻辑为你总结以下要点：
+由于原本的代码量着实巨大，可以点开[这个文件](https://github.com/facebook/react/blob/56e9feead0f91075ba0a4f725c9e4e343bca1c67/packages/react-reconciler/src/ReactChildFiber.old.js#L253)查看细节，此处仅针对与主流程强相关的逻辑总结以下要点：
 
 1. 关键的入参 shouldTrackSideEffects，意为“是否需要追踪副作用”，**因此 reconcileChildFibers 和 mountChildFibers 的不同，在于对副作用的处理不同**；
 2. ChildReconciler 中定义了大量如 placeXXX、deleteXXX、updateXXX、reconcileXXX 等这样的函数，这些函数覆盖了对 Fiber 节点的创建、增加、删除、修改等动作，将直接或间接地被 reconcileChildFibers 所调用；
 3. ChildReconciler 的返回值是一个名为 reconcileChildFibers 的函数，这个函数是一个逻辑分发器，**它将根据入参的不同，执行不同的 Fiber 节点操作，最终返回不同的目标 Fiber 节点**。
 
-对于第 1 点，这里展开说说。对副作用的处理不同，到底是哪里不同？以 placeSingleChild 为例，以下是 placeSingleChild 的源码：
+对于第 1 点，对副作用的处理不同，以 placeSingleChild 为例，以下是 placeSingleChild 的源码：
 
 ```js
 function placeSingleChild(newFiber) {
@@ -3103,27 +3202,27 @@ newFiber.flags = Placement;
 
 这个名为 flags 的标记有何作用呢？
 
-由于这里我引用的是 [v17.0.0 版本的源码](https://github.com/facebook/react/blob/56e9feead0f91075ba0a4f725c9e4e343bca1c67/packages/react-reconciler/src/ReactChildFiber.old.js#L253)，属性名已经变更为 flags，但在更早一些的版本中，这个属性名叫“effectTag”。在时下的社区讨论中，effectTag 这个命名更常见，也更语义化，因此下文我将以 “effectTag”代指“flags”。
+ [v17.0.0 版本的源码](https://github.com/facebook/react/blob/56e9feead0f91075ba0a4f725c9e4e343bca1c67/packages/react-reconciler/src/ReactChildFiber.old.js#L253)属性名已经变更为 flags，但在更早一些的版本中，这个属性名叫“effectTag”。在时下的社区讨论中，effectTag 这个命名更常见，也更语义化，因此下文以 “effectTag”代指“flags”。
 
 Placement 这个 effectTag 的意义，是在渲染器执行时，也就是真实 DOM 渲染时，告诉渲染器：**我这里需要新增 DOM 节点**。 effectTag 记录的是**副作用的类型**，而**所谓“副作用”**，React 给出的定义是“**数据获取、订阅或者修改 DOM**”等动作。在这里，Placement 对应的显然是 DOM 相关的副作用操作。
 
-像 Placement 这样的副作用标识，还有很多，它们均以二进制常量的形式存在，下图我为你截取了局部（你可以在[这个文件](https://github.com/facebook/react/blob/1fb18e22ae66fdb1dc127347e169e73948778e5a/packages/react-reconciler/src/ReactSideEffectTags.js)里查看 effectTag 的类型）：
+像 Placement 这样的副作用标识，还有很多，它们均以二进制常量的形式存在，可以在[这个文件](https://github.com/facebook/react/blob/1fb18e22ae66fdb1dc127347e169e73948778e5a/packages/react-reconciler/src/ReactSideEffectTags.js)里查看 effectTag 的类型：
 
 ![Drawing 7.png](https://s0.lgstatic.com/i/image/M00/71/0B/CgqCHl-8xIyAZ3VoAADupBJcrgo966.png)
 
-回到我们的调用链路里来，由于 current 是 rootFiber，它不为 null，因此它将走入的是下图所高亮的这行逻辑。也就是说在 mountChildFibers 和 reconcileChildFibers 之间，它选择的是 **reconcileChildFibers**：
+回到调用链路里来，由于 current 是 rootFiber，它不为 null，因此它将走入的是下图所高亮的这行逻辑。也就是说在 mountChildFibers 和 reconcileChildFibers 之间，它选择的是 **reconcileChildFibers**：
 
 ![Drawing 8.png](https://s0.lgstatic.com/i/image/M00/71/07/Ciqc1F-80U-AfncYAAEt69YE2-g951.png)
 
 结合前面的分析可知，reconcileChildFibers 是`ChildReconciler(true)`的返回值。入参为 true，意味着其内部逻辑是允许追踪副作用的，因此“打 effectTag”这个动作将会生效。
 
-接下来进入 reconcileChildFibers 的逻辑，在 reconcileChildFibers 这个逻辑分发器中，会把 rootFiber 子节点的创建工作分发给 reconcileXXX 函数家族的一员——reconcileSingleElement 来处理，具体的调用形式如下图高亮处所示：
+接下来进入 reconcileChildFibers 的逻辑，在 reconcileChildFibers 这个逻辑分发器中，会把 rootFiber **子节点**的创建工作分发给 reconcileXXX 函数家族的一员——reconcileSingleElement 来处理，具体的调用形式如下图高亮处所示：
 
-![Drawing 9.png](https://s0.lgstatic.com/i/image/M00/71/07/Ciqc1F-80VaABnJCAACe4hcSiBM598.png)
+<img src="https://s0.lgstatic.com/i/image/M00/71/07/Ciqc1F-80VaABnJCAACe4hcSiBM598.png" alt="Drawing 9.png" style="zoom:150%;" />
 
-reconcileSingleElement 将基于 rootFiber 子节点的 ReactElement 对象信息，创建其对应的 FiberNode。这个过程中涉及的函数调用如下图高亮处所示：
+reconcileSingleElement 将基于 rootFiber **子节点的 ReactElement 对象信息**，创建其对应的 FiberNode。这个过程中涉及的函数调用如下图高亮处所示：
 
-![Drawing 10.png](https://s0.lgstatic.com/i/image/M00/71/12/CgqCHl-80VyAC2P6AAJfHF2gzfs579.png)
+<img src="https://s0.lgstatic.com/i/image/M00/71/12/CgqCHl-80VyAC2P6AAJfHF2gzfs579.png" alt="Drawing 10.png" style="zoom:150%;" />
 
 这里需要说明的一点是：**rootFiber 作为 Fiber 树的根节点**，它并没有一个确切的 ReactElement 与之映射。结合 JSX 结构来看，**我们可以将其理解为是 JSX 中根组件的父节点**。课时所给出的 Demo 中，组件编码如下：
 
@@ -3161,25 +3260,15 @@ reconcileChildren 函数上下文里的 workInProgress 就是 rootFiber 节点�
 
 ### Fiber 节点的创建过程梳理
 
-分析完 App FiberNode 的创建过程。最关键的东西已经讲完了，剩余节点的创建只不过是对 performUnitOfWork、 beginWork 和 ChildReconciler 等相关逻辑的重复。
+beginWork 所触发的调用流程总结：
 
-将本讲讲解的 beginWork 所触发的调用流程总结进一张大图：
-
-<img src="https://s0.lgstatic.com/i/image/M00/71/47/Ciqc1F-97fSAYLUIAAGBjhvNylg581.png" alt="7.png" style="zoom:50%;" />
+<img src="https://s0.lgstatic.com/i/image/M00/71/47/Ciqc1F-97fSAYLUIAAGBjhvNylg581.png" alt="7.png"  />
 
 ### Fiber 树的构建过程
-
-理解了 Fiber 节点的创建过程，就不难理解 Fiber 树的构建过程。
-
-前面研究了各路关键函数的源码逻辑，此时相信你已经能够将函数名与函数的工作内容做到对号入座。这里不必再纠结与源码的实现细节，可以直接从工作流程的角度来看后续节点的创建。
-
-
 
 #### 循环创建新的 Fiber 节点
 
 研究节点创建的工作流，切入点是`workLoopSync`这个函数。
-
-为什么选它？这里来复习一遍`workLoopSync`会做什么：
 
 ```js
 function workLoopSync() {
@@ -3209,30 +3298,30 @@ if (next === null) {
 
 现在在 workLoopSync 内部打个断点，尝试输出每一次获取到的 workInProgress 的值，workInProgress 值的变化过程如下图所示：
 
-![Drawing 15.png](https://s0.lgstatic.com/i/image/M00/71/12/CgqCHl-80ZuAA1HAAAEBle-yZFM332.png)
+<img src="https://s0.lgstatic.com/i/image/M00/71/12/CgqCHl-80ZuAA1HAAAEBle-yZFM332.png" alt="Drawing 15.png" style="zoom:150%;" />
 
-共有 7 个节点，若你点击展开查看每个节点的内容，就会发现这 7 个节点其实分别是：
+共有 7 个节点，这 7 个节点其实分别是：
 
 - rootFiber（当前 Fiber 树的根节点）
 - App FiberNode（App 函数组件对应的节点）
 - class 为 App 的 DOM 元素对应的节点，其内容如下图所示
 
-![Drawing 16.png](https://s0.lgstatic.com/i/image/M00/71/12/CgqCHl-80aSAF7MKAAEHjyZ0Xwk039.png)
+<img src="https://s0.lgstatic.com/i/image/M00/71/12/CgqCHl-80aSAF7MKAAEHjyZ0Xwk039.png" alt="Drawing 16.png" style="zoom:150%;" />
 
 - class 为 container 的 DOM 元素对应的节点，其内容如下图所示
 
-![Drawing 17.png](https://s0.lgstatic.com/i/image/M00/71/07/Ciqc1F-80aqAJId4AACkvKHjlTM377.png)
+<img src="https://s0.lgstatic.com/i/image/M00/71/07/Ciqc1F-80aqAJId4AACkvKHjlTM377.png" alt="Drawing 17.png" style="zoom:150%;" />
 
 - h1 标签对应的节点
 - 第 1 个 p 标签对应的 FiberNode，内容为“我是第一段话”，如下图所示
 
-![Drawing 18.png](https://s0.lgstatic.com/i/image/M00/71/07/Ciqc1F-80bGAGFKTAADArDpX9j4096.png)
+<img src="https://s0.lgstatic.com/i/image/M00/71/07/Ciqc1F-80bGAGFKTAADArDpX9j4096.png" alt="Drawing 18.png" style="zoom:150%;" />
 
 - 第 2 个 p 标签对应的 FiberNode，内容为“我是第二段话”，如下图所示
 
-![Drawing 19.png](https://s0.lgstatic.com/i/image/M00/71/12/CgqCHl-80biASe4KAAEZMaZTIY8632.png)
+<img src="https://s0.lgstatic.com/i/image/M00/71/12/CgqCHl-80biASe4KAAEZMaZTIY8632.png" alt="Drawing 19.png" style="zoom:150%;" />
 
-结合这 7 个 FiberNode，再对照对照我们的 Demo：
+结合这 7 个 FiberNode，再对照对照 Demo：
 
 ```jsx
 function App() {
@@ -3248,7 +3337,7 @@ function App() {
 }
 ```
 
-**你会发现组件自上而下，每一个非文本类型的 ReactElement 都有了它对应的 Fiber 节点**。
+**组件自上而下，每一个非文本类型的 ReactElement 都有了它对应的 Fiber 节点**。
 
 > 注：React 并不会为所有的文本类型 ReactElement 创建对应的 FiberNode，这是一种优化策略。是否需要创建 FiberNode，在源码中是通过[isDirectTextChild](https://github.com/facebook/react/blob/765e89b908206fe62feb10240604db224f38de7d/packages/react-reconciler/src/ReactFiberBeginWork.new.js#L1068)这个变量来区分的。
 
@@ -3266,15 +3355,15 @@ Fiber 节点有了，但这些 Fiber 节点之间又是如何相互连接的呢�
 
 child 属性为 null，说明 h1 节点没有子 Fiber 节点：
 
-![Drawing 21.png](https://s0.lgstatic.com/i/image/M00/71/13/CgqCHl-80d2AV6r7AABCQ4zzis4597.png)
+<img src="https://s0.lgstatic.com/i/image/M00/71/13/CgqCHl-80d2AV6r7AABCQ4zzis4597.png" alt="Drawing 21.png" style="zoom:150%;" />
 
 return 属性局部截图：
 
-![Drawing 22.png](https://s0.lgstatic.com/i/image/M00/71/07/Ciqc1F-80eOAMhlKAACxayioeh4810.png)
+<img src="https://s0.lgstatic.com/i/image/M00/71/07/Ciqc1F-80eOAMhlKAACxayioeh4810.png" alt="Drawing 22.png" style="zoom:150%;" />
 
 sibling 属性局部截图：
 
-![Drawing 23.png](https://s0.lgstatic.com/i/image/M00/71/13/CgqCHl-80eiAJ6doAAClFZDD7jE642.png)
+<img src="https://s0.lgstatic.com/i/image/M00/71/13/CgqCHl-80eiAJ6doAAClFZDD7jE642.png" alt="Drawing 23.png" style="zoom:150%;" />
 
 可以看到，return 属性指向的是 class 为 container 的 div 节点，而 sibling 属性指向的是第 1 个 p 节点。结合 JSX 中的嵌套关系不难得知 ——**FiberNode 实例中，return 指向的是当前 Fiber 节点的父节点，而 sibling 指向的是当前节点的第 1 个兄弟节点**。
 
@@ -3335,7 +3424,7 @@ ReactDOM.render(<App />, rootElement);
 
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/b58011db010e41b59f4fe371ebbd7d21.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_1_,size_15,color_FFFFFF,t_70,g_se,x_16#pic_center)
 
-暂时将 completeUnitOfWork简单理解为一个用于发起 completeWork调用的函数。completeUnitOfWork是在 performUnitOfWork中被调用的，那么 performUnitOfWork是如何把握其调用时机的呢？直接来看相关源码：
+暂时将 completeUnitOfWork简单理解为一个用于发起 completeWork调用的函数。completeUnitOfWork是在 performUnitOfWork中被调用的，那么 performUnitOfWork是什么条件下才去调用completeUnitOfWork：
 
 ```js
 function performUnitOfWork(unitOfWork) {
@@ -3373,19 +3462,19 @@ function performUnitOfWork(unitOfWork) {
 ```
 
 
-  这段源码中需要提取出的信息是：performUnitOfWork每次会尝试调用 beginWork来创建当前节点的子节点，若创建出的子节点为空（也就意味着当前节点不存在子 Fiber节点），则说明当前节点是一个叶子节点。按照深度优先遍历的原则，当遍历到叶子节点时，“递”阶段就结束了，随之而来的是“归”的过程。因此这种情况下，就会调用 completeUnitOfWork，执行当前节点对应的 completeWork逻辑。
+performUnitOfWork每次会尝试调用 beginWork来创建当前节点的**子节点**，若创建出的子节点为空（也就意味着当前节点不存在子 Fiber节点），则说明当前节点是一个叶子节点。按照深度优先遍历的原则，当遍历到叶子节点时，“递”阶段就结束了，随之而来的是“归”的过程。因此这种情况下，就会调用 completeUnitOfWork，执行当前节点对应的 completeWork逻辑。
 
-  接下来在 demo 代码的 completeWork处打上断点，看看第一个走到 completeWork的节点是哪个，结果如下图所示：
+接下来在 demo 代码的 completeWork处打上断点，看看第一个走到 completeWork的节点是哪个，结果如下图所示：
 
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/5e9820171b604333933579f95dbe1ae4.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_1_,size_20,color_FFFFFF,t_70,g_se,x_16#pic_center)
 
 
 
-  显然，第一个进入 completeWork的节点是 h1，如下图所示：
+  第一个进入 completeWork的节点是 h1，如下图所示：
 
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/a99352f553fc4a239e3673818977f09a.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_0_,size_20,color_FFFFFF,t_70,g_se,x_16#pic_center)
 
-  由图可知，按照深度优先遍历的原则，h1 确实将是第一个被遍历到的叶子节点。接下来我们就以 h1 为例，一起看看 completeWork都围绕它做了哪些事情。
+由图可知，按照深度优先遍历的原则，h1 确实将是第一个被遍历到的叶子节点。接下来以 h1 为例，一起看看 completeWork都围绕它做了哪些事情。
 
 
 
@@ -3408,7 +3497,7 @@ function completeWork(current, workInProgress, renderLanes) {
       {
         ......
       }
-    // h1 节点的类型属于 HostComponent，因此这里为你讲解的是这段逻辑
+    // h1 节点的类型属于 HostComponent
     case HostComponent:
       {
         popHostContext(workInProgress);
@@ -3482,7 +3571,7 @@ function completeWork(current, workInProgress, renderLanes) {
 
 ```
 
-  试图捋顺这段 completeWork逻辑，需要掌握以下几个要点:
+这段 completeWork逻辑需要掌握以下几个要点:
 
 - completeWork的核心逻辑是一段体量巨大的 switch语句，在这段 switch语句中，completeWork 将根据 workInProgress 节点的 tag 属性的不同，进入不同的 DOM 节点的创建、处理逻辑。
 - 在 demo示例中，h1 节点的 tag属性对应的类型应该是 HostComponent，也就是“原生 DOM 元素类型”。
@@ -3495,7 +3584,7 @@ function completeWork(current, workInProgress, renderLanes) {
 
   workInProgress节点和 current节点之间用 alternate属性相互连接。在组件的挂载阶段，current树只有一个 rootFiber 节点，并没有其他内容。因此 h1这个 workInProgress节点对应的 current节点是 null。
 
-  捋顺思路后，直接来提取知识点。关于 completeWork，需要明白以下几件事。
+关于 completeWork，需要明白以下几件事。
 
 - 用一句话来总结 completeWork 的工作内容：负责处理 Fiber 节点到 DOM 节点的映射逻辑。
 
@@ -3503,7 +3592,7 @@ function completeWork(current, workInProgress, renderLanes) {
   - 创建DOM 节点（CreateInstance）
   - 将 DOM 节点插入到 DOM 树中（AppendAllChildren）
   - 为 DOM 节点设置属性（FinalizeInitialChildren）
-- 创建好的 DOM 节点会被赋值给 workInProgress 节点的 stateNode 属性。也就是说当我们想要定位一个 Fiber 对应的 DOM 节点时，访问它的 stateNode属性就可以了。这里可以尝试访问运行时的 h1 节点的 stateNode属性，结果如下图所示：
+- 创建好的 DOM 节点会被赋值给 workInProgress 节点的 **stateNode** 属性。也就是说当想要定位一个 Fiber 对应的 DOM 节点时，访问它的 stateNode属性就可以了。这里可以尝试访问运行时的 h1 节点的 stateNode属性，结果如下图所示：
 
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/7bcde23471d24d5c81b1332c9332ed06.png#pic_center)
 
@@ -3525,7 +3614,7 @@ function completeWork(current, workInProgress, renderLanes) {
   
 
 **completeUnitOfWork 开启下一轮循环的原则**
-  在理解副作用链之前，首先要理解 completeUnitOfWork开启下一轮循环的原则，也就是步骤 3。步骤 3 相关的源码如下所示（解析在注释里）：
+在理解副作用链之前，首先要理解 completeUnitOfWork开启下一轮循环的原则，也就是步骤 3。步骤 3 相关的源码如下所示（解析在注释里）：
 
 ```js
 do {
@@ -3552,7 +3641,7 @@ do {
 
   步骤 3 是整个循环体的收尾工作，它会在当前节点相关的各种工作都做完之后执行。
 
-  当前节点处理完了，自然是去寻找下一个可以处理的节点。我们知道，当前的 Fiber 节点之所以会进入 completeWork，是因为“递无可递”了，才会进入“归”的逻辑，这就意味着当前 Fiber 要么没有 child 节点、要么 child节点的 completeWork早就执行过了。因此 child 节点不会是下次循环需要考虑的对象，下次循环只需要考虑兄弟节点（siblingFiber）和父节点（returnFiber）。
+  当前节点处理完了，自然是去寻找下一个可以处理的节点。当前的 Fiber 节点之所以会进入 completeWork，是因为“递无可递”了，才会进入“归”的逻辑，这就意味着当前 Fiber 要么没有 child 节点、要么 child节点的 completeWork早就执行过了。因此 child 节点不会是下次循环需要考虑的对象，下次循环只需要考虑兄弟节点（siblingFiber）和父节点（returnFiber）。
 
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/ac6f5e3e422c473f81c2bc7447d5b4f0.png#pic_center)
 
@@ -3560,20 +3649,20 @@ do {
 
   因此对于 h1 节点的兄弟节点来说，当下的第一要务是回去从 beginWork 开始走起，直到 beginWork “递无可递”时，才能够执行 completeWork 的逻辑。beginWork的调用是在 performUnitOfWork里发生的，因此 completeUnitOfWork一旦识别到当前节点的兄弟节点不为空，就会终止后续的逻辑，退回到上一层的 performUnitOfWork里去。
 
-  接下来我们再来看 h1 的父节点 div：在向下递归到 h1 的过程中，div 必定已经被遍历过了，也就是说 div 的“递”阶段（ beginWork） 已经执行完毕，只剩下“归”阶段的工作要处理了。因此，对于父节点，completeUnitOfWork会毫不犹豫地把它推到下一次循环里去，让它进入 completeWork的逻辑。
+  接下来再来看 h1 的父节点 div：在向下递归到 h1 的过程中，div 必定已经被遍历过了，也就是说 div 的“递”阶段（ beginWork） 已经执行完毕，只剩下“归”阶段的工作要处理了。因此，对于父节点，completeUnitOfWork会毫不犹豫地把它推到下一次循环里去，让它进入 completeWork的逻辑。
 
   值得注意的是，completeUnitOfWork中处理兄弟节点和父节点的顺序是：先检查兄弟节点是否存在，若存在则优先处理兄弟节点；确认没有待处理的兄弟节点后，才转而处理父节点。这也就意味着，completeWork 的执行是严格自底向上的，子节点的 completeWork总会先于父节点执行。
 
 
 
 **副作用链（effectList）的设计与实现**
-  无论是 beginWork 还是 completeWork，它们的应用对象都是 workInProgress树上的节点。我们说 render阶段是一个递归的过程，“递归”的对象，正是这棵 workInProgress 树（见下图右侧高亮部分）：
+  无论是 beginWork 还是 completeWork，它们的应用对象都是 workInProgress树上的节点。 render阶段是一个递归的过程，“递归”的对象，正是这棵 workInProgress 树（见下图右侧高亮部分）：
 
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/25e745cb16f6481fb14c29299747c836.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_1_,size_20,color_FFFFFF,t_70,g_se,x_16#pic_center)
 
-  那么我们递归的目的是什么呢？或者说，render 阶段的工作目标是什么呢？
+  递归的目的是什么？或者说，render 阶段的工作目标是什么？
 
-  render 阶段的工作目标是找出界面中需要处理的更新。
+  **render 阶段的工作目标是找出界面中需要处理的更新。**
 
   在实际的操作中，并不是所有的节点上都会产生需要处理的更新。比如在挂载阶段，对图中的整棵 workInProgress递归完毕后，React 会发现实际只需要对 App 节点执行一个挂载操作就可以了；而在更新阶段，这种现象更为明显。
 
@@ -3581,31 +3670,29 @@ do {
 
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/3351303e95a745a09b6862226c0734e7.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_1_,size_20,color_FFFFFF,t_70,g_se,x_16#pic_center)
 
-  假如说我的某一次操作，仅仅对 p 节点产生了影响，那么对于渲染器来说，它理应只关注 p 节点这一处的更新。这时候问题就来了：怎样做才能让渲染器又快又好地定位到那些真正需要更新的节点呢？
+  假如某一次操作，仅仅对 p 节点产生了影响，那么对于渲染器来说，它理应只关注 p 节点这一处的更新。这时候问题就来了：怎样做才能让渲染器又快又好地定位到那些真正需要更新的节点呢？
 
-  在 render阶段，我们通过艰难的递归过程来明确“p 节点这里有一处更新”这件事情。按照 React 的设计思路，render阶段结束后，“找不同”这件事情其实也就告一段落了。commit 只负责实现更新，而不负责寻找更新，这就意味着我们必须找到一个办法能让 commit阶段“坐享其成”，能直接拿到 render阶段的工作成果。而这，正是副作用链（effectList）的价值所在。
+  在 render阶段，通过递归过程来明确“p 节点这里有一处更新”这件事情。按照 React 的设计思路，render阶段结束后，“找不同”这件事情其实也就告一段落了。commit 只负责实现更新，而不负责寻找更新，这就意味着必须找到一个办法能让 commit阶段“坐享其成”，能直接拿到 render阶段的工作成果。而这，正是副作用链（effectList）的价值所在。
 
-  **副作用链（effectList）** 可以理解为 render阶段“工作成果”的一个集合：每个 Fiber节点都维护着一个属于它自己的 effectList，effectList在数据结构上以链表的形式存在，链表内的每一个元素都是一个 Fiber节点。这些 Fiber 节点需要满足两个共性：
+  **副作用链（effectList）** 可以理解为 render阶段“工作成果”的一个集合：每个 Fiber节点都维护着一个属于它自己的 effectList，effectList在数据结构上以**链表**的形式存在，链表内的每一个元素都是一个 Fiber节点。这些 Fiber 节点需要满足两个共性：
 
 - 都是当前 Fiber 节点的后代节点
 - 都有待处理的副作用
-  Fiber节点的 effectList里记录的并非它自身的更新，而是其需要更新的后代节点。带着这个结论，我们再来品品小节开头 completeUnitOfWork中的“步骤 2”：
+  Fiber节点的 effectList里记录的并非它自身的更新，而是其需要更新的后代节点。带着这个结论，再来看小节开头 completeUnitOfWork中的“步骤 2”：将当前节点的副作用链（effectList）插入到其父节点对应的副作用链（effectList）中。
 
-将当前节点的副作用链（effectList）插入到其父节点对应的副作用链（effectList）中。
+  “completeWork 是自底向上执行的”，也就是说，子节点的 completeWork 总是比父节点先执行。若每次处理到一个节点，都将当前节点的 effectList 插入到其父节点的 effectList 中。那么当所有节点的 completeWork 都执行完毕时，就可以从根Fiber节点，也就是 rootFiber 上，拿到一个存储了当前 Fiber 树所有 effect Fiber的“终极版”的 effectList 了。
 
-  “completeWork 是自底向上执行的”，也就是说，子节点的 completeWork 总是比父节点先执行。试想，若每次处理到一个节点，都将当前节点的 effectList 插入到其父节点的 effectList 中。那么当所有节点的 completeWork 都执行完毕时，我是不是就可以从“终极父节点”，也就是 rootFiber 上，拿到一个存储了当前 Fiber 树所有 effect Fiber的“终极版”的 effectList 了？
+  **把所有需要更新的 Fiber 节点单独串成一串链表，方便后续有针对性地对它们进行更新，这就是所谓的“收集副作用”的过程。**
 
-  把所有需要更新的 Fiber 节点单独串成一串链表，方便后续有针对性地对它们进行更新，这就是所谓的“收集副作用”的过程。
+  这里以挂载过程为例，分析一下这个过程是如何实现的。
 
-  这里我挂载过程为例，分析一下这个过程是如何实现的。
+  首先，这个 effectList链表在 Fiber 节点中是通过 firstEffect和 lastEffect来维护的，如下图所示：
 
-  首先我们要知道的是，这个 effectList链表在 Fiber 节点中是通过 firstEffect和 lastEffect来维护的，如下图所示：
-
-![在这里插入图片描述](https://img-blog.csdnimg.cn/38f5f3230f3a4ec08eb2f66cd38b711a.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_1_,size_20,color_FFFFFF,t_70,g_se,x_16#pic_center)
+<img src="https://img-blog.csdnimg.cn/38f5f3230f3a4ec08eb2f66cd38b711a.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_1_,size_20,color_FFFFFF,t_70,g_se,x_16#pic_center" alt="在这里插入图片描述" style="zoom:150%;" />
 
   其中 firstEffect表示 effectList的第一个节点，而 lastEffect则记录最后一个节点。
 
-  对于挂载过程来说，我们唯一要做的就是把 App 组件挂载到界面上去，因此 App 后代节点们的 effectList其实都是不存在的。effectList只有在 App 的父节点（rootFiber）这才不为空。
+  对于挂载过程来说，唯一要做的就是把 App 组件挂载到界面上去，因此 App 后代节点们的 effectList其实都是不存在的。effectList只有在 App 的父节点（rootFiber）这才不为空。
 
   那么 effectList的创建逻辑又是怎样的呢？其实非常简单，只需要为 firstEffect和 lastEffect各赋值一个引用即可。以下是从 completeUnitOfWork源码中提取出的相关逻辑：
 
@@ -3626,7 +3713,7 @@ if (flags > PerformedWork) {
 
 ```
 
-  代码中的 flags咱们已经反复强调过了，是用来标识副作用类型的；而“completedWork”这个变量，在当前上下文中存储的就是“正在被执行 completeWork相关逻辑”的节点；至于“PerformedWork”，它是一个值为 1 的常量，React 规定若 flags（又名 effectTag）的值小于等于 1，则不必提交到 commit阶段。因此 completeUnitOfWork只会对 flags大于 PerformedWork的 effect fiber 进行收集。
+  代码中的 flags是用来标识副作用类型的；而“completedWork”这个变量，在当前上下文中存储的就是“正在被执行 completeWork相关逻辑”的节点；至于“PerformedWork”，它是一个值为 1 的常量，React 规定若 flags（又名 effectTag）的值小于等于 1，则不必提交到 commit阶段。因此 completeUnitOfWork只会对 flags大于 PerformedWork的 effect fiber 进行收集。
 
   这里以 App 节点为例，走一遍 effectList 的创建过程：
 
@@ -3637,7 +3724,6 @@ if (flags > PerformedWork) {
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/97d62e7f4fd444c082bce9208b454a5d.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_1_,size_20,color_FFFFFF,t_70,g_se,x_16#pic_center)
 
 **commit 阶段工作流简析**
-  在整个 ReactDOM.render 的渲染链路中，render阶段是 Fiber架构的核心体现；而对于 commit 阶段，做到“了解”。
 
   commit会在 performSyncWorkOnRoot中被调用，如下图所示：
 
@@ -3647,7 +3733,7 @@ if (flags > PerformedWork) {
 
 从流程上来说，commit共分为 3 个阶段：before mutation、mutation、layout。
 
-- before mutation 阶段，这个阶段 DOM 节点还没有被渲染到界面上去，过程中会触发 getSnapshotBeforeUpdate，也会处理 useEffect钩子相关的调度逻辑。
+- before mutation 阶段，这个阶段 DOM 节点还没有被渲染到界面上去，过程中会触发 **getSnapshotBeforeUpdate**，也会处理 **useEffect**钩子相关的调度逻辑。
 - mutation，这个阶段负责 DOM 节点的渲染。在渲染过程中，会遍历 effectList，根据 flags（effectTag）的不同，执行不同的 DOM 操作。
 - layout，这个阶段处理 DOM 渲染完毕之后的收尾逻辑。比如调用 componentDidMount/componentDidUpdate，调用 useLayoutEffect钩子函数的回调等。除了这些之外，它还会把 fiberRoot 的 current 指针指向 workInProgress Fiber 树。
 
@@ -3655,22 +3741,1343 @@ commit是一个绝对同步的过程。render阶段可以同步也可以异步�
 
 
 
+## Concurrent 模式
 
-## 从零实现 Fiber 与 Hooks（珠峰）
+Concurrent 模式（异步渲染）下的“时间切片”和“优先级”实现。
 
-#### 前置知识
+为什么React源码中要使用两颗Fiber树。current 树 与 workInProgress 树：“双缓冲”模式在 Fiber 架构下的实现。
 
-**屏幕刷新率**
+在 React 中，双缓冲模式的主要利好，则是能够帮较大限度地实现 Fiber 节点的复用，从而减少性能方面的开销。
 
-大多数屏幕的刷新率是 60 次/秒。浏览器渲染动画或者页面的每一帧的速度也需要和设备的屏幕的刷新率保持一致。页面是一帧一帧绘制出来的，当每秒绘制的帧数（FPS）达到 60 时，页面就是流畅的，小于这个值时，页面就是卡顿的。平均每帧须在 16.6 毫秒绘制完成，所以在书写代码时力求不让一帧的工作量超过 16.6ms。
+current 树与 workInProgress 树之间是如何重复利用的。
 
-**帧**
+在 React 中，current 树与 workInProgress 树，两棵树可以对标“双缓冲”模式下的两套缓冲数据：当 current 树呈现在用户眼前时，所有的更新都会由 workInProgress 树来承接。workInProgress 树将会在用户看不到的地方（内存里）完成所有改变，直到current 指针指向它的时候，此时就意味着 commit 阶段已经执行完毕，workInProgress 树变成了那棵呈现在界面上的 current 树。
 
-每一帧中能进行的任务有：样式计算，布局和绘制。
+Demo：
 
-JavaScript 引擎和渲染引擎在同一个主线程内运行，且它们是互斥的。如果某个 js 任务执行的时间过长，渲染线程则之能推至渲染，导致卡顿。
+```jsx
+import { useState } from 'react';
+function App() {
+    const [state, setState] = useState(0)
+    return (
+        <div className="App">
+            <div onClick={() => { setState(state + 1) }} className="container">
+                <p style={{ width: 128, textAlign: 'center' }}>
+                    {state}
+                </p>
+            </div>
+        </div>
+    );
+}
 
-![image-20211207173907384](..\typora-user-images\image-20211207173907384.png)
+export default App;
+```
+
+**挂载后的 Fiber 树**
+
+挂载时的 render 阶段结束后，commit 执行前，两棵 Fiber 树的形态，如下图所示：
+
+![image-20240212203951695](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240212203951695.png)
+
+待 commit 阶段完成后，右侧的 workInProgress 树对应的 DOM 树就被真正渲染到了页面上，此时 current 指针会指向 workInProgress 树：
+
+![image-20240212204043494](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240212204043494.png)
+
+由于挂载是一个从无到有的过程，在这个过程中是在不断地创建新节点，没有节点复用。节点复用要到更新过程。
+
+**第一次更新**
+
+击数字 0，触发一次更新。这次更新中，下图高亮的 rootFiber 节点就会被复用：
+
+![image-20240212204216758](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240212204216758.png)
+
+这段复用的逻辑在 beginWork 调用链路中的 createWorkInProgress 方法里。
+
+<img src="C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240212204306454.png" alt="image-20240212204306454" style="zoom:150%;" />
+
+在 createWorkInProgress 方法中，会先取当前节点的 alternate 属性，将其记为 workInProgress 节点。对于 rootFiber 节点来说，它的 alternate 属性，其实就是上一棵 current 树的 rootFiber，如上图高亮部分所示。
+
+当检查到上一棵 current 树的 rootFiber 存在时，React 会直接复用这个节点，让它作为下一棵 workInProgress 的节点存在下去，也就是说会走进 createWorkInProgress 的 else 逻辑里去。如果它和目标的 workInProgress 节点之间存在差异，直接在该节点上修改属性、使其与目标节点一致即可，而不必再创建新的 Fiber 节点。
+
+至于剩下的 App、div、p 等节点，由于没有对应的 alternate 节点存在，因此它们的 createWorkInProgress 调用会走进下图高亮处的逻辑中：
+
+<img src="C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240212204525777.png" alt="image-20240212204525777" style="zoom:150%;" />
+
+第一次更新结束后，我们会得到一棵新的 workInProgress Fiber 树，commit后current 指针最后将会指向这棵新的 workInProgress Fiber 树，如下图所示：
+
+![image-20240212204629229](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240212204629229.png)
+
+
+
+**第二次更新**
+
+再次点击数字 1，触发 state 的第二次更新。
+
+在这次更新中，current 树中的每一个 alternate 属性都不为空（如上图所示）。因此每次通过 beginWork 触发 createWorkInProgress 调用时，都会一致地走入 else 里面的逻辑，也就是直接复用现成的节点。
+
+以上便是 current 树和 workInProgress 树互相实现节点复用的过程。
+
+
+
+**更新链路细节**
+
+同步模式下的更新链路与初次挂载链路的 render 阶段基本是一致的，都是通过 performSyncWorkOnRoot 来触发包括 beginWork、completeWork 在内的[深度优先搜索](https://so.csdn.net/so/search?q=深度优先搜索&spm=1001.2101.3001.7020)过程。更新过程的调用栈：
+
+![image-20240212211534445](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240212211534445.png)
+
+挂载可以理解为一种特殊的更新，ReactDOM.render 和 setState 一样，也是一种触发更新的姿势。在 React 中，ReactDOM.render、setState、useState 等方法都是可以触发更新的，这些方法发起的调用链路很相似，是因为它们最后都会通过创建 update 对象来进入同一套更新工作流。
+
+
+
+**update 的创建**
+
+useState调用首先触发的是 dispatchAction 这个方法，如下图所示：
+
+![image-20240212211825892](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240212211825892.png)
+
+dispatchAction 中，会完成 update 对象的创建，如下图标红处所示：
+
+![image-20240212212006371](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240212212006371.png)
+
+从 update 对象到 scheduleUpdateOnFiber。、
+
+updateContainer ：
+
+<img src="C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240212212146469.png" alt="image-20240212212146469" style="zoom:150%;" />
+
+图中这一段代码以 enqueueUpdate 为界，它一共做了以下三件事。
+
+1. enqueueUpdate 之前：创建 update；
+
+2. enqueueUpdate 调用：将 update 入队。每一个 Fiber 节点都会有一个属于它自己的 updateQueue，用于存储多个更新，这个 updateQueue 是以**循环链表**的形式存在的。在 render 阶段，updateQueue 的内容会成为 render 阶段计算 Fiber 节点的新 state 的依据；
+
+3. scheduleUpdateOnFiber：调度 update。同步挂载链路中，这个方法后面紧跟的就是 performSyncWorkOnRoot 所触发的 render 阶段，如下图所示 ：
+
+   ![image-20240212212414301](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240212212414301.png)
+
+dispatchAction 里面同样有对这三个动作的处理。
+
+dispatchAction 的局部截图，包含了对 update 对象的创建和入队处理。dispatchAction 的更新调度动作，在函数的末尾，即调用scheduleOnFiber（fiber，lane，eventTime）方法。
+
+
+
+dispatchAction 中，调度的是当前触发更新的节点，这一点和挂载过程需要区分开来。在挂载过程中，updateContainer 会直接调度根节点。其实，对于更新这种场景来说，大部分的更新动作确实都不是由根节点触发的，而 render 阶段的起点则是根节点。因此在 scheduleUpdateOnFiber 中，有这样一个方法，见下图标红处：
+
+![image-20240212212803112](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240212212803112.png)
+
+markUpdateLaneFromFiberToRoot 将会从当前 Fiber 节点开始，向上遍历直至根节点，并将根节点返回。
+
+**scheduleUpdateOnFiber 如何区分同步还是异步？**
+
+同步渲染链路中：
+
+![image-20240212214850208](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240212214850208.png)
+
+这是 scheduleUpdateOnFiber 中的一段逻辑。在同步的渲染链路中，lane === SyncLane 这个条件是成立的，因此会直接进入 performSyncWorkOnRoot 的逻辑，开启同步的 render 流程；而在异步渲染模式下，则将进入 else 的逻辑。
+
+在 else 中， ensureRootIsScheduled 这个方法很关键，它将决定如何开启当前更新所对应的 render 阶段。在 ensureRootIsScheduled 中，有[这样一段核心逻辑](https://github.com/facebook/react/blob/b6df4417c79c11cfb44f965fab55b573882b1d54/packages/react-reconciler/src/ReactFiberWorkLoop.new.js#L602)（解析在注释里）：
+
+```js
+if (newCallbackPriority === SyncLanePriority) {
+    // 同步更新的 render 入口
+    newCallbackNode = scheduleSyncCallback(performSyncWorkOnRoot.bind(null, root));
+} else {
+    // 将当前任务的 lane 优先级转换为 scheduler 可理解的优先级
+    var schedulerPriorityLevel = lanePriorityToSchedulerPriority(newCallbackPriority);
+    // 异步更新的 render 入口
+    newCallbackNode = scheduleCallback(schedulerPriorityLevel, performConcurrentWorkOnRoot.bind(null, root));
+}
+```
+
+performSyncWorkOnRoot 和 performConcurrentWorkOnRoot 这两个方法：前者是同步更新模式下的 render 阶段入口；而后者是异步模式下的 render 阶段入口。
+
+从这段逻辑中可以看出，React 会以当前更新任务的优先级类型为依据，决定接下来是调度 performSyncWorkOnRoot 还是 performConcurrentWorkOnRoot。这里调度任务用到的函数分别是 scheduleSyncCallback 和 scheduleCallback，这两个函数在内部都是通过调用 unstable_scheduleCallback 方法来执行任务调度的。而 unstable_scheduleCallback 正是 Scheduler（调度器）中导出的一个核心方法，也是本讲的一个重点。
+
+在解读 unstable_scheduleCallback 的工作原理之前，先认识一下 Scheduler。
+
+
+
+### Scheduler
+
+Scheduler 从架构上来看，是 Fiber 架构分层中的“调度层”；从实现上来看，它并非一段内嵌的逻辑，而是一个与 react-dom 同级的文件夹，如下图所示，其中收敛了所有相对通用的调度逻辑：
+
+![image-20240212215308827](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240212215308827.png)
+
+
+
+ Fiber 架构下的异步渲染（即 Concurrent 模式）的核心特征分别是“时间切片”与“优先级调度”。而这两点，也正是 Scheduler 的核心能力。
+
+**结合 React 调用栈，理解时间切片现象。**
+
+在理解时间切片的实现原理之前，首先要搞清楚时间切片是什么。
+
+同步渲染模式下的 render 阶段，是一个同步的、深度优先搜索的过程。同步的过程会带来什么问题？不可中断。现在，直接通过调用栈来理解它，下面是一个渲染工作量相对比较大的 React Demo，代码如下：
+
+```jsx
+import React from 'react';
+
+function App() {
+    const arr = new Array(1000).fill(0)
+    const renderContent = arr.map(
+        (i, index) => <p style={{ width: 128, textAlign: 'center' }}>{`测试文本第${index}行`}</p>
+
+    )
+
+    return (
+        <div className="App">
+            <div className="container">
+                {
+                    renderContent
+                }
+            </div>
+        </div>
+    );
+}
+
+export default App;
+```
+
+当使用 ReactDOM.render 来渲染这个长列表时，它的调用栈如下图所示：
+
+![image-20240212215710319](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240212215710319.png)
+
+图中标红的地方，即一个不间断的灰色“Task”长条，对浏览器来说就意味着是一个不可中断的任务。
+
+浏览器的刷新频率为 60Hz，也就是说每 16.6ms 就会刷新一次。在这 16.6ms 里，除了 JS 线程外，渲染线程也是有工作要处理的，但超长的 Task 显然会挤占渲染线程的工作时间，引起“掉帧”，进而带来卡顿的风险，这也正是“JS 对主线程的超时占用”问题。
+
+若将 ReactDOM.render 调用改为 createRoot 调用（即开启 Concurrent 模式），调用栈就会变成下面这样：
+
+![image-20240212215913891](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240212215913891.png)
+
+那一个不间断的 Task 长条（大任务），如今像是被“切”过了一样，已经变成了多个断断续续的 Task “短条”（小任务），单个短 Task 的执行时长在浏览器中是 5ms 左右。这些短 Task 的工作量加起来，和之前长 Task 工作量是一样的。但短 Task 之间留出的时间缝隙，却给了浏览器喘息的机会，这就是所谓的“时间切片”效果。
+
+
+
+**时间切片是如何实现的？**
+
+在同步渲染中，循环创建 Fiber 节点、构建 Fiber 树的过程是由 workLoopSync 函数来触发的。这里我们来复习一下 workLoopSync 的源码，下图：
+
+![image-20240212220027274](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240212220027274.png)
+
+在 workLoopSync 中，只要 workInProgress 不为空，while 循环就不会结束，它所触发的是一个同步的 performUnitOfWork 循环调用过程。
+
+而在异步渲染模式下，这个循环是由 **workLoopConcurrent** 来开启的。workLoopConcurrent 的工作内容和 workLoopSync 非常相似，仅仅在循环判断上有一处不同，请注意下图源码中标红部分：
+
+![image-20240212220103444](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240212220103444.png)
+
+shouldYield 直译过来的话是“需要让出”。顾名思义，当 shouldYield() 调用返回为 true 时，就说明当前需要对主线程进行让出了，此时 whille 循环的判断条件整体为 false，while 循环将不再继续。
+
+shouldYield :
+
+```js
+var Scheduler_shouldYield = Scheduler.unstable_shouldYield,
+......
+var shouldYield = Scheduler_shouldYield;
+```
+
+shouldYield 的本体其实是 Scheduler.unstable_shouldYield，也就是 Scheduler 包中导出的 unstable_shouldYield 方法，该方法本身比较简单。其源码如下图标红处所示：
+
+![image-20240212220246564](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240212220246564.png)
+
+其中 unstable_now 这里实际取的就是 performance.now() 的值，即“当前时间”。那么 deadline 可以被理解为当前时间切片的到期时间，它的计算过程在 Scheduler 包中的 performWorkUntilDeadline 方法里可以找到，也就是下图的标红部分：
+
+![image-20240212220327534](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240212220327534.png)
+
+在这行算式里，currentTime 是当前时间，yieldInterval 是时间切片的长度。注意，时间切片的长度并不是一个常量，它是由 React 根据浏览器的帧率大小计算所得出来的，与浏览器的性能有关。
+
+时间切片的实现原理：React 会根据浏览器的帧率，计算出时间切片的大小，并结合当前时间计算出每一个切片的到期时间。在 workLoopConcurrent 中，while 循环每次执行前，会调用 shouldYield 函数来询问当前时间切片是否到期，若已到期，则结束循环、出让主线程的控制权。
+
+
+
+**优先级调度是如何实现的？**
+
+在“更新链路细节”这一小节的末尾，无论是 scheduleSyncCallback 还是 scheduleCallback，最终都是通过调用 unstable_scheduleCallback 来发起调度的。unstable_scheduleCallback 是 Scheduler 导出的一个核心方法，它将结合任务的优先级信息为其执行不同的调度逻辑。
+
+接下来就结合源码，看看这个过程是如何实现的（解析在注释里）。
+
+```js
+function unstable_scheduleCallback(priorityLevel, callback, options) {
+
+    // 获取当前时间
+    var currentTime = exports.unstable_now();
+
+    // 声明 startTime，startTime 是任务的预期开始时间
+    var startTime;
+
+    // 以下是对 options 入参的处理
+    if (typeof options === 'object' && options !== null) {
+
+        var delay = options.delay;
+
+        // 若入参规定了延迟时间，则累加延迟时间
+        if (typeof delay === 'number' && delay > 0) {
+            startTime = currentTime + delay;
+        } else {
+            startTime = currentTime;
+
+        }
+
+    } else {
+        startTime = currentTime;
+
+    }
+
+    // timeout 是 expirationTime 的计算依据
+    var timeout;
+
+    // 根据 priorityLevel，确定 timeout 的值
+    switch (priorityLevel) {
+        case ImmediatePriority:
+            timeout = IMMEDIATE_PRIORITY_TIMEOUT;
+            break;
+        case UserBlockingPriority:
+            timeout = USER_BLOCKING_PRIORITY_TIMEOUT;
+            break;
+        case IdlePriority:
+            timeout = IDLE_PRIORITY_TIMEOUT;
+            break;
+        case LowPriority:
+            timeout = LOW_PRIORITY_TIMEOUT;
+            break;
+        case NormalPriority:
+        default:
+            timeout = NORMAL_PRIORITY_TIMEOUT;
+            break;
+    }
+
+    // 优先级越高，timout 越小，expirationTime 越小
+    var expirationTime = startTime + timeout;
+
+    // 创建 task 对象
+    var newTask = {
+        id: taskIdCounter++,
+        callback: callback,
+        priorityLevel: priorityLevel,
+        startTime: startTime,
+        expirationTime: expirationTime,
+        sortIndex: -1
+    };
+    {
+
+        newTask.isQueued = false;
+
+    }
+
+    // 若当前时间小于开始时间，说明该任务可延时执行(未过期）
+    if (startTime > currentTime) {
+
+        // 将未过期任务推入 "timerQueue"
+        newTask.sortIndex = startTime;
+
+        push(timerQueue, newTask);
+
+        // 若 taskQueue 中没有可执行的任务，而当前任务又是 timerQueue 中的第一个任务
+        if (peek(taskQueue) === null && newTask === peek(timerQueue)) {
+
+            ......
+
+            // 那么就派发一个延时任务，这个延时任务用于检查当前任务是否过期
+            requestHostTimeout(handleTimeout, startTime - currentTime);
+
+        }
+
+    } else {
+
+        // else 里处理的是当前时间大于 startTime 的情况，说明这个任务已过期
+        newTask.sortIndex = expirationTime;
+
+        // 过期的任务会被推入 taskQueue
+        push(taskQueue, newTask);
+
+        ......
+
+        // 执行 taskQueue 中的任务
+        requestHostCallback(flushWork);
+
+    }
+
+    return newTask;
+
+}
+```
+
+从源码中可以看出，unstable_scheduleCallback 的主要工作是针对当前任务创建一个 task，然后结合 startTime 信息将这个 task 推入 **timerQueue** 或 **taskQueue**，最后根据 timerQueue 和 taskQueue 的情况，执行延时任务或即时任务。
+
+要想理解这个过程，首先要搞清楚以下几个概念。
+
+1. startTime：任务的开始时间；
+
+2. expirationTime：这是一个和优先级相关的值，expirationTime 越小，任务的优先级就越高；
+
+3. timerQueue：一个以 startTime 为排序依据的小顶堆，它存储的是 startTime 大于当前时间（也就是待执行）的任务；
+
+4. taskQueue：一个以 expirationTime 为排序依据的小顶堆，它存储的是 startTime 小于当前时间（也就是已过期）的任务；
+
+这里的“小顶堆”概念可能会触及一部分同学的知识盲区，我简单解释下：堆是一种特殊的[完全二叉树](https://baike.baidu.com/item/完全二叉树)。如果对一棵完全二叉树来说，它每个结点的结点值都不大于其左右孩子的结点值，这样的完全二叉树就叫“[小顶堆](https://baike.baidu.com/item/最小堆?fromtitle=小顶堆&fromid=4634212)”。小顶堆自身特有的插入和删除逻辑，决定了无论我们怎么增删小顶堆的元素，其根节点一定是所有元素中值最小的一个节点。这样的性质，使得小顶堆经常被用于实现[优先队列](https://baike.baidu.com/item/优先队列)。
+
+结合小顶堆的特性，再来看源码中涉及 timerQueue 和 taskQueue 的操作，这段代码同时也是整个 unstable_scheduleCallback 方法中的核心逻辑：
+
+```js
+  // 若当前时间小于开始时间，说明该任务可延时执行(未过期）
+  if (startTime > currentTime) {
+    // 将未过期任务推入 "timerQueue"
+    newTask.sortIndex = startTime;
+    push(timerQueue, newTask);
+ 
+    // 若 taskQueue 中没有可执行的任务，而当前任务又是 timerQueue 中的第一个任务
+    if (peek(taskQueue) === null && newTask === peek(timerQueue)) {
+      ......
+      // 那么就派发一个延时任务，这个延时任务用于将过期的 task 加入 taskQueue 队列
+      requestHostTimeout(handleTimeout, startTime - currentTime);
+    }
+  } else {
+    // else 里处理的是当前时间大于 startTime 的情况，说明这个任务已过期
+    newTask.sortIndex = expirationTime;
+    // 过期的任务会被推入 taskQueue
+    push(taskQueue, newTask);
+    ......
+ 
+    // 执行 taskQueue 中的任务
+    requestHostCallback(flushWork);
+  }
+```
+
+若判断当前任务是待执行任务，那么该任务会在 sortIndex 属性被赋值为 startTime 后，被推入 timerQueue。随后，会进入这样的一段判断逻辑：
+
+```js
+// 若 taskQueue 中没有可执行的任务，而当前任务又是 timerQueue 中的第一个任务
+if (peek(taskQueue) === null && newTask === peek(timerQueue)) {
+  ......
+  // 那么就派发一个延时任务，这个延时任务用于将过期的 task 加入 taskQueue 队列
+  requestHostTimeout(handleTimeout, startTime - currentTime);
+}
+```
+
+peek() 的入参是一个小顶堆，它将取出这个小顶堆的堆顶元素。
+
+taskQueue 里存储的是已过期的任务，peek(taskQueue) 取出的任务若为空，则说明 taskQueue 为空、当前并没有已过期任务。在没有已过期任务的情况下，会进一步判断 timerQueue，也就是未过期任务队列里的情况。
+
+小顶堆是一个相对有序的数据结构。timerQueue 作为一个小顶堆，它的排序依据其实正是 sortIndex 属性的大小。这里的 sortIndex 属性取值为 startTime，意味着小顶堆的堆顶任务一定是整个 timerQueue 堆结构里 startTime 最小的任务，也就是需要最早被执行的未过期任务。
+
+若当前任务（newTask）就是 timerQueue 中需要最早被执行的未过期任务，那么 unstable_scheduleCallback 会通过调用 requestHostTimeout，为当前任务发起一个延时调用。
+
+注意，这个延时调用（也就是 handleTimeout）并不会直接调度执行当前任务－它的作用是在当前任务到期后，将其从 timerQueue 中取出，加入 taskQueue 中，然后触发对 flushWork 的调用。真正的调度执行过程是在 flushWork 中进行的。flushWork 中将调用 workLoop，workLoop 会逐一执行 taskQueue 中的任务，直到调度过程被暂停（时间片用尽）或任务全部被清空。
+
+以上便是针对未过期任务的处理。在这个基础上，不难理解 else 中，对过期任务的处理逻辑（也就是下面这段代码）：
+
+```js
+{
+  // else 里处理的是当前时间大于 startTime 的情况，说明这个任务已过期
+  newTask.sortIndex = expirationTime;
+  // 过期的任务会被推入 taskQueue
+  push(taskQueue, newTask);
+  ......
+  // 执行 taskQueue 中的任务
+  requestHostCallback(flushWork);
+}
+```
+
+与 timerQueue 不同的是，taskQueue 是一个以 expirationTime 为 sortIndex（排序依据）的小顶堆。对于已过期任务，React 在将其推入 taskQueue 后，会通过 requestHostCallback(flushWork) 发起一个针对 flushWork 的即时任务，而 flushWork 会执行 taskQueue 中过期的任务。
+
+从 React 17.0.0 源码来看，当下 React 发起 Task 调度的姿势有两个：setTimeout、MessageChannel。在宿主环境不支持 MessageChannel 的情况下，会降级到 setTimeout。但不管是 setTimeout 还是 MessageChannel，它们发起的都是异步任务。
+
+因此  requestHostCallback 发起的“即时任务”最早也要等到下一次事件循环才能够执行。“即时”仅仅意味它相对于“延时任务”来说，不需要等待指定的时间间隔，并不意味着同步调用。
+
+这里为了方便大家理解，将 unstable_scheduleCallback 方法的[工作流](https://so.csdn.net/so/search?q=工作流&spm=1001.2101.3001.7020)总结进一张大图：
+
+![image-20240212221044086](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240212221044086.png)
+
+
+
+
+
+## 事件系统
+
+react有一套自己的事件系统，不同于原生的DOM事件系统。
+
+对不同的知识，需要考虑不同的学习策略。
+
+在面试中，主要考察对事件工作流，事件对象等逻辑层面的考察，而并非偏重代码细节。
+
+### 原生DOM事件流
+
+要想理解好 React 事件机制，就必须对原生 DOM 事件流有扎实的掌握。
+
+ DOM 事件流是如何工作的，W3C 标准约定了一个事件的传播过程要经过以下 3 个阶段：
+
+1. 事件捕获阶段
+2. 目标阶段
+3. 事件冒泡阶段
+
+![image-20240211091418357](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240211091418357.png)
+
+
+
+### 事件委托
+
+DOM 事件流下的性能优化：事件委托。
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Document</title>
+    </head>
+    <body>
+        <ul id="poem">
+            <li>床前明月光</li>
+            <li>疑是地上霜</li>
+            <li>举头望明月</li>
+            <li>低头思故乡</li>
+            <li>锄禾日当午</li>
+            <li>汗滴禾下土</li>
+            <li>谁知盘中餐</li>
+            <li>粒粒皆辛苦</li>
+            <li>背不动了</li>
+            <li>我背不动了</li>
+        </ul>
+    </body>
+</html>
+```
+
+**在这段 HTML 里，希望做到点击每一个 li 元素，都能输出它内在的文本内容。你会怎么做？**
+
+一个比较直观的思路是让每一个 li 元素都去监听一个点击动作：
+
+```js
+// 获取 li 列表
+var liList = document.getElementsByTagName('li')
+// 逐个安装监听函数
+for (var i = 0; i < liList.length; i++) {
+    liList[i].addEventListener('click', function (e) {
+        console.log(e.target.innerHTML)
+    })
+}
+```
+
+
+
+基于事件冒泡做事件代理，可以通过事件对象中的 target 属性，拿到实际触发事件的那个元素，针对这个元素分发事件处理的逻辑，做到真正的“委托”：
+
+```js
+var ul = document.getElementById('poem')
+ul.addEventListener('click', function(e){
+    console.log(e.target.innerHTML)
+})
+```
+
+e.target 指的是触发事件的具体目标，它记录着事件的源头。不管监听函数在哪一层执行，只要拿到这个 e.target，就相当于拿到了真正触发事件的那个元素。拿到这个元素后，可以模拟出它的行为，实现无差别的监听效果。
+像这样利用事件的冒泡特性，把多个子元素的同一类型的监听逻辑，合并到父元素上通过一个监听函数来管理的行为，就是事件委托。通过事件委托，可以减少内存开销、简化注册步骤，大大提高开发效率。
+
+
+
+### React 事件系统
+
+在 React 中，除了少数特殊的不可冒泡的事件（比如媒体类型的事件）无法被事件系统处理外，绝大部分的事件都不会被绑定在具体的元素上，而是统一被绑定在页面的 document 上（react18以后是绑定到容器节点上）。
+
+当事件在具体的 DOM 节点上被触发后，最终都会冒泡到 document 上，document 上所绑定的统一事件处理程序会将事件分发到具体的组件实例。
+
+在分发事件之前，React 首先会对事件进行包装，把原生 DOM 事件包装成合成事件。
+
+
+
+### React 合成事件
+
+合成事件是 React 自定义的事件对象，它符合W3C规范，在底层抹平了不同浏览器的差异，在上层面向开发者暴露统一的、稳定的、与 DOM 原生事件相同的事件接口。开发者们由此便不必再关注兼容性问题，可以专注于业务逻辑的开发。
+
+虽然合成事件对象并不是原生 DOM 事件对象，但它保存了原生 DOM 事件对象的引用。当需要访问原生 DOM 事件对象时，可以通过合成事件对象的 e.nativeEvent 属性获取到它，如下图所示：
+
+![image-20240211092731991](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240211092731991.png)
+
+
+
+结合 React 源码和调用栈，对事件系统的工作流进行深入的拆解。
+
+### 事件的绑定
+
+React16中，事件绑定是在挂载的过程中完成的，具体是在 completeWork 中完成的。
+
+completeWork 内部有三个关键动作：
+
+1. 创建 DOM 节点（createInstance）
+2. 将 DOM 节点插入到 DOM 树中（appendAllChildren）
+3. 为 DOM 节点设置属性（finalizeInitialChildren）。
+
+其中“为 DOM 节点**设置属性”**这个环节，会遍历 FiberNode 的 props。当遍历到事件相关的 props 时，就会触发事件的注册链路。整个过程涉及的函数调用栈如下图所示：
+
+<img src="C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240211112851694.png" alt="image-20240211112851694" style="zoom:200%;" />
+
+<img src="C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240211112933953.png" alt="image-20240211112933953" style="zoom:150%;" />
+
+事件的注册过程是由 ensureListeningTo 函数开启。在 ensureListeningTo 中，会尝试获取当前 DOM 结构中的根节点（这里指的是 document 对象），然后通过调用 legacyListenToEvent，将统一的事件监听函数注册到 document 上面。
+
+在 legacyListenToEvent 中调用 legacyListenToTopLevelEvent 来处理事件和 document 之间的关系的。 legacyListenToTopLevelEvent 的“顶层”可以理解为事件委托的最上层，也就是 document 节点。在 legacyListenToTopLevelEvent 中，有这样一段逻辑：
+
+<img src="C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240211113238309.png" alt="image-20240211113238309" style="zoom:150%;" />
+
+listenerMap 是在 legacyListenToEvent 里创建的映射表，它将记录当前 document 已经监听了哪些事件。在 legacyListenToTopLevelEvent 代码的开头，会首先判断 listenerMap.has(topLevelType) 这个条件是否为 true。
+
+> topLevelType 在 legacyListenToTopLevelEvent 的函数上下文中代表事件的类型，比如说尝试监听的是一个点击事件，那么 topLevelType 的值就会是 click。
+
+若 listenerMap.has(topLevelType) 为 true，也就是当前这个事件 document 已经监听过了，那么就会直接跳过对这个事件的处理，否则才会进入具体的事件监听逻辑。即便在 React 项目中多次调用了对同一个事件的监听，也只会在 document 上触发一次注册。
+
+为什么针对同一个事件，即便可能会存在多个回调，document 也只需要注册一次监听？因为 React最终注册到 document 上的并不是某一个 DOM 节点上对应的具体回调逻辑，而是一个统一的事件分发函数。
+
+![image-20240211113711271](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240211113711271.png)
+
+在这段逻辑中，element 就是 document 这个 DOM 元素，如下图所示，它在 legacyListenToEvent 阶段被获取后，又被层层的逻辑传递到了这个位置。eventType，它表示事件的类型，这里监听的是一个点击事件，因此 eventType 就是 click。
+
+重点在 listener 上，最终注册到 document 上的是一个统一的事件分发函数，以下是运行时的 listener 输出结果：
+
+![image-20240211113942797](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240211113942797.png)
+
+listener 本体是一个名为 dispatchDiscreteEvent 的函数。事实上，根据情况的不同，listener 可能是以下 3 个函数中的任意一个：
+
+1. dispatchDiscreteEvent
+
+2. dispatchUserBlockingUpdate
+
+3. dispatchEvent
+
+dispatchDiscreteEvent 和 dispatchUserBlockingUpdate 的不同，主要体现在对优先级的处理上，对事件分发动作倒没什么影响。无论是 dispatchDiscreteEvent 还是 dispatchUserBlockingUpdate，它们最后都是通过调用 dispatchEvent 来执行事件分发的。因此可以认为，最后绑定到 document 上的这个统一的事件分发函数，其实就是 dispatchEvent。
+
+
+
+
+
+### 事件的触发
+
+ dispatchEvent 实现事件分发：
+
+事件触发的本质是对 dispatchEvent 函数的调用。看核心工作流：
+
+<img src="C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240211135502223.png" alt="image-20240211135502223" style="zoom:150%;" />
+
+Demo：
+
+```jsx
+import React from 'react';
+import { useState } from 'react'
+
+function App() {
+    const [state, setState] = useState(0)
+    return (
+        <div className="App">
+            <div id="container" onClickCapture={() => console.log('捕获经过 div')} onClick={() => console.log('冒泡经过 div')} className="container">
+
+                <p style={{ width: 128, textAlign: 'center' }}>
+                    {state}
+                </p>
+                <button style={{ width: 128 }} onClick={() => { setState(state + 1) }}>点击+1</button>
+            </div>
+        </div>
+    );
+}
+export default App;
+```
+
+App 组件对应的 Fiber 树结构如下图所示：
+
+![image-20240211135646998](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240211135646998.png)
+
+事件回调的收集过程：
+
+```js
+function traverseTwoPhase(inst, fn, arg) {
+
+    // 定义一个 path 数组
+    var path = [];
+
+    while (inst) {
+        // 将当前节点收集进 path 数组
+        path.push(inst);
+        // 向上收集 tag===HostComponent 的父节点
+        inst = getParent(inst);
+    }
+
+    var i;
+    // 从后往前，收集 path 数组中会参与捕获过程的节点与对应回调
+    for (i = path.length; i--; i > 0;) {
+        fn(path[i], 'captured', arg);
+    }
+
+
+    // 从前往后，收集 path 数组中会参与冒泡过程的节点与对应回调
+    for (i = 0; i < path.length; i++) {
+        fn(path[i], 'bubbled', arg);
+    }
+
+}
+```
+
+三个循环分别所做的事：
+
+1. 循环收集符合条件的父节点，存进 path 数组中
+   traverseTwoPhase会以触发事件的目标节点为起点，不断向上寻找 tag\=\=\=HostComponent 的父节点，并将这些节点按顺序收集进 path 数组中。其中 tag\=\=\=HostComponent 这个条件是在 getParent() 函数中管控的。
+   HostComponent 是 DOM 元素对应的 Fiber 节点类型。此处限制 tag===HostComponent，也就是说只收集 DOM 元素对应的 Fiber 节点。之所以这样做，是因为浏览器只认识 DOM 节点，浏览器事件也只会在 DOM 节点之间传播，收集其他节点是没有意义的。
+
+   Demo中，第一个循环收集到的fiber节点分别有下图中的几个：
+
+   ![image-20240211140302179](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240211140302179.png)
+
+   再加上目标对象button对应的fiber节点。
+
+   ![image-20240211140402442](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240211140402442.png)
+
+2. 第二个循环，模拟事件在捕获阶段的传播顺序，收集捕获阶段相关的节点实例与回调函数
+
+   从后往前遍历 path 数组，模拟事件的捕获顺序，收集事件在捕获阶段对应的回调与实例。在遍历的过程中，fn 函数会对每个节点的回调情况进行检查，若该节点上对应当前事件的捕获回调不为空，那么**节点实例**会被收集到合成事件的 \_dispatchInstances 属性（也就是 SyntheticEvent.\_dispatchInstances）中去，**事件回调**则会被收集到合成事件的 \_dispatchListeners 属性（也就是 SyntheticEvent.\_dispatchListeners） 中去，等待后续的执行。
+
+3. 第三个循环，模拟事件在冒泡阶段的传播顺序，收集冒泡阶段相关的节点实例与回调函数
+
+   除了遍历顺序和第二个循环不一样外，大致逻辑基本都一样。
+
+   > 需要注意的是，当前事件对应的 SyntheticEvent 实例有且仅有一个，因此在模拟捕获和模拟冒泡这两个过程中，收集到的实例会被推入同一个 SyntheticEvent._dispatchInstances，收集到的事件回调也会被推入同一个 SyntheticEvent._dispatchListeners。
+
+在事件回调的执行阶段，只需要按照顺序执行 SyntheticEvent.\_dispatchListeners 数组中的回调函数，就能够一口气模拟出整个完整的 DOM 事件流，也就是 “捕获-目标-冒泡”这三个阶段。
+
+以 Demo 为例，看 button 上触发的点击事件对应的 SyntheticEvent 对象上的 _dispatchInstances 和 _dispatchListeners 各是什么内容：
+
+![image-20240211151750328](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240211151750328.png)
+
+\_dispatchInstances 和 \_dispatchListeners 两个数组中的元素是严格的对应关系，这确保了在回调的执行阶段，可以简单地通过索引来将实例与监听函数关联起来，实现事件委托的效果。同时，两个数组中元素的排序，契合 DOM 标准中“捕获-目标-冒泡”这三个阶段的事件传播顺序。
+
+
+
+合成事件在模拟 DOM 事件流，React 为什么不直接使用原生 DOM 提供的事件机制？或者：React 事件系统的设计动机是什么？
+
+思考的角度：
+
+1. React 官方说明过的一点是：合成事件符合[W3C](https://www.w3.org/TR/DOM-Level-3-Events/)规范，在底层抹平了不同浏览器的差异，在上层面向开发者暴露统一的、稳定的、与 DOM 原生事件相同的事件接口。开发者们由此便不必再关注烦琐的底层兼容问题，可以专注于业务逻辑的开发。
+
+2. 自研事件系统使 React 牢牢把握住了事件处理的主动权：造轮子，很多时候并不是因为别人家的轮子不好，而是因为别人家的轮子没有办法匹配我们的场景。拿 React 来说，比如说它想在事件系统中处理 Fiber 相关的优先级概念，或者想把多个事件揉成一个事件（比如 onChange 事件），原生 DOM 不会帮它做，因为原生讲究的就是个通用性。而 React 想要的则是自定义，通过自研事件系统，React 能够从很大程度上干预事件的表现，使其符合自身的需求。
+
+社区的一些讨论中见到过“合成事件性能更好”的结论，该结论的推导过程往往是这样的：事件委托可以节省内存开销 → React 合成事件承袭了事件委托的思想 → 合成事件性能更好。对于这类观点，个人目前持保留意见。
+
+React 合成事件虽然承袭了事件委托的思想，但它的实现过程比传统的事件委托复杂太多。对 React 来说，事件委托主要的作用应该在于帮助 React **实现了对所有事件的中心化管控**。至于 React 事件是否比不使用事件委托的原生 DOM 事件性能更好？没有严格的对比和大量测试数据做支撑，很难下结论，React 官方也从没有给出过类似的说法。严谨起见，这里不推荐以性能为切入点去把握合成事件的特征。
+
+
+
+## redux
+
+### Flux 架构
+
+Redux 的设计在很大程度上受益于 Flux 架构，可以认为 Redux 是 Flux 的一种实现形式（虽然它并不严格遵循 Flux 的设定），理解 Flux 将帮助更好地从抽象层面把握 Redux。
+
+Flux 并不是一个具体的框架，它是一套由 Facebook 技术团队提出的应用架构，这套架构约束的是应用处理数据的模式。在 Flux 架构中，一个应用将被拆分为以下 4 个部分。
+
+- View（视图层）：用户界面。该用户界面可以是以任何形式实现，React 组件是一种形式，Vue、Angular 也完全可以。Flux 架构与 React 之间并不存在耦合关系。
+- Action（动作）：视图层发出的“消息”，它会触发应用状态的改变。
+- Dispatcher（派发器）：它负责对 action进行分发。
+- Store（数据层）：它是存储应用状态的“仓库”，此外还会定义修改状态的逻辑。store的变化最终会映射到 view层上去。
+
+这 4 个部分之间的协作将通过下图所示的工作流规则来完成配合：
+
+![image-20240213090424163](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240213090424163.png)
+
+图中所有的箭头都是单向的，这也正是 Flux 架构最核心的一个特点——单向数据流
+
+一个典型的 Flux 工作流是这样的：用户与 `View`之间产生交互，通过 `View`发起一个 `Action`；`Dispatcher` 会把这个 `Action`派发给 `Store`，通知 `Store`进行相应的状态更新。`Store`状态更新完成后，会进一步通知 `View`去更新界面。
+
+
+
+Flux架构想解决的问题：
+
+Flux 的核心特征是单向数据流，要想完全了解单向数据流的好处，需要先了解双向数据流带来了什么问题。
+
+双向数据流最为典型的代表就是前端场景下的 MVC 架构，该架构的示意图如下图所示：
+
+![image-20240213090622413](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240213090622413.png)
+
+除了允许用户通过 View 层交互来触发流程以外，MVC 架构还有另外一种形式，即允许用户通过直接触发 `Controller`逻辑来触发流程，这种模式下的架构关系如下图所示：
+
+![image-20240213090657461](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240213090657461.png)
+
+在 MVC 应用中，会涉及这 3 个部分：
+
+- `Model`（模型），程序需要操作的数据或信息；
+- `View`（视图），用户界面；
+- `Controller`（控制器），用于连接 `View` 和 `Model`，管理 `Model`与 `View`之间的逻辑。
+
+原则上来说，三者的关系应该像上图一样，用户操作 View后，由 Controller来处理逻辑（或者直接触发 Controller的逻辑），经过 Controller将改变应用到 Model中，最终再反馈到 View上。在这个过程中，数据流应该是单向的。
+
+事实上，在许多服务端的 MVC 应用中，数据流确实能够保持单向。但是在前端场景下，实际的 MVC 应用要复杂不少，前端应用/框架往往出于交互的需要，允许 View 和 Model 直接通信。此时的架构关系就会变成下图这样：
+
+![image-20240213090849438](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240213090849438.png)
+
+这就允许了双向数据流的存在。当业务复杂度较高时，数据流会变得非常混乱，出现类似下图这种情况：
+
+![image-20240213090937520](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240213090937520.png)
+
+图中我们的示例只有一个 `Controller`，但考虑到一个应用中还可能存在多个 `Controller`，实际的情况应该比上图还要复杂得多。
+
+在如此复杂的依赖关系下，再小的项目变更也将伴随着不容小觑的风险——或许一个小小的改动，就会对整个项目造成“蝴蝶效应”般的巨大影响。如此混乱的修改来源，将会使得我们连 Bug 排查都无从下手，因为你很难区分出一个数据的变化到底是由哪个 Controller或者哪个 View 引发的。
+
+而Flux架构的数据流模式：
+
+![image-20240213090424163](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240213090424163.png)
+
+**Flux最核心的地方在于严格的单向数据流，在单向数据流下，状态的变化是可预测的。**如果 store中的数据发生了变化，那么有且仅有一个原因，那就是由 Dispatcher派发 Action来触发的。这样一来，就从根本上避免了混乱的数据关系，使整个流程变得清晰简单。
+
+不过这并不意味着 Flux 是完美的。事实上，Flux 对数据流的约束背后是不可忽视的成本：除了开发者的学习成本会提升外，Flux 架构还意味着项目中代码量的增加。
+
+Flux 架构往往在复杂的项目中才会体现出它的优势和必要性。如果项目中的数据关系并不复杂，其实没必要借鉴Flux 架构，对于 Redux 来说也是一样的。
+
+
+### Redux要素
+
+Redux 在实现层面并没有按照 Flux 架构思想（比如 Flux 中允许多个 Store 存在，而 Redux 中只有一个 Store 等），但 Redux 在设计思想上确实和 Flux 一致的。
+
+Flux 架构的特征、解决问题的思路，包括使用场景方面的注意事项，完全可以迁移到 Redux 上来用。
+
+Redux 主要由 3 部分组成：Store、Reducer 和 Action。
+
+1. Store：一个单一的数据源，而且是只读的；
+
+2. Action：“动作”的意思，它是对变化的描述；
+
+3. Reducer：一个函数，它负责对变化进行分发和处理，最终将新的数据返回给 Store；
+
+
+
+### Redux工作流
+
+![image-20240213092019670](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240213092019670.png)
+
+在 Redux 的整个工作过程中，数据流是严格单向的。如果想对数据进行修改，只有一种途径：派发 Action。Action 会被 Reducer 读取，Reducer 将根据 Action 内容的不同执行不同的计算逻辑，最终生成新的 state（状态），这个新的 state 会更新到 Store 对象里，进而驱动视图层面作出对应的改变。
+
+对于组件来说，任何组件都可以以约定的方式从 Store 读取到全局的状态，任何组件也都可以通过合理地派发 Action 来修改全局的状态。Redux 通过提供一个统一的状态容器，使得数据能够自由而有序地在任意组件之间穿梭。
+
+
+
+### redux源码
+
+Redux 的源码文件夹结构，如下图所示：
+
+![image-20240213092257721](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240213092257721.png)
+
+
+
+index.js 作为入口文件，用于对功能模块进行收敛和导出。真正的功能模块就是下面这几个文件：
+
+1. applyMiddleware.js；
+
+2. bindActionCreators.js；
+
+3. combineReducers.js；
+
+4. compose.js；
+
+5. createStore.js；
+
+applyMiddleware 是中间件模块，它的独立性较强。
+
+而 bindActionCreators（用于将传入的 actionCreator 与 dispatch 方法相结合，揉成一个新的方法，点击[这里](https://cn.redux.js.org/api/bindactioncreators)了解它的使用场景）、combineReducers（用于将多个 reducer 合并起来）、compose（用于把接收到的函数从右向左进行组合）这三个方法均为工具性质的方法。
+
+理解 Redux 实现原理，真正需要我们关注的模块其实只有一个createStore。
+
+createStore 方法是在使用 Redux 时最先调用的方法，它是整个流程的入口，也是 Redux 中最核心的 API。从 createStore 入手，看Redux 源码的主流程。
+
+
+
+**createStore**
+
+使用 Redux 的第一步，调用 createStore 方法。这个方法做创建一个 store 对象：
+
+```js
+// 引入 redux
+import { createStore } from 'redux'
+ 
+// 创建 store
+const store = createStore(
+    reducer,
+    initial_state,
+    applyMiddleware(middleware1, middleware2, ...)
+ 
+);
+```
+
+createStore 方法可以接收以下 3 个入参：
+
+1. reducer；
+
+2. 初始状态内容；
+
+3. 指定中间件；
+
+从拿到入参到返回出 store 的过程中， createStore 中主体逻辑的源码（解析在注释里）：
+
+```js
+function createStore(reducer, preloadedState, enhancer) {
+    // 这里处理的是没有设定初始状态的情况，也就是第一个参数和第二个参数都传 function 的情况
+    if (typeof preloadedState === 'function' && typeof enhancer === 'undefined') {
+        // 此时第二个参数会被认为是 enhancer（中间件）
+        enhancer = preloadedState;
+        preloadedState = undefined;
+    }
+
+    // 当 enhancer 不为空时，便会将 createStore 作为参数传入到 enhancer 中
+    if (typeof enhancer !== 'undefined') {
+        return enhancer(createStore)(reducer, preloadedState);
+    }
+    // 记录当前的 reducer，因为 replaceReducer 会修改 reducer 的内容
+    let currentReducer = reducer;
+    // 记录当前的 state
+    let currentState = preloadedState;
+    // 声明 listeners 数组，这个数组用于记录在 subscribe 中订阅的事件
+    let currentListeners = [];
+    // nextListeners 是 currentListeners 的快照
+    let nextListeners = currentListeners;
+    // 该变量用于记录当前是否正在进行 dispatch
+    let isDispatching = false
+
+    // 该方法用于确认快照是 currentListeners 的副本，而不是 currentListeners 本身
+    function ensureCanMutateNextListeners() {
+        if (nextListeners === currentListeners) {
+            nextListeners = currentListeners.slice();
+        }
+    }
+
+    // 我们通过调用 getState 来获取当前的状态
+    function getState() {
+        return currentState;
+    }
+
+    // subscribe 订阅方法，它将会定义 dispatch 最后执行的 listeners 数组的内容
+    function subscribe(listener) {
+        // 校验 listener 的类型
+        if (typeof listener !== 'function') {
+            throw new Error('Expected the listener to be a function.')
+        }
+
+        // 禁止在 reducer 中调用 subscribe
+        if (isDispatching) {
+            throw new Error('....')
+        }
+
+        // 该变量用于防止调用多次 unsubscribe 函数
+        let isSubscribed = true;
+        // 确保 nextListeners 与 currentListeners 不指向同一个引用
+        ensureCanMutateNextListeners(); 
+        // 注册监听函数
+        nextListeners.push(listener); 
+
+        // 返回取消订阅当前 listener 的方法
+        return function unsubscribe() {
+            if (!isSubscribed) {
+                return;
+            }
+            isSubscribed = false;
+            ensureCanMutateNextListeners();
+            const index = nextListeners.indexOf(listener);
+            // 将当前的 listener 从 nextListeners 数组中删除 
+            nextListeners.splice(index, 1);
+        };
+    }
+
+    // 定义 dispatch 方法，用于派发 action 
+    function dispatch(action) {
+        // 校验 action 的数据格式是否合法
+        if (!isPlainObject(action)) {
+            throw new Error(
+                'Actions must be plain objects. ' +
+                'Use custom middleware for async actions.'
+            )
+        }
+
+        // 约束 action 中必须有 type 属性作为 action 的唯一标识 
+        if (typeof action.type === 'undefined') {
+            throw new Error(
+                'Actions may not have an undefined "type" property. ' +
+                'Have you misspelled a constant?'
+            )
+        }
+
+        // 若当前已经位于 dispatch 的流程中，则不允许再度发起 dispatch（禁止套娃）
+        if (isDispatching) {
+            throw new Error('Reducers may not dispatch actions.')
+        }
+
+        try {
+            // 执行 reducer 前，先"上锁"，标记当前已经存在 dispatch 执行流程
+            isDispatching = true
+            // 调用 reducer，计算新的 state 
+            currentState = currentReducer(currentState, action)
+        } finally {
+            // 执行结束后，把"锁"打开，允许再次进行 dispatch 
+            isDispatching = false
+        }
+
+        // 触发订阅
+        const listeners = (currentListeners = nextListeners);
+        for (let i = 0; i < listeners.length; i++) {
+            const listener = listeners[i];
+            listener();
+        }
+        return action;
+    }
+
+    // replaceReducer 可以更改当前的 reducer
+    function replaceReducer(nextReducer) {
+        currentReducer = nextReducer;
+        dispatch({ type: ActionTypes.REPLACE });
+        return store;
+    }
+    // 初始化 state，当派发一个 type 为 ActionTypes.INIT 的 action，每个 reducer 都会返回
+    // 它的初始值
+    dispatch({ type: ActionTypes.INIT });
+
+    // observable 方法可以忽略，它在 redux 内部使用，开发者一般不会直接接触
+    function observable() {
+        // observable 方法的实现
+    }
+    // 将定义的方法包裹在 store 对象里返回
+    return {
+        dispatch,
+        subscribe,
+        getState,
+        replaceReducer,
+        [$$observable]: observable
+    }
+}
+```
+
+createStore 内部逻辑大图：
+
+<img src="C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240213093555040.png" alt="image-20240213093555040" style="zoom:150%;" />
+
+在 createStore 导出的方法中，与 Redux 主流程强相关的，同时也是平时使用中最常打交道的几个方法，分别是：
+
+1. getState；
+
+2. subscribe；
+
+3. dispatch；
+
+subscribe 和 dispatch 则分别代表了 Redux 独有的“发布-订阅”模式以及主流程中最为关键的分发动作。
+
+
+
+#### dispatch
+
+![image-20240213101108649](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240213101108649.png)
+
+```js
+function dispatch(action) {
+ 
+    // 校验 action 的数据格式是否合法
+    if (!isPlainObject(action)) {
+        throw new Error(
+            'Actions must be plain objects. ' +
+            'Use custom middleware for async actions.'
+        )
+    }
+ 
+    // 约束 action 中必须有 type 属性作为 action 的唯一标识 
+    if (typeof action.type === 'undefined') {
+        throw new Error(
+            'Actions may not have an undefined "type" property. ' +
+            'Have you misspelled a constant?'
+        )
+ 
+    }
+ 
+    // 若当前已经位于 dispatch 的流程中，则不允许再度发起 dispatch（禁止套娃）
+    if (isDispatching) {
+        throw new Error('Reducers may not dispatch actions.')
+    }
+ 
+    try {
+        // 执行 reducer 前，先"上锁"，标记当前已经存在 dispatch 执行流程
+        isDispatching = true
+        // 调用 reducer，计算新的 state
+        currentState = currentReducer(currentState, action)
+    } finally {
+        // 执行结束后，把"锁"打开，允许再次进行 dispatch
+        isDispatching = false
+ 
+    }
+    // 触发订阅
+    const listeners = (currentListeners = nextListeners);
+    for (let i = 0; i < listeners.length; i++) {
+        const listener = listeners[i];
+        listener();
+    }
+    return action;
+ 
+}
+```
+
+dispatch 工作流中最关键的就是执行 reducer 这一步，它对应的是下面这段代码：
+
+```js
+try {
+    // 执行 reducer 前，先“上锁”，标记当前已经存在 dispatch 执行流程
+    isDispatching = true
+    // 调用 reducer，计算新的 state 
+    currentState = currentReducer(currentState, action)
+} finally {
+    // 执行结束后，把"锁"打开，允许再次进行 dispatch 
+    isDispatching = false
+}
+```
+
+reducer 的本质是 store的更新规则，它指定了应用状态如何根据action进行变化并发送到 store。这段代码中调用 reducer，传入 currentState和 action，对应的正是 action → reducer → store 这个过程：
+
+![image-20240213101552522](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240213101552522.png)
+
+
+
+这里之所以要用 `isDispatching`将 `dispatch`的过程锁起来，目的是规避“套娃式”的 `dispatch`。更准确地说，是为了避免开发者在 `reducer`中手动调用 `dispatch`。
+
+“禁止套娃”用意何在？首先，从设计的角度来看，作为一个“计算 state 专用函数”，Redux 在设计 reducer 时就强调了它必须是“纯净”的，它不应该执行除了计算之外的任何“脏操作”，dispatch调用显然是一个“脏操作”；其次，从执行的角度来看，若真的在 reducer中调用 dispatch，那么 dispatch又会反过来调用 reducer，reducer又会再次调用 dispatch…这样反复相互调用下去，就会进入死循环。
+
+  因此，在 dispatch的前置校验逻辑中，一旦识别出 isDispatching为 true，就会直接 throw Error（见下面代码）：
+```js
+if (isDispatching) {
+  throw new Error('Reducers may not dispatch actions.')
+}
+```
+
+
+
+#### 触发订阅的过程
+
+在 `reducer`执行完毕后，会进入触发订阅的过程：
+
+```js
+// 触发订阅
+const listeners = (currentListeners = nextListeners);
+for (let i = 0; i < listeners.length; i++) {
+  const listener = listeners[i];
+  listener();
+}
+```
+
+
+
+- 之前并没有介绍 subscribe这个 API，也没有提及 listener相关的内容，它们到底是如何与 Redux 主流程相结合的？
+- 为什么会有 currentListeners和 nextListeners这两个 listeners数组？这和平时见到的“发布-订阅”模式好像不太一样。
+
+要弄明白这两个问题，需要先了解 subscribe这个 API。
+
+**Redux 中的“发布-订阅”模式**
+
+中执行的 listeners数组从订阅中来，而执行订阅需要调用 subscribe。在实际的开发中，subscribe并不是一个严格必要的方法，只有在需要监听状态的变化时，才会调用 subscribe。
+
+subscribe接收一个 Function类型的 listener作为入参，它的返回内容恰恰就是这个 listener对应的解绑函数。示例代码：
+
+```js
+function handleChange() {
+  // 函数逻辑
+}
+const unsubscribe = store.subscribe(handleChange)
+unsubscribe()
+```
+
+
+subscribe在订阅时只需要传入监听函数，而不需要传入事件类型。这是因为 Redux 中已经默认了订阅的对象就是“状态的变化（准确地说是 dispatch 函数的调用）”这个事件。
+
+subscribe 是如何与 Redux 主流程结合的呢？首先，可以在 store 对象创建成功后，通过调用 store.subscribe来注册监听函数，也可以通过调用 subscribe的返回函数来解绑监听函数，监听函数是用 listeners数组来维护的；当dispatch action 发生时，Redux 会在 reducer执行完毕后，将 listeners数组中的监听函数逐个执行。这就是 subscribe与 Redux 主流程之间的关系。
+
+subscribe的内部逻辑，subscribe源码：
+
+```js
+function subscribe(listener) {
+  // 校验 listener 的类型
+  if (typeof listener !== 'function') {
+    throw new Error('Expected the listener to be a function.')
+  }
+  // 禁止在 reducer 中调用 subscribe
+  if (isDispatching) {
+    throw new Error(
+      'You may not call store.subscribe() while the reducer is executing. ' +
+      'If you would like to be notified after the store has been updated, subscribe from a ' +
+      'component and invoke store.getState() in the callback to access the latest state. ' +
+      'See https://redux.js.org/api-reference/store#subscribe(listener) for more details.'
+    )
+  }
+  // 该变量用于防止调用多次 unsubscribe 函数
+  let isSubscribed = true;
+  // 确保 nextListeners 与 currentListeners 不指向同一个引用
+  ensureCanMutateNextListeners(); 
+  // 注册监听函数
+  nextListeners.push(listener); 
+  // 返回取消订阅当前 listener 的方法
+  return function unsubscribe() {
+    if (!isSubscribed) {
+      return;
+    }
+    isSubscribed = false;
+    ensureCanMutateNextListeners();
+    const index = nextListeners.indexOf(listener);
+    // 将当前的 listener 从 nextListeners 数组中删除 
+    nextListeners.splice(index, 1);
+  };
+}
+```
+
+
+结合这段源码，可以将 subscribe的工作流程提取如下：
+
+![image-20240213102951972](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240213102951972.png)
+
+这个工作流中对 ensureCanMutateNextListeners的调用。结合前面整体源码的分析，ensureCanMutateNextListeners的作用就是确保 nextListeners不会和 currentListener指向同一个引用。 那么为什么要这样做呢？这里就引出了之前提出的关于 subscribe的第二个问题：为什么会有 currentListeners 和 nextListeners 两个 listeners 数组？
+
+要理解这个问题，首先要搞清楚 Redux 中的订阅过程和发布过程各自是如何处理 listeners数组的。
+
+1. 订阅过程中的 listeners 数组
+  两个 listeners之间的第一次“交锋”发生在 createStore的变量初始化阶段，nextListeners会被赋值为 currentListeners（见下面代码），这之后两者确实指向同一个引用。
+
+```js
+let nextListeners = currentListeners
+```
+
+
+但在 subscribe第一次被调用时，ensureCanMutateNextListeners就会发现这一点，然后将 nextListeners纠正为一个内容与 currentListeners一致、但引用不同的新对象。对应的逻辑如下面代码所示：
+
+```js
+function ensureCanMutateNextListeners() {
+  // 若两个数组指向同一个引用
+  if (nextListeners === currentListeners) {
+    // 则将 nextListeners 纠正为一个内容与 currentListeners 一致、但引用不同的新对象
+    nextListeners = currentListeners.slice()
+  }
+}
+```
+
+
+在 subscribe的逻辑中，ensureCanMutateNextListeners每次都会在 listener注册前被无条件调用，用以确保两个数组引用不同。紧跟在 ensureCanMutateNextListeners之后执行的是 listener的注册逻辑，可以对应源码中看到 listener最终会被注册到 nextListeners数组中去：
+
+```js
+nextListeners.push(listener);
+```
+
+2. 发布过程中的 listeners 数组
+  触发订阅这个动作是由 dispatch来做的，相关的源码如下：
+
+```js
+// 触发订阅
+const listeners = (currentListeners = nextListeners);
+for (let i = 0; i < listeners.length; i++) {
+  const listener = listeners[i];
+  listener();
+}
+```
+
+
+在触发订阅的过程中，currentListeners会被赋值为 nextListeners，而实际被执行的 listeners数组又会被赋值为 currentListeners。因此，最终被执行的 listeners 数组，实际上和当前的 nextListeners 指向同一个引用。
+
+注册监听也是操作 nextListeners，触发订阅也是读取 nextListeners（实际上，取消监听操作的也是 nextListeners 数组）。既然如此，要 currentListeners 有何用？
+
+3. currentListeners 数组用于确保监听函数执行过程的稳定性
+  正因为任何变更都是在 nextListeners上发生的，才需要一个不会被变更的、内容稳定的 currentListeners，来确保监听函数在执行过程中不会出意外。
+
+举个例子，下面这种操作在 Redux 中完全是合法的：
+
+```js
+// 定义监听函数 A
+function listenerA() {
+
+}
+// 订阅 A，并获取 A 的解绑函数
+const unSubscribeA = store.subscribe(listenerA)
+// 定义监听函数 B
+function listenerB() {
+  // 在 B 中解绑 A
+  unSubscribeA()
+}
+// 定义监听函数 C
+function listenerC() {
+
+}
+// 订阅 B
+store.subscribe(listenerB)
+// 订阅 C
+store.subscribe(listenerC)
+
+```
+
+在这个 Demo 执行完毕后，nextListeners数组的内容是 A、B、C 3 个 listener：
+
+```js
+[listenerA,  listenerB, listenerC]
+```
+
+接下来若调用 dispatch，则会执行下面这段触发订阅的逻辑：
+
+```js
+// 触发订阅
+const listeners = (currentListeners = nextListeners);
+for (let i = 0; i < listeners.length; i++) {
+  const listener = listeners[i];
+  listener();
+}
+```
+
+
+
+当 for 循环执行到索引 i = 1 处，也就是对应的 listener为 listenerB时，问题就会出现：listenerB中执行了 unSubscribeA这个动作。而结合我们前面的分析，监听函数注册、解绑、触发这些动作实际影响的都是 nextListeners。为了强化对这一点的认知，复习一下 unsubscribe的源码：
+
+```js
+return function unsubscribe() {
+  // 避免多次解绑
+  if (!isSubscribed) {
+    return;
+  }
+  isSubscribed = false;
+  // 熟悉的操作，调用 ensureCanMutateNextListeners 方法
+  ensureCanMutateNextListeners();
+  // 获取 listener 在 nextListeners 中的索引
+  const index = nextListeners.indexOf(listener);
+  // 将当前的 listener 从 nextListeners 数组中删除 
+  nextListeners.splice(index, 1);
+};
+```
+
+假如说不存在 currentListeners，那么也就意味着不需要 ensureCanMutateNextListeners这个动作。若没有 ensureCanMutateNextListeners，unsubscribeA() 执行完之后，listenerA会同时从 listeners数组和 nextListeners数组中消失（因为两者指向的是同一个引用），那么 listeners数组此时只剩下两个元素 listenerB和 listenerC，变成这样：
+
+```js
+[listenerB, listenerC]
+```
+
+listeners数组的长度改变了，但 for 循环却不会感知这一点，它将无情地继续循环下去。之前执行到 i = 1处，listener = listeners[1] ，也就是说 listener === listenerB；下一步理应执行到 i = 2处，但此时 listeners[2]已经是 undefined了，原本应该出现在这个索引位上的 listenerC，此时因为数组长度的变化，被前置到了 i = 1处！这样一来，undefined 就会代替 listenerC 被执行，进而引发函数异常。
+
+这可怎么办呢？答案当然是将 nextListeners 与当前正在执行中的 listeners 剥离开来，将两者指向不同的引用。这也正是 ensureCanMutateNextListeners所做的事情。
+
+在示例的这种场景下，ensureCanMutateNextListeners执行前，listeners、currentListeners和 nextListeners之间的关系是这样的：
+
+```js
+listeners === currentListeners === nextListeners
+```
+
+而 ensureCanMutateNextListeners执行后，nextListeners就会被剥离出去：
+
+```js
+nextListeners = currentListeners.slice()
+listeners === currentListeners !== nextListener
+```
+
+nextListeners上的任何改变，都无法再影响正在执行中的 listeners了。currentListeners 在此处的作用，就是为了记录下当前正在工作中的 listeners 数组的引用，将它与可能发生改变的 nextListeners 区分开来，以确保监听函数在执行过程中的稳定性。
+
+
+
+
+
+
+
+
+
+
+
+
+
+----
+
+
 
 ![image-20211207183053092](..\typora-user-images\image-20211207183053092.png)
 

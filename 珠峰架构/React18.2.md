@@ -2112,6 +2112,56 @@ DOM-DIFF是FIber树和虚拟DOM之间进行的，而并不是虚拟DOM和虚拟D
 
 
 
+## 调度
+
+任务调度系统，内部派发很多具有不同优先级的更新任务。并发渲染和优先级模型。
+
+### 前置知识
+
+优先级调度内部采用最小堆算法。
+
+在一些列数据中，位于堆顶部的数据的优先级最高。
+
+二叉树：每个节点最多有两个子节点。
+
+满二叉树：除了最后一层无任何子节点以外，每一层上的所有节点都有两个子节点的二叉树。
+
+
+
+
+
+### messageChannel
+
+之前的代码中合作式调度都是使用的requestIdleCallback
+
+- 但是 `requestIdleCallback` 浏览器的支持度低
+- 目前 React利用 [MessageChannel](https://developer.mozilla.org/zh-CN/docs/Web/API/MessageChannel)模拟了requestIdleCallback，将回调延迟到绘制操作之后执行
+- MessageChannel API创建一个新的消息通道，并通过它的两个MessagePort属性发送数据
+- MessageChannel创建了一个通信的管道，这个管道有两个端口，每个端口都可以通过postMessage发送数据，而一个端口只要绑定了onmessage回调方法，就可以接收从另一个端口传过来的数据
+- MessageChannel是一个宏任务
+
+messageChannel的原理图（和requestIdleCallback类似）：开启一个新的宏任务
+
+![image-20240205190750952](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240205190750952.png)
+
+```js
+var channel = new MessageChannel();
+var port1 = channel.port1;
+var port2 = channel.port2
+port1.onmessage = function(event) {
+    console.log("port1收到来自port2的数据：" + event.data);
+}
+port2.onmessage = function(event) {
+    console.log("port2收到来自port1的数据：" + event.data);
+}
+port1.postMessage("发送给port2");
+port2.postMessage("发送给port1");
+```
+
+源码中首先会尝试使用messageChannel来进行任务调度，如果不支持messageChannel，则优雅降级使用setTimeout。
+
+在react的任务调度中，除了根据优先即来调度任务以外，还会给每个任务设置一个截至时间，在截至时间没有过期之前，一旦有更高优先级的任务出现时，首先会优先执行他们；当一个低优先级的任务的截至时间到的时候，即使有高优先级的任务加入，也会优先考虑那些截至时间已经到的任务。
+
 
 
 
