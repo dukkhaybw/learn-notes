@@ -1061,7 +1061,7 @@ class EventEmitter {
 
 一种组件树全局通信的方式
 
-- React.createContent( )
+- React.createContext( )
 
 - Provider
 
@@ -1086,7 +1086,7 @@ const {Provider,Consumer} = myContent
 </Consumer>
 ```
 
-Cosumer 不仅能够读取到 Provider 下发的数据，还能读取到这些数据后续的更新。这意味着数据在生产者和消费者之间能够及时同步。
+Cosumer 能够读取到 Provider 下发的数据，数据后续的更新。这意味着数据在生产者和消费者之间能够及时同步。
 
 当 Consumer 没有对应的 Provider 时，value 参数会直接取创建 context 时传递给 createContext 的 defaultValue。
 
@@ -1098,11 +1098,11 @@ Cosumer 不仅能够读取到 Provider 下发的数据，还能读取到这些�
 // 老版Context的使用
 import PropTypes from 'prop-types';
 
-// 第二步，使用
+// 第二步，使用 孙辈组件
 class Button extends React.Component {
   render() {
     return (
-      <button style={{background: this.context.color}}>
+      <button style={{background: this.context.color}}>  // this.context访问
         {this.props.children}
       </button>
     );
@@ -1114,18 +1114,19 @@ Button.contextTypes = {
 };
 ============
 
-
+// 父辈组件
 class Message extends React.Component {
   render() {
     return (
       <div>
-        {this.props.text} <Button>Delete</Button>
+        {this.props.text} 
+        <Button>Delete</Button>
       </div>
     );
   }
 }
 
-// 第一步：
+// 第一步：爷辈组件
 class MessageList extends React.Component {
   ================
   getChildContext() {
@@ -1163,6 +1164,109 @@ MessageList.childContextTypes = {
 新版 Context 改进了该问题：
 
 新的 Context API 改进了这一点：即便组件的 shouldComponentUpdate 返回 false，它仍然可以“穿透”组件继续向后代组件进行传播，进而确保了数据生产者和数据消费者之间数据的一致性。更好的语义化的声明式写法。
+
+
+
+**新版本createContext的使用方式**
+
+在React 18中，`createContext` API的使用方式基本上保持不变，提供了一种在组件树中传递数据的方法，而不必在每个级别手动传递props。`createContext`允许创建一个Context对象，这个对象可以被组件树中的任何子组件访问，**前提是这些子组件在相应的`Context.Provider`组件内部。**
+
+使用`createContext`的步骤大致如下：
+
+1. **创建Context**: 使用`createContext`方法创建一个新的Context对象。可以给它一个默认值，这个默认值会在组件树中没有找到对应Provider组件时使用。
+2. **提供Context值**: 通过**`Context.Provider`组件**提供一个Context值给组件树中的所有子组件。任何子组件都可以访问这个值，无论深度如何。
+3. **消费Context值**: 子组件可以通过两种方式之一来消费Context值：使用`Context.Consumer`组件或`useContext`Hook。
+
+下面是一个函数组件中使用的例子：
+
+```jsx
+import React, { createContext, useContext } from 'react';
+
+// 步骤1: 创建Context
+const MyContext = createContext('defaultValue');
+
+const MyComponent = () => {
+  return (
+    // 步骤2: 提供Context值
+    <MyContext.Provider value="Shared value">
+      <ChildComponent />
+    </MyContext.Provider>
+  );
+}
+
+const ChildComponent = () => {
+  // 步骤3: 消费Context值
+  const value = useContext(MyContext);
+
+  return <div>{value}</div>; // 输出: Shared value
+}
+
+export default MyComponent;
+```
+
+在这个例子中，`MyContext.Provider`提供了一个值（"Shared value"），所有在`MyContext.Provider`内部的组件都可以通过调用`useContext(MyContext)`来访问这个值。如果组件位于没有对应Provider的组件树中，`useContext`会返回`createContext`时设置的默认值（在这个例子中是'defaultValue'）。
+
+
+
+类组件中使用的例子：
+
+有两种主要方式可以在类组件中访问`Context`：
+
+1. **通过`contextType`属性在类组件中使用Context**:
+   - 这种方法允许将React Context对象赋值给类的`contextType`属性。这样做之后，你可以通过`this.context`在任何类组件方法中访问Context的值。
+   - 这种方式限制性在于一个类组件只能订阅单一的Context来源。
+2. **使用`<Context.Consumer>`组件**:
+   - 这种方法更为灵活，允许在组件树中的任何位置读取Context的值，而不仅限于在类组件中。它通过一个函数子组件（function as a child）的模式来工作，这个函数接收当前的Context值作为其参数。
+   - 使用`<Context.Consumer>`，可以在同一个组件中订阅多个Context。
+
+### 通过`contextType`在类组件中使用Context
+
+首先，创建一个Context并提供一个值，如之前的例子所示。然后，在类组件中这样使用：
+
+```jsx
+import React, { Component, createContext } from 'react';
+
+const MyContext = createContext();
+
+class MyClassComponent extends Component {
+  static contextType = MyContext;
+
+  render() {
+    let value = this.context;
+    // 使用value渲染一些UI
+    return <div>{value}</div>;
+  }
+}
+
+// 在某处使用MyClassComponent，确保它被一个MyContext.Provider包裹
+```
+
+### 使用`<Context.Consumer>`在类组件中使用Context
+
+如果想要在同一个类组件中访问多个Context，或者更喜欢这种模式，可以这样使用：
+
+```jsx
+import React, { Component, createContext } from 'react';
+
+const MyContext = createContext();
+
+class MyClassComponent extends Component {
+  render() {
+    return (
+      <MyContext.Consumer>
+        {value => (
+          // 使用Context的value渲染一些UI
+          <div>{value}</div>
+        )}
+      </MyContext.Consumer>
+    );
+  }
+}
+
+// 在某处使用MyClassComponent，确保它被一个MyContext.Provider包裹
+```
+
+
 
 
 
@@ -4463,22 +4567,24 @@ React 合成事件虽然承袭了事件委托的思想，但它的实现过程�
 
 ## redux
 
+系统性的学习的一个前提就是建立必要的前置知识或者要有基础，不然就得从最基本得概念开始学习才有利于更好的理解，其中一个学科的历史背景知识很有助于认识某个学科。一个技术也是如此。
+
 ### Flux 架构
 
-Redux 的设计在很大程度上受益于 Flux 架构，可以认为 Redux 是 Flux 的一种实现形式（虽然它并不严格遵循 Flux 的设定），理解 Flux 将帮助更好地从抽象层面把握 Redux。
+Redux 的设计在很大程度上借鉴了 Flux 架构，可以认为 Redux 是 Flux 架构的一种具体实现（但它并不严格遵循 Flux 的设定），理解 Flux 能更好地从抽象层面把握 Redux。
 
-Flux 并不是一个具体的框架，它是一套由 Facebook 技术团队提出的应用架构，这套架构约束的是应用处理数据的模式。在 Flux 架构中，一个应用将被拆分为以下 4 个部分。
+Flux 并不是一个具体的框架，它是一套由 Facebook 技术团队提出的应用**架构**，这套架构约束的是**应用处理数据的模式**。在 Flux 架构中，一个应用将被拆分为以下 4 个部分。
 
-- View（视图层）：用户界面。该用户界面可以是以任何形式实现，React 组件是一种形式，Vue、Angular 也完全可以。Flux 架构与 React 之间并不存在耦合关系。
+- View（视图层）：用户界面。该用户界面可以是以任何形式实现，React 组件是一种形式，Vue、Angular 也可以。Flux 架构与 React 之间并不存在耦合关系。
 - Action（动作）：视图层发出的“消息”，它会触发应用状态的改变。
 - Dispatcher（派发器）：它负责对 action进行分发。
-- Store（数据层）：它是存储应用状态的“仓库”，此外还会定义修改状态的逻辑。store的变化最终会映射到 view层上去。
+- Store（数据层）：它是存储数据的“仓库”，此外还会定义修改状态的逻辑。store的变化最终会映射到 view层上去。
 
-这 4 个部分之间的协作将通过下图所示的工作流规则来完成配合：
+这 4 个部分之间的协作将通过下图所示的**工作流**规则来完成配合：
 
 ![image-20240213090424163](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240213090424163.png)
 
-图中所有的箭头都是单向的，这也正是 Flux 架构最核心的一个特点——单向数据流
+图中所有的箭头都是单向的，这也正是 Flux 架构最核心的一个特点——**单向数据流**
 
 一个典型的 Flux 工作流是这样的：用户与 `View`之间产生交互，通过 `View`发起一个 `Action`；`Dispatcher` 会把这个 `Action`派发给 `Store`，通知 `Store`进行相应的状态更新。`Store`状态更新完成后，会进一步通知 `View`去更新界面。
 
@@ -4486,9 +4592,11 @@ Flux 并不是一个具体的框架，它是一套由 Facebook 技术团队提�
 
 Flux架构想解决的问题：
 
-Flux 的核心特征是单向数据流，要想完全了解单向数据流的好处，需要先了解双向数据流带来了什么问题。
+Flux 的核心特征是单向数据流，单向数据流有什么好处？
 
-双向数据流最为典型的代表就是前端场景下的 MVC 架构，该架构的示意图如下图所示：
+先了解双向数据流带来了什么问题。
+
+双向数据流最为典型的代表就是**前端场景下的 MVC 架构**，该架构的示意图如下图所示：
 
 ![image-20240213090622413](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240213090622413.png)
 
@@ -4502,7 +4610,7 @@ Flux 的核心特征是单向数据流，要想完全了解单向数据流的好
 - `View`（视图），用户界面；
 - `Controller`（控制器），用于连接 `View` 和 `Model`，管理 `Model`与 `View`之间的逻辑。
 
-原则上来说，三者的关系应该像上图一样，用户操作 View后，由 Controller来处理逻辑（或者直接触发 Controller的逻辑），经过 Controller将改变应用到 Model中，最终再反馈到 View上。在这个过程中，数据流应该是单向的。
+原则上，三者的关系应该像上图一样，用户操作 View后，由 Controller来处理逻辑（或者直接触发 Controller的逻辑），经过 Controller将改变应用到 Model中，最终再反馈到 View上。在这个过程中，数据流应该是单向的。
 
 事实上，在许多服务端的 MVC 应用中，数据流确实能够保持单向。但是在前端场景下，实际的 MVC 应用要复杂不少，前端应用/框架往往出于交互的需要，允许 View 和 Model 直接通信。此时的架构关系就会变成下图这样：
 
@@ -4512,9 +4620,9 @@ Flux 的核心特征是单向数据流，要想完全了解单向数据流的好
 
 ![image-20240213090937520](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240213090937520.png)
 
-图中我们的示例只有一个 `Controller`，但考虑到一个应用中还可能存在多个 `Controller`，实际的情况应该比上图还要复杂得多。
+图中的示例只有一个 `Controller`，但考虑到一个应用中还可能存在多个 `Controller`，实际的情况应该比上图还要复杂得多。
 
-在如此复杂的依赖关系下，再小的项目变更也将伴随着不容小觑的风险——或许一个小小的改动，就会对整个项目造成“蝴蝶效应”般的巨大影响。如此混乱的修改来源，将会使得我们连 Bug 排查都无从下手，因为你很难区分出一个数据的变化到底是由哪个 Controller或者哪个 View 引发的。
+在如此复杂的依赖关系下，再小的项目变更也将伴随着风险——或许一个小的改动，就会对整个项目造成巨大影响。混乱的修改来源，将会使得 Bug 排查都无从下手，因为很难区分出一个数据的变化到底是由哪个 Controller或者哪个 View 引发的。
 
 而Flux架构的数据流模式：
 
@@ -4522,9 +4630,11 @@ Flux 的核心特征是单向数据流，要想完全了解单向数据流的好
 
 **Flux最核心的地方在于严格的单向数据流，在单向数据流下，状态的变化是可预测的。**如果 store中的数据发生了变化，那么有且仅有一个原因，那就是由 Dispatcher派发 Action来触发的。这样一来，就从根本上避免了混乱的数据关系，使整个流程变得清晰简单。
 
-不过这并不意味着 Flux 是完美的。事实上，Flux 对数据流的约束背后是不可忽视的成本：除了开发者的学习成本会提升外，Flux 架构还意味着项目中代码量的增加。
+数据流管理好了，只是Flux 对数据流的约束背后是有成本的：增加开发者的学习负担，项目代码量的增加。
 
-Flux 架构往往在复杂的项目中才会体现出它的优势和必要性。如果项目中的数据关系并不复杂，其实没必要借鉴Flux 架构，对于 Redux 来说也是一样的。
+Flux 架构一般在复杂的项目中才会体现出它的优势和必要性。如果项目中的数据关系并不复杂，其实没必要借鉴Flux 架构，对于 Redux 来说也是一样的。
+
+
 
 
 ### Redux要素
@@ -4537,9 +4647,9 @@ Redux 主要由 3 部分组成：Store、Reducer 和 Action。
 
 1. Store：一个单一的数据源，而且是只读的；
 
-2. Action：“动作”的意思，它是对变化的描述；
+2. Action：对变化的描述；
 
-3. Reducer：一个函数，它负责对变化进行分发和处理，最终将新的数据返回给 Store；
+3. Reducer：一个纯函数，它负责对变化进行分发和处理，最终将新的数据返回给 Store；
 
 
 
@@ -4577,7 +4687,7 @@ applyMiddleware 是中间件模块，它的独立性较强。
 
 而 bindActionCreators（用于将传入的 actionCreator 与 dispatch 方法相结合，揉成一个新的方法，点击[这里](https://cn.redux.js.org/api/bindactioncreators)了解它的使用场景）、combineReducers（用于将多个 reducer 合并起来）、compose（用于把接收到的函数从右向左进行组合）这三个方法均为工具性质的方法。
 
-理解 Redux 实现原理，真正需要我们关注的模块其实只有一个createStore。
+理解 Redux 实现原理，真正需要关注的模块其实只有一个createStore。
 
 createStore 方法是在使用 Redux 时最先调用的方法，它是整个流程的入口，也是 Redux 中最核心的 API。从 createStore 入手，看Redux 源码的主流程。
 
@@ -4757,7 +4867,7 @@ createStore 内部逻辑大图：
 
 3. dispatch；
 
-subscribe 和 dispatch 则分别代表了 Redux 独有的“发布-订阅”模式以及主流程中最为关键的分发动作。
+subscribe 和 dispatch 则分别代表了 Redux 独有的“**发布-订阅**”模式以及主流程中最为关键的分发动作。
 
 
 

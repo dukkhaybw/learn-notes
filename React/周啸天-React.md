@@ -1,14 +1,6 @@
-React
 
-学习 React 要达到的程度：
 
-- 能使用它完成项目开发
-- 理解原理
-  - redux 原理
-  - react-redux 原理
-  - 中间件原理
-
-### 第一节——导言(p1)
+### 第一节——导言
 
 Vue 是 mvvm 框架：
 
@@ -16,7 +8,7 @@ Vue 是 mvvm 框架：
 - view：el 对应的 html 代码，template, render
 - viewModel：vue 构造函数实例,对象内部实现了对数据和视图改变的监听和双向数据绑定
 
-​ 在 mvvm 中，需要开发者去写的是 view 层和 model 层
+ 在 mvvm 中，需要开发者去写的是 view 层和 model 层
 
 React 是 MVC 框架：
 
@@ -24,45 +16,27 @@ React 是 MVC 框架：
 - View：
 - Controll：
 
-​ 其他的理解：React 其实就是 view 层，因为它把所有的数据和操作全写在 jsx 语法中。在 react 中开发者需要管理 M,V,C 三层。
+其他的理解：React 其实就是 view 层，因为它把所有的数据和操作全写在 jsx 语法中。在 react 中开发者需要管理 M,V,C 三层。
 
-学习 react 的话有几点基本的要求：
 
-- 学会 JSX 语法后能写出视图
 
-- 学会基于 JSX 做一些语法处理
+ 在 React 中数据改变会导致视图重新渲染，而视图改变后并不能直接影响数据，需要由视图层（常常是事件）触发控制层（开发者写好的方法）来修改数据。这区别与 Vue。在 Vue 中，点击按钮后，也有通过调取 methods 中的函数去更新 data 中数据的情况，这个 react 类似。但是 vue 中的视图更新会影响数据主要指的是表单元素。而在 react 中即使是表单元素，把表单控件中的内容改变了，不能直接影响 model 中的数据，必须通过表单元素的 onChange 事件触发 controller 中的方法去修改。
 
-- 用语法处理更改状态
+真实项目中，项目选型可以根据表单元素是否有很多来定。表单控件多可以考虑 Vue，其他的话，两者差不多。真实项目中，到底用 vue 还是 React 从性能角度来讲，基本已经没有什么区别了，vue 中基于 Object.defineProperty 中的 getter 和 setter 进行数据和视图之间的处理，而 react 则是自己写了一套数据的监听机制，监听数据改变以渲染视图，但大体上差不多。
 
-- 状体更改后视图自动更新
 
-​ 在 React 中数据改变会导致视图重新渲染，而视图改变后并不能直接影响数据，需要由视图层（常常是一些原生事件）触发控制层（开发者写好的方法）来修改数据。这区别与 Vue。在 Vue 中，我们点击按钮后，也有通过调取 methods 中的函数去更新 data 中数据的情况，这个 react 类似。但是 vue 中的视图更新会影响数据主要指的是表单元素。而在 react 中即使是表单元素，把表单控件中的内容改变了，不能直接影响 model 中的数据，必须通过表单元素的 onChange 事件触发 controller 中的方法去修改。
 
-​ 真实项目中，项目选型可以根据表单元素是否有很多来定。表单控件多可以考虑 Vue，其他的话，两者差不多。真实项目中，到底用 vue 还是 React 从性能角度来讲，基本已经没有什么区别了，vue 中基于 Object.defineProperty 中的 getter 和 setter 进行数据和视图之间的处理，而 react 则是自己写了一套数据的监听机制，监听数据改变以渲染视图，但大体上差不多。
+ 学习 react 不像学习 vue 时需要记各种指令，事件修饰符或者方法。而 react 就为开发者提供了一个框架模式，或者 react 就为开发者提供了一个监听数据的工具，数据改变去更新视图，其他的往往和写原生 js 一样，需要自己自由控制。
 
-​
+以后在用 react 开发时，跟 vue 一样，构建一套工程化的项目结构，按组件，模块开发，涉及组件之间的通信，路由切换，公共状态管理等。
 
-​ 学习 react 不像学习 vue 时需要记各种指令，事件修饰符或者方法。而 react 就为开发者提供了一个框架模式，或者 react 就为开发者提供了一个监听数据的工具，数据改变去更新视图，其他的往往和写原生 js 一样，需要自己自由控制。
+![image-20210502102520094](..\typora-user-images\image-20210502102520094.png)
 
-​ 以后在用 react 开发时，跟 vue 一样，构建一套工程化的项目结构，按组件，模块开发，涉及组件之间的通信，路由切换，公共状态管理等。
 
-![image-20210502102520094](.\typora-user-images\image-20210502102520094.png)
 
-react：框架核心
 
-react-dom：是做 webApp 开发
 
-上面这两项核心库主要适用于构建一个轻量的视图层框架。
-
-上面的核心库是视图层框架。
-
-要想使用 react 来完成大型项目的快速开发。开发者还需要选用数据层框架。
-
-`Redux`是目前 React 生态中的数据层框架。
-
-react-native: 做原生 App 开发
-
-### 第二节——React 脚手架（官方脚手架：create-react-app）(p2-p3)
+### 第二节——React 脚手架（官方脚手架：create-react-app）
 
 用 react 开发也是基于工程化，组件化与模块化来开发的，最后将所有模块合到一个或者多个页面（多页面应用中每个页面可能也分为许多组件组成）， 也需要用到 webpack。
 
@@ -134,11 +108,11 @@ npx create-react-app 项目名字
 
 生产依赖项：
 
-​ react: React 框架的核心，提供了状态，属性，组件，生命周期等
+ react: React 框架的核心，提供了状态，属性，组件，生命周期等
 
-​ react-dom：把 JSX 语法渲染为真实的 DOM ，最后显示在浏览器中
+ react-dom：把 JSX 语法渲染为真实的 DOM ，最后显示在浏览器中
 
-​ react-scripts：包含了当前工程化项目中 webpack 配置的内容（因为 react 官方认为在根目录下写 webpack 配置文件不美观，所以 react 官方的脚手架将所有 webpack 的配置文件和依赖都放在的 node_modules 中），以后通过 react-scripts 脚本执行命名，间接通知 webpack 编译打包。
+ react-scripts：包含了当前工程化项目中 webpack 配置的内容（因为 react 官方认为在根目录下写 webpack 配置文件不美观，所以 react 官方的脚手架将所有 webpack 的配置文件和依赖都放在的 node_modules 中），以后通过 react-scripts 脚本执行命名，间接通知 webpack 编译打包。
 
 在真实项目中，可能需要在脚手架的默认基础上额外安装一些第三方模块，如：react-router-dom，axios，less，less-loader 等等。在安装后可能面对的情况：
 
@@ -160,17 +134,17 @@ npm run eject（不可逆的操作）
 
   - start.js : npm run start 时执行该文件，这里面设置有需要 webpack 打包能用到的环境变量，也可以自己在 package.json 文件的 script 中进行修改，如：
 
-    ​ set PORT=8001&&set HOST=127.0.0.1&&node script/start.js
+     set PORT=8001&&set HOST=127.0.0.1&&node script/start.js
 
-    ​ POST=8081 node scripts/start.js 在 mac 中自定义端口号的方式
+     POST=8081 node scripts/start.js 在 mac 中自定义端口号的方式
 
     webpack 中的代理：
 
-    ![image-20210618235853103](.\typora-user-images\image-20210618235853103.png)
+    ![image-20210618235853103](..\typora-user-images\image-20210618235853103.png)
 
-    ![image-20210618235920280](.\typora-user-images\image-20210618235920280.png)
+    ![image-20210618235920280](..\typora-user-images\image-20210618235920280.png)
 
-    ![image-20210619000125897](.\typora-user-images\image-20210619000125897.png)
+    ![image-20210619000125897](..\typora-user-images\image-20210619000125897.png)
 
     appBuild:项目打包后的输出文件夹。
 
@@ -180,7 +154,7 @@ npm run eject（不可逆的操作）
 
     appPackage.json：表示去读取当前项目下的 package.json 文件，该文件中的 proxy 字段可以用于配置代理地址，所以以后想做 proxy 代理的话，可以在项目的 package.json 中配置 proxy 字段。
 
-    ![image-20210619000933838](.\typora-user-images\image-20210619000933838.png)
+    ![image-20210619000933838](..\typora-user-images\image-20210619000933838.png)
 
   自己增加 less 配置：
 
@@ -279,7 +253,7 @@ JSX 语法要求：
   		})}
   	</ul>
   </>,document.getElementById('root'))
-
+  
   //JSX要求循环绑定的元素都要设置一个key属性，它是dom diff的重要凭证
   ```
 
@@ -342,9 +316,9 @@ class App extends React.Component{
    <div>
    	<h2>hello react</h2>
    </div>
-
+   
    解析为：
-
+   
    React.createElement("div", null, React.createElement("h2", null, "hello react"));
 
 
@@ -400,7 +374,7 @@ class App extends React.Component{
    React.createElement("span", {className:"text"}, "欢迎大家来学习")
    ```
 
-   ![image-20210421082220739](.\typora-user-images\image-20210421082220739.png)
+   ![image-20210421082220739](..\typora-user-images\image-20210421082220739.png)
 
    ```
    React.createElement("span", {className:"text"}, "欢迎大家来学习",React.createElement("i",null))
@@ -496,7 +470,7 @@ ReactDOM.render(<div>....</div>, document.getElementById('root'));
 
 在 react 的工程化项目中（用 vscode 编辑器），我们会把需要写 react 组件的 js 文件命令为 jsx 文件类型，这样只有一个目的：让创建的文件识别 jsx 语法，而在 create-react-app 脚手架创建的项目中， 已经包含了对 jsx 文件类型的处理。
 
-​ 定义：一个 js 文件或者 jsx 文件就是一个 react 组件
+ 定义：一个 js 文件或者 jsx 文件就是一个 react 组件
 
 ```jsx
 import React from 'react'  //每一个组件都会返回一个jsx，jsx语法通过webpack中的基于babel-preset-react-app语法解析包变为React.createElement格式,所以必须引入React。
@@ -507,15 +481,15 @@ export default function 组件名 (props){    //props由调用该组件时以组
 }
 ```
 
-![image-20210619142404717](.\typora-user-images\image-20210619142404717.png)
+![image-20210619142404717](..\typora-user-images\image-20210619142404717.png)
 
-![image-20210619142435164](.\typora-user-images\image-20210619142435164.png)
+![image-20210619142435164](..\typora-user-images\image-20210619142435164.png)
 
-![image-20210619142446059](.\typora-user-images\image-20210619142446059.png)
+![image-20210619142446059](..\typora-user-images\image-20210619142446059.png)
 
-​ ![image-20210619142325164](.\typora-user-images\image-20210619142325164.png)
+ ![image-20210619142325164](..\typora-user-images\image-20210619142325164.png)
 
-![image-20210619142458250](.\typora-user-images\image-20210619142458250.png)
+![image-20210619142458250](..\typora-user-images\image-20210619142458250.png)
 
 使用：
 
@@ -550,7 +524,7 @@ React.createElement("div", null, "hello world", React.createElement(Vote, {
 })), document.getElementById('root'));
 ```
 
-​ 每一次调用函数组件，都相当于执行了一次函数。调取组件时可以选择双闭合或者单闭合标签。其中用双闭合时，可以在组件标签的中间传入其他 html 标签（类比与 vue 的插槽 slot）。在组件双闭合标签中间写的内容，都将放在组件的 props，传给组件，其中的内容在 props 中是 children 属性。
+ 每一次调用函数组件，都相当于执行了一次函数。调取组件时可以选择双闭合或者单闭合标签。其中用双闭合时，可以在组件标签的中间传入其他 html 标签（类比与 vue 的插槽 slot）。在组件双闭合标签中间写的内容，都将放在组件的 props，传给组件，其中的内容在 props 中是 children 属性。
 
 ![image-20210422083115060](.\typora-user-images\image-20210422083115060.png)
 
@@ -656,11 +630,11 @@ ReactDom.render(<div>
 )
 ```
 
-​ 当 ReactDOM.render 渲染虚拟组件时，如果发现虚拟 DOM 中 type 是类组件类型的，会创建一个这个类的实例（new 组件名（props）），并把解析出来的 props 传递给这个类的构造器函数。
+ 当 ReactDOM.render 渲染虚拟组件时，如果发现虚拟 DOM 中 type 是类组件类型的，会创建一个这个类的实例（new 组件名（props）），并把解析出来的 props 传递给这个类的构造器函数。
 
-​ 创建组件实例的过程，执行 constructor，执行完 constructor 才算成功创建了组件实例。在执行 constructor 时不会主动将 props 挂在到所创建的实例上，基于 this.props 不能获取组件对象上的 props。
+ 创建组件实例的过程，执行 constructor，执行完 constructor 才算成功创建了组件实例。在执行 constructor 时不会主动将 props 挂在到所创建的实例上，基于 this.props 不能获取组件对象上的 props。
 
-​ 当执行完 constructor，react 继续做一些事，如果调用 super 时没有传 props 等，那在执行完 constructor 后，react 会再次尝试将 props 和 context 等挂载到组件实例上。所以 render 等其他生命周期函数中就可以访问 this.props 中的数据了。
+ 当执行完 constructor，react 继续做一些事，如果调用 super 时没有传 props 等，那在执行完 constructor 后，react 会再次尝试将 props 和 context 等挂载到组件实例上。所以 render 等其他生命周期函数中就可以访问 this.props 中的数据了。
 
 ```
 React.Component源码：
@@ -736,19 +710,19 @@ class Son extends Parent{
    import React from 'react'
    import ReactDom from 'react-dom'
    import PropType from 'prop-types'  //指定属性规则插件
-
+   
    class 组件名 extends React.Component{
-
+   
    	//设置默认值，不用借助prop-types插件
    	static defaultProps = {
    		title = 'hello react'
    	}
-
+   
    	//设置其他规则,必须借助prop-types插件，所以要在模块中引入prop-types
    	static propTypes = {
    		title:PropTypes.string.isRequired
    	}
-
+   
    	constructor(props){
    		super(props)
    	}
@@ -758,7 +732,7 @@ class Son extends Parent{
    		</div>
    	}
    }
-
+   
    ReactDom.render(<div>
    		<组件名>
    			<em>react<em>
@@ -772,13 +746,13 @@ class Son extends Parent{
    ```javascript
    import React from 'react';
    import PropTypes from 'prop-types';
-
+   
    class MyComponent extends React.Component {
      render() {
        // ... do things with the props
      }
    }
-
+   
    MyComponent.propTypes = {
      // You can declare that a prop is a specific JS primitive. By default, these
      // are all optional.
@@ -789,61 +763,61 @@ class Son extends Parent{
      optionalObject: PropTypes.object,
      optionalString: PropTypes.string,
      optionalSymbol: PropTypes.symbol,
-
+   
      // Anything that can be rendered: numbers, strings, elements or an array
      // (or fragment) containing these types.
      // see https://reactjs.org/docs/rendering-elements.html for more info
      optionalNode: PropTypes.node, //必须是一个元素对象
-
+   
      // A React element (ie. <MyComponent />).
      optionalElement: PropTypes.element, //必须是一个jsx元素
-
+   
      // A React element type (eg. MyComponent).
      // a function, string, or "element-like" object (eg. React.Fragment, Suspense, etc.)
      // see https://github.com/facebook/react/blob/master/packages/shared/isValidElementType.js
      optionalElementType: PropTypes.elementType,
-
+   
      // You can also declare that a prop is an instance of a class. This uses
      // JS's instanceof operator.
      optionalMessage: PropTypes.instanceOf(Message), //必须是某个类的实例
-
+   
      // You can ensure that your prop is limited to specific values by treating
      // it as an enum.
      optionalEnum: PropTypes.oneOf(['News', 'Photos']), //必须是其中的一个
-
+   
      // An object that could be one of many types
      optionalUnion: PropTypes.oneOfType([
        PropTypes.string,
        PropTypes.number,
        PropTypes.instanceOf(Message)
      ]),
-
+   
      // An array of a certain type
      optionalArrayOf: PropTypes.arrayOf(PropTypes.number),
-
+   
      // An object with property values of a certain type
      optionalObjectOf: PropTypes.objectOf(PropTypes.number),
-
+   
      // You can chain any of the above with `isRequired` to make sure a warning
      // is shown if the prop isn't provided.
-
+   
      // An object taking on a particular shape
      optionalObjectWithShape: PropTypes.shape({
        optionalProperty: PropTypes.string,
        requiredProperty: PropTypes.number.isRequired //必须传的属性
      }),
-
+   
      // An object with warnings on extra properties
      optionalObjectWithStrictShape: PropTypes.exact({
        optionalProperty: PropTypes.string,
        requiredProperty: PropTypes.number.isRequired
      }),
-
+   
      requiredFunc: PropTypes.func.isRequired,
-
+   
      // A value of any data type
      requiredAny: PropTypes.any.isRequired,
-
+   
      // You can also specify a custom validator. It should return an Error
      // object if the validation fails. Don't `console.warn` or throw, as this
      // won't work inside `oneOfType`.
@@ -860,7 +834,7 @@ class Son extends Parent{
          );
        }
      },
-
+   
      // You can also supply a custom validator to `arrayOf` and `objectOf`.
      // It should return an Error object if the validation fails. The validator
      // will be called for each key in the array or object. The first two
@@ -899,25 +873,25 @@ class Son extends Parent{
   import React from 'react'
   import ReactDom from 'react-dom'
   import PropType from 'prop-types'  //指定属性规则插件
-
+  
   class 组件名 extends React.Component{
   	static defaultProps = {
   		title = 'hello react'
   	}
-
+  
   	static propTypes = {
   		title:PropTypes.string
   	}
-
+  
   	constructor(props){
   		super(props)
-
+  
   		//初始化组件私有state
   		this.state = {
   			time:new Date().toLocaleString()
   		}
   	}
-
+  
   	render(){     //生命周期函数
   		console.log('def')
   		return <div>
@@ -925,17 +899,17 @@ class Son extends Parent{
   			<p>{ this.state.time }</p>        //调用
   		</div>
   	}
-
+  
   	componentDidMount(){
   		this.state.time ='---------'    //这样是能修改state中的数据的，但是并不能触发视图重新渲染。
-
+  
   		this.setState({
   			time: new Date().toLocaleString()
   		}，()=>{
   			console.log('ghi')
   		})   //react.Component(组件父类)的原型上的方法   setState(partialState，callback),传参是部分状态，因为组件在初始化时，可能有很多state，而只修改其中的一部分而已。内部用Object.assign(this.state,partialState),这种方式修改state并通知视图渲染。callback会在视图被重新渲染完成后触发。
   		console.log('abc')
-
+  
   		上面的输出顺序是（考虑的不是初次渲染的情况而是更新state的情况）：
   		abc
   		def
@@ -1013,7 +987,7 @@ class 组件名 extends React.Component({
 })
 
 //Component中给实例赋值了一个refs属性，它也是和vue一样用来存DOM元素的。
-```
+  ```
 
 方式三：REACT HOOK
 
@@ -1079,15 +1053,15 @@ componentDidMount： 第一次组件渲染完成，一般在这里可以获取 d
 
 **Updating（更新阶段）：**
 
-​ shouldComponentUpdate：是否应该更新组件，它可以接受两个参数，nextProps, nextState，调用 setState 函数时，会首先触发该生命周期函数，如果在这个函数内部访问 this.state 中的数据时，得到的还是原来的数据值。 而 nextProps：表示即将要修改为的新属性对象 ，nextSt ate 表示即将要修改为的新 state 对象。 如果这个方法返回 true 表示允许重新渲染视图，返回 false 则停止继续渲染视图。
+ shouldComponentUpdate：是否应该更新组件，它可以接受两个参数，nextProps, nextState，调用 setState 函数时，会首先触发该生命周期函数，如果在这个函数内部访问 this.state 中的数据时，得到的还是原来的数据值。 而 nextProps：表示即将要修改为的新属性对象 ，nextSt ate 表示即将要修改为的新 state 对象。 如果这个方法返回 true 表示允许重新渲染视图，返回 false 则停止继续渲染视图。
 
-​ 一般在这个生命周期函数中做组件性能优化（比如更改一些状态需要更新视图，但是有一些并不需要更新视图，所以可以在这里增加一下判断条件，返回 true 或 false）。
+ 一般在这个生命周期函数中做组件性能优化（比如更改一些状态需要更新视图，但是有一些并不需要更新视图，所以可以在这里增加一下判断条件，返回 true 或 false）。
 
-​ 执行 setState 方法会触发 shouldComponentUpdate 生命周期函数，根据 shouldComponentUpdate 返回的时 true 还是 false 决定是否渲染组件。但是 setState 方法中对 state 的修改是能正常修改 state 中对应的值的。
+ 执行 setState 方法会触发 shouldComponentUpdate 生命周期函数，根据 shouldComponentUpdate 返回的时 true 还是 false 决定是否渲染组件。但是 setState 方法中对 state 的修改是能正常修改 state 中对应的值的。
 
-​ forceUpdate 方法是强制更新视图，不会触发 shouldComponentUpdate 方法。
+ forceUpdate 方法是强制更新视图，不会触发 shouldComponentUpdate 方法。
 
-​ shouldComponentUpdate 返回 true 后：
+ shouldComponentUpdate 返回 true 后：
 
 - componentWillUpdate
 
@@ -1101,7 +1075,7 @@ componentDidMount： 第一次组件渲染完成，一般在这里可以获取 d
 
 componentWillUnmount
 
-​ 以上的更新生命周期函数都是通过控制组件的 state 数据的改变来触发的生命周期函数。但是一个组件中，除了 state 改变可以触发生命周期函数的执行，还有属性属性的改变可以触发的生命周期函数。
+ 以上的更新生命周期函数都是通过控制组件的 state 数据的改变来触发的生命周期函数。但是一个组件中，除了 state 改变可以触发生命周期函数的执行，还有属性属性的改变可以触发的生命周期函数。
 
 组件属性改变触发的生命周期函数：
 
@@ -1278,7 +1252,7 @@ PureComponent 给组件加了一个 shouldComponentUpdate，在这个函数中�
 
 ### 第十四节——组件嵌套与通信（p15,p16）
 
-​ 通信：
+ 通信：
 
 1. 基于属性传递 props(单向：父 --> 子)，且子组件中不能修改
 
@@ -1971,7 +1945,7 @@ function useEffect(callback,dependencyList){
 
 扩展：空数组的 some 方法返回 false，[].some(item => item )
 
-​ React hooks 和 vue3.0 很像
+ React hooks 和 vue3.0 很像
 
 #### createRef/useRef（用 DOM 元素）
 
@@ -2129,7 +2103,7 @@ export {
 }
 ```
 
-​
+
 
 在执行 createStore 函数后会返回一个对象，存储公共状态：
 
@@ -2608,7 +2582,7 @@ export default class Other extends React.Component {
         ```js
         import voteAction from './voteAction';
         import personAction from './personAction';
-
+      
         export default {
           vote: voteAction,
           person: personAction
@@ -3122,11 +3096,11 @@ export default Error
 
 ```
 
-​ 和 vue 不一样的是，react 中所有的路由，路由规则等都是基于 react-router-dom 中提供的不同组件来完成。HashRouter，BrowserRouter，Switch，Redirect，Route。
+ 和 vue 不一样的是，react 中所有的路由，路由规则等都是基于 react-router-dom 中提供的不同组件来完成。HashRouter，BrowserRouter，Switch，Redirect，Route。
 
-​ **受路由管控组件**：通过路由规则匹配后渲染的组件。受路由管控的组件实例上的 props 属性上有额外的几个自动添加的属性。
+ **受路由管控组件**：通过路由规则匹配后渲染的组件。受路由管控的组件实例上的 props 属性上有额外的几个自动添加的属性。
 
-​ hash 路由内模拟了一套 history api 的历史记录机制，每次跳转都会向记录池中推入一条记录。
+ hash 路由内模拟了一套 history api 的历史记录机制，每次跳转都会向记录池中推入一条记录。
 
 ![image-20210504142935559](.\typora-user-images\image-20210504142935559.png)
 
@@ -3395,11 +3369,11 @@ React 路由和 Vue 路由不太一样，vue 中是引入 vue-router，通过创
 
   ```
   yarn add http-proxy-middleware
-
+  
   在项目的src目录下创建一个setupProxy.js文件并写入如下类似的内容：
-
+  
   const { createProxyMiddleware } = require('http-proxy-middleware');
-
+  
   module.exports = function(app) {
     app.use(
       '/api',
@@ -3478,16 +3452,16 @@ React 路由和 Vue 路由不太一样，vue 中是引入 vue-router，通过创
 
      ```
      const proxy = require('http-proxy-middleware');
-
+     
      module.exports = function(app) {
        app.use(proxy('/api', { target: 'http://localhost:5000/' }));
      };
 
 
      或者：
-
+    
      const { createProxyMiddleware } =require('http-proxy-middleware')
-
+    
      module.exports = function(app){
      	app.use(
      		'/api',
@@ -3551,7 +3525,7 @@ ReactDOM.render(
   import { HashRouter, Route, Switch, BrowserRouter } from 'react-router-dom'   //引入路由包
   //HashRouter:导入它表示使用hash router
   //BrowserRouter:导入它表示使用history router
-
+  
   //引入路由需要需要渲染的组件
   import Login from '../views/login/Login.js'
   import NewsSandBox from '../views/sandbox/NewsSandBox.js'
@@ -3569,23 +3543,23 @@ ReactDOM.render(
   		写法二：
   		<Switch>   //启动只匹配一个，一级路由
   			<Route path="/login" component={ Login }>  //表示路径是login是就加载Login组件
-              {/*<Route path="/" component={ NewsSandBox }> */}
-              {/*<Route path="/" render={ ()=> <NewsSandBox></NewsSandBox>}> */}
+  	          {/*<Route path="/" component={ NewsSandBox }> */}
+  	          {/*<Route path="/" render={ ()=> <NewsSandBox></NewsSandBox>}> */}
   			<Route path="/" render={ ()=>
   			//判断本地是否有token存在，有则表示登录了，没有则表示没有登录，需要重定向到登录页面。记得其实是有return语句的
   				return localStorage.getItem("token")?
   				<NewsSandBox></NewsSandBox> :
   				<Redirect to="/login" />
   			}>
-              //权限校验还可以写为这种格式：<Route path="/" component={()=>{
-            return localStorage.getItem('token')?<NewsSandBox></NewsSandBox>:<Redirect 			to='/login'/> }}>
-              </Route>
+  	          //权限校验还可以写为这种格式：<Route path="/" component={()=>{
+  	        return localStorage.getItem('token')?<NewsSandBox></NewsSandBox>:<Redirect 			to='/login'/> }}>
+  	          </Route>
 
 
               <Route path="/" exact component={ Login } />  //精确匹配
-  			//路由重定向，引入路由拦截。
-  		</Switch>
-  	</HashRouter>
+    		//路由重定向，引入路由拦截。
+    	</Switch>
+    </HashRouter>
   }
   ```
 
@@ -3630,7 +3604,7 @@ ReactDOM.render(
         </div>
       );
     }
-    ```
+  ```
 
   - NewsSandBox.scss
 
@@ -4549,7 +4523,7 @@ PureComponent组件的原理是内部重写了PureComponent方法
 
   ```JSX
   React.memo的使用
-
+  
   import React from 'react'
   import ReactDOM from 'react-dom'
 
@@ -4578,14 +4552,14 @@ PureComponent组件的原理是内部重写了PureComponent方法
   			number:this.state.number+1
   		})
   	}
-
+  	
   	render(){
   		let {number} = this.state
   		return (
   			<div>
   				<span>{number}</span>
-                  <button onClick={this.handleClick}>点击</button>
-                  <MemoChildComponent name='jack'></MemoChildComponent>
+  	              <button onClick={this.handleClick}>点击</button>
+  	              <MemoChildComponent name='jack'></MemoChildComponent>
   			</div>
   		)
   	}
@@ -4621,7 +4595,7 @@ es6 中的类（class）是语法糖，在被 babel 编译后也是 function。
 
 在 React 中针对类组件，也就是继承了 React.Component 的组件，在 Component 函数的原型上有一个属性：Component.prototype.isReactComponent = { }
 
-```
+  ```
 export function Component(props){
 	this.props = props
 	....

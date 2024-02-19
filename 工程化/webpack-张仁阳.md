@@ -4995,6 +4995,10 @@ hook.promise('zhufeng', 18).then(() => {
 
 
 
+#### tapable原理
+
+
+
 
 
 ###  插件
@@ -5149,7 +5153,7 @@ module.exports = DonePlugin;
 
 **compilation上的插件：**
 
-要获取compilation实例的话，需要通过compiler.hooks.compilation这个hook来获取，订阅这个hook后，还订阅函数的回调参数就是接收webpack内部传递的compilation实例。
+要获取compilation实例的话，需要通过compiler.hooks.compilation这个hook来获取，订阅这个hook后，该订阅函数的回调参数就是接收webpack内部传递的compilation实例。
 
 ```js
 /**
