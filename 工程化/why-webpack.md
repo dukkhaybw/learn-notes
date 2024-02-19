@@ -1,175 +1,4 @@
-webpack 实现 commonjs 打包后的源码：
-
-```js
-(function () {
-  var __webpack_modules__ = {
-    './src/js/format.js': function (module) {
-      //在执行该模块时一共传入了三个参数 module, module.exports, __webpack_require__
-      const formatTime = (time) => {
-        return '2021-9-18';
-      };
-      const formatString = (time) => {
-        return 'x-x-x';
-      };
-
-      //将对应模块要导出的变量或者方法放入到module对象中，而module对象其实是__webpack_require__函数在闭包情况下存放的一个变量
-      module.exports = {
-        formatTime,
-        formatString
-      };
-    }
-  };
-
-  //定义了一个对象，作为加载模块的缓存
-  var __webpack_module_cache__ = {};
-
-  //定义一个函数，当加载一个模块时会通过该函数进行加载
-  function __webpack_require__(moduleId) {
-    //moduleId 为 './src/js/format.js'
-    var cachedModule = __webpack_module_cache__[moduleId];
-    //判断缓存中是否已经加载过该模块
-    if (cachedModule !== undefined) {
-      return cachedModule.exports;
-    }
-
-    //给module和__webpack_module_cache__[moduleId]赋值同一个内存地址中的对象
-    //这里形成了一个闭包
-    var module = (__webpack_module_cache__[moduleId] = { exports: {} });
-
-    //加载执行该模块
-    __webpack_modules__[moduleId](module, module.exports, __webpack_require__);
-    return module.exports;
-  }
-
-  var __webpack_exports__ = {};
-
-  //下面是立即执行函数的另一种写法，具体开始执行代码逻辑
-  !(function () {
-    const { formatTime, formatString } = __webpack_require__('./src/js/format.js'); //这是在加载入口模块
-    console.log(formatTime(123));
-    console.log(formatString(456));
-    console.log('hello world');
-  })();
-})();
-```
-
-模块化实际上给了每个模块一个函数作用域。封装几个函数，将一个个的模块放在对象中进行管理。
-
-ES6 模块化语法的实现原理：
-
-```js
-(function () {
-  'use strict';
-  //任然是定义了一个对象，对象内部存放模块映射
-  var __webpack_modules__ = {
-    './src/js/math.js': function (
-      __unused_webpack_module,
-      __webpack_exports__,
-      __webpack_require__
-    ) {
-      __webpack_require__.r(__webpack_exports__);
-
-      //给exports对象设置代理   definition
-      __webpack_require__.d(__webpack_exports__, {
-        sum: function () {
-          return sum;
-        },
-        mut: function () {
-          return mut;
-        }
-      });
-      const sum = (n1, n2) => {
-        return n1 + n2;
-      };
-
-      const mut = (n1, n2) => {
-        return n1 * n2;
-      };
-    }
-  };
-
-  //模块加载缓存
-  var __webpack_module_cache__ = {};
-
-  //require函数的自定义实现
-  function __webpack_require__(moduleId) {
-    var cachedModule = __webpack_module_cache__[moduleId];
-    if (cachedModule !== undefined) {
-      //检测缓存
-      return cachedModule.exports;
-    }
-
-    var module = (__webpack_module_cache__[moduleId] = {
-      exports: {}
-    });
-
-    __webpack_modules__[moduleId](module, module.exports, __webpack_require__);
-
-    return module.exports;
-  }
-
-  !(function () {
-    //给函数对象__webpack_require__添加一个叫d的属性，且赋值为一个函数
-    __webpack_require__.d = function (exports, definition) {
-      for (var key in definition) {
-        if (__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-          Object.defineProperty(exports, key, {
-            enumerable: true,
-            get: definition[key]
-          });
-        }
-      }
-    };
-  })();
-
-  !(function () {
-    //给函数对象__webpack_require__的原型对象中添加一个叫o的属性，且赋值为一个函数
-    __webpack_require__.o = function (obj, prop) {
-      return Object.prototype.hasOwnProperty.call(obj, prop);
-    };
-  })();
-
-  !(function () {
-    //给函数对象__webpack_require__添加一个叫r的属性，且赋值为一个函数，给exports对象增加了一些属性，作用是记录一个模块是否是ES6模块，以后在判断加载的模块是es6模块还是commonjs模块
-    __webpack_require__.r = function (exports) {
-      if (typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-        Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-      }
-      Object.defineProperty(exports, '__esModule', { value: true });
-    };
-  })();
-
-  var __webpack_exports__ = {};
-
-  !(function () {
-    __webpack_require__.r(__webpack_exports__); //用于记录是一个—__esModules:ture
-
-    //开始加载第一个模块
-    var _js_math_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__('./src/js/math.js');
-
-    console.log((0, _js_math_js__WEBPACK_IMPORTED_MODULE_0__.sum)(123, 456));
-    //等价于	console.log( _js_math_js__WEBPACK_IMPORTED_MODULE_0__.sum(123, 456))
-    console.log((0, _js_math_js__WEBPACK_IMPORTED_MODULE_0__.mut)(456, 1));
-    console.log('hello world');
-  })();
-})();
-```
-
 ## source-map
-
-- 原理
-- 作用
-- 如何方便进行调试
-
-认识：
-
-- 开发和生产过程中泡在浏览器中的代码和项目源码往往有很大的差异
-- 比如源码采用 ES6 转换为 ES5 会增加大量的 ES5 代码
-- 源码的行号和打包后代码的行号差异很大
-- 代码丑化压缩过，变量名改变
-- TS 转为 JS
-
-当开发过程中项目出现 bug，那就需要锁定报错的源码的位置。借助 source-map 就可以实现打包后代码到源码的映射，从而更快锁定错误出现的位置，以进行修复。使得浏览器可以重构原始源并再调试器中显示重建的原始源代码。
 
 使用：
 
@@ -266,15 +95,11 @@ eval 和 source-map 字段的组合，会让 source-map 内容在打包后的每
 
 ![image-20210920210521077](..\typora-user-images\image-20210920210521077.png)
 
-![image-20210920212238227](..\typora-user-images\image-20210920212238227.png)
-
 相对的最佳实践
 
 ![image-20210920212501056](..\typora-user-images\image-20210920212501056.png)
 
 ## Babel
-
-![image-20220307074738357](..\typora-user-images\image-20220307074738357.png)
 
 babel 本身是可以单独使用的一个工具，可以不和 webpack 配置使用。
 
@@ -325,7 +150,7 @@ npx babel src --out-dir result  --presets=@babel/preset-env
 
 Babel 的底层代码转换的逻辑：
 
-babel 将 ES6 语法的源码生成 ES6 对应的 AST 语法树，在将 ES6 对应的语法树转为另一个可以转为 ES5 代码的新的 AST 语法树，再将新的 AST 语法树生成 ES5 的代码（babel 本质就是 JavaScript 的一个编译器）。
+babel 将 ES6 语法的源码生成 ES6 对应的 AST 语法树，再将 ES6 对应的语法树转为另一个可以转为 ES5 代码的新的 AST 语法树，再将新的 AST 语法树生成 ES5 的代码（babel 本质就是 JavaScript 的一个编译器）。
 
 ![image-20210920230600288](..\typora-user-images\image-20210920230600288.png)
 
@@ -399,7 +224,7 @@ module: {
 }
 ```
 
-这样配置以后，会用.browserslistrc 先查询需要兼容的浏览器情况，然后在确定之后，使用@babel/preset-env 插件对语法 进行针对性的转换。
+这样配置以后，会用.browserslistrc 先查询需要兼容的浏览器情况，然后在确定之后，使用@babel/preset-env 插件对语法进行针对性的转换。
 
 在项目中没有.browserslistrc 文件的时候，Babel 就提供了另一种方式来设置需要兼容的目标浏览器。
 
@@ -436,7 +261,7 @@ module: {
 
 ![image-20211004222916792](..\typora-user-images\image-20211004222916792.png)
 
-![image-20210921000205776](..\typora-user-images\image-20210921000205776.png)
+
 
 babel.config.js:
 
