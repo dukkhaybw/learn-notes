@@ -1229,7 +1229,10 @@ import React, { Component, createContext } from 'react';
 const MyContext = createContext();
 
 class MyClassComponent extends Component {
-  static contextType = MyContext;
+  static contextType = MyContext;  // react-redux在类组件中的connect方法就是使用这种方式接受Provider组件提供的store的
+    constructor(props,context){
+        super(props)
+    }
 
   render() {
     let value = this.context;
