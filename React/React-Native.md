@@ -2,19 +2,19 @@
 
 原生 App:
 
-![image-20211002221953279](.\typora-user-images\image-20211002221953279.png)
+![image-20211002221953279](..\typora-user-images\image-20211002221953279.png)
 
 混合 App：
 
-![image-20211002222212604](.\typora-user-images\image-20211002222212604.png)
+![image-20211002222212604](..\typora-user-images\image-20211002222212604.png)
 
 phonegap.js:做为适配层，封装了 WebView。下层和原生 app 接口和能力进行桥接，向上承载业务逻辑层。
 
 网页上的 js 并没有原生的能力，比如调用摄像头，访问蓝牙，播放视频等原生应用才能做的事。
 
-![image-20211002222707042](.\typora-user-images\image-20211002222707042.png)
+![image-20211002222707042](..\typora-user-images\image-20211002222707042.png)
 
-![image-20211002223133793](.\typora-user-images\image-20211002223133793.png)
+![image-20211002223133793](..\typora-user-images\image-20211002223133793.png)
 
 react-native 提供了一系列组件标签，每个标签在不同的操作系统下都对应着不同的原生视图组件。
 
@@ -66,7 +66,7 @@ React-Native 提供了 native 这一层，就是 RN 帮助开发者封装了一�
 
 ## React-Native 中的原生组件
 
-![image-20211001114308660](.\typora-user-images\image-20211001114308660.png)
+![image-20211001114308660](..\typora-user-images\image-20211001114308660.png)
 
 各个平台在写原生 App 时，有自己的一套视图标签
 
@@ -102,7 +102,7 @@ consr App = ()=>{
 }
 ```
 
-![image-20211001120700592](.\typora-user-images\image-20211001120700592.png)
+![image-20211001120700592](..\typora-user-images\image-20211001120700592.png)
 
 ## React 基础
 
@@ -495,7 +495,7 @@ import BigButton from './BigButton'; // 去掉平台扩展名直接引用
 
 - 安装 Android SDK React Native 应用需要的是`Android 10 (Q)`版本的 SDK，在 Android Studio 的欢迎界面中找到 SDK Manager。点击"Configure"，然后就能看到"SDK Manager"。
 
-![image-20211001174946677](.\typora-user-images\image-20211001174946677.png)
+![image-20211001174946677](..\typora-user-images\image-20211001174946677.png)
 
 "SDK Platforms"选项卡：
 
@@ -504,17 +504,17 @@ import BigButton from './BigButton'; // 去掉平台扩展名直接引用
 - `Android SDK Platform 29`
 - `Intel x86 Atom_64 System Image`（官方模拟器镜像文件，使用非官方模拟器不需要安装此组件）
 
-![image-20211001175148643](.\typora-user-images\image-20211001175148643.png)
+![image-20211001175148643](..\typora-user-images\image-20211001175148643.png)
 
 "SDK Tools"选项卡：
 
 "Android SDK Build-Tools"选项，确保选中了 React Native 所必须的`29.0.2`版本。
 
-![image-20211001175301213](.\typora-user-images\image-20211001175301213.png)
+![image-20211001175301213](..\typora-user-images\image-20211001175301213.png)
 
 "NDK (Side by side)"，同样勾中右下角的"Show Package Details"，选择`20.1.5948944`版本进行安装。
 
-![image-20211001175315109](.\typora-user-images\image-20211001175315109.png)
+![image-20211001175315109](..\typora-user-images\image-20211001175315109.png)
 
 Windows 下环境变量的配置：
 
@@ -578,7 +578,7 @@ const App = () => {
 export default App;
 ```
 
-![image-20211010201150284](.\typora-user-images\image-20211010201150284.png)
+![image-20211010201150284](..\typora-user-images\image-20211010201150284.png)
 
 ```jsx
 import React from 'react';
@@ -597,7 +597,7 @@ const App = () => {
 export default App;
 ```
 
-![image-20211010201443185](.\typora-user-images\image-20211010201443185.png)
+![image-20211010201443185](..\typora-user-images\image-20211010201443185.png)
 
 - 在 RN 中样式是无法继承的
 
@@ -618,7 +618,7 @@ export default App;
 
 下图字体的颜还是默认的，并不是红色；字体大小也没有继承。
 
-![image-20211010203826190](.\typora-user-images\image-20211010203826190.png)
+![image-20211010203826190](..\typora-user-images\image-20211010203826190.png)
 
 - 单位不用加，如果加了 px, vw 等会报错；RN 自动根据手机的屏幕像素比自动调整；但是可以加百分比
 
@@ -663,7 +663,7 @@ const App = () => {
 export default App;
 ```
 
-![image-20211010211403440](.\typora-user-images\image-20211010211403440.png)
+![image-20211010211403440](..\typora-user-images\image-20211010211403440.png)
 
 - 变换
 
@@ -680,7 +680,7 @@ export default App;
   </View>
   ```
 
-![image-20211010212036250](.\typora-user-images\image-20211010212036250.png)
+![image-20211010212036250](..\typora-user-images\image-20211010212036250.png)
 
 react-native 中的所有的核心组件都接受名为`style`的属性。样式属性名按照 JS 的语法要求使用了驼峰命名法，例如将`background-color`改为`backgroundColor`。
 
@@ -824,9 +824,9 @@ flex 属性
   export default App;
   ```
 
-  ![image-20211010213034575](.\typora-user-images\image-20211010213034575.png)
+  ![image-20211010213034575](..\typora-user-images\image-20211010213034575.png)
 
-  ![image-20211010213046528](.\typora-user-images\image-20211010213046528.png)
+  ![image-20211010213046528](..\typora-user-images\image-20211010213046528.png)
 
 - Image
 
@@ -834,9 +834,11 @@ flex 属性
   - 渲染网络图片，且必须加宽高
   - 在 android 中使用 git 和 webp 格式的图片
 
-  ![image-20211010213535004](.\typora-user-images\image-20211010213535004.png)
+  ![image-20211010213535004](..\typora-user-images\image-20211010213535004.png)
 
-- ImageBackground 一个可以使用图片当作背景的容器，相当于以前的 div+背景图片 ![image-20211010213841334](.\typora-user-images\image-20211010213841334.png)
+- ImageBackground 一个可以使用图片当作背景的容器，相当于以前的 div+背景图片 
+
+  ![image-20211010213841334](..\typora-user-images\image-20211010213841334.png)
 
 - TextInput
 
@@ -845,19 +847,19 @@ flex 属性
   ```jsx
   import React from 'react';
   import { TextInput } from 'react-native';
-
+  
   const ChangeText = (text) => {
     alert(text);
   };
-
+  
   const App = () => {
     return <TextInput onChangeText={ChangeText}></TextInput>;
   };
-
+  
   export default App;
   ```
 
-  ![image-20211010214255232](.\typora-user-images\image-20211010214255232.png)
+  ![image-20211010214255232](..\typora-user-images\image-20211010214255232.png)
 
 ## react-native 项目代码的调试
 
@@ -871,7 +873,7 @@ flex 属性
 
 在项目的入口文件 index.js 中加入以下代码：
 
-![image-20211010221430074](.\typora-user-images\image-20211010221430074.png)
+![image-20211010221430074](..\typora-user-images\image-20211010221430074.png)
 
 方式二：使用 rn 推荐的工具 react-native-debugger
 
@@ -880,9 +882,9 @@ flex 属性
 - 运行该工具的 exe 文件
 - 打开手机模拟器的 ctrl + m 选择 debug 连接该调试工具
 
-![image-20211010221937442](.\typora-user-images\image-20211010221937442.png)
+![image-20211010221937442](..\typora-user-images\image-20211010221937442.png)
 
-![image-20211010222032085](.\typora-user-images\image-20211010222032085.png)
+![image-20211010222032085](..\typora-user-images\image-20211010222032085.png)
 
 注意：
 
@@ -970,7 +972,7 @@ react 中的全局数据管理库，可以简单的实现数据的跨组件共�
       this.props.RootStore.changeKey1('newValue');
     };
   }
-
+  
   export default Son;
   ```
 
@@ -998,7 +1000,7 @@ react 中的全局数据管理库，可以简单的实现数据的跨组件共�
     import { NavigationContainer } from '@react-navigation/native';
     import { createNativeStackNavigator } from '@react-navigation/native-stack';
     import Login from './src/pages/account/index.js';
-
+  
     function HomeScreen({ navigation }) {
       return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -1007,7 +1009,7 @@ react 中的全局数据管理库，可以简单的实现数据的跨组件共�
         </View>
       );
     }
-
+  
     function ProfileScreen({ navigation }) {
       return (
         <View>
@@ -1015,9 +1017,9 @@ react 中的全局数据管理库，可以简单的实现数据的跨组件共�
         </View>
       );
     }
-
+  
     const Stack = createNativeStackNavigator();
-
+  
     function App() {
       return (
         <NavigationContainer>
@@ -1031,7 +1033,7 @@ react 中的全局数据管理库，可以简单的实现数据的跨组件共�
         </NavigationContainer>
       );
     }
-
+  
     export default App;
     ```
 
@@ -1044,7 +1046,7 @@ react 中的全局数据管理库，可以简单的实现数据的跨组件共�
     ```jsx
     import React, { Component } from 'react';
     import { View, Text } from 'react-native';
-
+  
     class Login extends Component {
       render() {
         return (
@@ -1054,7 +1056,7 @@ react 中的全局数据管理库，可以简单的实现数据的跨组件共�
         );
       }
     }
-
+  
     export default Login;
     ```
 
@@ -1068,15 +1070,15 @@ react 中的全局数据管理库，可以简单的实现数据的跨组件共�
 
   ```jsx
   import { Dimensions } from 'react-native';
-
+  
   //手机屏幕的宽度
   export const screenWidth = Dimensions.get('window').width;
-
+  
   //手机屏幕的高度
   export const screenHeight = Dimensions.get('window').height;
-
+  
   // 设计稿的宽度 / 元素的宽度 = 手机屏幕  / 手机中元素的宽度
-
+  
   /*
    *元素宽高转换方法
    *@param {Number} elementPx
@@ -1105,30 +1107,27 @@ react 中的全局数据管理库，可以简单的实现数据的跨组件共�
 
     ```shell
     npm install react-native-elements
-
+    
     # or with yarn
     yarn add react-native-elements
 
 
     npm install react-native-vector-icons
-
+    
     # or with yarn
     yarn add react-native-vector-icons
-    ```
-
-    ```jsx
+    
     import { Input } from 'react-native-elements';
-    ```
 
-    ![image-20211012230149721](.\typora-user-images\image-20211012230149721.png)
+![image-20211012230149721](C:\Users\dukkha\Desktop\learn-notes\React\images\image-20211012230149721.png)
 
-    ![image-20211012230025490](.\typora-user-images\image-20211012230025490.png)
+![image-20211012230025490](C:\Users\dukkha\Desktop\learn-notes\React\images\image-20211012230025490.png)
 
 对于这个项目，将页面路由单独抽取到一个文件中——RootNav.js 中，方便对路由进行统一的管理。
 
 ## react-native 脚手架创建的项目的结构
 
-![image-20211006170013559](.\typora-user-images\image-20211006170013559.png)
+![image-20211006170013559](..\typora-user-images\image-20211006170013559.png)
 
 `__test__`:存放单元测试的代码。
 
@@ -1194,23 +1193,23 @@ package.json 和 yarn.lock 不再多说。
   <true/>
   ```
 
-  ![image-20211006195644565](.\typora-user-images\image-20211006195644565.png)
+  ![image-20211006195644565](..\typora-user-images\image-20211006195644565.png)
 
   - 在 Android 中，在项目的 android 目录下 android\app\src\debug\AndroidManifest.xml 中的 usesCleartextTraffic 表示允许使用 http 接口
 
-  ![image-20211006195917256](.\typora-user-images\image-20211006195917256.png)
+  ![image-20211006195917256](..\typora-user-images\image-20211006195917256.png)
 
 注意：AndroidManifest 文件有两个，一个在 debug 目录中，一个在 main 目录中。一个对应开发环境一个对应生产环境。
 
 在 main 目录中的 AndroidManifest 文件中是没有自动设定 usesCleartextTraffic 属性为 true 的。所以意味着在生产环境下默认的配置是无法访问 http 接口的。所以需要手动添加 usesCleartextTraffic。
 
-![image-20211006200120011](.\typora-user-images\image-20211006200120011.png)
+![image-20211006200120011](..\typora-user-images\image-20211006200120011.png)
 
-![image-20211006200342593](.\typora-user-images\image-20211006200342593.png)
+![image-20211006200342593](..\typora-user-images\image-20211006200342593.png)
 
 手动添加 usesCleartextTraffic="true"
 
-![image-20211006200557878](.\typora-user-images\image-20211006200557878.png)
+![image-20211006200557878](..\typora-user-images\image-20211006200557878.png)
 
 在 ios 应用的权限配置文件是 Info.plist
 
@@ -1232,15 +1231,15 @@ package.json 和 yarn.lock 不再多说。
 <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />  //地理位置精确定位权限
 ```
 
-![image-20211006194228243](.\typora-user-images\image-20211006194228243.png)
+![image-20211006194228243](..\typora-user-images\image-20211006194228243.png)
 
-![image-20211006192426481](.\typora-user-images\image-20211006192426481.png)
+![image-20211006192426481](..\typora-user-images\image-20211006192426481.png)
 
-![image-20211006192457026](.\typora-user-images\image-20211006192457026.png)
+![image-20211006192457026](..\typora-user-images\image-20211006192457026.png)
 
-![image-20211006192541107](.\typora-user-images\image-20211006192541107.png)
+![image-20211006192541107](..\typora-user-images\image-20211006192541107.png)
 
-![image-20211006192609209](.\typora-user-images\image-20211006192609209.png)
+![image-20211006192609209](..\typora-user-images\image-20211006192609209.png)
 
 react-native 项目使用的自动打包工具是 Metro。一般的网页项目使用的是 webpack 进行打包，webpack 默认不会转码 node_modules 中的文件，node_modules 中的文件都是事先转码打包好的。Metro 则可以转码 node_modules 中的文件。
 
@@ -1277,9 +1276,9 @@ package.json 中的 resolutions 字段中可以指定间接依赖的包的版本
 
 如下图： npm info react
 
-![image-20211006172741111](.\typora-user-images\image-20211006172741111.png)
+![image-20211006172741111](..\typora-user-images\image-20211006172741111.png)
 
-![image-20211006173042008](.\typora-user-images\image-20211006173042008.png)
+![image-20211006173042008](..\typora-user-images\image-20211006173042008.png)
 
 一般 next 表示更新的测试版本： npm install react@next
 
@@ -1317,9 +1316,9 @@ package.json:
 
 然后在命令行中运行 npm run postinstall 。运行后就会对包修改前后的内容进行比较，并将差异生成文件存放在 patches 目录中。这样就完成了补丁的修改。这时即使删除项目中的 node_modules 目录后，下次再安装项目依赖后，patch-package 会自动使用之前记录下来的补丁文件对第三方包的源码进行修改。
 
-![image-20211006180742011](.\typora-user-images\image-20211006180742011.png)
+![image-20211006180742011](..\typora-user-images\image-20211006180742011.png)
 
-## ![image-20211006181108022](.\typora-user-images\image-20211006181108022.png)
+![image-20211006181108022](..\typora-user-images\image-20211006181108022.png)
 
 ## 导航器
 
@@ -1367,7 +1366,7 @@ React Navigation（栈式导航）第 5 版
 
      将文件切分为小片段，分片段上传，下次续传。断点续传需要给文件加上一个唯一标识，常见的就是计算文件的 md5。 但是计算大型文件的 md5 可能需要数十秒钟，巨大计算量导致的卡顿如何解决（可考虑：webworker，抽样（损失一点正确率以换取效率的大提升），fiber（空闲时间计算））
 
-     ```js
+     ````js
      createFileChunk(file, size=Size){
          //生成文件块
          const chunks = [];
@@ -1378,8 +1377,6 @@ React Navigation（栈式导航）第 5 版
          }
          return chunks
      }
-
-
      async uploadChunks (uploadedList=[]){
          const list = this.chunks.filter(chunk => uploadedList.indexOf(chunk.hash)===-1).map(({chunk, hash, index},i)=>{
              const form = new FormData();
@@ -1397,126 +1394,130 @@ React Navigation（栈式导航）第 5 版
      }
      ```
 
-     - **使用 webworker 计算 hash**
 
-     ```js
-     //使用webworker计算hash
-     async calculateHash(chunks){
-         return new Promise(resolve=>{
-             //web-worker 防止卡顿主线程
-             this.container.worker = new worker('/hash.js')
-             this.container.worker.postMessage({chunks})
-             //开启web-worker的异步监听事件
-             this.container.worker.onmessage = e =>{
-                 const { progress, hash } = e.data
-                 this.hashProgress = Number(progress.toFixed(2))
-                 if(hash){
-                     resolve(hash)
-                 }
+
+- **使用 webworker 计算 hash**
+
+ ```js
+ //使用webworker计算hash
+ async calculateHash(chunks){
+     return new Promise(resolve=>{
+         //web-worker 防止卡顿主线程
+         this.container.worker = new worker('/hash.js')
+         this.container.worker.postMessage({chunks})
+         //开启web-worker的异步监听事件
+         this.container.worker.onmessage = e =>{
+             const { progress, hash } = e.data
+             this.hashProgress = Number(progress.toFixed(2))
+             if(hash){
+                 resolve(hash)
              }
-         })
+         }
+     })
+ }
+ ```
+
+
+
+ ```js
+ self.importScripts('spark-md5.min.js');
+ self.onmessage = (e) => {
+   const { chunks } = e.data;
+   const spark = new self.SparkMD5.ArrayBuffer();
+   let progress = 0;
+   let count = 0;
+   const loadNext = (index) => {
+     const reader = new FileReader();
+     reader.readAsArrayBuffer(chunks[index].file);
+     reader.onload = (e) => {
+       //累加器不能依赖index
+       count++;
+       //增量计算md5
+       spark.append(e.target.result);
+       if (count === chunks.length) {
+         //通知主线程计算结束
+         self.postMessage({
+           progress: 100,
+           hash: spark.end()
+         });
+       } else {
+         //每个区块计算结束通知进度
+         progress == 100 / chunks.length;
+         self.postMessage({
+           progress
+         });
+         //计算下一个
+         loadNext(count);
+       }
+     };
+   };
+ };
+ //启动
+ loadNext(0);
+ ```
+
+ - **时间切片计算 md5 值，根据浏览器的机制抽空执行 js**
+
+ ![image-20211009171825279](C:\Users\dukkha\Desktop\learn-notes\React\images\image-20211009171825279.png)
+
+ ![image-20211009171851360](C:\Users\dukkha\Desktop\learn-notes\React\images\image-20211009171851360.png)
+
+ ![image-20211009171901723](C:\Users\dukkha\Desktop\learn-notes\React\images\image-20211009171901723.png)
+
+ ![image-20211009171943959](C:\Users\dukkha\Desktop\learn-notes\React\images\image-20211009171943959.png)
+
+ ![image-20211009171958469](C:\Users\dukkha\Desktop\learn-notes\React\images\image-20211009171958469.png)
+
+ ```js
+ const workLoop = async (deadline) => {
+   //有任务且当前帧还没有结束
+   while (count < chunks.length && deadline.timeRemaining() > -1) {
+     await appendToSpark(chunks[count].file);
+     count++;
+     if (count < chunks.length) {
+       //计算中
+       this.hashProgress = Number(((100 * count) / chunks.length).toFixed(2));
+     } else {
+       //计算完毕
+       this.hashProgress = 100;
+       //计算任务结束
+       resolve(spark.end());
      }
-     ```
+     //当前帧没有时间了，说明浏览器有开始渲染任务了，如果你把渲染任务耽搁了就会卡顿
+     //等待下次空闲时间再计算
+     window.requestIdleCallback(workLoop);
+   }
+   //利用空闲时间启动workLoop
+   window.requestIdleCallback(workLoop);
+ };
+ ```
 
-     ```js
-     self.importScripts('spark-md5.min.js');
-     self.onmessage = (e) => {
-       const { chunks } = e.data;
-       const spark = new self.SparkMD5.ArrayBuffer();
-       let progress = 0;
-       let count = 0;
-       const loadNext = (index) => {
-         const reader = new FileReader();
-         reader.readAsArrayBuffer(chunks[index].file);
-         reader.onload = (e) => {
-           //累加器不能依赖index
-           count++;
-           //增量计算md5
-           spark.append(e.target.result);
-           if (count === chunks.length) {
-             //通知主线程计算结束
-             self.postMessage({
-               progress: 100,
-               hash: spark.end()
-             });
-           } else {
-             //每个区块计算结束通知进度
-             progress == 100 / chunks.length;
-             self.postMessage({
-               progress
-             });
-             //计算下一个
-             loadNext(count);
-           }
-         };
-       };
-     };
-     //启动
-     loadNext(0);
-     ```
+ - 抽样计算 hash
 
-     - **时间切片计算 md5 值，根据浏览器的机制抽空执行 js**
+   ![image-20211009173003733](..\typora-user-images\image-20211009173003733.png)
 
-     ![image-20211009171825279](.\typora-user-images\image-20211009171825279.png)
+  ```jsx
+   let cur = offset;
+   while (cur < size) {
+     if (cur + offset >= size) {
+       chunks.push(file.slice(cur, cur + offset));
+     } else {
+       const mid = cur + offset / 2;
+       const end = cur + offset;
+       chunks.push(file.slice(cur, cur + 2));
+       chunks.push(file.slice(mid, mid + 2));
+       chunks.push(file.slice(end, end + 2));
+     }
+     cur += offset;
+   }
+   render.readAsArrayBuffer(new Blob(chunks));
+   reader.onload = (e) => {
+     spark.append(e.target.result);
+     resolve(spark.end());
+   };
+  ```
 
-     ![image-20211009171851360](.\typora-user-images\image-20211009171851360.png)
-
-     ![image-20211009171901723](.\typora-user-images\image-20211009171901723.png)
-
-     ![image-20211009171943959](.\typora-user-images\image-20211009171943959.png)
-
-     ![image-20211009171958469](.\typora-user-images\image-20211009171958469.png)
-
-     ```js
-     const workLoop = async (deadline) => {
-       //有任务且当前帧还没有结束
-       while (count < chunks.length && deadline.timeRemaining() > -1) {
-         await appendToSpark(chunks[count].file);
-         count++;
-         if (count < chunks.length) {
-           //计算中
-           this.hashProgress = Number(((100 * count) / chunks.length).toFixed(2));
-         } else {
-           //计算完毕
-           this.hashProgress = 100;
-           //计算任务结束
-           resolve(spark.end());
-         }
-         //当前帧没有时间了，说明浏览器有开始渲染任务了，如果你把渲染任务耽搁了就会卡顿
-         //等待下次空闲时间再计算
-         window.requestIdleCallback(workLoop);
-       }
-       //利用空闲时间启动workLoop
-       window.requestIdleCallback(workLoop);
-     };
-     ```
-
-     - 抽样计算 hash
-
-       ![image-20211009173003733](.\typora-user-images\image-20211009173003733.png)
-
-       ```jsx
-       let cur = offset;
-       while (cur < size) {
-         if (cur + offset >= size) {
-           chunks.push(file.slice(cur, cur + offset));
-         } else {
-           const mid = cur + offset / 2;
-           const end = cur + offset;
-           chunks.push(file.slice(cur, cur + 2));
-           chunks.push(file.slice(mid, mid + 2));
-           chunks.push(file.slice(end, end + 2));
-         }
-         cur += offset;
-       }
-       render.readAsArrayBuffer(new Blob(chunks));
-       reader.onload = (e) => {
-         spark.append(e.target.result);
-         resolve(spark.end());
-       };
-       ```
-
-   亮点：交互上的优化
+ 亮点：交互上的优化
 
    解决方案：
 
@@ -1531,7 +1532,7 @@ React Navigation（栈式导航）第 5 版
 
    - 使用图片的二进制信息来读取文件的格式以满足要求，jpg 图片的十六进制数据中以 FFD8 开头，以 FFD9 结尾。无论文件后缀被人为的修改为其他任何格式，二进制数据也都是不会变的。（亮点）**文件头信息**（百度）
 
-     ![image-20211006224526212](.\typora-user-images\image-20211006224526212.png)
+     ![image-20211006224526212](..\typora-user-images\image-20211006224526212.png)
 
    亮点：切好文件片段和计算好 md5 后，如果直接使用 promise.all 同时发起许多个 tcp 请求也会卡顿
 

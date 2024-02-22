@@ -397,6 +397,40 @@ Redux是由Dan Abramov和Andrew Clark创建的，受Flux架构的启发但简化
 
 ### 手写极简版Redux
 
+```js
+function createStore(reducer){
+	let state;
+    const listeners = [];
+    
+    function getState(){
+        return state;
+    }
+    
+    function subscribe(listener){
+        listeners.push(listener)
+        return ()=>{
+            const listenerIndex = listeners.indexOf(listener)
+            listeners.splice(listenerIndex,1)
+        }
+    }
+    
+    function dispatch(action){
+        state = reducer(state,action)
+        listeners.forEach((l)=>{ l() })
+    }
+    
+    dispatch({type:"@@redux/init"})
+    
+    return {
+        getState,
+        subscribe,
+        dispatch
+    }
+}
+
+export default createStore
+```
+
 
 
 ### redux中间件的理解，以及用过哪些中间件
@@ -461,4 +495,3 @@ Redux和Vuex都是状态管理库，分别用于React和Vue.js框架。虽然它
 - **Redux** 的概念相对抽象，如纯函数、不可变性、中间件等，这可能会使得初学者面对较高的学习曲线。
 - **Vuex** 的学习曲线通常被认为比Redux更平缓，特别是对于已经熟悉Vue.js的开发者来说，因为它更紧密地与Vue.js的设计和模式相结合。
 
-### 
