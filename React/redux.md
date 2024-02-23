@@ -1162,6 +1162,502 @@ ReactDOM.render(
 );
 ```
 
+# redux-saga
+
+## 前置知识
+
+在JavaScript中，当一个生成器（generator）函数中的`yield`关键字后面跟随的是另一个生成器函数的调用，这个调用本身并不会自动执行那个生成器函数。相反，它会返回一个迭代器（iterator），这个迭代器需要被迭代（通常使用`yield*`语法）才能执行那个生成器函数中的代码。
+
+为了让嵌套的生成器函数执行，需要使用`yield*`表达式而不是单纯的`yield`。`yield*`表达式用于委托给另一个生成器或可迭代对象，这意味着外层生成器暂停执行，控制权被转移给被委托的生成器，直到被委托的生成器执行完毕。
+
+**示例说明**
+
+假设有两个生成器函数`generatorA`和`generatorB`，如下所示：
+
+```js
+function* generatorB() {
+  yield 'B start';
+  yield 'B end';
+}
+
+function* generatorA() {
+  yield 'A start';
+  yield* generatorB(); // 使用 yield* 来委托给 generatorB
+  yield 'A end';
+}
+```
+
+**执行流程**
+
+在上面的示例中，当`generatorA`中的`yield* generatorB()`执行时，控制权转移到`generatorB`。此时，`generatorB`的执行依赖于外部对`generatorA`返回的迭代器继续调用`next()`方法。每次调用`next()`都会使`generatorB`继续执行到下一个`yield`，或者执行完成并将控制权返回给`generatorA`。
+
+1. **首次迭代**：调用`iterator.next()`首次时，`generatorA`开始执行并返回`{ value: 'A start', done: false }`，此时执行停在第一个`yield`处。
+2. **第二次迭代**：再次调用`iterator.next()`时，`generatorA`继续执行遇到`yield* generatorB()`，此时控制权转移到`generatorB`。`generatorB`开始执行并遇到它的第一个`yield`，返回`{ value: 'B start', done: false }`。
+3. **第三次迭代**：再次调用`iterator.next()`，`generatorB`从上次停止的地方继续执行，遇到下一个`yield`并返回`{ value: 'B end', done: false }`。`generatorB`执行完毕后，控制权返回给`generatorA`。
+4. **第四次迭代**：再次调用`iterator.next()`，`generatorA`继续执行遇到最后一个`yield`，返回`{ value: 'A end', done: false }`。
+5. **结束迭代**：再次调用`iterator.next()`，由于`generatorA`已经执行完毕，返回`{ value: undefined, done: true }`，表示迭代完成。
+
+**代码示例**
+
+以下是如何使用这两个生成器函数的示例：
+
+```js
+const iterator = generatorA();
+
+console.log(iterator.next().value); // 输出: A start
+console.log(iterator.next().value); // 输出: B start
+console.log(iterator.next().value); // 输出: B end
+console.log(iterator.next().value); // 输出: A end
+```
+
+**总结**
+
+使用`yield*`表达式可以实现生成器函数的委托，这是处理嵌套生成器函数的一种有效方式。它不仅可以用于委托给其他生成器函数，还可以用于任何可迭代对象，如数组等。这种方式使得生成器函数之间的协作变得更加灵活和强大。
+
+
+
+**CO库**
+
+```js
+function co(gen){
+    const it = gen()
+    function next(value){
+        const {done,value} = it.next(value)
+        if(!done){
+            next(value)
+        }
+    }
+    next()
+}
+
+
+function co(generatorFunc) {
+  // 返回一个Promise，co的调用者可以通过.then访问异步操作的结果
+  return new Promise((resolve, reject) => {
+    // 初始化生成器函数
+    const gen = generatorFunc();
+
+    // 用于递归执行生成器的下一步
+    function step(nextFunc) {
+      let next;
+      try {
+        // 执行生成器的下一步
+        next = nextFunc();
+      } catch (error) {
+        // 如果执行过程中出现错误，拒绝Promise
+        return reject(error);
+      }
+      
+      // 如果生成器执行完毕，解析Promise
+      if (next.done) {
+        return resolve(next.value);
+      }
+
+      // 确保返回值是Promise，以便可以调用.then和.catch
+      // 使用Promise.resolve包装可能不是Promise的值
+      Promise.resolve(next.value).then(
+        (value) => {
+          // 成功时递归调用step，传入gen.next
+          step(() => gen.next(value));
+        },
+        (error) => {
+          // 错误时递归调用step，传入gen.throw
+          step(() => gen.throw(error));
+        }
+      );
+    }
+
+    // 开始执行生成器的第一步
+    step(() => gen.next(undefined));
+  });
+}
+
+
+// 模拟一个异步操作，例如从服务器获取数据
+function fetchData() {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => resolve("some data"), 1000);
+  });
+}
+
+// 使用生成器函数处理异步流程
+function* genFunction() {
+  try {
+    const data = yield fetchData();
+    console.log(data); // 输出获取到的数据
+    // 可以继续执行其他异步操作
+    const moreData = yield fetchData();
+    console.log(moreData);
+  } catch (error) {
+    console.error("Caught an error: ", error);
+  }
+}
+
+// 使用co运行生成器函数
+co(genFunction).then(() => {
+  console.log("All done");
+});
+```
+
+
+
+
+
+## redux-saga介绍
+
+`redux-saga`是一个用于管理Redux应用中副作用（例如异步获取数据、访问浏览器缓存等）的库。它使用ES6的`Generator`函数来让异步流程更易于读写和测试。通过使用`redux-saga`，可以将异步操作和业务逻辑从组件中分离出来，使得组件只负责显示UI，从而使得代码更加清晰和易于维护。
+
+**应用场景**
+
+`redux-saga`主要用于处理复杂的异步操作和副作用管理。一些常见的应用场景包括：
+
+- **数据获取**：在应用启动或用户操作时异步获取数据。
+- **异步流程控制**：例如，用户按顺序执行一系列操作，每步都依赖上一步的结果。
+- **防抖动**：限制用户操作的频率，例如在用户完成输入一段时间后自动触发搜索。
+- **与WebSocket通信**：管理WebSocket连接生命周期，发送和接收消息。
+- **监听Redux状态变化**：执行副作用响应Redux状态的变化。
+- **复杂的条件逻辑**：在执行异步操作前后进行复杂的条件判断。
+
+**如何使用Redux-Saga**
+
+使用`redux-saga`涉及以下几个步骤：
+
+1. **安装redux-saga**
+
+   ```bash
+   npm install redux-saga
+   ```
+
+2. **创建Sagas**
+
+   Saga是一个生成器函数，使用`yield`表达式来调用异步操作。
+
+   ```js
+   import { call, put, takeEvery } from 'redux-saga/effects';
+   
+   // 模拟异步获取数据的函数
+   function fetchUserData() {
+     return fetch('https://api.example.com/user').then(response => response.json());
+   }
+   
+   // Worker saga：当触发FETCH_USER_ACTION时执行的操作
+   function* fetchUser() {
+     try {
+       const user = yield call(fetchUserData);
+       yield put({type: 'FETCH_USER_SUCCESS', user}); // 触发一个action来更新状态
+     } catch (e) {
+       yield put({type: 'FETCH_USER_FAILED', message: e.message});
+     }
+   }
+   
+   // Watcher saga：监听触发的action
+   function* mySaga() {
+     yield takeEvery('FETCH_USER_ACTION', fetchUser);
+   }
+   ```
+
+3. **在Store中引入Saga Middleware**
+
+   ```js
+   import { createStore, applyMiddleware } from 'redux';
+   import createSagaMiddleware from 'redux-saga';
+   import reducer from './reducers';
+   import mySaga from './sagas';
+   
+   // 创建Saga middleware
+   const sagaMiddleware = createSagaMiddleware();
+   
+   // 使用applyMiddleware将middleware挂载到Store上
+   const store = createStore(
+     reducer,
+     applyMiddleware(sagaMiddleware)
+   );
+   
+   // 运行Saga
+   sagaMiddleware.run(mySaga);
+   ```
+
+4. **触发Saga**
+
+   在组件中通过`dispatch`一个action来触发Saga。
+
+   ```js
+   store.dispatch({type: 'FETCH_USER_ACTION'});
+   ```
+
+
+
+`redux-saga`提供了一种强大且灵活的方式来处理Redux应用中的副作用。通过将异步逻辑从组件中分离出来，它不仅可以使应用的业务逻辑更加清晰，还可以提高代码的可测试性。使用`redux-saga`，可以更容易地实现复杂的异步流程控制，使得开发大型和复杂的应用变得更加简单。
+
+
+
+- saga使用生成器函数来产出effect（一个js对象）
+- 需要借助一些saga库中提供的api，比如：fork，take，call，put，cancel等方法来创建effect
+
+
+
+
+
+saga执行器(runSaga)的基本原理简单模拟：
+
+runSaga会不断的递归调用迭代器，直到done为true的情况。
+
+```js
+
+function* rootSaga() {
+  console.log('start');
+  yield { type: 'PUT', action: { type: 'ADD' } }
+  yield new Promise(resolve => setTimeout(resolve, 1000));
+  yield readFile;
+  yield 'delay1000'
+  yield { type: "PUT", action: { type: "MINUS" } }
+}
+function readFile(callback) {
+  setTimeout(callback, 1000);
+}
+
+function runSaga(saga) {
+  //执行生成器，返回一个迭代器
+  const it = saga();
+  function next() {
+    const { done, value: effect } = it.next();
+    debugger
+    if (!done) {//如果done=false
+      if (effect === 'delay1000') {
+        setTimeout(next, 1000);
+      } else if (typeof effect === 'function') {
+        effect(next);
+      } else if (effect.type === 'PUT') {
+        console.log(`向仓库派发一个动作 ${JSON.stringify(effect.action)}`);
+        next();
+      } else if (effect instanceof Promise) {
+        effect.then(next);
+      } else {
+        next();
+      }
+    }
+  }
+  next();
+}
+runSaga(rootSaga);
+```
+
+runSaga的next中预设了固定的一些effect的类型，根据这些类型执行不同的逻辑，然后再继续调用next方法。
+
+而这些类型的格式都是预先设定好的。
+
+提前终止迭代器的执行：it.return()；迭代器抛出异常it.throw()。
+
+
+
+## saga分类
+
+在`redux-saga`中，saga可以根据其用途大致分为两类：`Watcher Sagas`和`Worker Sagas`。这种分类有助于组织和管理复杂的异步操作和副作用。`Watcher Sagas`监听发起的action，然后触发一个或多个`Worker Sagas`执行实际的异步任务。
+
+**Watcher Sagas**
+
+`Watcher Sagas`负责监听Redux store中的action。当它捕捉到某个特定的action时，它会调用对应的`Worker Saga`来处理副作用（如数据获取、文件读写等）。通常使用`takeEvery`、`takeLatest`、`takeLeading`或`take`等效果操作符来监听action。
+
+**Worker Sagas**
+
+`Worker Sagas`负责执行具体的异步操作。当`Watcher Saga`捕捉到一个action并调用`Worker Saga`时，`Worker Saga`会执行实际的异步任务，如API调用。完成后，它可能会发起一个新的action来更新应用的状态。
+
+**多个Watcher和Worker Sagas**
+
+在复杂的应用中，可能会有多个`Watcher Sagas`和`Worker Sagas`来处理不同的异步流程。以下是如何组织和编写这些sagas的示例：
+
+**Worker Sagas**
+
+```js
+import { call, put } from 'redux-saga/effects';
+
+function* fetchUserData() {
+  try {
+    const data = yield call(Api.fetchUser); // 假设Api.fetchUser是一个返回Promise的函数
+    yield put({type: "FETCH_USER_SUCCESS", data});
+  } catch (error) {
+    yield put({type: "FETCH_USER_FAILED", error});
+  }
+}
+
+function* updateUserProfile(action) {
+  try {
+    const data = yield call(Api.updateProfile, action.payload); // 传递参数到API调用
+    yield put({type: "UPDATE_PROFILE_SUCCESS", data});
+  } catch (error) {
+    yield put({type: "UPDATE_PROFILE_FAILED", error});
+  }
+}
+```
+
+**Watcher Sagas**
+
+```js
+import { takeEvery } from 'redux-saga/effects';
+
+function* watchFetchUserData() {
+  yield takeEvery("FETCH_USER_REQUEST", fetchUserData);
+}
+
+function* watchUpdateUserProfile() {
+  yield takeEvery("UPDATE_PROFILE_REQUEST", updateUserProfile);
+}
+```
+
+**组合所有Sagas**
+
+使用`all`效果操作符来同时启动所有的Watcher Sagas。
+
+```js
+import { all } from 'redux-saga/effects';
+
+function* rootSaga() {
+  yield all([
+    watchFetchUserData(),
+    watchUpdateUserProfile(),
+    // 可以在这里添加更多的Watcher Sagas
+  ]);
+}
+```
+
+`all`是`redux-saga`的一个操作符（Effect），来源于`redux-saga/effects`模块。它用于并行地启动多个saga任务。使用`all`可以同时启动多个`Watcher Sagas`，让它们并发运行，而不是按顺序一个接一个地运行。这意味着所有被`all`包裹的sagas都将被立即并行启动，它们之间不会相互等待。
+
+当在组件中派发一个`UPDATE_PROFILE_REQUEST` action时，`redux-saga`中的`watchUpdateUserProfile` watcher saga会监听到这个action，因为它已经在`rootSaga`通过`all`并行启动了。这个过程是独立的，不需要先执行`watchFetchUserData`或任何其他saga。每个watcher saga独立监听各自关心的action类型，当相应的action被派发时，对应的worker saga会被触发执行。
+
+**如何在组件中使用**
+
+假设已经设置好了上述的sagas和Redux store，下面是如何在React组件中使用这些sagas的示例：
+
+**派发Action**
+
+在组件中，可以使用`useDispatch`钩子从`react-redux`库来派发action，这将触发对应的saga执行异步操作。
+
+```jsx
+import React from 'react';
+import { useDispatch } from 'react-redux';
+
+function UserProfile() {
+  const dispatch = useDispatch();
+
+  const handleUpdateProfile = (profileData) => {
+    // 派发UPDATE_PROFILE_REQUEST action，这将触发watchUpdateUserProfile saga
+    dispatch({ type: 'UPDATE_PROFILE_REQUEST', payload: profileData });
+  };
+
+  return (
+    <div>
+      <button onClick={() => handleUpdateProfile({ name: 'John Doe' })}>
+        Update Profile
+      </button>
+    </div>
+  );
+}
+```
+
+在这个示例中，当用户点击按钮时，`handleUpdateProfile`函数会被调用，并派发一个`UPDATE_PROFILE_REQUEST` action。这个action会被`watchUpdateUserProfile` saga监听到，然后执行`updateUserProfile` worker saga来处理实际的异步更新操作。
+
+**`all`的作用和意义**
+
+- **并行执行**：`all`允许多个sagas同时启动，它们可以独立监听和响应action，无需等待其他sagas完成。
+- **组织结构**：使用`all`可以在一个地方集中管理和启动你的sagas，使得`rootSaga`的结构清晰和简洁。
+
+总结，使用`all`来启动sagas并不会影响到sagas监听action的能力，无论是`watchFetchUserData`还是`watchUpdateUserProfile`，它们都能独立地并行监听和处理对应的actions，不会相互干扰。
+
+
+
+**启动Root Saga**
+
+在应用中，需要将`rootSaga`启动，以便所有的`Watcher Sagas`开始监听action。
+
+```js
+import { createStore, applyMiddleware } from 'redux';
+import createSagaMiddleware from 'redux-saga';
+import rootReducer from './reducers';
+import rootSaga from './sagas';
+
+const sagaMiddleware = createSagaMiddleware();
+const store = createStore(
+  rootReducer,
+  applyMiddleware(sagaMiddleware)
+);
+
+sagaMiddleware.run(rootSaga);
+
+export default store
+```
+
+通过这种方式，可以有效地组织和管理复杂的异步流程，使得代码易于理解和维护。每个`Watcher Saga`关注特定的action类型，而`Worker Sagas`执行实际的异步任务，这样的分工使得异步逻辑更加清晰。
+
+
+
+
+在组件中使用`redux-saga`涉及到触发action，这些action由Watcher Sagas监听，进而调用Worker Sagas执行异步操作。以下是如何在React组件中结合使用`redux`和`redux-saga`的示例。
+
+1. **定义Action Creators**
+
+首先，定义一些action creators，它们简化了dispatch action的过程。这些action与我们之前定义的sagas中监听的action类型相匹配。
+
+```js
+// actions.js
+export const fetchUserRequest = () => ({
+  type: 'FETCH_USER_REQUEST',
+});
+
+export const updateUserProfileRequest = (profileData) => ({
+  type: 'UPDATE_PROFILE_REQUEST',
+  payload: profileData,
+});
+```
+
+2. **创建React组件**
+
+在React组件中，你可以使用`useDispatch`来获取dispatch函数，然后使用这个函数来dispatch actions。同时，使用`useSelector`来访问Redux store的状态。
+
+**UserProfileComponent.js**
+
+```jsx
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchUserRequest, updateUserProfileRequest } from './actions';
+
+function UserProfileComponent() {
+  const dispatch = useDispatch();
+  const [profileData, setProfileData] = useState({});
+  const user = useSelector(state => state.user);
+  const loading = useSelector(state => state.loading);
+
+  const fetchUser = () => {
+    dispatch(fetchUserRequest());
+  };
+
+  const updateUserProfile = () => {
+    dispatch(updateUserProfileRequest(profileData));
+  };
+
+  return (
+    <div>
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        <div>
+          <h1>User Profile</h1>
+          <p>{user.name}</p>
+          {/* Assume there's a form here to update profile data */}
+          <button onClick={updateUserProfile}>Update Profile</button>
+          <button onClick={fetchUser}>Refresh Profile</button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default UserProfileComponent;
+```
+
+这个组件有两个按钮，分别用于触发获取用户数据和更新用户资料的操作。点击按钮时，会dispatch相应的action，这些action被Watcher Sagas捕获，进而调用对应的Worker Sagas来执行异步操作。
+
+
+
 
 
 
