@@ -2478,3 +2478,55 @@ the exchange...based on their interpersonal ties，表示“建立在人际关�
 > Two basic kinds of learning or conditioning occur, one of which is famously known as the classical conditioning. Classical conditioning happens when an animal learns to associate a neutral stimulus (signal) with a stimulus that has intrinsic meaning based on how closely in time the two stimuli are presented.
 >
 > 学习反射或条件反射有两种基本类型，其中之一就是众所周知的经 典条件反射。当一个动物学会将一个中性刺激（比如信号）和另一个带有内在意义的刺激（这一内在意义取决于这个刺激与中性刺激发生的时间间距）联系在一起时，就会产生经典条件反射。
+
+
+
+## 一般时态
+
+时态就是和谓语直接相关，通过不同的助动词和实义动词的组合表示不同的时态。
+
+- 一般现在时态
+- 一般过去时态
+- 一般将来时态
+
+
+
+一般现在时的思维特点：错误的认知是认为一般现在时就是表示现在发生的动作，但并非如此。确切的说，一般现在时的思维特点是表示从过去到现在直到将来的一段时间内发生的动作或者存在的状态。即动作的发生或者状态的发生不限于某个特定的时间，它可以发生于任何时间，包括现在，过去和将来，这段时间具体有多长，我们也不知道，他可以无限长（如客观真理），也可以是人们生活中的一段时间（如人的习惯活动）。
+
+一般现在时的两种基本用法：
+
+1. 用来表示不受时间限制的科学事实，客观真理，谚语格言，以及用于概括、结论、观点等
+2. 表示人日常的生活习惯以及重复的活动
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
