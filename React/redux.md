@@ -78,13 +78,13 @@ minusButton.addEventListener('click', function () {
 
 ```js
 function createStore(reducer){
-	let state;
+    let state;
     const listeners = [];
-    
+
     function getState(){
         return state;
     }
-    
+
     function subscribe(listener){
         listeners.push(listener)
         // 返回卸载监听函数
@@ -93,14 +93,14 @@ function createStore(reducer){
             listeners.splice(listenerIndex,1)
         }
     }
-    
+
     function dispatch(action){
         state = reducer(state,action)
         listeners.forEach((l)=>{ l() })
     }
-    
+
     dispatch({type:"@@redux/init"})
-    
+
     return {
         getState,
         subscribe,
@@ -110,8 +110,6 @@ function createStore(reducer){
 
 export default createStore
 ```
-
-
 
 
 
@@ -328,7 +326,7 @@ export default Counter;
 
 
 
-从Redux Toolkit（RTK）推出以来，Redux团队推荐使用Redux Toolkit来创建store，而不是直接使用`createStore`方法。Redux Toolkit提供了一个更现代、简化的API来配置store，它包括了一系列实用的工具来减少样板代码，并自动实现了一些最佳实践，比如使用`configureStore`代替`createStore`。
+从Redux Toolkit（RTK）推出以来，Redux团队推荐使用Redux Toolkit来创建store，而不是直接使用`createStore`方法。Redux Toolkit提供了一个简化的API来配置store，它包括了一系列实用的工具来减少样板代码，并自动实现了一些最佳实践，比如使用`configureStore`代替`createStore`。
 
 Redux Toolkit的`configureStore`方法**自动集成了thunk中间件以支持异步逻辑**，并且可以很容易地配置其他的中间件。它还集成了Redux DevTools扩展，使得开发调试更为方便。
 
@@ -393,7 +391,7 @@ export const store = configureStore({
 
 步骤4: 在React应用中提供Redux store
 
-```js
+```jsx
 // index.js
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -768,11 +766,13 @@ function useBoundDispatch(actionCreators){
 export default useBoundDispatch
 ```
 
+
+
 # Redux中间件
 
 - 没有中间件，redux 的工作流程是 `action -> reducer`，这个过程是同步的，由dispatch 触发action后，直接去reducer执行相应的动作
 - 但是在某些情况下，这种同步的实现方式并不能很好的解决问题。比如有一个这样的需求，点击按钮 -> 获取服务器数据 -> 渲染视图，因为获取服务器数据是需要异步实现，所以这时候就需要引入中间件改变redux同步执行的流程，形成异步流程来实现所要的逻辑，有了中间件，redux 的工作流程就变成这样 action -> middlewares -> reducer，点击按钮就相当于dispatch 触发action，接下去获取服务器数据 middlewares 的执行，当 middlewares 成功获取到服务器就去触发reducer对应的动作，更新需要渲染视图的数据
-- redux中间件的实现本质就是面向切片编程。将store自带的dispatch方法先保存下来。然后自己重新写一个方法赋值给store.dispatch，然后在自己实现的方法中再去调用原来的那个dispatch方法。只是redux 的中间件机制设计为了考虑扩展性和可维护性，对如何注册中间件进行设计。
+- **redux中间件的实现本质就是面向切片编程。将store自带的dispatch方法先保存下来。然后自己重新写一个方法赋值给store.dispatch，然后在自己实现的方法中再去调用原来的那个dispatch方法。只是redux 的中间件机制设计为了考虑扩展性和可维护性，对如何注册中间件进行设计。**
 - 中间件的机制可以改变数据流，实现如异步 action ，action 过滤，日志输出，异常报告等功能
 
 ![image-20240220162332937](C:\Users\dukkha\Desktop\learn-notes\React\images\image-20240220162332937.png)
@@ -808,7 +808,170 @@ export default store;
 
 
 
+为什么 Redux 源码中使用了一个中间件 API (`middlewareAPI`)，而不是直接传递整个 `store` 对象给每个中间件？这样做主要有两个原因：
+
+1. **封装性（Encapsulation）**：通过提供一个 `middlewareAPI` 对象，Redux 可以限制中间件能够访问和使用的 store 方法。这种方式可以防止中间件直接修改 store 的状态或调用某些可能不应由中间件直接使用的方法。它允许中间件访问到 `getState` 和一个包装过的 `dispatch` 函数，但不允许访问到其他如 `subscribe` 或直接修改状态的能力。
+2. **自定义的 `dispatch` 实现**：在中间件链中，每个中间件都有机会包装 `dispatch` 方法。这意味着当你调用 `dispatch` 时，你的 action 可以经过一系列的中间件，每个中间件都可以对 action 进行操作或者完全拦截它。如果直接传递原始的 `store` 对象，那么中间件之间就无法很好地链接起来。通过使用中间件 API，Redux 能够确保当中间件调用 `dispatch` 时，它实际上是调用经过所有中间件增强后的 `dispatch` 版本。
+
+如果直接传递 `store` 而不是自定义的 `middlewareAPI`，会有以下后果：
+
+- **失去控制**：中间件能够访问并调用 `store` 的任何方法，可能会导致 store 状态的不当修改。
+- **中间件链的断裂**：中间件之间的链式调用会被破坏，因为它们无法正确地传递增强后的 `dispatch` 函数。
+
+为了更好地说明中间件链的断裂和失去控制的概念，可以通过一些代码示例来展现如果不正确地实现中间件API，这些问题是如何发生的。
+
+### 中间件链的断裂
+
+中间件链的断裂指的是当中间件没有正确传递 `dispatch` 调用到链中的下一个中间件，导致中间件链中断，后续的中间件无法接收到 action 的问题。
+
+```js
+// 假设的不正确中间件实现
+const brokenMiddleware = store => next => action => {
+    console.log('Middleware before breaking the chain');
+    // 故意不调用 next(action)，导致中间件链断裂
+};
+
+const loggerMiddleware = store => next => action => {
+    console.log('Dispatching action:', action);
+    let result = next(action); // 这里本应接收到 action，但由于链断裂，这行代码不会执行
+    console.log('Next state:', store.getState());
+    return result;
+};
+
+// 使用 applyMiddleware 应用中间件时，如果 brokenMiddleware 先于 loggerMiddleware 应用，
+// 则 loggerMiddleware 将不会接收到任何 actions，因为链在 brokenMiddleware 中断了。
+```
+
+在这个例子中，`brokenMiddleware` 未调用 `next(action)`，导致 `action` 不会被传递给链中的下一个中间件（在这个例子中是 `loggerMiddleware`）。这就是中间件链断裂的情况，导致 `loggerMiddleware` 无法接收到 `action`，从而无法执行其逻辑。
+
+### 失去控制
+
+失去控制指的是中间件直接修改状态或执行了不应由其执行的 store 方法，破坏了 Redux 架构的原则和 store 的封装性。
+
+```js
+// 假设的失去控制中间件
+const outOfControlMiddleware = store => next => action => {
+    console.log('Dispatching action:', action);
+    
+    // 直接访问和修改 state，这是一种非常不推荐的做法，因为它违背了 Redux 的原则
+    // 假设我们这样做
+    // store.state.counter = 999; // 直接修改状态，这是错误的
+
+    let result = next(action);
+    console.log('Next state:', store.getState());
+    return result;
+};
+
+// 如果中间件能够直接修改 state，那么 Redux 的状态管理就失去了控制和可预测性。
+// 正确的做法是通过派发 action 来间接修改状态。
+```
+
+在这个示例中，如果中间件尝试直接修改 `store` 的状态（虽然这里的代码注释掉了，因为它在真实的 Redux 实现中是不可能的），它将会导致应用状态的不可预测性和维护性问题，因为这违背了 Redux 设计中状态不可直接修改，只能通过派发 action 进行修改的原则。
+
+通过这两个示例，我们可以看到如果不遵循 Redux 的中间件设计原则，就可能会导致中间件链的断裂和失去对状态的控制，这两种情况都会对应用造成严重的问题。正确的做法是遵循 Redux 的设计，使用中间件 API 传递增强后的 `dispatch` 函数，以及通过 action 来间接修改状态，保证应用的可维护性和可预测性。
+
 ## 基本使用
+
+下面的中间的 next变量，在项目中如果只引入一个中间键的情况下，这个next就代表的是redux仓库实例的dispatch方法，如果这个插件前面还有其他插件的话，则这个next指的就是前一个中间件返回的函数。
+
+中间函数接受的store并不是真正的仓库对象实例，它只是一个对象，该对象中有getState方法和dispatch方法，其中这个dispatch并不是redux仓库实例对象store上面的dispatch方法，也不是上面的next方法，而至包装过所有redux中间件的方法。之所以这样设计，可以看下面这个案例，比如这个项目中redux中已经注册了一个logger、thunk中间件。
+
+如果我编写了一个actionCreater如下：
+
+```js
+function thunkAdd() {
+  return function (getState, dispatch) {
+    setTimeout(() => {
+      dispatch({ type: ADD1 });
+    }, 1000);
+  }
+}
+```
+
+```js
+function logger({ getState, dispatch }) {
+    return function (next) {
+        return function (action) {//此方法就是我们改造后的dispatch方法
+            console.log('老状态', getState());
+            next(action);
+            console.log('新状态', getState());
+            return action;
+        }
+    }
+}
+export default logger;
+
+
+function thunk({ getState, dispatch }) {
+    return function (next) {
+        return function (action) {//此方法就是改造后的dispatch方法
+            if (typeof action === 'function') {
+                return action(getState, dispatch);
+            }
+            return next(action);
+        }
+    }
+}
+export default thunk;
+```
+
+
+
+```js
+import { createStore } from 'redux';
+import combinedReducer from './reducers';
+import thunk from './redux-thunk';
+import logger from './redux-logger';
+function applyMiddleware(middleware) {
+    return function (createStore) {
+        return function (reducer, preloadedState) {
+            const store = createStore(reducer);
+            // let dispatch;
+            // let middlewareAPI = {
+            //     getState: store.getState,
+            //     dispatch: (action) => dispatch(action)
+            // };
+            let dispatch = middleware(store)(store.dispatch)
+            return {
+                ...store,
+                dispatch
+            }
+        }
+    }
+}
+const store = applyMiddleware(logger,thunk)(createStore)(combinedReducer);
+```
+
+
+
+如果不在插件机制内部实现下面的代码：
+
+```js
+let dispatch;
+let middlewareAPI = {
+    getState: store.getState,
+    dispatch: (action) => dispatch(action)
+};
+dispatch = middleware(middlewareAPI)(store.dispatch)
+ 
+
+```
+
+而是直接`let dispatch = middleware(store)(store.dispatch)`，那么在下面的代码中，在内存函数中调用`dispatch({ type: ADD1 });`则直接调用的就是真正的store上的dispatch方法了，这将导致logger中间并不会执行了。
+
+```js
+function thunkAdd() {
+  return function (getState, dispatch) {
+    setTimeout(() => {
+      dispatch({ type: ADD1 });
+    }, 1000);
+  }
+}
+```
+
+
+
+
 
 中间件案例：
 

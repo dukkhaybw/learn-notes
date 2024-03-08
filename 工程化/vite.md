@@ -1006,7 +1006,7 @@ console.log(title);
 - 一个 esbuild 插件是一个包含 name 和 setup 函数的**对象**
 - 它们以数组的形式传（在vite.config.js中配置）递给构建 API 调用,`setup`函数在每次`BUILD API`调用时都会**运行一次**
 - 如果某个插件通过onResolve或者load注册的回调并被命中，同时有具体的返回值时，其他插件的通过onResolve或者load注册的回调将不再继续执行，类似于tapable库中的bailHook钩子函数（一旦有具体的返回值，后续的同类型函数就不再执行）
--  build.onLoad 过滤匹配上，执行回调，如果 onLoad 返回内容，直接会进行解析流程，不再走默认的读取文件操作
+-  build.onLoad 过滤匹配上，执行回调，如果 onLoad 返回内容，直接会进行解析流程，不再走默认的读取文件操作（和rollup中的load hook类似）
 
 
 
@@ -1221,7 +1221,7 @@ require('esbuild')
 
 #### envPlugin插件
 
-这个插件对env这种虚拟模块进行 **模块拦截**
+这个插件对env这种虚拟模块进行**模块拦截**
 
 ```js
 let envPlugin = {

@@ -7138,19 +7138,24 @@ CJS规范最初是为了在服务器端（如Node.js）使用而设计的，它�
 
 # Rollup
 
-roolup是一个ES模块打包器。
+roolup是一个ES模块打包器。可以将项目源码中使用到的各个模块打包合并为一个文件或者多个文件。
+
+rollup和webpack的作用类似，但是整体小巧很多。Rollup更聚焦于JS打包，虽然可以引入一些额外的功能，它并不是要和webpack全面竞争，而是希望提供一个高效的esmodule打包器，充分利用esmodule的特性构建出结构比较扁平，性能比较出众的类库。
+
+Rollup中实现扩展的唯一方式就是插件，不像webpack中划分了loader，plugin等扩展方式。
 
 webpack 打包的特点：
 
 1. 打包后的代码会带有 webpack 自身的逻辑代码，且体积大
 2. 打包速度慢，且配置可以很多样复杂
 3. 开发 JS 类库不适合使用 webpack 来进行打包
+4. 配合插件几乎可以完成前端工程化中的绝大部分任务
 
-
+webpack中实现功能扩展有几种方式？比如除了loader，plugin外还有什么吗
 
 ### 先导
 
-rollup 是专门用于打包开发的 JS 类库，支持打包生成 umd/commonjs/es 的 js 代码，学习 rollup 是为 vite 打基础。vite 开发时用的是 esbuild（也是一个打包工具，用 Go 语言写的）打包；上线时使用的是 rollup 打包，而且 vite 内部的插件机制也是复用 rollup 的插件机制。
+rollup 是专门用于打包 JS 类库，支持打包生成 umd/commonjs/es 的 js 代码，学习 rollup 是为 vite 打基础。vite 开发时用的是 esbuild（也是一个打包工具，用 Go 语言写的）打包；上线时使用的是 rollup 打包，而且 vite 内部的插件机制也是复用 rollup 的插件机制。
 
 rollup 插件和 vite 插件可以复用，vite 插件是一个简化版的 rollup 插件，webpack 使用的是 commonjs 规范，rullup 使用的是 ESM 规范吗？ webpack 和 rollup 都会支持 esm 和 commonjs 但是打包出来的结果 webpack 只能是 commonjs，rollup 可以打包出 commonjs 也可以打包出 esm。rollup 自带支持 Tree-shaking，本质是消除无用的 js 代码，只处理函数和顶层的 import/export 变量
 
@@ -7161,6 +7166,16 @@ rollup 插件和 vite 插件可以复用，vite 插件是一个简化版的 roll
 - `IIFE(Immediately Invoked Function Expression)`：立即执行函数表达式，声明一个函数，声明完了立即执行
 - UMD：`Universal Module Definition`，通用模块定义
 - `cjs`：nodejs 采用的模块化标准，commonjs 使用方法`require`来引入模块,这里`require()`接收的参数是模块名或者是模块文件的路径
+
+
+
+rollup打包生成项目的特点：
+
+1. 打包生成文件内容非常的简洁，没有像webpack中那么大量的引导代码和polyfill，基本就是按照源码的导入顺序将源代码提取到一起
+2. 会自动进行tree-shaking
+3. **使用esmodule模块化时，代码中是不能无法直接导入并解析json文件的（需要借助插件：rollup-plugin-json）**
+
+
 
 
 
@@ -7185,7 +7200,7 @@ export default {
   input: './src/main.js',
   output: {
     file: 'dist/bundle.cjs.js', // 输出的文件路径和文件名
-    format: 'cjs', // 五种输出的格式 amd/es/iife/umd/cjs
+    format: 'cjs', // 五种输出的模块化的格式 amd/es/iife/umd/cjs
     name: 'libName' // 当format格式为iife和umd的时候必须提供变量名，该变量名会挂载到全局对象上。
   }
 };
@@ -7229,7 +7244,7 @@ export default {
 
 
 
-要让 rollup 的 tree-shaking 生效，必须使用 esmodule 模块化规范编写代码，只处理函数和顶层的 import/export 变量，并有作用域提升的效果。
+要让 rollup 的 tree-shaking 生效，必须使用 esmodule 模块化规范编写代码，**只处理函数和顶层的 import/export 变量，并有作用域提升的效果**（可以将原来两个文件中的代码合并到一个文件中）。
 
 
 
@@ -7237,7 +7252,7 @@ export default {
 
 rollup.js 编译源码中的模块引用默认只支持 ESM的模块方式`import/export`。大量的 npm 模块是基于 CommonJS 模块方式，这就导致了大量 npm 模块不能直接编译使用。所以辅助 rollup.js 编译支持 npm 模块和 CommonJS 模块方式的插件就应运而生。
 
-如果源码中使用使用到了通过npm安装到当前目录下的node_modules中的包时，rollup默认并不能识别并去该node_modules中打包该依赖包。
+如果源码中使用到了通过npm安装到当前目录下的node_modules中的包时，rollup默认并不能识别并去该node_modules中打包该依赖包。
 
 - @rollup-plugin-node-resolve 插件辅助rollup去查找第三方依赖模块（node_modules 中的库）
 - @rollup/plugin-commonjs 插件将commonjs模块转换可以识别的内容
@@ -7428,6 +7443,89 @@ export default {
 
 
 
+### 代码分割
+
+1. 使用import函数动态导入实现代码分割
+2. 多入口打包，且公共部分会单独提取出来，配置文件中的input字段的值为数组或者对象
+
+
+
+### 扁平化输出
+
+扁平化输出（Flattened output）通常指的是构建工具（如Webpack或Rollup）在处理模块依赖时，将这些依赖整合到尽可能少的文件中，以减少产出文件的数量，从而提高加载效率。这种方法特别适用于库或工具的开发，因为它可以减少最终用户需要加载的资源数量。
+
+### Rollup中的扁平化输出
+
+Rollup默认就会将项目的所有模块打包到一个文件中（除非特别配置多入口或代码分割），这是因为Rollup专注于ES模块，可以静态分析模块间的导入和导出关系，从而有效地将代码合并到一个文件中。
+
+以下是一个简单的Rollup配置示例，它将多个JavaScript模块打包为一个扁平化的单一文件：
+
+```js
+// rollup.config.js
+import resolve from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
+
+export default {
+  input: 'src/main.js', // 入口文件
+  output: {
+    file: 'bundle.js', // 输出文件
+    format: 'iife', // 立即执行函数表达式(iife)格式适用于浏览器
+  },
+  plugins: [
+    resolve(), // 告诉Rollup如何查找外部模块
+    commonjs() // 将CommonJS模块转换为ES6，便于Rollup处理
+  ]
+};
+```
+
+这个配置会将所有依赖整合到`bundle.js`文件中，实现了扁平化输出。
+
+### Webpack中的扁平化输出
+
+Webpack默认会为每个入口点生成一个文件，以及额外的代码分割文件（如果配置了代码分割）。要在Webpack中实现类似Rollup的扁平化输出，可以通过优化配置来减少输出文件的数量，例如使用`optimization.splitChunks`来合并公共模块，但这并不是传统意义上的"扁平化输出"。
+
+如果你的目的是生成一个尽可能扁平化的库或包，可以考虑以下策略：
+
+- 使用单一入口点。
+- 避免代码分割，或仅对特定情况使用。
+- 使用插件如`TerserWebpackPlugin`来压缩输出。
+
+以下是一个基础的Webpack配置示例，演示如何配置一个简单的输出：
+
+```js
+const path = require('path');
+const TerserPlugin = require('terser-webpack-plugin');
+
+module.exports = {
+  entry: './src/index.js',
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'bundle.js',
+    library: 'MyLibrary',
+    libraryTarget: 'umd'
+  },
+  optimization: {
+    minimize: true,
+    minimizer: [new TerserPlugin()],
+  },
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        use: 'babel-loader',
+        exclude: /node_modules/,
+      },
+    ],
+  },
+};
+```
+
+此配置将项目打包为一个文件，并尽量压缩代码体积。然而，Webpack的强项是应用级别的打包而不是库的打包，因此，对于打包库而言，Rollup可能是一个更合适的选择，因为它的设计更侧重于扁平化输出和ES模块的支持。
+
+总结来说，要实现扁平化输出，选择合适的工具和配置是关键。Rollup在这方面提供了内建的优势，而Webpack则需要通过配置和插件来逼近这种效果。
+
+
+
 ## Rollup 原理
 
 #### **前置知识**
@@ -7491,7 +7589,7 @@ rollup 和 Webpack 解析代码用的是 Acorn。
 - Transform(转换) 对抽象语法树进行转换
 - Generate(代码生成) 将上一步经过转换过的抽象语法树生成新的代码
 
-![1d821a22ff221e924731a6d8c8a654c4](https://img.zhufengpeixun.com/1d821a22ff221e924731a6d8c8a654c4)
+![image-20240303211123742](images\image-20240303211123742.png)
 
 Acorn 的解析源代码时，可以接收的options配置对象上的一些属性：
 
@@ -8193,7 +8291,6 @@ class Module {
     //存放本模块中导出了哪些变量 msg.js导出了name和age两个变量
     this.exports = {};
     //存放本模块的顶级变量的定义语句是哪条
-    //只存放本模块内定义的顶级变量
     this.definitions = {};
     //存放变量修改语句
     this.modifications = {};
@@ -8523,6 +8620,11 @@ package.json
 **插件对象属性**
 
 - name，插件的名称，用于错误消息和警告，值为字符串。
+
+
+
+**build Hooks**
+
 - 回调函数，与构建过程交互
   - 钩子是在构建的不同阶段被调用的函数
   - 钩子可以影响构建的运行方式，提供关于构建的信息，或者在构建完成后修改构建
@@ -8552,7 +8654,7 @@ function build(pluginOptions) {
         },
 
         async buildStart(inputOptions) {
-            //如果你想读取所有的插件的配置内容的汇总，需要buildStart
+            //如果想读取所有的插件的配置内容的汇总，需要buildStart
             console.log('buildStart');
             //inputOptions.input = ['./src/index2.js']
         },
@@ -8581,7 +8683,7 @@ function build(pluginOptions) {
         async transform(code, id) {
             console.log('transform');
         },
-
+		  // AST 语法树分析
         async moduleParsed(moduleInfo) {
             console.log('moduleInfo');
         },
@@ -8615,6 +8717,25 @@ export default {
 }
 ```
 
+<img src="C:\Users\dukkha\Desktop\learn-notes\工程化\images\image-20240305171404398.png" alt="image-20240305171404398" style="zoom:200%;" />
+
+**钩子函数的调用时机问题：**
+
+在编写的 Rollup 插件中，插件返回的对象中的每个 hook 方法并不会在加载到任何模块代码时都被调用一次。每个 hook 方法会在 Rollup 构建过程的不同阶段被调用，具体调用时机取决于 Rollup 构建流程中的特定事件。
+
+比如，在插件中实现了 `options` 方法和 `buildStart` 方法。`options` 方法只在配置选项解析完成后被调用一次，而 `buildStart` 方法在每次构建开始时被调用一次。它们不会在加载每个模块时都被调用。
+
+与之对比，一些其他的钩子，如`load`和`transform`，确实会对每个模块调用。`load`钩子在Rollup需要加载模块源代码时调用，`transform`钩子用于在模块的源代码上应用转换。这些钩子允许插件对模块的加载和处理进行干预。
+
+在项目中，如果有两个 JavaScript 文件，一个是打包的入口文件，另一个是入口文件所依赖的文件，那么在编写的 Rollup 插件中，以下方法会被调用多次：
+
+1. `resolveId(source, importer)`：该方法在解析模块路径时被调用。对于每个模块文件，包括入口文件和它所依赖的文件，都会调用该方法来解析模块的路径。
+2. `load(id)`：该方法在加载模块代码时被调用。对于每个模块文件，包括入口文件和它所依赖的文件，都会调用该方法来加载模块的代码。
+3. `transform(code, id)`：该方法在模块代码转换阶段被调用。对于每个模块文件，包括入口文件和它所依赖的文件，都会调用该方法来转换模块的代码。
+4. `buildEnd(error)`：该方法在构建完成时被调用。在整个构建过程结束时，只会调用一次。
+
+需要注意的是，每个方法的调用次数取决于你的项目的具体配置和模块依赖关系。如果在插件的配置选项中指定了多个入口文件，那么这些方法可能会被调用多次，每个入口文件都会触发一次相应的调用。
+
 
 
 ### 钩子函数介绍
@@ -8630,10 +8751,10 @@ export default {
 | Previous Hook | 这是构建阶段的第一个钩子                |      |
 | Next Hook     | buildStart                              |      |
 
-- 替换或操作传递给`rollup`的选项对象
+- 这个钩子是在Rollup读取并解析配置文件后、开始构建之前调用的。它允许插件修改或替换Rollup的选项。`options`钩子只会被调用一次，而不是对每个模块调用一次。它的主要用途是允许插件修改构建的初始选项。操作的必须是rollup预设好的那些字段
 - 返回`null`的话rollup不会替换任何内容
-- 如果只需要阅读`options`，建议使用`buildStart`钩子，因为**options**钩子函数的InputOptions并不是最终的options对象
-- 这是唯一一个无法访问大多数插件上下文实用程序功能的钩子，因为它是在完全配置汇总之前运行的
+- 如果需要阅读`options`，建议使用`buildStart`钩子，因为**options**钩子函数的InputOptions并不是最终的options对象
+- 这是唯一一个无法访问大多数插件上下文使用程序功能的钩子，因为它是在完全配置汇总之前运行的
 
 
 
@@ -8646,6 +8767,7 @@ export default {
 | Previous Hook | options                         |
 | Next Hook     | resolveId并行解析每个入口点     |
 
+- 这个钩子在Rollup开始构建过程、解析模块之前被调用。它提供了一个时机来执行一些准备工作，比如验证插件的选项、初始化插件需要的资源等。`buildStart`钩子也是只被调用一次，它不会对每个模块都调用，因为它标志着构建过程的开始
 - 每次`rollup.rollup build`都要调用此钩子
 - 当您需要访问传递给rollup的选项时，建议使用这个钩子
 - 因为它考虑了所有`options`钩子的转换，还包含未设置选项的正确默认值
@@ -8676,9 +8798,7 @@ export default function buildStart() {
 
 - 定义自定义解析器
 
-- 解析程序可用于定位第三方依赖关系等。这里`source`是导入语句中所写的导入对象，即
-
-- 来源就是 `"../bar.js"`
+- 解析程序可用于定位第三方依赖关系等。这里`source`是导入语句中所写的导入对象，即来源就是 `"../bar.js"`
 
   ```js
   import { foo } from '../bar.js';
@@ -8704,12 +8824,16 @@ export default function buildStart() {
 
 
 
+**案例：**
+
 build\plugin-polyfill.js
 
-自动插入polyfill
+自动插入polyfill，并将该polyfill包中的代码打包到输出文件中。
+
+原理是通过代理模块实现的。
 
 ```js
-//我们在polyfill id前面加上\0，告诉其他插件不要尝试加载或转换它
+//在polyfill id前面加上\0，告诉其他插件不要尝试加载或转换它
 const POLYFILL_ID = '\0polyfill';
 const PROXY_SUFFIX = '?inject-polyfill-proxy';
 
@@ -8740,6 +8864,7 @@ export default function injectPolyfillPlugin() {
         //重要的是，新入口不能以\0开头，并且与原始入口具有相同的目录，以免扰乱相对外部导入的生成
         //此外，保留名称并在末尾添加一个“？查询”可以确保preserveModules将为该条目生成原始条目名称
         return `${resolution.id}${PROXY_SUFFIX}`;
+          // return {id: `${resolution.id}${PROXY_SUFFIX}`}
       }
       return null;
     },
@@ -8778,9 +8903,19 @@ export default function injectPolyfillPlugin() {
 | Previous Hook | 解析加载id的`resolveId`或`resolveDynamicImport`。此外，这个钩子可以在任何时候从插件钩子中通过调用`this.load`来触发预加载与id对应的模块 |      |
 | Next Hook     | `transform`可在未使用缓存或没有使用相同代码的缓存副本时转换加载的文件，否则应使用`TransformCachedModule` |      |
 
-- 定义自定义加载程序
 - 返回`null`会推迟到其他加载函数（最终是从文件系统加载的默认行为）
 - 为了防止额外的解析开销，例如这个钩子已经使用了这个。parse出于某种原因，为了生成AST，这个钩子可以选择性地返回`{code，AST，map}`对象。`ast`必须是标准的`ESTree ast`，每个节点都有开始和结束属性。如果转换不移动代码，可以通过将map设置为null来保留现有的sourcemaps。否则，您可能需要生成源映射。请参阅关于源代码转换的部分
+- 当在Rollup插件中实现了`load`这个钩子后，它会为项目中的每个模块（通常是每个`.js`文件，或者是通过其他插件能够处理的文件类型）调用一次。`load`钩子的主要作用是告诉Rollup如何读取和加载模块的内容，**它为插件提供了一个机会来直接提供模块的内容，而不是让Rollup从文件系统中读取。**
+
+  当Rollup尝试加载一个模块时，它会按照插件数组中的顺序调用这些插件的`load`钩子，直到某个插件返回非`null`或非`undefined`的结果。这意味着如果你的插件返回了模块的内容，Rollup会使用这个返回值作为模块的内容，而不会继续调用后续插件的`load`钩子，也不会从文件系统中加载该模块。
+
+  这个机制使得`load`钩子非常适合于以下用途：
+
+  - 直接提供某些模块的内容，而不是从磁盘读取。
+  - 实现虚拟模块，即在构建过程中动态生成的模块。
+  - 代理某些模块的加载，可能是为了添加一些特定的处理逻辑，或者改变模块的原始路径等。
+
+  需要注意的是，虽然`load`钩子对每个模块都会调用，但是插件开发者需要确保他们的`load`实现逻辑正确处理不同的模块路径，以避免不必要的处理逻辑应用于所有模块。
 
 
 
@@ -8794,7 +8929,7 @@ export default function injectPolyfillPlugin() {
 | Next Hook     | `moduleParsed` 一旦文件被处理和解析，模块就会被解析          |
 
 - 可用于转换单个模块
-- 为了防止额外的解析开销，例如这个钩子已经使用了`this.parse`出于某种原因，为了生成AST
+- 为了防止额外的解析开销，例如这个钩子已经使用了`this.parse`生成AST
 - 这个钩子可以选择性地返回`{code，AST，map}`对象
 - ast必须是标准的ESTree ast，每个节点都有`start`和`end`属性
 - 如果转换不移动代码，可以通过将map设置为null来保留现有的sourcemaps。否则，您可能需要生成源映射。请参阅关于源代码转换的部分
@@ -8853,12 +8988,6 @@ moduleParsed
 shouldTransformCachedModule
 moduleParsed
 ```
-
-
-
-
-
-
 
 
 
