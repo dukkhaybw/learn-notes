@@ -1177,7 +1177,7 @@ MessageList.childContextTypes = {
 2. **提供Context值**: 通过**`Context.Provider`组件**提供一个Context值给组件树中的所有子组件。任何子组件都可以访问这个值，无论深度如何。
 3. **消费Context值**: 子组件可以通过两种方式之一来消费Context值：使用`Context.Consumer`组件或`useContext`Hook。
 
-下面是一个函数组件中使用的例子：
+下面是一个**函数组件**中使用的例子：
 
 ```jsx
 import React, { createContext, useContext } from 'react';
@@ -1208,12 +1208,12 @@ export default MyComponent;
 
 
 
-类组件中使用的例子：
+**类组件**中使用的例子：
 
-有两种主要方式可以在类组件中访问`Context`：
+有**两种主要方式**可以在类组件中访问`Context`：
 
 1. **通过`contextType`属性在类组件中使用Context**:
-   - 这种方法允许将React Context对象赋值给类的`contextType`属性。这样做之后，你可以通过`this.context`在任何类组件方法中访问Context的值。
+   - 这种方法允许将React Context对象赋值给**类静态属性**`contextType`。这样做之后，可以通过`this.context`在任何类组件方法中访问Context的值。
    - 这种方式限制性在于一个类组件只能订阅单一的Context来源。
 2. **使用`<Context.Consumer>`组件**:
    - 这种方法更为灵活，允许在组件树中的任何位置读取Context的值，而不仅限于在类组件中。它通过一个函数子组件（function as a child）的模式来工作，这个函数接收当前的Context值作为其参数。
