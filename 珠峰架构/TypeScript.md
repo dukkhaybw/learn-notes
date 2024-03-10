@@ -3675,7 +3675,161 @@ declare module '*.vue' {
 }
 ```
 
-### 
+
+
+### `keyof T` 
+
+`keyof T` 是 TypeScript 中的一个**操作符**，用于获取某种类型 `T` 的所有公共属性的**键**（或称为属性名）**作为联合类型**。这意味着，如果有一个类型 `T`，那么 `keyof T` 将是组成该类型所有属性名的联合类型。
+
+举个例子：
+
+```ts
+type Person = {
+    name: string;
+    age: number;
+    hasPets: boolean;
+};
+
+type PersonKeys = keyof Person;
+```
+
+在这个例子中，`Person` 是一个有三个属性的类型：`name`、`age` 和 `hasPets`。使用 `keyof Person` 将产生一个联合类型 `PersonKeys`，它等同于 `'name' | 'age' | 'hasPets'`。也就是说，`PersonKeys` 类型的变量可以是字符串 `'name'`、`'age'` 或 `'hasPets'` 中的任何一个。
+
+
+
+### K extends keyof T
+
+在 TypeScript 中，`K extends keyof T` 是一个类型约束，它用于限制泛型类型变量 `K` 的可能值。这个语法结构在泛型编程中非常常见，特别是在定义泛型接口、类型或函数时。下面分解这个表达式的含义：
+
+- `T` 是一个泛型参数，通常代表一个对象类型。
+- `keyof T` 是一个操作符，用于获取类型 `T` 的所有公共属性键作为一个联合类型。
+- `K extends ...` 是一个**泛型约束**，表示 `K` 必须是后面类型的一个子集或者相同的类型。
+
+因此，`K extends keyof T` 的意思是：泛型类型变量 `K` 必须是类型 `T` 的属性键的一个子集。这个约束保证了 `K` 只能是类型 `T` 已有属性名的一部分或全部，而不能是其他任何值。
+
+这种模式常用于**创建具有某种类型操作性质的泛型工具**，比如修改类型、选择性地包含或排除某些属性等。它确保了类型安全，因为任何不符合 `T` 已有属性键的 `K` 都会导致编译时错误。
+
+举个例子：
+
+```ts
+function getProperty<T, K extends keyof T>(obj: T, key: K): T[K] {
+    return obj[key];
+}
+```
+
+这个 `getProperty` 函数接受一个对象 `obj` 和一个键 `key`，并返回对应键的值。`K extends keyof T` 确保传递给 `key` 参数的值必须是 `obj`（类型为 `T`）的属性名之一。这种约束提供了额外的类型安全：你不能传递一个不存在于 `obj` 中的键名给 `key`，否则 TypeScript 编译器会报错。
+
+
+
+## 泛型工具类型
+
+### Omit
+
+`Omit<Type, Keys>`它会创建一个新的类型，这个类型拥有原类型 `Type` 的所有属性，但是会省略掉 `Keys` 中指定的属性。`Keys` 可以是单个或多个用逗号分隔的属性名称。
+
+示例：
+
+```ts
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  password: string;
+}
+
+type UserWithoutPassword = Omit<User, 'password'>;
+
+// UserWithoutPassword 类型将是：
+// {
+//   id: string;
+//   name: string;
+//   email: string;
+// }
+
+
+type UserSensitiveDetails = Omit<User, 'password' | 'email'>;
+
+// UserSensitiveDetails 类型将是：
+// {
+//   id: string;
+//   name: string;
+// }
+```
+
+`Omit` 可以和其他类型操作符结合使用，比如 `Partial`，创建一个类型，这个类型的属性是可选的，并且排除了某些属性：
+
+```ts
+type PartialUserWithoutID = Omit<Partial<User>, 'id'>;
+
+// PartialUserWithoutID 类型将是：
+// {
+//   name?: string;
+//   email?: string;
+//   password?: string;
+// }
+```
+
+**动态排除属性：**
+
+动态地根据条件排除类型中的属性。这可以通过泛型来实现
+
+```ts
+type OmitProperty<T, K extends keyof T> = Omit<T, K>;
+```
+
+这段 TypeScript 代码定义了一个名为 `OmitProperty` 的泛型类型，这个类型利用 TypeScript 的 `Omit` 工具类型来创建一个新类型。这个新类型基于一个现有类型 `T`，但是从中去除了一些属性，这些属性的键由泛型参数 `K` 指定。具体来说，这段代码的每个部分意味着：
+
+- `type OmitProperty<T, K extends keyof T>`: 定义了一个新的泛型类型 `OmitProperty`，它接受两个类型参数：`T` 和 `K`。`T` 是任何对象类型，而 `K` 必须是 `T` 的属性键的子集。通过 `K extends keyof T` 约束，确保了 `K` 只能是类型 `T` 的已有属性名的联合。
+- `= Omit<T, K>`: 使用 TypeScript 内置的 `Omit` 类型，根据 `T` 和 `K` 生成一个新类型。这个新类型将是 `T` 的所有属性的集合，但不包括 `K` 中指定的那些属性。
+
+例如，如果有一个类型 `User` 和想创建一个新类型，该类型具有除了 'password' 和 'email' 属性以外的所有 `User` 属性，可以这样使用 `OmitProperty`：
+
+```ts
+type User = {
+  id: number;
+  name: string;
+  email: string;
+  password: string;
+};
+
+// 使用OmitProperty来创建一个新类型，该类型不包括 'email' 和 'password' 属性
+type UserWithoutSensitiveInfo = OmitProperty<User, 'email' | 'password'>;
+
+//等价于：
+type UserWithoutSensitiveInfo = {
+    id: number;
+    name: string;
+}
+```
+
+
+
+
+
+### Partial
+
+`Partial<T>`用于将某个类型 `T` 的所有属性都变为可选的。当你将 `Partial` 应用于某个类型时，比如说 `User`，`Partial<User>` 的结果是一个新的类型，这个新类型与 `User` 有相同的属性，但是所有的属性都被设置为可选的。
+
+```ts
+interface User {
+  id: number;
+  name: string;
+  email: string;
+}
+
+
+type PartialUser = Partial<User>;
+// 等同于：
+// {
+//   id?: number;
+//   name?: string;
+//   email?: number;
+// }
+```
+
+
+
+
 
 ## 书籍阅读
 

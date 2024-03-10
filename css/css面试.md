@@ -8,10 +8,10 @@
 
 定位方式存在的缺陷：
 
-1. 中间列不能优先加载
-2. 当页面小于 200px（左右两列的固定宽度时），左右两列定位重合且混乱，中间列的宽度为 0 并被压在下层无法看见
-3. 采用定位后不利于之后的布局
-4. 中间列背景有部分被左右两列定位所覆盖
+1. **中间列不能优先加载**
+2. **当页面小于 200px（左右两列的固定宽度时），左右两列定位重合且混乱，中间列的宽度为 0 并被压在下层无法看见**
+3. **采用定位后不利于之后的布局**
+4. **中间列背景有部分被左右两列定位所覆盖**
 
 > ```html
 > <style>
@@ -50,7 +50,7 @@
 > 
 > HTML部分
 > 
-> <body style="opsition:relative">
+> <body style="position:relative">
 >     <div class="left">left内容</div>
 >     <div class="middle">middle内容</div>
 >     <div class="right">right内容</div>
@@ -119,7 +119,7 @@
  margin-top 和 margin-bottom 在盒子没有浮动的情况下，能实现盒子的上下移动。
 
 > ```css
->* {
+> * {
 >   margin: 0;
 >   padding: 0;
 > }
@@ -129,12 +129,12 @@
 > }
 > 
 > .content > div {
->  float: left;
+>   float: left;
 >   height: 100px;
 > }
 > 
 > .left {
->  position: relative;
+>   position: relative;
 >   top: 0;
 >   left: -100px;
 >   margin-left: -100%; //left是相对定位时，百分比单位的参照对象时最近一级父块级元素的padding+content的宽度
@@ -143,7 +143,7 @@
 > }
 > 
 > .right {
->  position: relative;
+>   position: relative;
 >   top: 0;
 >   right: -100px;
 >   margin-left: -100px;
@@ -152,17 +152,17 @@
 > }
 > 
 > .middle {
->  width: 100%; //middle是静态定位时，百分比单位的参照对象时最近一级父块级元素的padding+content的宽度
+>   width: 100%; //middle是静态定位时，百分比单位的参照对象时最近一级父块级元素的padding+content的宽度
 >   background-color: paleturquoise;
 > }
 > 
 > footer {
->  height: 100px;
+>   height: 100px;
 >   background-color: coral;
 > }
 > 
 > .clearfix::after {
->  content: '';
+>   content: '';
 >   display: block;
 >   clear: both;
 > }
@@ -170,11 +170,11 @@
 >   *zoom: 1;
 > }
 > ```
-> 
+>
 > `HTML部分`
 >
 > ```html
-><div class="content clearfix">
+> <div class="content clearfix">
 >     <div class="middle">middle内容</div>
 >     <div class="left">left内容</div>
 >     <div class="right">right内容</div>
@@ -721,9 +721,21 @@ background-image: linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transpare
 
 ```html
 <div class="triangle"></div>
-.triangle{ width:0px; height:0px; line-height:0; fonst-size:0; border:10px solid transparent;
-border-bottom-color: red;}.box{ width: 0; height: 0; border-left: 20px solid transparent;
-border-right: 20px solid transparent; border-bottom: 20px solid teal;}
+.triangle{ 
+    width:0px; 
+    height:0px; 
+    line-height:0; 
+    fonst-size:0; 
+    border:10px solid transparent;
+    border-bottom-color: red;
+}
+.box{ 
+    width: 0; 
+    height: 0; 
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-bottom: 20px solid teal;
+}
 ```
 
 
@@ -738,9 +750,14 @@ border-right: 20px solid transparent; border-bottom: 20px solid teal;}
 
 ```html
 <div class="circle"></div>
-.circle{ height: 100px; width: 100px; padding: 20px; background-color: #afc; border: 10px solid red;
-clip-path: circle(50%); //50%表示}创建圆形，需要给circle传入三个值：半径和圆心坐标（x
-y），用at关键字来定义圆心坐标。
+.circle{ 
+height: 100px; 
+width: 100px; 
+padding: 20px; 
+background-color: #afc; 
+border: 10px solid red;
+clip-path: circle(50%); //50%表示创建圆形，需要给circle传入三个值：半径和圆心坐标（x，y），用at关键字来定义圆心坐标。
+}
 ```
 
 ![image-20210321085229533](..\typora-user-images\image-20210321085229533.png)
@@ -1431,15 +1448,76 @@ transform：translate(x,y) rotate(Ndeg) scale(2); 注意点：注意书写顺序
 定义：
 
 ```css
-@keyframes 动画名称 {   //keyframes：关键帧    0%{ //动画开启时元素的样式     可以用form代替0%    }    n%{//动画在整个运动时间的百分之n时元素的样式            }    100%{ //动画结束时元素的样式   可以用to代替100%            }}
+@keyframes 动画名称 {   
+    //keyframes：关键帧    
+    0%{ 
+        //动画开启时元素的样式     可以用form代替0%    
+    }    
+    n%{
+        //动画在整个运动时间的百分之n时元素的样式            
+    }    
+    100%{ 
+        //动画结束时元素的样式   可以用to代替100%            
+    }
+}
 ```
 
 使用：
 
 ```css
 css选择器{
-    animation-name:动画名称; 必写    animation-duration:动画耗时; 必写	animation-timing-function:'ease'|'linear'|steps(); 规定动画的速度曲线    animation-delay:0; 规定动画延迟多久开始执行    animation-iteration-count:1;  规定动画播放的次数（infinite）    animation-direction：规定动画是否在下一周期逆向播放，默认normal,alternate:逆播放    animation-play-state:规定动画过程中是否可以被暂停，默认：running,还有paused    animation-fill-mode:规定动画结束后的状态，保持在结束位置：forward，回到起点位置：backwards(默认)}css选择器{	animation:动画名称 动画耗时 [速度曲线 延迟时间 播放次数 逆向与否 结束状态];}
+    animation-name:动画名称; 必写
+    animation-duration:动画耗时; 必写
+    animation-timing-function:'ease'|'linear'|steps(); 规定动画的速度曲线
+    animation-delay:0; 规定动画延迟多久开始执行
+    animation-iteration-count:1;  规定动画播放的次数（infinite）
+    animation-direction：规定动画是否在下一周期逆向播放，默认normal,alternate:逆播放
+    animation-play-state:规定动画过程中是否可以被暂停，默认：running,还有paused
+    animation-fill-mode:规定动画结束后的状态，保持在结束位置：forward，回到起点位置：backwards(默认)
+}
+css选择器{	
+    animation:动画名称 动画耗时 [速度曲线 延迟时间 播放次数 逆向与否 结束状态];
+}
 ```
+
+```html
+<div class="animated-box">动画示例</div>
+```
+
+```css
+/* 定义一个名为 fadeInMove 的 @keyframes 动画 */
+@keyframes fadeInMove {
+  from {
+    /* 动画开始状态 */
+    opacity: 0; /* 完全透明 */
+    transform: translateX(-50px); /* 向左移动50像素 */
+  }
+  to {
+    /* 动画结束状态 */
+    opacity: 1; /* 完全不透明 */
+    transform: translateX(50px); /* 向右移动50像素 */
+  }
+}
+
+/* 应用动画到具体元素 */
+.animated-box {
+  width: 200px;
+  height: 100px;
+  background-color: lightblue;
+  color: white;
+  text-align: center;
+  line-height: 100px;
+  /* 应用动画 */
+  animation-name: fadeInMove; /* 使用定义的动画名称 */
+  animation-duration: 2s; /* 动画持续时间 */
+  animation-timing-function: ease-in-out; /* 动画速度曲线 */
+  animation-delay: 0s; /* 动画延迟时间 */
+  animation-iteration-count: infinite; /* 动画播放次数，这里是无限次 */
+  animation-direction: alternate; /* 动画循环方式，这里是交替反向播放 */
+}
+```
+
+
 
 ### transform（3D）
 
@@ -1479,7 +1557,9 @@ transform:rotate3d(n1,n2,n3,ndeg)
 
 ```css
 盒子的宽度需要固定，不能由内容撑开。
-white-space:nowrap;overflow:hidden;text-overflow:ellipisis;
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipisis;
 ```
 
 #### css 识别选择器的顺序

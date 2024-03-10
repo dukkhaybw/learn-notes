@@ -392,20 +392,14 @@ B（客户端）/S（服务器）架构
     等价于：先找出第几个子元素，如果该子元素是冒号前面指定的那类元素，则应用 css 样式。
 
    ```css
-   <ul
-     > <p
-     > asd</p
-     > <li
-     > 1</li
-     > <li
-     > 2</li
-     > <li
-     > 3</li
-     > <li
-     > 4</li
-     > </ul
-     > ul
-     :first-child {
+   <ul> 
+    <p> asd</p> 
+   <li> 1</li> 
+   <li> 2</li> 
+   <li> 3</li> 
+   <li> 4</li> 
+   </ul> 
+   ul:first-child {
      background-color: #afc;
    } //选中ul下面的第一个子元素，不论该子元素是什么标签
    
@@ -425,11 +419,11 @@ B（客户端）/S（服务器）架构
      1
    ); //选中所有元素的子元素中的第一个，且第一个必须是li标签才可以。而不管li标签是div或者ul等下面的子元素。
    ```
-
+   
    **正方向范围**
-
+   
    li:nth-child(n+6)
-
+   
    选中从第 6 个开始的子元素
 
    **负方向范围**
@@ -477,20 +471,22 @@ B（客户端）/S（服务器）架构
    </body>
 
 
-   <style>
-       p:nth-of-type(3) {
-         background: red;    //选出了 three 和 tyu 所对应的p标签
-       }
+```css
+p:nth-of-type(3) {
+    background: red;    //选出了 three 和 tyu 所对应的p标签
+}
+p:nth-of-type(3) {
+    background: red;    //选出了 three 和 tyu 所对应的p标签
+}
+#wrap p:nth-child(3) {
+    background: yellow;  //选出了two所对应的p标签
+}
 
-       #wrap p:nth-child(3) {
-         background: yellow;  //选出了two所对应的p标签
-       }
-     </style>
-   ```
-
-   **结构伪类例子**
+```
+  **结构伪类例子**
 
    ```css
+
    <section>
    	<p>一号</p>
    	<div>二号</div>
@@ -571,9 +567,9 @@ B（客户端）/S（服务器）架构
 
 #### 文档流中水平方向的布局约束
 
-子元素在父元素内部水平方向的位置由下面的等式决定：
+**子元素在父元素内部水平方向的位置由下面的等式决定：**
 
-margin（left/right） + border（left/right）+ padding（left/right）+width = 其父元素内容区的 width（这个等式必须成立，不成立则称为过度约束，浏览器会自动调整以使得等式成立）
+margin（left/right） + border（left/right）+ padding（left/right）+width = 其父元素**内容区**的 width（这个等式必须成立，不成立则称为过度约束，浏览器会自动调整以使得等式成立）
 
 上面的各项的默认值是： 0 + 0 + 0 + auto=父元素 content-width
 
@@ -611,7 +607,7 @@ overflow-y：visible | hidden | scroll | auto
 
 开启绝对定位的元素的 top：0 与 left：0 是包含块的 padding 区的左上角。
 
-子元素在父元素内部水平方向的位置由下面的等式决定：
+**子元素在父元素内部水平方向的位置由下面的等式决定：**
 
 left + right +margin（left/right） + border（left/right）+ padding（left/right）+width = 其父元素 padding 区的 width（这个等式必须成立，不成立则称为过度约束，浏览器会自动调整以使得等式成立）
 
@@ -621,6 +617,32 @@ left + right +margin（left/right） + border（left/right）+ padding（left/ri
 
 - 当 left ，right 设置为 0 时，width 未设置宽度时，子元素的 width 默认就是父元素 padding-width 的值
 - 当 left ，right 设置为 0 时，width 设置固定宽度，margin 为 auto 时，子元素在父元素内部水平居中
+
+```html
+<div class="absolute-auto-container">
+  <div class="content">水平居中内容</div>
+</div>
+```
+
+
+
+```css
+.absolute-auto-container {
+  position: relative;
+  height: 100vh;
+}
+
+.content {
+  position: absolute;
+  right: 0;
+  left: 0;
+  margin: auto;
+  height: 50px; /* 定义内容高度 */
+  width: 100px; /* 定义内容宽度 */
+}
+```
+
+
 
 #### 元素绝对定位后垂直方向的布局约束
 
@@ -633,6 +655,34 @@ top+ bottom +margin（top/bottom） + border（top/bottom）+ padding（top/bott
 结论：
 
 - 当 top，bottom 设置为 0 时，height 设置固定高度，margin 为 auto 时，子元素在父元素内部垂直居中
+
+```html
+<div class="absolute-auto-container">
+  <div class="content">垂直居中内容</div>
+</div>
+```
+
+
+
+```css
+.absolute-auto-container {
+  position: relative;
+  height: 100vh;
+}
+
+.content {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  height: 50px; /* 定义内容高度 */
+  width: 100px; /* 定义内容宽度 */
+}
+```
+
+
+
+
 
 ### Flex（弹性布局）
 
