@@ -39,11 +39,11 @@ body{
 
 初始包含块是一个视口大小的矩形。它也是 html 元素的包含块，初始包含块由用户代理建立。
 
-浮动元素和定位元素的包含块有不同情况：
+**浮动元素和定位元素的包含块有不同情况：**
 
-对于浮动元素的包含块为最近的块级祖先元素。
+对于浮动元素的包含块为**最近的块级祖先元素**。
 
-对于一个非根元素，如果它的 position 为 relative 或者 static，则该元素的包含块为最近一级的父级块元素的内容（content）区域。
+对于一个非根元素，如果它的 position 为 relative 或者 static，则该元素的包含块为**最近一级的父级块元素的内容（content）区域**。
 
 对于一个非根元素，如果它的 position 为 absolute，则包含块设置为最近的 position 值不为 static 的祖先元素，并且 top 和 left 值的基点是该祖先元素的 padding 区域的左上角。
 
@@ -91,12 +91,12 @@ margin 与 padding 的默认值为 0，不是 auto，当单位为百分比时，
   <h1 style="font-size: 20px;">hello world</h1>
   ```
 
-- 分模块导入其他 css，可以将一些公共的 css 样式抽离出来，染后，在其他 css 文件中引入，或者直接在需要使用的该样式文件的 html 中引入
+- 分模块导入其他 css，可以将一些公共的 css 样式抽离出来，然后，在其他 css 文件中引入，或者直接在需要使用的该样式文件的 html 中引入
 
   ```
   在其他css首部引入另一个css
   @import url("common-css/header.css");
-  /* @import url("./common-css/header.css"); */  //都正确
+  /* @import url("./common-css/header.css"); */ 
   
   在html文件中引入
   <style>
@@ -108,7 +108,7 @@ margin 与 padding 的默认值为 0，不是 auto，当单位为百分比时，
 
   > **1.从属关系区别** >`@import`是 CSS 提供的语法规则，只有导入样式表的作用；`link`是 HTML 提供的标签，不仅可以加载 CSS 文件，还可以定义 RSS、rel 连接属性等。
   >
-  > **2.加载顺序区别** 写在一个加载页面时，`link`标签引入的 CSS 被同时加载；`@import`引入的 CSS 将在页面加载完毕后被加载。
+  > **2.加载顺序区别** 写在一个加载页面时，`link`标签引入的 CSS 被同时加载；`@import`引入的 CSS 将在页面css加载后被加载。
   >
   > **3.兼容性区别** >`@import`是 CSS2.1 才有的语法，故只可在 IE5+ 才能识别；`link`标签作为 HTML 元素，不存在兼容性问题。
   >
@@ -122,31 +122,31 @@ margin 与 padding 的默认值为 0，不是 auto，当单位为百分比时，
 
 ```
 可以使用多种基础选择器和属性选择器进行组合
-input[title]{  //选出含有该属性的元素进行css样式设计
+input[title]{  //选出含有该属性的元素
 	...
 }
 
-input[title="value"]{ //选出含有该属性且属性值只为value的元素进行css样式设计
+input[title="value"]{ //选出含有该属性且属性值为value的元素
 	....
 }
 
-input[title$='str']{ //选出含有该属性且属性值为str结尾的元素进行css样式设计
+input[title$='str']{ //选出含有该属性且属性值为str结尾的元素
 	...
 }
 
-input[title^='str']{ //选出含有该属性且属性值以str开头的元素进行css样式设计
+input[title^='str']{ //选出含有该属性且属性值以str开头的元素
 	...
 }
 
-input[title*='str']{ //选出含有该属性且属性中有为str字段（不用是一个独立的单词，可以只出现一部分含还该str就可以）的元素进行css样式设计
+input[title*='str']{ //选出含有该属性且属性中有为str字段（不用是一个独立的单词，可以只出现一部分含还该str就可以）的元素
 	...
 }
 
-input[title~='str']{ //选出含有该属性且属性值以str作为一个完整单词出现的元素进行css样式设计
+input[title~='str']{ //选出含有该属性且属性值以str作为一个完整单词出现的元素
 	...
 }
 
-input[title|='str']{ //选出含有该属性且属性值以str开头或者str-开头出现的元素进行css样式设计
+input[title|='str']{ //选出含有该属性且属性值以str开头或者str-开头出现的元素
 	...
 }
 ```
@@ -196,7 +196,7 @@ Box 是 CSS 布局的对象和基本单位（即一个页面是由很多个 Box 
 
 ## Formatting context
 
-Formatting context 它是页面中的一块渲染区域，并且有一套渲染规则，它决定了其子元素将如何定位，以及和其他元素的关系和相互作用。最常见的 Formatting context 有 Block fomatting context（简称 BFC）Inline formatting context（简称 IFC）。
+Formatting context 它是**页面中的一块渲染区域，并且有一套渲染规则**，它决定了其子元素将如何定位，以及和其他元素的关系和相互作用。最常见的 Formatting context 有 Block fomatting context（简称 BFC）Inline formatting context（简称 IFC）。
 
 ## Block Formatting Context（块级 格式化 环境）
 
@@ -205,12 +205,11 @@ BFC 是一个独立的渲染区域，只有 Block-level box 参与，它规定�
 BFC 中块级元素的布局规则：
 
 - 内部的块级元素独占一行
--
-- 内部的块级 Box 会在垂直方向，一个接一个地放置。
-- BFC 自身的区域不会与外部元素的 float box 重叠。
-- 内部的 box 垂直方向的距离由 margin 决定。属于同一个 BFC 的两个相邻的 BOX 的 margin 会发生重叠
+- 内部的块级 Box 会在垂直方向，一个接一个地放置
+- **BFC 自身的区域不会与外部元素的 float box 重叠**
+- 内部的 box 垂直方向的距离由 margin 决定。属于同一个 BFC 的两个**相邻**的 BOX 的 margin 会发生重叠
 - BFC 就是页面上一个隔离的区域，外面不会影响到内部爱，内部也不会影响到外面
-- 计算 BFC 高度时，浮动元素也会被计算在内（清除浮动 haslayout）
+- **计算 BFC 高度时，浮动元素也会被计算在内（清除浮动 haslayout）**
 
 根元素 html 自带 BFC，其他开启 BFC 的方式：
 
@@ -225,15 +224,15 @@ CSS 盒模型的组成：外边距（margin）+ 边框（border）+ 内边距（
 
 两类盒模型：
 
-- W3C 盒子模型(标准盒模型)
+- **标准盒模型**
 
-  盒子总宽度/高度 = `width/height + padding + border + margin`。（ 即 width/height 只是内容高度，不包含 padding 和 border 值 ）
+  盒子总宽度/高度 = `width/height + padding + border + margin`。（ 即 width/height 只是设置的内容高度，不包含 padding 和 border 值 ）
 
   box-sizing: content-box;
 
   ![image-20210216182223406](..\typora-user-images\image-20210216182223406.png)
 
-- IE 盒子模型(怪异盒模型)
+- **IE 盒子模型**
 
   盒子总宽度/高度 = `width/height + margin = (内容区宽度/高度 + padding + border) + margin`。（ 即 width/height 包含了 padding 和 border 值 ）
 
@@ -247,36 +246,13 @@ CSS 盒模型的组成：外边距（margin）+ 边框（border）+ 内边距（
 - `dom.offsetWidth/offsetHeight` 包括高度（宽度）、内边距和边框，不包括外边距。最常用，兼容性最好。
 - `dom.getBoundingClientRect().width/height` 也是得到渲染后的宽和高，大多浏览器支持。IE9 以上支持，除此外还可以取到相对于视窗的上下左右的距离。
 - `dom.currentStyle.width/height` （只有 IE 兼容）取到的是最终渲染后的宽和高
-- `window.getComputedStyle(dom).width/height` 同（2）但是多浏览器支持，IE9 以上支持。
+- `window.getComputedStyle(dom).width/height`但是多浏览器支持，IE9 以上支持。
 
-### Flex 布局（弹性布局）
 
-#### 概念
-
- 响应式地实现各种页面布局。任何一个容器(包括行类元素)都可以指定为 Flex 布局。父元素设为 Flex 布局以后，子元素的`float`、`clear`和`vertical-align`属性将失效。
-
-```css
-.selector{
-  display: -webkit-flex; //兼容Webkit 内核的浏览器Safari
-  display: flex | inline-flex;
-}
-flex： 将对象作为弹性伸缩盒显示，没有为父元素设置宽度时，默认为auto；
-inline-flex：将对象作为内联块级弹性伸缩盒显示，没有给父元素设置宽度，但是父元素默认会根据子元素的宽高去自适应。
-```
-
- 父元素开启 flex 布局后，父元素称为容器，而父元素内的子元素自动转为容器成员（项目）。项目默认沿主轴排列。
-
-![img](http://www.ruanyifeng.com/blogimg/asset/2015/bg2015071004.png)
-
-#### 容器（父元素）上的属性：
-
-- display：flex
-
-- flex-direction：属性决定主轴的方向
 
 ## 视口
 
-视口：浏览器上(也可能是一个 app 中的 webview)用来显示网页的那部分区域。pc 端的视口是浏览器窗口区域，而在移动端有三个不同的视口概念：布局视口、视觉视口、理想视口。
+视口：浏览器上(也可能是一个 app 中的 webview)用来显示网页的那部分区域。pc 端的视口是浏览器窗口区域，而在移动端有三个不同的视口概念：**布局视口、视觉视口、理想视口**。
 
 布局视口：移动设备上的浏览器都会把自己默认的布局视口设为 980px 或其他值，个人理解是，在 pc 端给布局宽度 980px 左右的页面，可以在移动端完全的展示出来，但是因为移动端的设备水平方向上物理像素一般要小于 980px（iphone6 的物理像素是 750px）移动端浏览器为了做到全部展示默认布局视口大小(980px 左右的水平宽度)的页面时，就会对页面进行压缩，所以导致在 pc 端能正常显示的页面内容看上去非常小（文字，图片很小）；还有一种情况，当在 pc 端设置的一个宽度非常大的盒子(2000px)时，在移动端去查看，因为移动端浏览器默认是 980px,所以移动端会压缩页面，但是只呈现大约 pc 端 980px 像素左右的内容，剩下的就会由滚动条来拖动展现。如下图：
 

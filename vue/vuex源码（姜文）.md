@@ -6,7 +6,7 @@
 
 Vuex 是借鉴了 Redux，Flux 等思想的，但是它不像 Redux 可以又在 vuex 项目中，可以用在 react 项目中或者 jQuery 项目中。Vuex 是专门为 Vue 设计的，不能脱离 Vue。在 Vuex 中数据也是单向流动的。
 
-![image-20210805221956971](.\typora-user-images\image-20210805221956971.png)
+![image-20210805221956971](..\typora-user-images\image-20210805221956971.png)
 
 为了组件之间的相互通信，现在将所有的数据都存放在 Vuex 生成的 store 中，store 中存放的是公共的状态 state。需要对应状态的组件可以直接去 store 内部取数据。但是取用数据的组件不能直接的修改 store 中的状态数据，它需要手动派发一个行为。组件派发事件到 mutations 中，通过 mutations 来改变 store 中的状态。在 store 中的状态更改之后，会触发用到对应状态的组件重新渲染而非创建（响应式变化）。 对于异步派发的行为，比如要先请求一个数据，然后将请求后的数据放在 store 中，这时就必须组件先 dispatch 一个 action，在对应的 action 中去请求后台接口，把接口请求回来的数据拿到后，再去提交一个 mutaition，再由 mutations 去更改 store，store 中的状态一变，再去重新渲染对应的组件。
 
@@ -24,15 +24,15 @@ Vue.use(Vuex)说明插件内部暴露了一个 install 方法。同时 new Vuex.
 
 在 mutations 中的各个方法中尽量不要有异步函数，虽然写了默认是没有问题的。但是 mutations 中的方法中有异步操作时，在严格模式下会报错。
 
-![image-20210805230621103](.\typora-user-images\image-20210805230621103.png)
+![image-20210805230621103](..\typora-user-images\image-20210805230621103.png)
 
 store 中的准备工作：
 
-![image-20210805232551471](.\typora-user-images\image-20210805232551471.png)
+![image-20210805232551471](..\typora-user-images\image-20210805232551471.png)
 
 组件中使用的大致方式：
 
-![image-20210805231638563](.\typora-user-images\image-20210805231638563.png)
+![image-20210805231638563](..\typora-user-images\image-20210805231638563.png)
 
 ## 原理
 
