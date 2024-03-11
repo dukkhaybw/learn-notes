@@ -1860,6 +1860,113 @@ function _read() {
 
 
 
+
+
+设计async/await的错误捕获机制：
+
+如果有多层嵌套的 `async/await` 函数，且只在最外层函数中使用了 `try...catch` 来捕获错误，那么从最内层函数抛出的错误会一层层向上传播，直到它们被最外层的 `try...catch` 捕获。这是因为 `await` 关键字的作用是等待 `Promise` 解决，如果 `Promise` 被拒绝（即出现错误），`await` 会抛出错误，这个错误会被向上层传播，**直到遇到第一个 `catch` 语句**。
+
+同时，如果在最内层的 `async` 函数中，错误是通过 `Promise.reject()` 的方式被抛出的，情况其实和直接抛出错误 (`throw new Error()`) 是一样的。当在 `await` 一个函数调用时，如果这个函数返回一个被拒绝的 `Promise`，这个被拒绝的 `Promise` 会导致 `await` 表达式抛出错误，这个错误同样会被向上层传播，直到被 `try...catch` 捕获。
+
+以下是一个示例，展示了错误如何在异步函数中传播：
+
+```js
+async function innerFunction() {
+  // 抛出错误的方式可以是直接 throw，也可以是 Promise.reject()
+  throw new Error('Inner error');
+  // 或者
+  // return Promise.reject('Inner error');
+}
+
+async function outerFunction() {
+  try {
+    await innerFunction();
+  } catch (error) {
+    console.log('Caught in outer function:', error.message);
+    // 可以选择在这里处理错误，或者再次抛出
+    // throw error;
+  }
+}
+
+outerFunction();
+```
+
+
+是的，如果您有多层嵌套的 `async/await` 函数，且只在最外层函数中使用了 `try...catch` 来捕获错误，那么从最内层函数抛出的错误会一层层向上传播，直到它们被最外层的 `try...catch` 捕获。这是因为 `await` 关键字的作用是等待 `Promise` 解决，如果 `Promise` 被拒绝（即出现错误），`await` 会抛出错误，这个错误会被向上层传播，直到遇到第一个 `catch` 语句。
+
+关于您的第二个问题，如果在最内层的 `async` 函数中，错误是通过 `Promise.reject()` 的方式被抛出的，情况其实和直接抛出错误 (`throw new Error()`) 是一样的。当您在 `await` 一个函数调用时，如果这个函数返回一个被拒绝的 `Promise`，这个被拒绝的 `Promise` 会导致 `await` 表达式抛出错误，这个错误同样会被向上层传播，直到被 `try...catch` 捕获。
+
+以下是一个示例，展示了错误如何在异步函数中传播：
+
+```js
+async function innerFunction() {
+  // 抛出错误的方式可以是直接 throw，也可以是 Promise.reject()
+  throw new Error('Inner error');
+  // 或者
+  // return Promise.reject('Inner error');
+}
+
+async function outerFunction() {
+  try {
+    await innerFunction();
+  } catch (error) {
+    console.log('Caught in outer function:', error.message);
+    // 可以选择在这里处理错误，或者再次抛出
+    // throw error;
+  }
+}
+
+outerFunction();
+```
+
+在这个例子中，`innerFunction` 抛出一个错误，这个错误会被 `outerFunction` 中的 `try...catch` 捕获。无论 `innerFunction` 是通过 `throw` 还是 `Promise.reject()` 抛出错误，结果都是相同的，因为 `await` 能够处理这两种情况下的错误抛出。
+
+如果您想让错误继续传播，可以在 `catch` 块中再次抛出错误。如果不想继续传播，可以在 `catch` 块内处理错误，例如记录日志、执行一些恢复操作等。
+
+这里是一个包含三层嵌套 `async/await` 函数，并在最外层捕获错误的示例：
+
+```js
+// 最内层函数
+async function innerFunction() {
+  // 直接抛出错误或返回一个rejected的Promise都可以被外层的await捕获
+  throw new Error('Error from innerFunction');
+  // 或者使用 Promise.reject
+  // return Promise.reject(new Error('Error from innerFunction'));
+}
+
+// 中间层函数
+async function middleFunction() {
+  // 等待并可能捕获来自最内层函数的错误，但这里没有try...catch，所以错误会继续向上抛
+  await innerFunction();
+}
+
+// 最外层函数
+async function outerFunction() {
+  try {
+    // 等待中间层函数执行，任何未捕获的错误都会在这里被捕获
+    await middleFunction();
+  } catch (error) {
+    // 捕获来自任何更内层的错误
+    console.error('Caught in outerFunction:', error.message);
+    // 根据需要处理错误，例如记录、恢复操作或者再次抛出
+  }
+}
+
+outerFunction();
+```
+
+在这个例子中：
+
+1. `innerFunction` 抛出一个错误。
+2. `middleFunction` 调用 `innerFunction`，但它自身并没有捕获错误。因此，当 `innerFunction` 抛出错误时，这个错误会穿过 `middleFunction` 向上抛给调用者。
+3. `outerFunction` 通过 `try...catch` 捕获了从 `middleFunction`（实际上是从 `innerFunction`）传递上来的错误。
+
+这个例子展示了错误如何在异步函数调用栈中向上传播，直到遇到第一个足以处理这个错误的 `catch` 块。在实践中，这使得在合适的层级处理错误变得可能，同时也保持了代码的整洁和易于管理。
+
+
+
+
+
 ## 浏览器中的事件环
 
 - 宏任务： 脚本的执⾏、ui渲染、定时器、http请求、事件处 理（⽤户操作）、MessageChannel、setImmediate 
