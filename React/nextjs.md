@@ -173,7 +173,7 @@ export default function App(props) {
 
 客户端请求后得到的结果：
 
-![image-20240309104004760](C:\Users\dukkha\Desktop\learn-notes\React\images\image-20240309104004760.png)
+![image-20240309104004760](images\image-20240309104004760.png)
 
 这就是组件被转化为虚拟DOM对象对应的字符串形式。组件并没有被转为对应的html字符串返给前端。
 
@@ -206,11 +206,11 @@ app.listen(3000, function () {
 
 这时浏览器再去请求回来后，渲染的页面结果如下：
 
-![image-20240309105630604](C:\Users\dukkha\Desktop\learn-notes\React\images\image-20240309105630604.png)
+![image-20240309105630604](images\image-20240309105630604.png)
 
 且标签上有上面说过的属性：
 
-<img src="C:\Users\dukkha\Desktop\learn-notes\React\images\image-20240309105730843.png" alt="image-20240309105730843" style="zoom:200%;" />
+<img src="images\image-20240309105730843.png" alt="image-20240309105730843" style="zoom:200%;" />
 
 
 
@@ -288,7 +288,7 @@ app.use('/',express.static('build')) // 将打包生成的目标目录作为静�
 
 
 
-![image-20240309140846793](C:\Users\dukkha\Desktop\learn-notes\React\images\image-20240309140846793.png)
+![image-20240309140846793](images\image-20240309140846793.png)
 
 
 
@@ -611,7 +611,7 @@ launch.json：
 
 下面是一个基本nextjs项目目录结构
 
-<img src="C:\Users\dukkha\Desktop\learn-notes\React\images\image-20240309191025201.png" alt="image-20240309191025201" style="zoom:150%;" />
+<img src="images\image-20240309191025201.png" alt="image-20240309191025201" style="zoom:150%;" />
 
 
 
@@ -977,7 +977,31 @@ export default UserDetail;
 
 
 
+如果自己从零开始创建一个基于React的web应用，需要自己考虑如下问题：
 
+1. 自己配置和使用打包工具，同时需要使用babel进行编译转换
+2. 需要就生产环境和开发环境分别配置打包设置，进行选择性的优化
+3. 可能需要考虑服务端渲染实现SEO，同时还要支持客户端渲染
+4. 为了做SEO，需要写一些服务端代码，以实现在React应用中链接数据库
+
+
+
+nextjs实现了以下能力：
+
+- [基于页面](https://www.nextjs.cn/docs/basic-features/pages) 的路由系统（支持 [动态路由](https://www.nextjs.cn/docs/routing/dynamic-routes)）
+- [预渲染](https://www.nextjs.cn/docs/basic-features/pages#pre-rendering)。支持以页面为单位的 [静态生成](https://www.nextjs.cn/docs/basic-features/pages#static-generation-recommended) (SSG) 和 [服务器端渲染](https://www.nextjs.cn/docs/basic-features/pages#server-side-rendering) (SSR)
+- 自动代码拆分，提升页面加载速度
+- 具有经过优化的预取功能的 [客户端路由](https://www.nextjs.cn/docs/routing/introduction#linking-between-pages)
+- [内置 CSS](https://www.nextjs.cn/docs/basic-features/built-in-css-support) 和 [Sass 的支持](https://www.nextjs.cn/docs/basic-features/built-in-css-support#sass-support)，并支持任何 [CSS-in-JS](https://www.nextjs.cn/docs/basic-features/built-in-css-support#css-in-js) 库
+- 开发环境支持 [快速刷新](https://www.nextjs.cn/docs/basic-features/fast-refresh)
+- 利用 Serverless Functions 及 [API 路由](https://www.nextjs.cn/docs/api-routes/introduction) 构建 API 功能
+- 完全可扩展
+
+
+
+## 开发环境
+
+- nodejs版本需要10以上
 
 
 
