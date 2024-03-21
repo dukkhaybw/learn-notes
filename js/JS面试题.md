@@ -139,7 +139,7 @@ www:是指用浏览器访问页面的服务，所以网站的主页的域名以�
 
 **常见的 JavaScript 引擎：**SpiderMonkey: fireFox ；Chakra: ie ；JavaScriptCore：webkit ；V8：Chrome
 
-![image-20210717152837153](.\typora-user-images\image-20210717152837153.png)
+![image-20210717152837153](..\typora-user-images\image-20210717152837153.png)
 
 
 
@@ -155,7 +155,7 @@ v8 引擎是使用 c++，c 和 JavaScript 编写的。它实现了 ECMAScript �
 
 v8 内部执行 JavaScript 代码的流程：
 
-![image-20210717154201378](.\typora-user-images\image-20210717154201378.png)
+![image-20210717154201378](..\typora-user-images\image-20210717154201378.png)
 
 上图中的 parse 模块会将 JavaScript 代码转为 AST（抽象语法树），因为 lgnition(解释器)不能直接识别 JavaScript 代码。
 
@@ -165,7 +165,7 @@ ignition 解释器会将 AST 转为 ByteCode（字节码），同时会收集 Tu
 
 TurboFan 是一个编译器，可以将 ByteCode 编译为 CPU 可以直接执行的机器语言。如果一个函数被多次调用时，那么该函数就会被标记为热点函数，然后经过 TurboFan 转换成优化过的机器码，提高代码的执行性能。
 
-![image-20210717155854314](.\typora-user-images\image-20210717155854314.png)
+![image-20210717155854314](..\typora-user-images\image-20210717155854314.png)
 
 还有一个模块是负责内存回收的——Orinoco。
 
@@ -223,9 +223,9 @@ TurboFan 是一个编译器，可以将 ByteCode 编译为 CPU 可以直接执�
 
  table 及其内部元素可能需要多次计算才能确定好其在渲染树中节点的属性，比同等元素要花费的时间更多，所以要尽量避免使用 table 布局页面。
 
-<img src=".\typora-user-images\image-20210224095253834.png" alt="image-20210224095253834" style="zoom: 50%;" />
+<img src="..\typora-user-images\image-20210224095253834.png" alt="image-20210224095253834" style="zoom: 50%;" />
 
-<img src=".\typora-user-images\image-20210224095403333.png" alt="image-20210224095403333" style="zoom:50%;" />
+<img src="..\typora-user-images\image-20210224095403333.png" alt="image-20210224095403333" style="zoom:50%;" />
 
  重排的常见操作：
 
@@ -249,17 +249,17 @@ TurboFan 是一个编译器，可以将 ByteCode 编译为 CPU 可以直接执�
 
  如果你在运行动画时，还有大量的 js 任务需要执行，因为布局绘制和 js 的执行都是在主线程运行的，当在一帧的时间内，布局和绘制结束后，还有剩余时间，js 就会拿到主线程的使用权，如果 js 执行时间过长就会导致在下一帧开始时，js 没有及时归还主线程，导致下一帧动画没有按时渲染，就会出现页面动画的卡顿。
 
-<img src=".\typora-user-images\image-20210224094544390.png" alt="image-20210224094544390" style="zoom: 67%;" />
+<img src="..\typora-user-images\image-20210224094544390.png" alt="image-20210224094544390" style="zoom: 67%;" />
 
 **针对重绘和重排的优化手段：**
 
 - 针对动画，第一种就是可以通过 requestAnimationFrame 这个 api 来帮助我们解决这个问题。requestAnimationFrame 这个方法会在每一帧被调用，通过这个 api 的回调参数，我们可以知道每一帧当前还剩余的，我们可以把 js 运行任务分成一些小块，在时间用完前，归还主线程，react 最新的渲染引擎 react fiber 就是用到了这个 api 来做了很多优化，后面我也会出一期视频专门来讲 React 的最新渲染引擎 React Fiber。
 
-<img src=".\typora-user-images\image-20210224095452461.png" alt="image-20210224095452461" style="zoom:50%;" />
+<img src="..\typora-user-images\image-20210224095452461.png" alt="image-20210224095452461" style="zoom:50%;" />
 
 - 第二个优化方法，我们知道栅格化整个流程是不占用主线程的，只在合成器和栅格线程中运行，这就意味着它无需和 js 抢夺的主线程。刚才提到，如果我们反复重绘和重排，可能会导致掉帧，因为有可能会有 js 的执行阻塞了主线程。css 中有个动画属性叫 transform，通过该属性实现的动画，不会经过布局和绘制，而是直接运行在 Compositor 和 rasterizing 线程中，所以不会受到主线程中 js 执行的影响。更重要的是 transform 的动画，由于不需要经过布局绘制样式计算，所以节省了很多运算时间。可以让复杂的动画更加流畅。位置变化，宽高变化，那这些都可以使用 transform 来代替。
 
-  <img src=".\typora-user-images\image-20210224095555676.png" alt="image-20210224095555676" style="zoom:50%;" />
+  <img src="..\typora-user-images\image-20210224095555676.png" alt="image-20210224095555676" style="zoom:50%;" />
 
 - 浏览器自己会维护一个队列，用于存放引起回流与重绘的操作，在操作达到一定时间或者一定时间间隔，一次性批量处理。
 
@@ -295,7 +295,7 @@ JavaScript 是一门**动态类型**的语言，在用 js 定义一个变量时�
 
  各引擎在编译 js 代码是过程差不多，先将 js 代码通过解析器，解析成抽象语法树（AST），再通过解释器将 AST 编译成为字节码（bytecode，一种跨平台的中间表示，不同于最终的机器码，字节码与平台无关，能在不同操作系统上运行），字节码最后通过编译器生成机器代码，由于不同平台使用的机器代码会有差异，所以编译器会根据当前的平台来编译出响应的机器代码（汇编代码）。
 
-![image-20210913005756173](.\typora-user-images\image-20210913005756173.png)
+![image-20210913005756173](..\typora-user-images\image-20210913005756173.png)
 
 ### js 引擎如何编译 js 代码和优化 js 代码
 
@@ -305,7 +305,7 @@ JavaScript 是一门**动态类型**的语言，在用 js 定义一个变量时�
 
  在编译和执行时，用到三个重要组件：解析器（parser），解释器（interpreter）和编译器（compiler）
 
-![image-20210913010208306](.\typora-user-images\image-20210913010208306.png)
+![image-20210913010208306](..\typora-user-images\image-20210913010208306.png)
 
  解析器负责将 js 源码解析成抽象语法树（AST），解释器负责 AST 编译成为字节码并执行，编译器负责生成机器代码。
 
@@ -397,17 +397,17 @@ let a = 12;
 3.让变量a与值12关联在一起（= 赋值操作）
 ```
 
-![image-20210209221501222](.\typora-user-images\image-20210209221501222.png)
+![image-20210209221501222](..\typora-user-images\image-20210209221501222.png)
 
-![image-20210209221558026](.\typora-user-images\image-20210209221558026.png)
+![image-20210209221558026](..\typora-user-images\image-20210209221558026.png)
 
 大厂面试题：
 
-![image-20210209222309850](.\typora-user-images\image-20210209222309850.png)
+![image-20210209222309850](..\typora-user-images\image-20210209222309850.png)
 
-![image-20210209224142008](.\typora-user-images\image-20210209224142008.png)
+![image-20210209224142008](..\typora-user-images\image-20210209224142008.png)
 
-![image-20210209224354570](.\typora-user-images\image-20210209224354570.png)
+![image-20210209224354570](..\typora-user-images\image-20210209224354570.png)
 
 执行上下文栈和作用域链
 
@@ -508,7 +508,7 @@ let a=[1,2,3]
 a.join=a.shift()
 ```
 
-![image-20210210103922151](.\typora-user-images\image-20210210103922151.png)
+![image-20210210103922151](..\typora-user-images\image-20210210103922151.png)
 
 ```
 做错：
@@ -522,7 +522,7 @@ if (true) {
 console.log(a);
 ```
 
-![image-20210307143940832](.\typora-user-images\image-20210307143940832.png)
+![image-20210307143940832](..\typora-user-images\image-20210307143940832.png)
 
 ```javascript
 腾讯面试：
