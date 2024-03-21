@@ -5616,3 +5616,131 @@ function mountComponent(vnode, container, anchor) {
 }
 ```
 
+
+
+
+
+
+
+## 编译器
+
+本章和编译原理相关，不同用途的编译器的编写和实现难度大不相同。对于高级语言的编译器，需要开发者掌握至少：上下文无关文法，巴科斯范式，扩展巴科斯范式书写语法规则，语法推到，理解和消除左递归，递归下降算法，类型系统等知识。
+
+前端常用的编译原理场景：表格，报表中的自定义公式计算器（编译前端技术）；设计一种领域特定语言（DSL）。
+
+Vuejs和jsx都是DSL，实现难度不大，只需要掌握基本的编译原理技术就可以实现。
+
+编译器本身是一个应用程序，目的是将A语言（源代码）翻译为另一种语言B（目标代码）。这个过程叫做编译。
+
+完整的编译过程包含：词法分析，语法分析，语义分析，中间代码生产，优化，目标代码生成等。
+
+![image-20240318093710649](D:\learn-notes\vue\images\image-20240318093710649.png)
+
+
+
+编译前端通常与目标平台无关，仅负责分析源代码。
+
+编译后端则通常与目标平台有关，并不一定会包含中间代码生成和优化这两个环节，这取决于具体的场景和实现。中间代码生成和优化这两个环节有时也叫“中端”。
+
+对于 Vue.js 模板编译器来说，源代码就是组件的模板，而目标代码是能够在浏览器平台上运行的 JavaScript 代码。
+
+![image-20240318093939481](D:\learn-notes\vue\images\image-20240318093939481.png)
+
+
+
+Vue编译器的目标代码：渲染函数。
+
+ Vue.js 模板编译器的工作流程：
+
+![image-20240318094100883](D:\learn-notes\vue\images\image-20240318094100883.png)
+
+模板 AST就是用来描述模板的抽象语法树。
+
+```vue
+<div>
+  <h1 v-if="ok">Vue Template</h1>
+</div>
+```
+
+对应的模板AST：
+
+```js
+const ast = {
+  // 逻辑根节点
+  type: 'Root',
+  children: [
+    // div 标签节点
+    {
+      type: 'Element',
+      tag: 'div',
+      children: [
+        // h1 标签节点
+        {
+          type: 'Element',
+          tag: 'h1',
+          props: [
+            // v-if 指令节点
+            {
+              type: 'Directive', // 类型为 Directive 代表指令
+              name: 'if'， // 指令名称为 if，不带有前缀 v19 exp: {
+              // 表达式节点
+              type: 'Expression',
+              content: 'ok'
+            }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+每一棵 AST 都有一个逻辑上的根节点，其 类型为 Root。模板中真正的根节点则作为 Root 节点的 children 存在。
+
+- 不同类型的节点的type不同
+- 标签节点的子节点存储在children数组中
+- 标签节点的属性节点和指令节点存储在props中
+- 不同类型的节点会有不同的属性
+
+封装parse函数实现对模板的词法分析和语法分析，得到模板 AST。
+
+![image-20240318094833149](D:\learn-notes\vue\images\image-20240318094833149.png)
+
+```js
+const template = `
+ <div>
+ <h1 v-if="ok">Vue Template</h1>
+ </div>
+ `;
+
+const templateAST = parse(template);
+```
+
+
+
+得到模板 AST 后，可以对其进行语义分析，并对模板 AST 进行转换。
+
+语义分析的例子：
+
+- 检查 v-else 指令是否存在相符的 v-if 指令
+- 分析属性值是否是静态的，是否是常量等
+- 插槽是否会引用上层作用域的变量
+
+
+
+将模板 AST 转换为 JavaScript AST。因为 Vue.js 模板编译器的最终目标是生成渲染函数，而渲染函数本质上是 JavaScript 代码，所以需要将模板 AST 转换成用于描述渲染函数的 JavaScript AST。
+
+封装 transform 函数来完成模板 AST 到 JavaScript AST 的转换工作
+
+![image-20240318101951478](D:\learn-notes\vue\images\image-20240318101951478.png)
+
+```js
+const templateAST = parse(template)
+const jsAST = transform(templateAST)
+```
+
+
+
+
+

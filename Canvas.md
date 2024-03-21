@@ -4,15 +4,17 @@
 
 `<canvas width='num1' height='num2'>文本区域写的内容在不支持canvas的浏览器中会被展示<canvas>`
 
-注意点：canvas 标签的宽高不能用过 CSS 来设置（因为通过 css 设置有拉伸变形）。 在通过 js 获取到 canvas 标签后设置宽高的方式是 canvas.width = 'num',而不是 canvas.style.width ='num'的方式
+注意点：canvas 标签的宽高不能用过 CSS 来设置（因为通过 css 设置有拉伸变形）。 在通过 js 获取到 canvas 标签后设置宽高的方式是 canvas.width = 'num'，而不是 canvas.style.width ='num'的方式
 
-```
+```html
 <canvas id='canvas' width='800' height='500'></canvas>
 <script>
 	let canvas = document.getElementById('canvas')  //获取canvas画布
 	let ctx = canvas.getContext('2d')   //获取上下文（画笔）
 </script>
 ```
+
+
 
 ```
 ctx.beginPath()
@@ -114,6 +116,8 @@ image.onload = function(){
 	ctx.drawImage(image,200,200)
 }
 ```
+
+
 
 ## 基本的面向对象制作动画
 
