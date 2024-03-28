@@ -1357,15 +1357,11 @@ Since time began, *man* has lived in fear of fire. 自古以来，人类就害�
 
 
 
-
-
-
-
-
-
 ## 动词
 
-一般一个完整的英语句子，谓语是不可或缺的；即一个完整的英语句子可以没有主语或宾语等，但不能没有谓语。谓语部分一般由动词和动词短语的不同形式来充当。
+前面是从短语这个层面讨论了什么是名词短语。本篇在句子层次进行讨论。
+
+**一般一个完整的英语句子，谓语是不可或缺的**；即一个完整的英语句子可以没有主语或宾语等，但不能没有谓语。谓语部分一般由动词和动词短语的不同形式来充当。
 
 英语句子的否定、疑问，五种基本句型，句子谓语的时态、语态，非谓语动词等，都是有关动词的语法规则。
 
@@ -1386,7 +1382,7 @@ Since time began, *man* has lived in fear of fire. 自古以来，人类就害�
 
 实义动词的特点： 
 
-1．从单词的具体意思来看，**实义动词具有完整的词汇意思；** 
+1．从单词的意思来看，**实义动词具有完整的词汇意思；** 
 
 2．从在谓语中的作用来看，实义动词能**单独**充当句子的谓语。英语中除了助动词和情态动词以外，其他的均为实义动词。
 
@@ -1404,17 +1400,17 @@ Since time began, *man* has lived in fear of fire. 自古以来，人类就害�
 
 助动词的特点： 
 
-1．从单词的具体意思来看，**助动词不具备词汇意义**； 
+1．从单词意思来看，**助动词不具备词汇意义**； 
 
 2．从在谓语中的作用的角度来看，助动词**不能单独**充当句子的谓语，它**必须和实义动词连用，以帮助构成各种时态、语态、否定和疑问等。**
 
 英语的助动词有三个：be，do和have，它们分别具有各种变化形式。如下： 
 
-1．be: am, is, are, was, were, been, being 
+1．be: am, is, are, was, were, been, being be
 
-2．do: does, did 
+2．do: does, did do
 
-3．have: has, had, having
+3．have: has, had, having have
 
 <img src="images/image-20221222092901259.png" alt="image-20221222092901259" style="zoom:150%;" />
 
@@ -1424,7 +1420,7 @@ Since time began, *man* has lived in fear of fire. 自古以来，人类就害�
 
 情态动词的特点： 
 
-1. 从单词的具体意思来看，情态动词有其自身的词汇意义，用来**表示可能、建议、愿望、必要、允许、能力、怀疑**等，以表示说话者对某种行为或状态的看法或态度。 
+1. 从单词意思来看，情态动词有其自身的词汇意义，用来**表示可能、建议、愿望、必要、允许、能力、怀疑**等，以表示说话者对某种行为或状态的看法或态度。 
 
 2. 从在谓语中的作用来看，情态动词在句中**不能单独**作句子的谓语，而必须和实义动词一起构成复合谓语。
 
@@ -1440,6 +1436,19 @@ Since time began, *man* has lived in fear of fire. 自古以来，人类就害�
 此外，need和dare既可以用作情态动词，也可以用作实义动词。
 
 
+
+the man popped out(突然挖出) his glass eye and bit  it.和 he plunked down(重重甩下) his money.
+
+问题：如何确定一个动词后面接的介词是和这个动词一起组成谓语，还是这个介词和后面的名词短语组合在一起做状语了？
+
+要确定一个介词是与动词一起组成短语动词（即作为谓语的一部分），还是与后面的名词短语组合起来作为状语，可以依据以下几个方面来判断：
+
+1. **意义的改变**：查看动词与介词组合后意义是否有显著变化。如果组合后的意义与单独的动词意义完全不同，这通常表明介词是与动词结合形成短语动词。例如，“look up”（查找）的意义与“look”（看）完全不同，因此“up”在这里与“look”结合，形成一个短语动词。
+2. **固定搭配**：有些动词和介词的结合是固定搭配，形成特定的短语动词。通过学习和实践可以识别这些固定搭配。例如，“give up”（放弃）就是一个常见的短语动词。
+3. **可移动性**：尝试改变句子结构，看介词是否可以与动词分开。如果介词可以移动到句子的其他部分而不改变意义，那么它可能是作为状语。如果移动后句子意义变得不合逻辑或不通顺，那么这个介词很可能是与动词紧密结合的。
+4. **句子成分的替换测试**：尝试用不同的名词短语替换介词后面的部分，看意义是否保持一致。如果动词和介词的组合意义保持不变，即使替换了宾语，这通常意味着介词是与动词紧密结合的。
+
+通过这些方法，你可以辨别介词是作为动词的一部分还是与名词短语结合作为状语。
 
 
 
@@ -1658,7 +1667,7 @@ how还常与形容词或者副词连用：
 
 表示频率的短语：
 
-<img src="C:\Users\dukkha\Desktop\learn-notes\English-learn\images\image-20240114105059435.png" alt="image-20240114105059435" style="zoom:150%;" />
+<img src="images\image-20240114105059435.png" alt="image-20240114105059435" style="zoom:150%;" />
 
 
 
@@ -1674,12 +1683,12 @@ how还常与形容词或者副词连用：
 
 Journalists say that when a dog bites a man that is not news,but when a man bite a dog that is news.
 
-语言是用来交流信息的。一门语言中不同的单词顺序能导致不同的意思。
+语言是用来交流信息的。一门语言中不同的单词顺序能导致不同的意思（有一些语言单词的顺序可以不变，通过变化单词的形式就能达到现代英语中需要切换单词顺序才能表达的意思）。
 
-英语的语序不如许多其他语言灵活，也没有古代英语灵活，古英语能通过大量的单词变形来表示主语和各种宾语而不需要靠单词的顺序，现在的英语是依赖于较为固定的词序来区分主语和宾语的。
+英语的语序不如许多其他语言灵活，也没有古代英语灵活，古英语能通过大量的单词变形来表示主语和各种宾语，而不需要靠单词的顺序，现在的英语是依赖于较为固定的词序来区分主语和宾语的。
 
-1. A dog bites a man. ：这里的a dog是动作bites的执行者 （agent），语法术语叫做主语；而a man是动作bites的承受者（recipient），语法术语叫做宾语。
-2. A man bites a dog. ：这里的a man是动作bites的执行者，即主语；而a dog则是动作bites的 承受者，即宾语。
+1. A dog bites a man. ：这里的a dog是动作bites的执行者 （agent），主语；而a man是动作bites的承受者（recipient），宾语。要把这句话理解成“狗咬人”，而不能理解成“人咬狗”。但若是在其他语言中或者是在古老的英语中，通过各个词的后缀的变化，这样的词序就完全可以理解成“人咬狗”
+2. A man bites a dog. ：这里的a man是动作bites的执行者，即主语；而a dog则是动作bites的 承受者，即宾语。只能将其理解成“人咬狗”，而不能理解成“狗咬人”
 
 英语这门语言的词序比较严格，**词与词之间先后位置的改变往往会使句子的意思也发生变化，所以，英文被称为“固定词序语言”（English is a "fixed-word-order" language.）**
 
@@ -1687,15 +1696,17 @@ Journalists say that when a dog bites a man that is not news,but when a man bite
 
 英语一般遵循的严格词序：
 
-1. 主语＋谓语动词＋宾语（subject-verb-object，即SVO句型）
+1. 主语＋谓语动词＋宾语（subject-verb-object，即SVO句型），英文的句子80％都是SVO型的。
 
-汉语是否也是按照SVO的规则来造句呢？先通过一个非常简单的汉语句子“我吃了饭（I had a meal.）”来考察一下汉语的词序特点。对于这个句子，汉语中至少有下列这些说法： 
+汉语是否也是按照SVO的规则来造句呢？先通过一个汉语句子“我吃了饭（I had a meal.）”来考察一下汉语的词序特点。对于这个句子，汉语中至少有下列这些说法： 
 
 1. SVO型：我吃了饭。 
 2. OVS型：饭吃了我。
 3. SOV型：我饭吃了。
 4. OSV型：饭我吃了。
 5. VOS型：吃了饭了我。
+
+在英语中，若按汉语“饭吃了我”的语序翻译成A meal had me.则是不通的，因为“饭”无法来“吃我”。这也就表明由于英语词序的改变导致句子的意思改变了，这就类似于英语的Dog bites man.（狗咬人）和Man bites dog.（人咬狗）中的dog与man互换位置，此时句子的意思改变了一样。但在汉语里，把主语“我”和宾语“饭”互换位置并没有改变句子的意思表达。
 
 同样是“我吃饭”这个意思，汉语里至少可以有上述五种表达方式。由此足见中文表达的词序可以如此灵活。
 
@@ -1713,9 +1724,123 @@ Journalists say that when a dog bites a man that is not news,but when a man bite
 
 
 
-### 句型一
+![image-20240327205209014](images\image-20240327205209014.png)
 
-主语 + 谓语
+比如有的动词后面不带宾语，例如：
+1 (主)Internet dating (谓)hurts.
+
+有的动词要有宾语。例如：
+2 (主)I (谓)like (宾)chatting online.
+
+有的动词后面要接两个宾语。例如：
+3 (主)Chatting on the Internet (谓)brings (间宾)me (直宾)a lot of fun.
+
+有的动词后面仅有一个宾语还不能够表达完整的意思，在宾语的后面还需接一个补充宾语的成分。例如：
+4 (主)We (谓)can call (宾)Internet addicts (宾补)a Webaholic.
+
+因此，可以说，动词构成了一个句子的骨架结构。因为是动词决定了一个句子是否有宾语、有几个宾语以及其他句子成分。
+
+
+
+### 句型一：主语＋系动词＋表语
+
+谓语动词是系动词（如be或其他系动词），联系动词（linking verb），这种动词并不表示具体的动作，而只是起连接主语和后面成分的作用。这种动词后面所接的成分是用来说明主语的特点，表明主语的性质特征的，因此称之为主语补足语，或表语（能表示主语特征的成分）。
+
+He looks happy.
+
+I am a Webaholic. 
+
+Chatting on the Internet is interesting. 
+
+Learning English is important.
+
+The music sounds nice.
+
+He became a teacher.
+
+The leaf will turn yellow in autumn.
+
+除了be动词之外的其他系动词：
+
+look（看起来是）
+sound（听起来是）
+smell（闻起来是）
+taste（尝起来是）
+feel（感觉是）
+seem（似乎是）
+appear（似乎是）
+become（变为）
+turn（转变为）
+
+用作表语的词通常是名词（如Webaholic和teacher等）和形容词（如interesting, important, nice和yellow等）。副词一般不作表语，比如不能说：He looks happily.*
+
+
+
+### 句型二：主语＋谓语
+
+谓语动词是不及物动词（intransitive verb），所表示的动作没有作用对象，其本身的意思完整，其后不需带宾语。在词典中表示为vi.。
+
+He died.
+
+These children are playing.
+
+Internet dating hurts.
+
+The fire is burning.
+
+The sun sets in the west.
+
+They shouted loudly.
+
+这种句型中的谓语动词的后面虽然不接宾语，但通常会接副词（如hard）或介词短语（如in the west）来说明动作的方式、地点或时间等等。英文中把这种修饰动作的成分称作状语。
+
+
+
+### 句型三：主语＋谓语＋宾语
+
+谓语动词是及物动词（transitive verb），由主语发出的动作所作用的对象，所作用的对象通常称之为宾语的，即宾语是主语动作的承受对象，因此这类动词是带有宾语的。英文中的绝大多数动词都是及物动词，在词典中标为vt.。
+
+These children are playing football.
+
+英语中大多数动词既可以用作及物动词，又可以用作不及物动词，但意思和用法都不一样。这种句型的宾语后面也可以接副词或介词短语作状语。
+
+I like chatting on the Internet.
+
+
+
+### 句型四：主语＋谓语＋间接宾语＋直接宾语
+
+谓语动词是双宾动词（dative verb），后面所接成分有“人”又有“物”。一般来讲，“人”表示动作的接受者，称作间接宾语（indirect object）。“物”表示动作作用的对象，是动作的承受者，称作直接宾语（direct object）。
+
+Chatting online will bring you a lot of fun. 
+
+He lent me ten yuan. 
+
+I will buy you a meal. 
+
+He showed the guard his passport. 
+
+
+
+### 句型五：主语＋谓语＋宾语＋宾语补足语
+
+谓语动词是宾补动词（factitive verb），这种动词的后面接宾语，而此宾语的后面又接补充说明宾语的补足语（object complement）。
+
+We can call Internet addicts a Webaholic. 
+
+We elected John chairman.
+
+I found this answer wrong.
+
+A hedge (树篱) between keeps friendship green.
+
+
+
+区分主语＋谓语＋宾语＋宾语补足语 和 主语＋谓语＋间接宾语＋直接宾语，就是在宾语的后面加上be动词，若能构成一个语义通顺的句子，则是补足语。因为宾语与宾语补足语的语义关系就相当于主语与主语补足语的关系，即类似一个“主系表”结构，所以，在宾语的后面添上一个系动词be，自然就应该能构成一个逻辑语义通顺的句子。而间接宾语与直接宾语之间就没有这样的语义关系，所以，添上be之后，自然就不能构成一个语义通顺的句子。
+
+英文中各种复杂的句子均是由这五种基本句型扩大、组合、省略或倒装等各种形式变化而来的。
+
+![image-20240327213037881](images\image-20240327213037881.png)
 
 
 
