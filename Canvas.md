@@ -56,26 +56,54 @@ ctx.strokeStyle = 'color'
 ctx.stroke()
 ```
 
-```
+
+
 另一种画线方式：
+
+```
 let path = new Path2D()
 path.moveTo(100,100)
 path.lineTo(200,200)
 ctx.stroke(path)
 ```
 
+
+
 矩形：
 
 ```
 ctx.beginPath()
-ctx.rect(x,y,width,height)
+ctx.rect(x,y,width,height)  // 绘制路径，但是不填充也不描边
 ctx.stroke()
 ctx.closePath()
 
 上面等价于下面一句：
 
-ctx.fillRect(x,y,width,height)
+ctx.fillRect(x,y,width,height)  // 绘制矩形并填充
+
+ctx.strokeReact(x,y,width,height) // 绘制一个非填充的矩形
 ```
+
+
+
+擦除画板内容：
+
+```js
+ctx.clearReact(x,y,width,height) 
+
+lei height = 0 
+const tId = setInterval(()=>{
+  ctx.clearReact(0,height,画布宽度,height) 
+  height++
+  if(height>画布高度){
+		clearInterval(tId)
+  }
+},10)
+```
+
+
+
+
 
 弧形：
 
@@ -96,6 +124,20 @@ for(leti=50;i<300;i+=20){
 ```
 
 ![image-20210810214315993](.\typora-user-images\image-20210810214315993.png)
+
+默认是顺时针画圆弧（clockDirection默认值是false）
+
+
+
+```js
+ctx.moveTo(300,200)
+ctx.arcTo(300,250,250,250,25)
+ctx.stroke()
+```
+
+
+
+
 
 图片：
 
@@ -179,6 +221,10 @@ image.onload = function(){
 ```
 
 在 canvas 动画中最常见的就是一个对象上有更新自己和渲染自己的原型方法。
+
+
+
+
 
 ## 图片裁剪
 
