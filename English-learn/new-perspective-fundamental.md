@@ -1846,6 +1846,196 @@ A hedge (树篱) between keeps friendship green.
 
 
 
+## 时态
+
+通过改变谓语中**助动词和实义动词的形式**来表示不同的时态。
+
+英语时态对于以英语为母语的人来说，是非常自然的思维习惯；而对于国人来说，则难，以至 于需要学习其规则。
+
+汉语表达时态的：
+
+经过一个月的努力，我们的中文水平有\__\__\__\_很大的提高。
+
+A. 过   B．了   C．着  D．的
+
+中文标志时态的手段非常有限，主要是用助词“着”、 “了”、“过”以及一些时间短语如“昨天”、“今天”和“明天”等等。比如说： 
+
+1. 他昨天走了。 
+2. 他今天走。 
+3. 他明天走。
+
+这里的谓语动词“走”丝毫没有任何变形。但在英语中，谓语动词却是要依据时态而变形的。 比如： 
+
+1. He left yesterday. 
+2. He leaves today. 
+3. He will leave tomorrow
+
+之所以leave这个单词有这些变化，本质都是它需要表达特定的意义。
+
+对于英语时态的学习有两个重点：
+
+1. 掌握各种时态的正确构成形式
+2. 不同时态形式所表示的具体意义
+
+英语中一共有16中时态（4种时4种态）。从宏观的角度看英语的16种时态的构造形式，并给出一个有关英语谓语的公式。
+
+----
+
+时态（tense and aspect）在英语中反映的是两个不同的概念，即 tense（时）和aspect（态或体）。与时间相联系的“时”，以及与动作的内在结构相关的是“体”或“态”，这两方面组合在一起就构成了“时态”。
+
+- 时（tense）
+
+  用来规定事物发生的时间。英文中主要的四种时间：
+
+  - 现在时（present）
+  - 过去时（past）
+  - 将来时（future）
+  - 过去将来时（past future）
+
+- 态（aspect）
+
+  用来规定动作完成的程度，反映说话人对事物的态度。说明有关动作内在结构特点方面的。
+
+  英文中动作方面的态有四种：
+
+  - 简单体（simple）
+  - 进行体（continuous）
+  - 完成体（perfect）
+  - 完成进行体（perfect continuous）
+
+当谈“时（tense）”的时候，关心的是这个动作发生的时间，即是在现在、过去还是将来发生的。当谈“态 （aspect）”的时候，关心的则是这个动作是固定不变的还是动态变化的（fixed or changing），这个动作是完成了的还是在延续的（complete or ongoing），这个动作持续的时间是很短还是很长（lasting for only a moment or for a long time）等。
+
+![image-20240329201907099](D:\learn-notes\English-learn\images\image-20240329201907099.png)
+
+
+
+![image-20240329201932360](D:\learn-notes\English-learn\images\image-20240329201932360.png)
+
+
+
+谓语时态变形公式：
+
+![image-20240329202105649](D:\learn-notes\English-learn\images\image-20240329202105649.png)
+
+说明：
+
+1. 动词必定有时，其中tense和verb是一体的
+2. model部分可以表示将来
+3. 括号（）表示这部分可以省略
+4. prefect表示完成体
+5. continuous表示进行体
+
+时和核心动词是必不可少的，一个是表示动作发生时间的“时”，另一个是基础动词。这其实也 就是英语“一般时态”的基本构成。
+
+
+
+----
+
+
+
+### 一般时态
+
+一般时态的细分：
+
+- 一般现在时(do/dose)
+- 一般过去时(did)
+- 一般将来时(will do)
+- 过去将来时(would do)
+
+
+
+### 进行时态
+
+- 现在进行时(am/is/are doing)
+- 过去进行时(was/were doing)
+- 将来进行时(will be doing)
+- 过去将来进行时(would be doing)
+
+
+
+### 完成时态
+
+- 现在完成时(have/has done)
+- 过去完成时(had done)
+- 将来完成时(will have done)
+- 过去将来完成时(would have done)
+
+
+
+### 完成进行时态
+
+- 现在完成进行时(have/has been doing)
+- 过去完成进行时(had been doing)
+- 将来完成进行时(will havebeen doing)
+- 过去将来完成进行时(would havebeen doing)
+
+
+
+----
+
+时态学习的重点：
+
+- 时态的形式
+- 时态的意义
+- 时态的用法
+
+时态的用法必须结合语境，给出具体的、真实的说话语境，这样才便于真正地理解一种时态所要表达的意义及用法。时态的表达是英语思维的重要组成部分。
+
+
+
+每一种时态有它最基本、最稳定的中心意义。
+
+比如，一般体的核心意义是，**被概念化的整体事件，这些事件是无法继续发展的**。简言之，一般时态具有完整和不变的核心意义。
+
+相较于进行体。进行体表示**不完整的或未完成的**，其相关的事件或状态被看作是一个整体的某个部分，往往还有继续发展或变化的余地。请比较下列例句：
+
+1. John lives in Beijing.   采用的是一般现在时态，把“约翰住在北京”这个情况作为一个整体事件来描述，没有任何强调发展和变化的可能。
+2.  John is living in Beijing.  现在进行时表示约翰在北京的居住可能是暂时的，存在发生变化的可能。此时，约翰在北京的居住是整个过程中的某个片断，因为在搬到北京生活之前，他可能住在另外的某个地方，而且将来他也可能再次搬往其他地方。
+
+
+
+重点理解动词的态的内涵，属于同一个态的动作本质上有着相通的特点，只是说话人的时间角度不同而已。
+
+动作规定方面的态和不同时间规定下的态的比较。
+
+英语中态的体现有表现在两个方面：
+
+1. 语法体：一般态，进行态和完成态
+2. 动词自身上（动词体）：动词词义本身固有的一些特点，英语把动词分为“状态”和“动作”（state and action），又把动作分为“短暂动作”和“延续动作”（punctual and durative）等。
+
+“语法体（grammatical aspect）”和“动词体（lexical aspect）”相互作用，二者的共同作用不仅影响到时态的正确使用，同时也深刻地影响着对句子意思的理解（It is important to be aware of how the interaction of lexical and grammatical aspect is typically interpreted.）所以，不仅要理解“语法 体”的核心意义，同时还要结合“动词体”的特点，考虑对于动词的不同选择对“语法体”意义的影响，只有这样才能真正地理解和使用英语时态，从而造出正确的句子。
+
+学习时态，必须与谓语动词的特点结合起来，比如动作与状态的区分、延续动作与短暂 动作的区分，这些就是所谓的“动词体（lexical aspect）”。
+
+
+
+
+
+## 一般现在时态
+
+对一般现在时的一个误解，认为“一般现在时”就是表示“现在发生”的动作。有这个误解的原因很简单，因为“一般过去时”就是表示过去发生的动作，“一般将来时”表示将来发生的动作。其实，一般现在时态并非是表示现在发生的动作。
+
+一般现在时（the present simple tense）的本质思维特征：表示从过去到现在直至将来的一段时间内发生 的动作（action）或存在的状态（state）。这些动作或状态的发生不限于某个特定的 时间，它们可发生于任何时间，包括现在、过去和将来，这一段时间到底有多长是不确定的。它可以是近乎无限长（如表示客观真理），也可以是人们生活中的一段时间（如人们的习惯活 动）。
+
+一般现在时态通常被描述为有两种基本用法：
+
+1. 表示客观真理，
+2. 表示习惯活动 
+
+（The Present Simple Tense is used to express a general truth or fact, or an action that occurs regularly or habitually.）。
+
+具体来说，可用一般现在时来表示：
+
+1．不受时间限制的科学事实、客观真理、谚语格言，以及用于概括、结论、观点等；
+
+2．或者表示人们 日常的生活习惯及重复活动
+
+
+
+
+
+
+
 ## 句子成分
 
 分析句子结构就是理解一个句子中的**各个组成部分**之间的**逻辑语义关系**。即分清句子成分 (constituent)，比如哪部分是句子的主语、哪部分是句子的谓语等。
@@ -1933,7 +2123,7 @@ a. 请［带好］［孩子］
 
 分析方式一：
 
-![image-20230209204649899](new-perspective-fundamental.assets/image-20230209204649899.png)
+![image-20230209204649899](images/image-20230209204649899.png)
 
 此时的make是一个接单个宾语的及物动词，意为“制作”，在这句话 中的基本搭配是make X from Y，即“用Y来制作X”，X是宾语，Y是状语。形容词短语free online作定语，后置修饰名词classes，相当于一个定语从句that are free online。
 
@@ -1943,7 +2133,7 @@ a. 请［带好］［孩子］
 
 分析方式二：
 
-![image-20230209204848238](new-perspective-fundamental.assets/image-20230209204848238.png)
+![image-20230209204848238](images/image-20230209204848238.png)
 
 此时的make是一个接复合宾语（即宾语＋宾补）的及物动词，也就是常说的“使役动词”，是“使什么怎么样”的意思，在这句话中的基 本搭配是make X Y，即“使X成为Y这个样子”，X是宾语，Y是宾语补足语。在本句中，Y就是形容词短语free online，作宾语补足语，补充说明宾语materials。此时，该形容词短语不等于定语从句that are free online。
 
@@ -2052,7 +2242,7 @@ a. 请［带好］［孩子］
 
 
 
-<img src="/Users/wuyi/Desktop/study-note/English-learn/new-perspective-fundamental.assets/image-20230209230108687.png" alt="image-20230209230108687" style="zoom:50%;" />
+<img src="images/image-20230209230108687.png" alt="image-20230209230108687" style="zoom:50%;" />
 
 
 
@@ -2090,7 +2280,7 @@ a. 请［带好］［孩子］
 
 不同的动词类型决定了不同的句子类型。所以先看一下动词的分类：
 
-![image-20230209231443026](/Users/wuyi/Desktop/study-note/English-learn/new-perspective-fundamental.assets/image-20230209231443026.png)
+![image-20230209231443026](images/image-20230209231443026.png)
 
 从本表的“动词分类2”中看到动词可以分为五类，因而就决定了**英语的五种基本句型**。
 
@@ -2098,7 +2288,7 @@ a. 请［带好］［孩子］
 
 **五种基本句型**
 
-![image-20230209231613004](/Users/wuyi/Desktop/study-note/English-learn/new-perspective-fundamental.assets/image-20230209231613004.png)
+![image-20230209231613004](images/image-20230209231613004.png)
 
 1. subject + verb (vi.) 
 2. subject + verb (vt.) + object 
@@ -2108,7 +2298,7 @@ a. 请［带好］［孩子］
 
 Her love died. She loved me. She gave me a kiss. She made me happy. She is lovable.（她的爱已死。她爱过我，吻过我，让我开心过。她依然那么迷人。）
 
-![image-20230209231750757](/Users/wuyi/Desktop/study-note/English-learn/new-perspective-fundamental.assets/image-20230209231750757.png)
+![image-20230209231750757](images/image-20230209231750757.png)
 
 
 
