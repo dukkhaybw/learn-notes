@@ -1,22 +1,14 @@
 # Chrome DevTools
 
-
-
-**打开Chrome开发者工具方式：**
-1. 在 Chrome 菜单中选择 更多工具 > 开发者工具
-2. 在页面元素上右键点击，选择 “检查”
-3. 快捷键 Ctrl + Shift + I (Windows) 或 Cmd + Opt + I (Mac)
-
-
-
 **面板简介：**
+
 1. 元素面板
 
-   作用：自由的操作 `DOM` 和 `CSS` 来布局和改变样式
+   作用：操作 `DOM` 和 `CSS` 来布局和改变样式
    ![img](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/1/7/168274461fd902c3~tplv-t2oaga2asx-zoom-in-crop-mark:3024:0:0:0.awebp)
 
 2. 控制台面板
-   作用：可以使用控制台面板查看报错，警告信息、作为shell与`JavaScript` 交互
+   作用：查看报错，警告信息、作为shell与`JavaScript` 交互
    ![img](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/1/7/1682744620ff580a~tplv-t2oaga2asx-zoom-in-crop-mark:3024:0:0:0.awebp)
 
 3. 源代码面板
@@ -50,11 +42,7 @@
 
    ![img](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/1/7/16827447112db421~tplv-t2oaga2asx-zoom-in-crop-mark:3024:0:0:0.awebp)
 
-​                        
-
-
-
-对 `DevTools` 里面的数据进行 **复制** 或者 **保存** 的操作
+对 `DevTools` 里面数据进行 **复制** 或者 **保存** 的操作
 
 **copy()**
 
@@ -304,12 +292,6 @@ $: 如果没有在 `App` 中定义过 `$` 变量 (例如 `jQuery` )的话，它�
 - **Cache storage keys**
 
 ![img](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2018/12/12/1679e02015fb7bc3~tplv-t2oaga2asx-zoom-in-crop-mark:3024:0:0:0.awebp)
-
-
-
-
-
-
 
 
 
