@@ -1,10 +1,8 @@
 ## 认识 React
 
-React 是一个用于构建用户界面的 JavaScript 库。
-
 原生的 js 构建用户界面的问题：
 
-- 操作 DOM 存在兼容性问题
+- 操作 DOM 兼容性问题
 - api 代码过长的问题
 - 代码组织不够规范问题
 - 频繁的操作 DOM 导致性能低
@@ -24,7 +22,7 @@ ES6 中，类的原型方法中的 this 在该原型方法被当作变量赋值�
 
 引入 React 依赖，注意对于 Vue 而言，引入 html 中只需要引入一个文件，即 Vue 的核心库就可以直接使用。但是 React 在 html 中引入则依赖三个库：
 
-- react.js：React 所必须的核心代码
+- react.js：React 核心代码
 - react-dom.js：web 端平台渲染需要的核心代码
 - babel.js：将 jsx 语法转为 js 语法的工具库，如果不借助该工具库的话，需要使用 React.createElement 的方式进行开发，但这种书写方式太过繁琐，所以使用了语法糖的写法，即：jsx 语法写法。
 
