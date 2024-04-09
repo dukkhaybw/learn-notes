@@ -2200,11 +2200,13 @@ useState 返回的数组的第二个参数是一个函数，在同一个事件�
 
 该函数接受两个参数，第二个参数是可选的，第一个参数是回调函数。
 
-![image-20220413221954501](..\typora-user-images\image-20220413221954501.png)
+```ts
+type DependencyList = ReadonlyArray<any>;
 
-![image-20220413222013013](..\typora-user-images\image-20220413222013013.png)
+function useEffect(effet:EffectCallback,deps?:DependencyList):void;
+```
 
-一个函数组件中可以使用多个 useEffect
+
 
 ```jsx
  useEffect(()=>{
@@ -2238,6 +2240,8 @@ useState 返回的数组的第二个参数是一个函数，在同一个事件�
 ```
 
 一个函数组件中可以使用多个 useEffect。可以每个 useEffect 中独立处理响应的逻辑。一般执行的顺序时按代码书写的顺序执行。
+
+
 
 ### useContext
 

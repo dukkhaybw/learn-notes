@@ -1,5 +1,21 @@
 # Canvas
 
+基本使用
+
+1. 创建canvas元素
+2. 获取canvas上下文对象
+3. 使用上下文对象上的api画图
+
+
+
+可以事先在html中准备canvasDOM，也可以通过JavaScript动态创建并插入。canvas默认的大小是300乘以150的大小。
+
+```html
+<canvas height='300' width='400' id='canvas'></canvas>
+```
+
+
+
 ## APIS
 
 `<canvas width='num1' height='num2'>文本区域写的内容在不支持canvas的浏览器中会被展示<canvas>`
@@ -16,7 +32,9 @@
 
 
 
-```
+### 线段
+
+```js
 ctx.beginPath()
 
 ctx.moveTo(100,100)
@@ -33,7 +51,7 @@ ctx.closePath() //将开始点到结束点的路径连接闭合
 
 ![image-20210810210641575](.\typora-user-images\image-20210810210641575.png)
 
-```
+```js
 ctx.beginPath()
 
 ctx.moveTo(100,100)
@@ -50,7 +68,7 @@ ctx.stroke()
 
 ![image-20210810210823568](.\typora-user-images\image-20210810210823568.png)
 
-```
+```js
 ctx.lineWidth ='num'
 ctx.strokeStyle = 'color'
 ctx.stroke()
@@ -58,9 +76,9 @@ ctx.stroke()
 
 
 
-另一种画线方式：
+另一种画线方式： 
 
-```
+```js
 let path = new Path2D()
 path.moveTo(100,100)
 path.lineTo(200,200)
@@ -69,27 +87,29 @@ ctx.stroke(path)
 
 
 
-矩形：
+### 矩形
 
-```
+```js
 ctx.beginPath()
 ctx.rect(x,y,width,height)  // 绘制路径，但是不填充也不描边
-ctx.stroke()
+ctx.stroke()  // 或者 ctx.fill()
 ctx.closePath()
 
-上面等价于下面一句：
+// 上面等价于下面一句：
 
 ctx.fillRect(x,y,width,height)  // 绘制矩形并填充
 
-ctx.strokeReact(x,y,width,height) // 绘制一个非填充的矩形
+ctx.strokeReact(x,y,width,height) // 绘制一个非填充的矩形 
+
+
 ```
 
 
 
-擦除画板内容：
+### 擦除
 
 ```js
-ctx.clearReact(x,y,width,height) 
+ctx.clearReact(x,y,width,height) // 清除画布上的指定位置和宽高矩形中的内容，一般用于清除整个画布
 
 lei height = 0 
 const tId = setInterval(()=>{
@@ -103,23 +123,23 @@ const tId = setInterval(()=>{
 
 
 
+### 弧形
 
-
-弧形：
-
-```
+```js
 ctx.beginPath()
-ctx.arc(x,y,r，startAngle,endAngle,clockDirection)
+ctx.arc(x,y,r，startAngle,endAngle[,clockDirection])  // 弧度制的角度, 默认顺时针开始画, 即false
 ctx.stroke()
 ctx.closePath()
 ```
 
-```
+
+
+```js
 for(leti=50;i<300;i+=20){
 	ctx.beginPath()
 	ctx.arc(200,200,i,2*Math.PI,true)
+  ctx.stroke()
 	ctx.closePath()
-	ctx.stroke()
 }
 ```
 
@@ -129,28 +149,40 @@ for(leti=50;i<300;i+=20){
 
 
 
+arcTo方法根据三个点，其中起始点和acrTo的前两个传参组成的坐标点连线形成一条辅助线，acrTo的方法的前两个参数和后两个参数分别构成的点之间连线成一条辅助线，然后arcTo的最后一个参数用于确定画的圆形与这俩条辅助线相切的圆，两个切点之间的那部分圆弧就是最后的结果。
+
 ```js
-ctx.moveTo(300,200)
-ctx.arcTo(300,250,250,250,25)
+ctx.moveTo(300,200)  // 起点位置
+ctx.arcTo(300,250,250,250,25)   // 另外两个点和圆弧的半径大小
 ctx.stroke()
 ```
 
+![image-20240408223801438](D:\learn-notes\images\image-20240408223801438.png)
+
+
+
+### 贝塞尔曲线
+
+```
+
+```
 
 
 
 
-图片：
+
+### 图片
 
 `drawImage` 方法的第三个也是最后一个变种有 8 个新参数，用于控制做切片显示的
 
-```
+```js
 drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight)
 drawImage(image, dx,dy)  //图片对象上只放两个数字参数时，表示图片左上角开始于画布的什么位置，而不进行切片。
 ```
 
 ![image-20210810214630687](.\typora-user-images\image-20210810214630687.png)
 
-```
+```js
 创建一个图片对象
 let image = new Image()
 image.src = 'url'  //一旦设置图片对象的src属性，那么图片资源请求将立即发出，注意是异步请求
@@ -165,7 +197,7 @@ image.onload = function(){
 
 所有绘制到 canvas 上的图形会立即别栅格化，无法通过 js 获取到。所以要移动图像，需要重新清除画布，再画一个新的图画。
 
-```
+```html
 <canvas id='canvas' width='800' height='500'></canvas>
 <script>
 	let canvas = document.getElementById('canvas')
@@ -184,7 +216,7 @@ image.onload = function(){
 
 面向对象的本质就是对象实例自己管好自己的属性。
 
-```
+```js
 <canvas id='canvas' width='800' height='500'></canvas>
 <script>
 	let canvas = document.getElementById('canvas')
@@ -193,8 +225,8 @@ image.onload = function(){
 		this.x = x;
 		this.y = y;
 		this.r = r
-        this.color = color
-        this.speed = speed
+		this.color = color
+		this.speed = speed
 	}
 	Ball.prototype = {
 		render:function(){
@@ -244,7 +276,7 @@ image.onload = function(){
 - rem
 - flex
 
-```
+```html
 <script>
 	//计算rem
     ~function(){

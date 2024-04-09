@@ -509,3 +509,114 @@ class BinarySearchTree {
 ```
 
 树的方法：
+
+
+
+
+
+## 算法教程
+
+专攻算法刷题，训练算法思维，各种算法题型的套路和框架，应对笔试。
+
+需要先理解：队列，栈，数组，链表等基础数据结构。
+
+典型的算法技巧：
+
+1. 动态规划
+2. 回溯
+3. 广度优先搜索
+4. 双指针
+5. 滑动窗口
+
+
+
+许多的算法题目都是在经典的算法思想的基础上演变来的。
+
+学习算法前，搞清楚自己的目的，如果是学生同时有志于算法研究，那么应该去学习算法大部头书籍。如果是为了应付面试，这时候再去学习大部头的书籍并非是高效的做法，而是应该去刷题，但是刷题也要有技巧，边刷边总结归纳，抽象出每种题型中的思想和套路框架。先抽象总结出框架套路，然后实战刷题。
+
+使用伪代码来描述算法框架。刷算法题是在养成一种思维模式，而不是局限于具体的语言。有些语言实现某个算法可能会用到语言自身的隐藏的语言特性，这样会不利于理解算法。
+
+
+
+二叉树的节点类型：
+
+```java
+public class TreeNode {
+  int val;
+  TreeNode left;
+  TreeNode right;
+	
+  TreeNode(int val){
+    this.val = val;
+    this.left = null;
+    this.right = null;
+  }
+}
+
+
+TreeNode node1 = new TreeNode(2);
+TreeNode node2 = new TreeNode(4);
+TreeNode node3 = new TreeNode(6);
+
+node1.left = node2;
+node1.right = node3;
+```
+
+
+
+单链表的节点类型：
+
+```java
+class ListNode {
+  int val;
+  ListNode next;
+
+  ListNode(int val){
+    this.val = val;
+    this.next = null;
+  }
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
