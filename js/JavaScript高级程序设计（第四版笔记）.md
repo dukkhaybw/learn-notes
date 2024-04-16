@@ -1056,7 +1056,9 @@ JS中使用UTF-19编码来表示一个字符，该编码以两个字节作为一
 
   - null =\=\= undefined 为 false
 
-#### 对两个布尔类型的值进行加法操作，而两个布尔值都要先转为数值后进行相加
+
+
+**对两个布尔类型的值进行加法操作，而两个布尔值都要先转为数值后进行相加**
 
 Number( )函数的转换规则：
 
@@ -4629,11 +4631,7 @@ p.then(
              setTimeout(resolve, 2000, 'foo');
            });
 
-      <<<<<<< HEAD
-
-=======
-
-> > > > > > > a8bed6c1f5c70b03110496df78c3fea56e422481
+      
 
      Promise.all([promise1, promise2, promise3]).then((values) => {
        console.log(values);
@@ -4659,22 +4657,15 @@ p.then(
              setTimeout(resolve, 100, 'two');
            });
 
-      <<<<<<< HEAD
 
-=======
 
-> > > > > > > a8bed6c1f5c70b03110496df78c3fea56e422481
 
      Promise.race([p1, p2]).then(function (value) {
        console.log(value); // "two"
        // 两个都完成，但 p2 更快
      });
 
-<<<<<<< HEAD
 
-=======
-
-> > > > > > > a8bed6c1f5c70b03110496df78c3fea56e422481
 
      var p3 = new Promise(function (resolve, reject) {
        setTimeout(resolve, 100, 'three');
@@ -4683,11 +4674,7 @@ p.then(
        setTimeout(reject, 500, 'four');
      });
 
-<<<<<<< HEAD
 
-=======
-
-> > > > > > > a8bed6c1f5c70b03110496df78c3fea56e422481
 
      Promise.race([p3, p4]).then(
        function (value) {
@@ -4699,11 +4686,7 @@ p.then(
        }
      );
 
-<<<<<<< HEAD
 
-=======
-
-> > > > > > > a8bed6c1f5c70b03110496df78c3fea56e422481
 
      var p5 = new Promise(function (resolve, reject) {
        setTimeout(resolve, 500, 'five');
@@ -4712,11 +4695,7 @@ p.then(
        setTimeout(reject, 100, 'six');
      });
 
-<<<<<<< HEAD
 
-=======
-
-> > > > > > > a8bed6c1f5c70b03110496df78c3fea56e422481
 
      Promise.race([p5, p6]).then(
        function (value) {
@@ -4809,26 +4788,16 @@ p.then(
                resolve(1);
              });
 
-      <<<<<<< HEAD
-
-=======
-
-> > > > > > > a8bed6c1f5c70b03110496df78c3fea56e422481
+      
 
        p.then(
          function (value) {},
          function (reason) {}
        );
 
-<<<<<<< HEAD
+
 
        //同步执行executor回调函数，executor中并没有开启异步任务而直接调用 resolve 或者 reject 修改了实例对象p的状态，同时存放的传给resolve（）的value值到promise实例对象上，再循环实例对象p中已经存的存放回调函数的空数组并传入参数，因为数组为空，所以等价于没有做任何处理。但是将执行的结果保存在了实例对象p 的属性上了。之后，同步代码执行到p.then（），then方法内部直接判断p的状态值后直接调用对应的成功回调或失败回调，并通过取出实例对象的属性做实参传入。
-
-=======
-
-       //同步执行executor回调函数，executor中并没有开启异步任务而直接调用 resolve 或者 reject 修改了实例对象p的状态，同时存放的传给resolve（）的value值到promise实例对象上，再循环实例对象p中已经存的存放回调函数的空数组并传入参数，因为数组为空，所以等价于没有做任何处理。但是将执行的结果保存在了实例对象p 的属性上了。之后，同步代码执行到p.then（），then方法内部直接判断p的状态值后直接调用对应的成功回调或失败回调，并通过取出实例对象的属性做实参传入。
-
-> > > > > > > a8bed6c1f5c70b03110496df78c3fea56e422481
 
        let p = new Promise(function (resolve, reject) {
          setTimeout(function () {
@@ -4886,11 +4855,6 @@ p.then(
                }
              );
 
-      <<<<<<< HEAD
-
-=======
-
-> > > > > > > a8bed6c1f5c70b03110496df78c3fea56e422481
 
      new Promise(function (resolv, reject) {
        reject(2);
