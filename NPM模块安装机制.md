@@ -43,7 +43,7 @@ npm install <packageName> --force
 
    以lodash版本为例，下图是lodash的所有版本情况：
 
-   ![image-20230113150624563](C:/Users/shuyi/Desktop/study-notes/NPM%E6%A8%A1%E5%9D%97%E5%AE%89%E8%A3%85%E6%9C%BA%E5%88%B6.assets/image-20230113150624563.png)
+   ![image-20230113150624563](images\image-20230113150624563.png)
 
 ```json
 {
@@ -358,7 +358,7 @@ $ npm show react
 $ npm v react
 ```
 
-![image-20230113110128722](C:/Users/shuyi/Desktop/study-notes/NPM%E6%A8%A1%E5%9D%97%E5%AE%89%E8%A3%85%E6%9C%BA%E5%88%B6.assets/image-20230113110128722.png)
+![image-20230113110128722](images\image-20230113110128722.png)
 
 
 
@@ -368,7 +368,7 @@ $ npm v react
 $ npm view react versions
 ```
 
-![image-20230113110028731](C:/Users/shuyi/Desktop/study-notes/NPM%E6%A8%A1%E5%9D%97%E5%AE%89%E8%A3%85%E6%9C%BA%E5%88%B6.assets/image-20230113110028731.png)
+![image-20230113110028731](images\image-20230113110028731.png)
 
 
 
@@ -397,6 +397,40 @@ registry 网址的模块名后面，还可以跟上版本号或者标签，用�
 $ npm config get cache
 $HOME/.npm
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
