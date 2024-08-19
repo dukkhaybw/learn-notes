@@ -1353,6 +1353,733 @@ Since time began, *man* has lived in fear of fire. 自古以来，人类就害�
 
 
 
+## 限定词限定词
+
+- 数量限定词
+- 个体限定词
+- 有关限定词用法
+
+在限定词的用法也必须以名词的可数性为基础，名词分为不可数名词、单数名词和复数名词， 在此基础上选择限定词的搭配。
+
+### a few，few/a little，little
+
+- a few和few的后面只能接**复数名词**，而a little和little的后面只能接**不可数名词**。
+  - a few days
+  - few boys
+  - a little water
+  - little money
+- a few和a little的意思是肯定的，相当于some，表示“有一些”。而few和little的意思是否定的，表示“很少，几乎没有”。
+  - His theory is rather difficult; few people understand it.  （almost no people understand it. |  but a few people understand it.）
+  - I have little interest in English.
+  - I have a little interest in English, so I like learning it.
+
+能说：only a little或only a few，而不能说：only few*或only little *。但为了强调否定的数量的程度，可说：very few或very little。
+
+- His theory is rather difficult and\_\_\_\_\_\_\_\_students can understand it.
+  - A. only few
+  - B. only a few
+  - C. only little
+  - D. only a little
+
+
+
+### some/any
+
+some和any均可以与不可数名词及**可数名词复数**连用，表示“一些”。 some一般用在肯定句中，而any一般用在否定句中。
+
+- Clint is busy. He always has some work to do. But John is lazy. He never does any work.
+- Last night I was very hungry and I wanted some food to eat. But now I am not hungry and I don't want any food to eat. 
+- I need some medicine to cure my cough.
+- I want to buy some computer books.
+- I don't have any friends here.
+
+在疑问句中，多数情况下用any，但是在表示期待一个正面的回答或要鼓励对方说“是”时，要在疑问句中用some。
+
+- Have you got any medicine to cure your cough?
+- Would you like to give me some advice?
+- Can I have some more wine?
+
+some和any还可以与单数名词搭配，此时均有特殊的含义和用法。
+
+
+
+**特殊用法一：any与单数名词搭配**
+
+any + 单数名词，它的意思是“无论哪一个，任何一个”，此时可用于任何类型的句子。
+
+- You can catch any bus. They all go to the railway station.
+- You can ask any person over there. They all can tell you.
+
+**特殊用法二：some与单数名词搭配**
+
+some + 单数可数名词，意思表示不确定的“某一个”。
+
+- Of the many ways of getting to prison, Soapy thought the best was to eat a big meal at *some good restaurant* and then told the manager that he didn't have money to pay.
+- A mirage is an atmospheric optical illusion of *some object*.
+- *Some person* at the gate is asking to see you. 
+- I always just hoped that I'd meet *some nice friendly girl*, like the look of her, hope the look of me didn't make her physically sick, then pop the question and, um, settle down and be happy. It worked for my parents
+
+注意：some的这一特殊用法可表示强烈的感情色彩，它往往暗示缺乏兴趣，甚至是 蔑视的态度。
+
+- I don't want to spend my life in **some lonely little village.** 我可不想把自己的一生消磨在一个偏僻的小山 村里。
+- A: Two buttons have been off my new jacket.  我那件新夹克已经掉了两粒扣子了。    B: Some bargain.   什么破烂货！
+- A: Mike promised he'd help on this rush job. But he never showed up.      B: Some friend he is.  这叫什么朋友！
+- Mrs. Gump: What does normal mean, anyway? He might be a bit on the slow side, but my boy, Forrest, is going to get the same opportunities as everyone else. He's not going to **some special school** to learn how to retread tires. We're talking about 5 little points here. There must be something can be done.   在some specialschool这个短语里，阿甘的妈妈用some来修饰一个单数名词school（一般来说some是要修饰复数名词的）， 这里的some就是一个特殊用法，在这里，它表示阿甘妈妈对“残障学校（special school）”不感兴趣，甚至是蔑视的态度，从而更加表明她要让儿子接受正式教育的决心。
+
+
+
+**特殊用法三：some与数词连用**
+
+some + number + nouns（大约number数量的xxx）。some在限定复数名词时，some的后面还可以先接一个数词，然后再接名词，此时some表示“大约”的意思。这一用法常常暗指这是一个给人以深刻印象的很大的数字。
+
+- **Some 1,500 passengers** and crew died aboard the Titanic when it sank on April 14, 1912 after hitting an iceberg. It lies at a depth of **some 4,000 meters**, **some 640 kilometers** south of Newfoundland, Canada. 
+
+这里共有三处some与数词连用，都是为了强调这些数字是相当可观的。
+
+
+
+### each/every
+
+个体限定词 each和every的后面都只能接单数可数名词。every/each boy，而 不说：every/each boys *。
+
+如果他们修饰限定的名词短语作主语，句子的谓语动词要用单数。
+
+- Every boy has a gift. 
+- Each boy has a gift. 
+- Every man is the master of his own fortune.
+
+each/every的区别：
+
+1. 词性：each不仅用作限定词，也可用作代词；而every只能用作限定词。 因此，each用作代词可以单独使用，而every只能与名词连用，不能单独使用。
+
+   - Each has a gift.  却不能说： Every has a gilt. *    each用作代词，后面的谓语要用单数。  
+   - Every boy/Each boy has a gift.   这里的each和every都用作限定词，后面只能接单数名词，如这里的boy。
+   - Each of the boys has a gift.    each用作代词，后面加of短语。此时of的后面须加限定词，然后再接复数名词。不能说：each of boys *，而要说：each of these/the/my boys。但谓语依然用单数，因为each是主语核心词。 
+   - Every one of the boys has a gift.    every不能单独使用，而且在与of短语连用时，只能是分开写的every one of...，而不能说：everyone of...。
+   - The boys each have a gift.      each用作代词，可跟在主语后面，作主语的同位语，但此时的谓语动词用复数，因为复数名词（如这里的boys）是主语核 心词。
+   - The boys have a gift each.    each用作代词时也可放在句末。
+   - I give the boys each a gift.  each用作代词时也可放在间接宾语的后面。  每个男孩我都送了礼物。
+
+   
+
+2. 意思：each可以用来指两个或两个以上的事物。而every却总是指三个或三个以上的事物，不 能指两个。
+
+   - Each sex has its own physical and psychological characteristics.    性别就“男”和“女”两种，故不能说：Every sex... *。
+
+   - There are a lot of trees on each side of the street.     街道只有两旁，故不能说：...every side... *。
+
+     
+
+   意思：尽管each和every都可作“每一个”，但两者的意思并不完全一样。every强调整体，相当于all的意思；而each则表示个别的概念。当用each时，强调的是一个一个不同的人或事物。
+
+   
+
+   each：
+
+   - 侧重个体，强调单独考虑每一个
+   - 常用于谈论一组中的单个成员
+   - 强调个别的性质
+
+   
+
+   every：
+
+   - 侧重整体，强调一组中的所有成员
+   - 通常用于谈论一组中的每个成员时，作为整体来考虑
+   - 强调整体的性质
+
+   
+
+   - We want **every student** to succeed in the exam.    这里用every是强调整体，即表示希望“所有的学生”都能通过考试。
+
+   - **Each student** has his own personal dream in his mind.     用each是强调个体差别，因为每个人的梦想必然是不同的。
+
+   - Different fields create various No.1s.  **Each profession** produces its own best. 三百六十行，行行出 状元。
+
+     
+
+   正是因为each和every强调的重点不一样，所以，可以将两者并列起来使用，说成each and every，既强调个体差别同时又强调整体。
+
+   - I want to welcome each and every balloon enthusiast in Philadelphia. Thank you for coming here this morning to commemorate the first balloon voyage in the United States. 
+
+   
+
+3. 搭配：一般来说，each不与数词连用，而every可与数词连用，然后再加复数名词。  也可以用“every＋序数词＋单数名词”这个结构，来表示同样的意思。
+
+   - every two days   “每隔一天”还可以说成every other day。   每两天／每隔一天
+   - every four years 每隔三年／每四年
+   - In the United States, presidential elections are held once every four years.
+   - every fourth year 每隔三年／每四年
+
+**Each**：
+
+- I gave each child a gift. (我分别给每个孩子送了一份礼物，强调个体)
+- You should write a short speech on each one of the topics. (你应该分别为每个主题写一篇简短的演讲，强调单独处理)
+
+**Every**：
+
+- Every child received a gift. (每个孩子都收到了一份礼物，强调整体)
+- You should write a short speech on every topic. (你应该为每个主题写一篇简短的演讲，强调整体)
+
+
+
+“You should prepare a list of topics and write a short speech on ____ one.”
+
+**Each one** 强调你要单独考虑和处理列表中的每一个主题，分别为每个主题写一篇演讲。
+
+**Every one** 虽然也可以表示所有的主题，但更强调整体的概念，不太符合逐个处理每个主题的意思。
+
+
+
+### other/another
+
+个体限定词
+
+another只能与单数可数名词连用， 表示不确定的“另一个”，“再一个”。
+
+- another day  不能接复数名词，比如说： another days *
+- 不能接不可数名词， another water，可以说： another cup of water 另一杯水
+
+
+
+other可与单数名词、复数名词以及不可数名词连用，表示不确定的“另外的”，“其余 的”人或物。
+
+- the other boy 另一个男孩
+- other boys 其他男孩 
+- other water 其他水
+
+
+
+与数词的搭配，二者都可以与数词连用，但在语序和意思上都不相同。
+
+首先，二者在词序上的差别是：数词要置于another的后面，但要放在other的前面。具体来说就是采用下面的结构：
+
+- another＋数词＋复数名词
+- 数词＋other＋复数名词
+
+
+
+- another three days 另外三天   不说： three another days
+- three other days 另外三天  而不说： other three days *
+
+从语义上来看，两种结构所表达的意思完全不同。“another＋数词＋名词复数”这一结 构的基本意思是“在原有基础上的一个延续”。比如说：
+
+- We will stay here for another three days.   意思是“我们要在这里再呆三天”。言外之意，我们已经在这里待过一段时日了，现在还得再加上三天。
+
+“数词＋other＋复数名词”这一结构只是单纯地表示“其他的，另外的”。比如说： 
+
+- I am always busy from Monday to Thursday, but I can come on three other days. 
+
+“another＋数词＋名词复数”结构强调的是数量概念。比如another three days表 示“接下来还有三天”，是一个量的累积。而“数词＋other＋复数名词”结构强调的是类别概念。比 如three other days表示“其他三天”，说明的是特定的某三天，而不是一个数量的概念。
+
+另外，与“another＋数词＋名词复数”这一结构意思相同的另一种结构是：“数词＋more＋复 数名词”。
+
+- three more days 另外三天
+
+需要注意的是，因为another不能与a连用，因此与a few搭配时，我们要说another few，而不能说another a few*。但如果与more连用，则要说成a few more，表示的意思完全一样。
+
+- another few weeks/a few more weeks 还有几个星期
+- another few boys/a few more boys 又有几个男孩
+
+
+
+- A: What do you do when you realize that you are about to die?
+- B: It's really simple. You get things right with God, and you spend as much time with those you love as you can. Then you settle up with everybody else. You know, really, you ought to live every day like you have only a few more days to live. 
+
+虽然another不能直接与复数名词连用，但其后可以先接数词或few然后再接复数名词。
+
+- another three days
+-  three more days
+- three other days
+
+其中，1）与2）的意思完全一样，它们与3）的意思不同。
+
+
+
+### other的其他用法
+
+- other之前可以有其他限定词修饰
+
+  常见的置于other前面的限定词包括：some，any，every，enough，one/two/three…，no，many 和his/my/their等。
+
+  - You can have everything in life you want if you'll just help **enough other people** to get what they want!
+  - Can you give me **some other reference** books?
+  - every other day ＝every two days 每隔一天
+  - no other tools
+  - Have you got any other colors?
+
+- other/others
+
+  词尾不带-s的other只能作限定词来用，其后面必须接名词，而不能单独使用。比如不能说： other are... *。与此相反，others只能用作代词，后面不能再接名词，而只能单独使用，比如不能 说：others people are... *。
+
+- other/the other
+
+  “other＋名词”表示不确定的“其他的，另外的”。若有了定冠词the限定，“the other＋名词”则表示特定范围内的“剩下其余的”。
+
+  
+
+  **Five Balls in the Air**
+
+  Imagine life as a game in which you are juggling some five balls in the air. You name them—work, family, health, friends and spirit, and you're keeping all these balls in the air.
+
+  You will soon understand that work is a rubber ball. If you drop it, it will bounce back. But the other four balls are made of glass. If you drop one of these, it will be irrevocably scuffed, marked, nicked, damaged or even shattered. They will never be the same. You must understand that and strive for balance in your life.
+
+  How?
+
+  Don't undermine your worth by comparing yourself with others. It is because we are different that each of us is special. Don't set your goals by what other people deem important. Only you know what is best for you. 
+
+
+
+### either/neither
+
+个体**限定词**either/neither都与单数可数名词连用，谓语动词用单数。
+
+- Either day is OK.
+- Neither day is OK.
+
+either/neither作限定词使用时，二者均不能再与其他的限定词（如冠词、物主代词或指示形容词等）连用。比如不说： 
+
+- the either book * 
+- either your book *
+
+**代词**either/neither 二者不直接接名词，而是单独使用或接of短语。
+
+- Come over on Saturday or Sunday. Either is OK.
+- You can't choose Choices A and B. Neither is right
+
+注意它们与of短语连用时的结构：“either/neither of＋**限定词（如冠词、物主代词或指示形容 词）**＋名词**复数**＋**单数**谓语动词”。
+
+- Either of the answers is right.
+- Neither of my children has done that.
+
+
+
+either有两个意思。首先，either的基本意思是“两个当中的任何一个”，“这个或那个（one or the other）”。
+
+另外，either有时候也指“两个中的每一个（each of two）”，特别是在与end和side连用时。例如：
+
+- There are a lot of trees on either side of the river.
+- There are a lot of trees on both sides of the river.
+- There are a lot of trees on each side of the river.
+- 不可以说： There are a lot of trees on every side of the river. *
+
+
+
+neither只有一个意思，即“两者都不（not one and not the other）”。比如：
+
+- Neither of the answers is right. 两个答案都不正确。
+
+either...not相当于neither
+
+**Either** of the answers **is not** correct. **＝Neither** of the answers **is** correct. 两个答案都不正确。
+
+
+
+### 限定词总结
+
+#### 限定词中的“二”与“三”
+
+英语中有双数概念，比如限定词both，either和neither都只能用来指“二”，不能指“二以上”的复数概念。
+
+- **both vs. all**
+
+  both只表示“两者都”，而all表示“三个或三个以上都”。
+
+  - Both of us have learned English for a year.   我们俩学习英语都有一年了。
+  - All of us have learned English for a year.   我们大家学习英语都有一年了。
+  - Both John and Tom have learned English for a year.
+  - All of the students have learned English for a year.
+
+
+
+- **neither vs. none**
+
+  neither只表示“两者都不”，而none表示“三者或三者以上都不”。
+
+  - \_\_\_\_\__\_\_of the twins was arrested, because I saw both at a party last night.
+
+    A. None
+
+    B. Both
+
+    C. Neither
+
+    D. All
+
+    
+
+    首先，题干中出现twins（双胞胎）以及后面的both，都表明这里只涉及两个人，因此可以排除A和D。其次，从下文的 because I saw both at a party last night的语义来看，空格处应该填入否定词，前后文的逻辑才通顺。故C，即Neither正确。 
+
+
+
+- **the other vs. another**
+
+  the other是表示“确定的另外一个”，常用来表示“两个中的另外一个”。因为总共就只有两个，所以若确定其中一个，则另外一个也就确定了。因此，常常构成这样的搭配： one...the other。
+
+  another是表示“不确定的另外一个”，必然是指“三个或三个以上的另一个”。因为 总共有三个或三个以上，所以即使确定了其中一个，剩下的依然是不确定的。
+
+  - He took her money in one hand and with________hand he grasped her mitten.
+
+    A. other
+
+    B. the other
+
+    C. the others
+
+    D. another
+
+    
+
+    因为一般人就只有两只手，因此是表示“确定的另外一个”，所以B，即the other正确。如果填another，则说明他至少有三只 手。
+
+  
+
+  
+
+- **each vs. every**
+
+  each表示两个或两个以上的“每一个”，而every表示从三个算起的“每 一个”。
+
+  注意：上面讨论的both，neither及either是**只能**表示“二”的概念，而each 可以表示“二”，也可以表示“二”以上的数目。
+
+  比如不能说： 
+
+  - both of the three men * 
+  - neither of the three men * 
+  - either of the three men * 
+  - 但可以说：each of the three men    三个人中的每一个
+
+
+
+#### 限定词与可数／不可数名词
+
+总结一下前面讨论的各个限定词与这三种名词的搭配关系。
+
+- 只与单数可数名词搭配的限定词
+  - a，an，each，every，either，neither，another和one等。
+- 只与复数可数名词搭配的限定词
+  - both，few，a few，fewer，a number of，many，several，these，those，two 及two以上的基数词等。
+- 只与不可数名词搭配的限定词
+  - little，a little，less，much，a bit of和a great amount/deal of等。
+- 既可以与不可数名词也可以与复数可数名词搭配的限定词
+  - a lot of，lots of，plenty of，more，most和all等
+- 同时与单数可数名词、复数可数名词和不可数名词均可搭配的限定词
+  - any，some，no，the，物主限定词（如your和my等），名词属格（如Tom's 和my mother's）等。
+
+
+
+#### 限定词与of短语
+
+有很多数量或个体限定词同时还可以用作**代词**，此时它们的后面可以接of短语连用。此时的结构一般是：
+
+**数量或个体词＋of＋特指限定词＋复数名词或不可数名词。**
+
+在of的后面必须有一个“特指限定词”，然后才能接名词，否则就是错误的。这里的“特指限定词”主要有下列四类： 
+
+一，指示限定词，如this，that，these和those； 
+
+二，物主限定词，如my，your，his，her，its，their和our。 
+
+三，名词所有格，如Mike's，Mary's和the teacher's等。 
+
+四，定冠词the。 
+
+注意，这四类限定词不能没有，也不能同时出现两个或以上。
+
+
+
+all/most/some/any of＋特指限定词＋复数可数或不可数名词
+
+- Most of my/these/the/John's books are interesting.
+
+如果没有“四选一”，则是典型的错误。比如不能说： Most of books are interesting. * 如果限定词不是作代词使用，必须把of去掉才正确，即说成： Most books are interesting.
+
+many/a few/few/several/both/two/three of＋特指限定词＋复数可数名词
+
+much/a little/little of＋特指限定词＋不可数名词
+
+其他本身就带有of的数量词如a lot of，lots of，a couple of，plenty of，a number of和a great deal of等，则必须直接与名词连用，名词的前面不需要加特指限定词修饰。如： 4 a lot of books 不说： a lot of the books。
+
+
+
+## 形容词
+
+- 形容词修饰名词的位置特点
+- 形容词的比较级和最高级的构成与用法
+- 形容词的ing和ed上的意义区别
+
+### 前置修饰
+
+#### 单个形容词修饰名词
+
+结构通常是“限定词＋形容词 ＋名词”，即形容词要放在名词的前面、限定词的后面。
+
+- I am reading **an interesting book**. 我正在看一本有趣的书。
+- He has **a beautiful smile.** 他面带灿烂的微笑。
+- He is **my best friend.** 他是我最好的朋友。
+- a typical mistake 一个典型的错误
+- the popular songs 流行歌曲
+
+注意：修饰 something，anything，nothing，everything，somebody/someone，anybody/anyone，nobody/no one和 everybody/everyone等不定代词的形容词要后置。
+
+- I have something important to say. 
+- There is something wrong with my computer.
+
+
+
+#### 多个形容词修饰名词
+
+一个中心名词若有多个形容词修饰，此时这些形容词先后的位置关系要遵循一定的规则。这 个规则一般是：**观点形容词（opinion adjective）＋描绘形容词（descriptive adjective | fact adjective）**
+
+**观点形容词**：表述个人主观上对事物的看法的形容词。如：good，lovely，beautiful，handsome，comfortable等。
+
+**描述事实形容词**：用来描述事物本身固有特 征的形容词，是对事物进行客观上的表述，如事物的颜色（blue，yellow，dark，white）、事物 的形状（round，square）等。
+
+- a beautiful white table
+- a good red apple
+
+
+
+由于事物客观上的属性可以有许多种，因此，描绘形容词又有以下进一步的分类。下表：
+
+![image-20240710212434670](D:\learn-notes\English-learn\images\image-20240710212434670.png)
+
+- Li Bai was a famous ancient Chinese poet
+- This beautiful, big, old, red, Chinese wooden table was my grandmother's.
+- On a table in my home library rests an attractive little old yellowed book printed in 1551.
+- There was a large round wooden table in the room. 
+- The man was carrying a small black plastic bag.
+
+最靠近名词的形容词是表示事物的材料、质地的，因为它是与名词的 关系最为密切的，因而必然要紧靠名词。另外，如果有表示“用途（purpose）”的修饰语，则其位 置是“材料＋用途＋名词”，即表示“用途”的修饰语要紧靠名词。
+
+- a crystal, drinking glass
+
+
+
+### 后置修饰
+
+一般是形容词短语做定于才被放到名词后面。
+
+- a typical mistake
+- a mistake typical of beginners of English.     typical后面接有介词短语of beginners of English，构成形容词短语
+
+
+
+- the popular songs
+- the songs popular in the 1970s
+
+表意单一的、形容词前置修饰的简单句子，也可以是表意更加丰富、形容词短语后置修饰的复杂句子，而且这样还能显得句式结构灵活多变。要能够善于构造形容词短语。
+
+#### 形容词短语的构造规律
+
+形容词短语的构成主要可以有两类
+
+- 一类是“形容词＋补足语”构成的形容词短语，即在一个形容词的后面接一个介词短语或一个非谓语动词短语作它的补足语。
+- 一类是多个形容词并列使用，从而也构成形容词短语。
+
+
+
+#### 形容词＋补足语
+
+形容词后接不同的补足语：
+
+- 形容词＋介词短语，a jacket similar to yours
+- 形容词＋不定式短语，parents eager to support their children's efforts.         Students brave enough to attempt the course deserve to succeed
+- 形容词＋动名词短语，a waiter busy serving the guests.        
+
+
+
+A campaign on the harsh terrain of a nation **as large as California** could be longer and more difficult than some predict.   形容词短语as large as California后置修饰nation。
+
+有时还可以在形容词的后面接一个that从句来构成形容词短语。例句：If a diamond is heated without oxygen, it will turn to graphite, a form of carbon **so soft that it is used as a lubricant**. 
+
+在上面的例句中，构成形容词短语的中心形容词与其补足语都是紧密地连在 一起的。但有时候两者之间也可能会插入其他成分，因而造成形容词与其补足语被分隔。这种形 容词短语被分隔的情况往往会增加句子理解的难度，因为读者很可能看不到形容词与其补足语遥相呼应的语义联系。
+
+Vitamins are organic compounds necessary in small amounts in the diet for the normal growth and maintenance of life of animals, including man. 
+
+形容词necessary，它置于名词compounds的后面。由此可以判断，这里的necessary不应该是一个孤立的形容词（否则就要前置修饰compounds了），而应该与其后面的某个成分构成形容词短 语，所以要后置修饰名词compounds。那么现在的问题是，necessary是与后面的哪个成分构成语义上的呼应呢？知道necessary基 本用法的读者都应该知道，necessary通常与介词for构成搭配，所以整个句子的逻辑结构如下图所示：
+
+![image-20240711210933786](D:\learn-notes\English-learn\images\image-20240711210933786.png)
+
+
+
+还有一种是把单个的形容词提到名词前，而把形容词的补足语留在名词的后面。
+
+- a man taller than John
+- a taller man than John
+
+
+
+#### 多个形容词并列
+
+两个或两个以上的形容词（**短语**）并列作定语，一般是放在被修饰词的后面，而且还用逗号将形容词与句子的其他部分隔开。这时，作定语的形容词通常是对所修饰词作补充性的说明或解释。
+
+- He bought a set of furniture, simple and beautiful. 
+- All countries, large or small, should be equal.  并列的形容词短语large or small后置修饰countries。这个形容词短语就具有让步状语的意味，可以改写成让步从句whether they are large or small。 
+
+This was not a terrorist attack against the mighty and the powerful... It was aimed at ordinary, working-class Londoners, black and white, Muslim and Christian, Hindu and Jew, young and old.
+
+这不是针对有权有势者的恐怖袭击……而是针对普通的伦敦工人阶级，包括黑人和白人、穆斯林和基督徒、印度教徒和犹 太人、年轻人和老年人的袭击。
+
+
+
+Each person has his or her own purpose and distinct path, unique and separate from anyone else's.     人各有志，每个人的人生目标和道路都是独特的，各不相同。
+
+并列的形容词短语unique and separate from anyone else's后置修饰path。该短语是由单个的形容词unique与形容词短语separate from anyone else's并列而成。 
+
+
+
+有时，这样的并列形容词不是修饰名词，而是修饰动词或整个句子，此时具有状语的意味。
+
+- Flying the F-16 straight and level is easy.    这里的straight and level是形容词短语，作状语，修饰flying。
+
+- A man approached the official, timid and hesitant.    这里的timid and hesitant就是一个并列的形容词，作状语，描述该男子在approached the official（走近那个官员）时的神态。
+
+
+
+### 形容词的比较级和最高级
+
+一般来说，形容词（以及副词）具有原级、比较级和最高级这样的三个等级比较。
+
+形容词的比较级和最高级有两种方式：
+
+- 在词尾加-er构成比较级，加-est构成最高级
+- 在形容词的前面加more构成比较级，加most构成最高级
+
+这两种构成方式与形容词的音节数目有关。
+
+英语中还有一些形容词没有比较级和最高级的变化。
+
+
+
+#### 单音节词
+
+- 一般直接在词尾加-er和-est，分别构成比较级和最高级。
+- 以-e结尾的词，直接在词尾加-r和-st，分别构成比较级和最高级
+- 以-y结尾的词应先变y为i，再加-er和-est分别构成比较级和最高级
+- 以“一个元音＋辅音”结尾的词，要先双写词尾的辅音字母，然后再加-er和-est分别构成 比较级和最高级
+- 以-y结尾的双音节形容词，要先变y为i，再加-er和-est分别构成比较级和最高级
+
+
+
+注意：像slowly这样的副词中的-ly，不同于像early这样的形容词中的-ly。前者是后缀ly（slow＋-ly→slowly），而后者是该词不可缺少的组成部分（并不是ear＋-ly→early）。这种以后缀-ly结尾的副词（尽管是以-y结尾的双音节词）通常是分别在词前加more和most来构成比较级和最高级。所以，slowly在构成比较级和最高级时，应为more slowly和most slowly。再比如： strongly—more strongly—most strongly。
+
+
+
+- 其他绝大多数双音节词是分别在词前加more和most构成比较级和最高级
+- 少数几个双音节词则分别可以用上述两种基本方法来构成比较级和最高级
+
+常见的这样的双音节词有： common，cruel，friendly，funny，handsome，mature，noisy，pleasant，polite，quiet，stupid和 tired；以-ow结尾的词有：hollow，narrow和shallow；以-er结尾的词有：clever和tender；以-le结 尾的词有：feeble，gentle和noble等等。
+
+在英文中，几乎所有的双音节形容词（除了以-y结尾的词外），都可以在其前面加more和most来分别构成比较级和最高级。
+
+
+
+#### 多音节词
+
+- 三个或更多音节的词都是分别在其前面加more和most来构成比较级和最高级
+
+
+
+特殊形式的比较级和最高级：
+
+![image-20240711223011016](D:\learn-notes\English-learn\images\image-20240711223011016.png)
+
+1. farther (farthest)/further (furthest)
+
+   这四个词都可以指实际的距离。不过，further/furthest可用于抽象意义，表示“进一步的，更 多的，更深入的”，常与抽象名词连用。例如： 
+
+   - further discussion（继续讨论） 
+   - further debate（继续争论） 
+   - further delays（继续拖延／耽搁） 
+   - further demands（进一步的要求） 
+   - further information（更多的信息） 
+   - further study（深入研究） 
+   - This was the furthest concession that he would make. 这是他愿意作的最大的让步
+
+2. older (oldest)/elder (eldest)
+
+   elder和eldest主要是用来表示家庭成员之间的长幼关系，而并非指年龄的大小。
+
+   - my elder brother/sister（我的哥哥／姐姐）
+   - his eldest son/daughter（他的长子／长女）
+
+   而在有than的比较级的句子中一般不用elder，而要用older。例如：
+
+   - I am seven years older than Rex. （不用elder）我比雷克斯大七岁。
+
+3. later，latter，latest，last
+
+   - later：一般用来表示时间上“较迟的”。例如：
+
+     I am on the phone right now. Could you call me later?
+
+   - latter：则是表示顺序上的“后者”，与former（前者）相对应。
+
+     Like all ecological systems, a forest is made up of a living environment and a nonliving environment, the latter composed of air, rocks, soil and water.  
+     同所有的生态系统一样，森林也是由有生命的环境和无生命的环境构成的，后者由空气、岩石、土壤和水组成。
+
+     Should we take a bus or a taxi? Kim wants to take the bus, but I prefer the latter. 
+
+   - latest：意思是“最近的，最新的”，主要用来指新近的事物。例如：
+
+     the latest fashions（最新款式的服装）
+
+     the latest news（最新消息）
+
+     His latest novel is being published now. 他最新的小说正在出版中。
+
+   - last：主要有两个意思，一是指“在目前之前的一个（the one or ones before the present one）”，或者指“一系列事物中的最后一个（after all others）”。
+
+     A: What do you think of the writer's latest novel?    你觉得这个作家最新的小说怎么样？
+
+     B: I like it much better than his last one.    比起上一部来，我更喜欢他这部最新的小说。
+
+     再比如熟悉的last night和last winter等短语中的last都是第一个意思。再来看last的第 二个意思，例句：He was the last to arrive. 他是最后一个到场。
+
+
+
+#### 不具有等级的形容词
+
+英语中有一小部分形容词，它们表示绝对的含义，因此没有比较级和最高级形式。常见的这些词包括：
+
+- absolute（完全的，绝对的）
+- alone（单独的，独一无二的）
+- dead（死的，无感觉 的）
+- empty（空的，空洞的）
+- equal（平等的）
+- eternal（永恒的，不变的）
+- final（最终的， 决定性的）
+- horizontal（水平的）
+- perfect（完美的）
+- primary（第一位的）
+- pregnant（怀孕 的，富有的）
+- round（圆的，球形的）
+- single（单一的）
+- square（正方形的）
+- straight（直 的）
+- supreme（最高的，至高的）
+- unique（唯一的，独特的）
+- unanimous（意见一致的，无异 议的）
+
+ 尽管这些词没有“等级差别”，但还是可以用下面一些表示“接近的”副词来修饰。比如： nearly, almost, the most closely和more nearly等等。比如：
+
+- nearly perfect（接近完美的）
+- almost fatal（几乎是致命的）
+- nearly dead（奄奄一息的）
+
+
+
+### 比较级的用法
+
+
+
+
+
+
+
+### 最高级的用法
+
 
 
 
@@ -2812,6 +3539,381 @@ the exchange...based on their interpersonal ties，表示“建立在人际关�
 
 1. 用来表示不受时间限制的科学事实，客观真理，谚语格言，以及用于概括、结论、观点等
 2. 表示人日常的生活习惯以及重复的活动
+
+
+
+
+
+
+
+
+
+
+
+## 一般过去式
+
+- 基本用法
+- 和现在完成时用法上的比较
+- 口语中容易忽略的一般过去时的含义
+
+1906年4月的旧金山大地震：San Francisco Was.  旧金山已成为过去。
+
+美国商场打折：Was \$57, Now \$38.
+
+英文和中文的重大差异是：英语通过动词的变形来潜在标识各种言外之意。比如，英语中通过用不同的be动词形态，就能完全表达出各种不同的意思，哪怕单词都基本完全相同，但是它对应的中文翻译却有非常大的不同。
+
+这种不同叫——话语标记，这在中文中是没有的语言现象。中文中不可能通过词形的变化来表达不同的意义，因为中文中没有任何词形的变化。
+
+英文里的时态就是一种最为重要的英文话语标记。
+
+
+
+### 一般过去式的基本用法和含义
+
+含义一：**过去发生的短暂动作或状态**
+
+一般过去时态常表示在过去时间所发生的动作或存在的状态，常和表示过去的特定的时间状语连用，或过去时间由上下文及说话的场合暗示出来（The Past Simple Tense is used to express a completed action which took place at a specified time in the past. The specified time is either stated or implied.）。这些时间状语有：yesterday，yesterday eventing, last night, the night before last, last year, last spring, three days/ months /years ago等。
+
+> 注意，这些时间状语之前不需加介词，比如不能说：at last night *，in last year *或in three years ago *等等。
+
+例句：表示过去发生的动作。
+
+1. I saw him in the library yesterday morning.
+2. I began to learn English ten years ago.
+3. I bought this computer three years ago.
+
+例句：表示过去存在的状态。
+
+1. He was late for school this morning. 
+2. I was tired last night, so I went to bed early.
+
+带有确定的过去时间状语的句子，都容易正确地采用一般过去时来表达。但是很多时候句子里没有明确的过去时间，而要根据上下文地语境推断出某个动作是过去发生的，这时也要用一般过去时。比如讲述自己的尴尬经历：
+
+> The local shopping mall sells everything from tires to tuna fish. I was there around noon and stopped at the lunch counter for a slice of pizza. I ate only half of it and threw my leftovers in a nearby trash can. Then I turned to see a man standing there, hot dog in one hand, ketchup in the other, with a look of horror on his face. I asked him what was wrong. He said, "I just purchased that trash can!" 
+>
+> 分析：
+>
+> tire：轮胎
+>
+> tuna fish：金枪鱼肉
+>
+> counter：
+>
+> - *n.*柜台；对立面；计数器，计算器
+> - *v.*反驳，驳斥；抵制，抵消；
+>
+> leftovers：
+>
+> - *n.*剩饭，剩菜（leftovers）；残存物，遗留物
+> - *adj.*剩下的，多余的
+>
+> trash can：垃圾桶
+>
+> ketchup：番茄酱
+>
+> horror：震惊，恐惧；惧怕，憎恶；恐怖性；
+>
+> 
+>
+> 1. The local shopping mall sells everything from tires to tuna fish.  我们当地那家购物中心从汽车轮胎到金枪鱼什么都卖。
+>
+>    这是一个陈述句，陈述一个客观事实，所以用了一般现在时。同时主语是第三人称单数，所以动词有三人称单数形式加了s（sells）。
+
+
+
+> An American visiting England walked into a hotel lobby and pushed a button for elevator service. "The lift will be down presently," said a nearby clerk. 
+>
+> "The lift?" said the American. "Oh, you mean the elevator." 
+>
+> "No, I mean the lift," replied the Englishman, annoyed by the American's arrogance. 
+>
+> "I think I should know what it's called," said the American. "After all, elevators were invented in the United States." 
+>
+> "Perhaps," retorted the Englishman. "But the language was invented here."
+>
+>
+> clerk：办事员，职员；售货员，店员；（宾馆）接待员；（法庭、市政会等负责管理文书的）文书，书记员
+>
+> arrogance：傲慢，自大
+>
+> retort：
+>
+> - *v.*反驳，回嘴；<古>对（侮辱，伤害）进行报复；利用（对方的论据）反驳对方；蒸馏，干馏
+> - *n.*反驳，回嘴；曲颈瓶，蒸馏器
+
+**上述表示短暂动作。**
+
+
+
+含义二：**过去一段时间内发生的重复或持续的活动**
+
+表示过去的一段时间（a specific period of time in the past）内持续或重复的动作。
+
+例句：**表示过去一段时间内持续的活动**
+
+1. I slept for eight hours last night.
+2. She lived in our town for three years, but now she is living in Beijing.
+3. I lived in the country for ten years. 
+4. He worked in that dot-com company for one year. Now he is studying in America. 
+
+例句：**表示过去一段时间内重复发生的活动**
+
+1. I wrote a letter once a week to my family when I was in my first college year. 
+2. He used to do morning exercises.
+3. He took a walk after supper when he was alive. 
+
+
+
+### 一般过去时和现在完成时比较
+
+一般过去时和现在完成时用于“for＋时间段”的 区别
+
+误解：**认为一般过去时态不能与“for＋时间段”连用，认 为“for＋时间段”只能与现在完成时态连用。**可能是因为熟悉现在完成时态可以表示一个延续的活动，常与“for＋时间段”连用，据此就错误地认为“for＋时间段”只能用于现在完成时态而不能用于一般过去时态。
+
+
+
+前面的一般过去时能表达**过去一段时间内发生的重复或持续的活动**看到，一般过去时态可以与“for＋时间段”连用。
+
+例句：
+
+1. I slept **for eight hours** last night. 
+2. She lived in our town **for three years**, but now she is living in Beijing.
+
+那么两种时态用于“for＋时间段”有何区别？
+
+一般过去时表示的延续动作图示如下：
+
+![image-20240529220812364](D:\learn-notes\English-learn\images\image-20240529220812364.png)
+
+现在完成时表示的延续动作图示如下：
+
+![image-20240529220831280](D:\learn-notes\English-learn\images\image-20240529220831280.png)
+
+一般过去时与“for＋时间段”连 用，表示动作在过去已经结束，并没有延续到现在；而现在完成时与“for＋时间段”连用， 则表明动作延续到现在，并且还有可能延续下去。例句：
+
+1. She lived in our town for three years.  一般过去时lived表示在过去的某一段时间内持续的动作，但这一动作现在已经结束，即“她现在不再住在这里”。
+
+   可以继续补充说明她现在住在哪里。比如说：She lived in our town for three years, but now she is living in Beijing. 
+
+2. She has lived in our town for three years.  现在完成时has lived表示动作一直延续到了现在，即“现在她还住在这里”，而且往往还可能延续下去。
+
+   不能这么说：She has lived in our town for three years, but now she is living in Beijing. * 错误
+
+既然例句2表示事件延续到了现在，因此可以在时间状语for three years的后面填上一个now，但对于例句1则不可以。比如：
+
+1. She lived in our town for three years now. * 错误
+2. She has lived in our town for three years now. 
+
+一般过去时的这种用法是很有用的，比如当谈自己的成长经历时，就常常要表述过去某 段时间内自己的种种经历。比如在作自我介绍时可以这么说：
+
+> Hello! My name is Clint. I am 23 years old and I am Chinese American. My parents are from China and I am from the United States.
+>
+> I was born and raised in New York for 10 years, and then I moved to New Jersey and lived there for another 11 years.
+>
+> Now, I am currently residing in Tampa, Florida and attending the University of South Florida. I also attended John Hopkins University in Baltimore, Maryland from 1997 - 1999.
+>
+> I played football there for two years until an untimely knee injury forced me out of the game. Thereafter, I transferred to my current school, the University of South Florida, in Tampa to attain a business degree in management/marketing. 
+
+在上面的这篇自我介绍中，用了四处一般过去时来表示一段时间内的活动，比如：
+
+1. I was born and raised in New York for 10 years
+2. and then I moved to New Jersey and lived there for another 11 years.
+3.  I also attended John Hopkins University in Baltimore, Maryland from 1997 - 1999.
+4. I played football there for two years until an untimely knee injury forced me out of the game.
+
+这些活动都没有延续到现在，而只是在过去的某一段时间内持续。
+
+泰坦尼克号沉没地点发现之前和之后的同一句话的不同表达：
+
+Do you know when it sank to the depth of the Atlantic Ocean? Do you know who finally discovered the wreck of the Titanic? On April 14, 1912, the "unsinkable" luxury ship Titanic hit an iceberg and sank to the bottom of the sea
+
+若是在1985年它的沉没地点发现之前，比如说在1982年，就要这么说：
+
+Its final resting place **has remained** a mystery for 70 years now.
+
+在1985年发现了“泰坦尼克”号之后，则要说：
+
+Its final resting place **remained** a mystery for more than 70 years. 
+
+因为现在“泰坦尼克”号的沉没地点已被发现，所以remained终止于过去，而并没有延续到现在。
+
+英语的时态是相当灵活的，要根据具体的说话语境来确定该用何种时态。正是因为时态与语境密切相关，所以，中国学生往往不能灵活地使用时态，尤其是一般过去时在口语中往往会被忽略。
+
+
+
+### 口语示例
+
+1. “我不知道”是该说成I don't know还是I didn't know？二者有何区别？
+2. “我忘记了”是该译成I forget还是I forgot？二者有何区别？
+3. “我以为”是I think还是I thought？二者有何区别？
+
+上述这些口语表达用现在时态和过去时态都标识相同的汉语意思，但含义不同，因而使用的语境也不相同。因此，需要根据上下文的语境灵活地使用一般过去时。
+
+**场景对话：**
+
+> A: Do you see the person with loose pants and long hair? Is it a boy or girl?
+>
+> B: A girl. She is my daughter.
+>
+> A: Oh, please forgive me. I didn't know you were her mother.     哦，真对不起，我不知道你是她母亲。
+>
+> B: No, I'm her father.   不，我是她父亲。
+
+如果句子中带有表示过去的时间状语，还容易记得要用一般过去时态。然而，对于像这个实际的口语对话，很可能就把一般过去时忘了。比如，上面对话中的“我 不知道你是她母亲”这一句，很多读者的第一反应很可能就是：I don't know you are her mother.
+
+但是，通过对上下文进行仔细的分析后，发现A说“我不知道”的时候其实他已经知道 了，因为B已经告诉他She is my daughter.了，也就是说，他的真正意思应该是“我刚才不知道”， 因此正确的英文应该说成：
+
+
+
+下面的短文是讲作者在一次不得已的情况下让一位陌生的邻居格林夫人（Mrs. Green）开车送自己去学校，后来当她知道格林夫人竟是一位癌症患者时，她的内心对此深感不安：
+
+> Mrs. Green, the woman with cancer. I stood on the stairs, my hand covering my mouth: I had asked a person struggling with cancer to go out in a snowstorm to give me a lift to school. "Oh, Mrs. Green," I stammered, "I **didn't realize** who you were. Please forgive me." 
+>
+> 格林夫人——竟是那位患了癌症的女人！我站在楼梯上，手掩着嘴一时说不出话来：我竟然要一个身患癌症的病人冒着暴 风雪开车送我去学校！“噢，格林夫人，”我结结巴巴地说道，“我真不知道您就是格林夫人。请原谅我！”
+
+黑体句子用了一般过去时态，表示作者在事先不知情的情况下给一位癌症患者带来麻烦，因而感到内疚。但她现在知道真相了。
+
+场景：在宿舍里，你的室友正在学习，而你却把音乐放得很大声，这时他会抱怨道：“你非得把音乐放那么大声啊？能小点声吗？我明天还得考试呢！”这时你可能就会说：“对不起，没想到你能听得见。”这句话里的“没想到”该怎样说？这里的“没想到”也是表示过去，所以我们也应该用一般过去时。于是这里的对话应该是：
+
+> Your roommate: Do you have to play that music so loud? I've got a test tomorrow!.
+>
+> You: Sorry, I didn't realize you could hear it.
+>
+>
+> A: Look, I'm sorry to bother you about this, but that music's really loud. 
+>
+> B: Sorry, I didn't realize you could hear it. 
+
+
+
+**场景对话：**
+
+举出两个不同的语境来分别使用I forget和I forgot。尽管能用语法术语“一般现在时”或“一般过去时”对句子进行语法上的解释，但对于forget和forgot这两种不同形式背后所代表的意义差别，并没有真正地领悟到，因而也就不可能在具体的语境中灵活应用。
+
+“我忘记了这个单词的意思”和“我忘记把你的随身听带来”，这两个“忘记”在汉语中丝毫没有区别，但在英文中却是大不相同，即它们发生的时间不一样。“我忘记了这个单词的 意思”是“我“现在还不知道；而“我忘记把你的随身听带来”是当“我“想起来之后说的一句话，“忘记”已成为过去。因此，这两句英文要分别说成：
+
+1. I forget the meaning of the word.
+2. I forgot to bring your walkman back.
+
+
+
+> A: Oh, I'm sorry. I just realized that I forgot to bring the tape recorder you lent me. I left it back in my dorm.
+>
+> B: That's all right. I won't need it until tonight. As long as I've got it mine by then. 
+>
+> 
+>
+>
+> A: I am sorry I forgot to return your physics book last night.
+>
+> B: I'll forgive you considering the test isn't until Friday. 
+
+以上这两句同样都是在说话人想起来之后才有的“我忘记了”，所以都用了一般过去时态。 因此，在汉语中说“我忘记做某事”，英文一般都是说成I forgot to do...，因为这一定是当你想起来之后才能说的一句话，“忘记”已成为过去，否则你不可能说出这句话。
+
+英文中一般说 不出*I forget to do...，因为找不到使用它的语境。native speakers是将英语时态深刻地融入到了自己的思维表达之中，而我们这些“老外”却根本不注意时态，不论forget如何变形（如forgot, have forgotten和have been forgetting），我们只有一种译法 ——“忘记”，而不去考虑每一种时态表达的背后都是对应有特定的语境的。往往只注重单词本身的词义，而忽略了时态背后所潜含的思维语境。
+
+此外，“我忘记”还可以说成It slipped my mind...。例句：
+
+A: Did you pick up my books from Ron's house?
+
+B: Sorry. It slipped my mind. 
+
+
+
+A: Donna, you said you'd take this package to accounting yesterday
+
+B: Oh, no. It must've slipped my mind.
+
+
+
+**场景对话：**
+
+“我以为……”。
+
+对话：
+
+A：我真的以为这个比赛我会赢的。 
+
+B: Oh, well, better luck next time, Henry
+
+其实，我们说“我以为……”，意思就是“我还以为……”或者“我本来以为……”，表示“过去 是这样认为，而现在不这么认为了”，这样就具有过去时间的意味了。所以，“我以为……”用英 文当然要说成“I thought...”。就上面这句中文来说，显然是A在比赛失败后说的一句话，而“以为”是在比赛之前，所以现在已经成为过去。因此，上面这句话正确的英文应该说成：
+
+A: I really thought that I'd win the match.
+
+B: Oh, well, better luck next time, Henry.
+
+若说成： I really think that I will win the match.（我真的很肯定我会赢得这场比赛。）
+
+这就一定是在比赛之前说的话，表明自己很有信心赢得这场比赛。所以，简单来说，I thought是强调“我刚才这么想”，而现实情况往往不同（如上句的I really thought I'd win the match， 即“我本来以为我会赢”，但实际没有赢）。而I think则相当于I have an opinion（我这么认为）， 表示自己的观点。因此，两者的意思可谓是大相径庭。
+
+再比如目前大学毕业生找工作很难，可以说出这样的一句话：开始我以为找工作很容易，但现实情况比我想的还要难。 
+
+At first I thought it would be easy to find a job, but the real situation has proved more difficult than I thought. 
+
+
+
+A: I thought Sam was sick.
+
+B: So did I. But he seems to have recovered very quickly. He certainly doesn't seem to be sick now.
+
+当说I thought Sam was sick.时，我们的意思是“我还以为萨姆生病了呢”，言外之意就是，萨姆现在并没有生病，所以才有下文中说He certainly doesn't seem to be sick now.如果我们改说成I think Sam is sick.则是说“我认为萨姆病了”，言外之意是比如我们应该送他去医院。
+
+也许在中文里，I thought和I think都可以翻译成“我认为……”，这就看不出二者到底有什么区 别了。受此影响，我们往往就不分I think和I thought了，在什么场合都一律说成I think，这就不妥了。
+
+
+
+在日常对话当中，需要依据上下文的具体语境来灵活地使用一般过去时态。以上讲的“我不知道”、“我忘记了”以及“我以为”还算是有规律可循。
+
+但很多时候没有这样的规律可循，使用过去时完全取决于上下文语境的含义，这时就需要说 话者对某个特定语境中暗含的过去时间特别敏感，方能正确地使用一般过去时。关于这一点，最 典型的例子莫过于美国电影《当哈里遇到萨莉》（When Harry Met Sally）中的一个场景：男女主 人公哈里（Harry）和萨莉（Sally）曾经一同驾车从芝加哥前往纽约，但在路上两人话不投机， 相处得并不是十分愉快。在事隔十多年之后，有一天萨莉和她的女友玛丽（Marie）在一家书店 里与哈里不期而遇，萨莉假装没有看见哈里，而哈里却一直偷偷地盯着萨莉看，并且最终大胆地 走上前去主动和她打招呼，于是就有了下面这段对话：
+
+> Harry: Sally Alright? 
+>
+> Sally: Hi, Harry. 
+>
+> Harry: I thought it was you. 
+>
+> Sally: It is.Huh... this is Marie. (Marie is already on her way down stairs.) 
+>
+> Sally: Was Marie. 
+>
+> Harry: How are you? 
+>
+> Sally: Fine!
+
+在第三句里哈里用了一般过去时说道：I thought it was you. 因为刚才他是在远处看见萨莉的，并不敢确定那个人一定是萨莉，所以，他的意思是说“我刚才就觉得那个人像你。原来真的是你”。这时，萨莉把身边的女友玛丽介绍给哈里It is. Huh... this is Marie. 但是，因为玛丽知道他们俩的关系，所以很识趣地早就逃离了萨莉身边而走到了楼梯口（Marie is already on her way down stairs.）。当萨莉发现玛丽不在自己的身边时，立即改口用一般过去时说道：Was Marie. 通过This is Marie.到Was Marie.这一时态的细微改变，充分揭示出萨莉的言外之意——“刚才在我身边的那位是玛丽”。若遇到同样的场景，如果不是深谙英汉两种语言在思维表达上的差异，很难通过is到was的转变来做到精确的英语表达的。由此 可见，英语语言对时间的表达是如此精确和微妙。
+
+哈里：是萨莉·奥尔布赖特吗？ 
+
+萨莉：嗨，哈里。 
+
+哈里：我刚才就觉得那个人像你。 
+
+萨莉：就是我。呃……这是玛丽。 （玛丽已经走到楼梯口了。） 
+
+萨莉：刚才在我身边的那位就是玛丽。 
+
+哈里：你怎么样？ 
+
+萨莉：很好！
+
+在英语里，当两人见面刚认识，都会说“认识你很高兴”，用英语说成：  It is nice to meet you.
+
+在两人聊天结束后，在分手告别时还不会忘记说上一 句“认识你很高兴”，这时英语就要用过去时态了，说成： It was nice meeting you.  或者说“和你聊天很开心”，用英语说成： It was nice talking to you
+
+> 在英语中，"It was nice meeting you" 这句话里的 "meeting" 是一个动名词（gerund）。动名词的形式是动词原形加上 "-ing"，在句中作为名词使用。动名词可以作为主语、宾语或表语等，与名词一样在句中担任相同的功能。
+>
+> 在这个特定的句子中，"meeting you" 作为整体是句子的主语补足语。这个结构通常用来描述动作本身或者动作的经验。"It was nice" 是一个简单的陈述句，表达了感觉或判断，而 "meeting you" 详细说明了是什么事情或行为带来了这种感觉。
+>
+> "Meeting" 在这里表示与某人相会的行为，所以 "It was nice meeting you" 意思是跟你见面是一件愉快的事。
+>
+> 这种结构在英语中很常见，特别是在形容某个经历或行为时。例如：
+>
+> - "I enjoy swimming." (我喜欢游泳。)
+> - "She is interested in learning Chinese." (她对学习中文感兴趣。)
+>
+> 在所有这些句子中，"-ing" 形式的动名词被用作名词。
+
+
 
 
 

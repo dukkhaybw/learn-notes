@@ -121,6 +121,219 @@ var element = /*#__PURE__*/React.createElement(FunctionComponent, {
 
 
 
+### jsxDEV函数参数
+
+在 React 17 以后，React 引入了新的 JSX 转换机制。在打包编译的时候，生成包括一个名为 `jsxDEV` 的函数，用于在开发环境执行后返回reacr元素。这个函数是由 Babel 或 TypeScript 等工具在编译 JSX 时生成的。
+
+
+
+#### `jsxDEV` 函数介绍
+
+在开发环境中，`jsxDEV` 函数用于创建 React 元素，并且可以包含额外的开发时信息，比如源代码位置。这对于调试非常有用，因为它可以提供更好的错误信息和警告。
+
+#### `jsxDEV` 函数的参数
+
+`jsxDEV` 函数通常由编译器生成，直接调用它的场景较少。了解它的参数有助于理解 JSX 编译后的代码。以下是一个典型的 `jsxDEV` 函数签名及其参数：
+
+```js
+jsxDEV(type, props, key, isStaticChildren, source, self)
+```
+
+- `type`: 元素类型，可以是一个字符串（如 `'div'`）或一个 React 组件（函数或者类）。
+- `props`: 元素的属性，是一个对象，包含传递给元素的所有属性和子节点。
+- `key`: React 元素的唯一标识符，用于优化元素列表的渲染。
+- `isStaticChildren`: 一个布尔值，指示子节点是否为静态（不变化的）。
+- `source`: 一个对象，包含额外的元数据信息，如文件名、行号和列号。这对于调试非常有帮助。
+- `self`: 当前的 `this` 对象，一般用于在使用 ES6 类组件时保留上下文。
+
+
+
+#### 示例
+
+假设有以下 JSX 代码：
+
+```jsx
+<div className="container">
+  <h1>Hello, World!</h1>
+</div>
+```
+
+经过编译后，可能会变成以下代码（假设使用 React 17 的新 JSX 转换）：
+
+```js
+import { jsxDEV as _jsxDEV } from 'react/jsx-dev-runtime';
+
+_jsxDEV(
+  "div",
+  {
+    className: "container",
+    children: _jsxDEV("h1", { children: "Hello, World!" }, void 0, false, {
+      fileName: "<your-file-path>",
+      lineNumber: 2,
+      columnNumber: 3
+    }, this)
+  },
+  void 0,
+  false,
+  {
+    fileName: "<your-file-path>",
+    lineNumber: 1,
+    columnNumber: 1
+  },
+  this
+);
+```
+
+#### 参数详解
+
+1. **type**: `"div"` 和 `"h1"` 分别表示元素类型。
+2. props:
+   - 对于 `div`，`props` 包含 `className` 和 `children`。
+   - 对于 `h1`，`props` 仅包含 `children`。
+3. **key**: `void 0` 表示没有提供 `key` 属性。
+4. **isStaticChildren**: `false` 表示子节点不是静态的。
+5. **source**: 包含元数据，用于开发时的错误提示和调试。比如 `fileName`, `lineNumber` 和 `columnNumber`。
+6. **self**: 当前的 `this` 上下文，通常是 `this`。
+
+
+
+#### jsxDEV的第一个参数type可能有哪些类型的值
+
+在 React 的 `jsxDEV` 函数中，第一个参数 `type` 指的是要创建的 React 元素的类型。这个参数可以有多种类型的值，具体如下：
+
+##### 1. 字符串
+
+如果 `type` 是一个字符串，它表示一个标准的 HTML 元素。例如：
+
+- `"div"`
+- `"span"`
+- `"input"`
+- `"button"`
+
+```jsx
+// JSX
+<div className="container"></div>
+
+// 编译后
+_jsxDEV("div", { className: "container" }, void 0, false, { fileName: "<file-path>", lineNumber: 1, columnNumber: 1 }, this);
+
+```
+
+
+
+#### 2. React 组件
+
+如果 `type` 是一个函数或类，它表示一个 React 组件。组件可以是函数组件或类组件。
+
+##### 函数组件
+
+```jsx
+const MyComponent = (props) => {
+  return <div>{props.message}</div>;
+};
+
+// JSX
+<MyComponent message="Hello, World!" />
+
+// 编译后
+_jsxDEV(MyComponent, { message: "Hello, World!" }, void 0, false, { fileName: "<file-path>", lineNumber: 1, columnNumber: 1 }, this);
+```
+
+##### 类组件
+
+```jsx
+class MyComponent extends React.Component {
+  render() {
+    return <div>{this.props.message}</div>;
+  }
+}
+
+// JSX
+<MyComponent message="Hello, World!" />
+
+// 编译后
+_jsxDEV(MyComponent, { message: "Hello, World!" }, void 0, false, { fileName: "<file-path>", lineNumber: 1, columnNumber: 1 }, this);
+```
+
+#### 3. React.Fragment
+
+`React.Fragment` 可以用来分组一组子元素而不添加额外的 DOM 元素。`Fragment` 可以使用短语法 `<>...</>` 或者显式地使用 `React.Fragment`。
+
+```jsx
+// JSX
+<>
+  <div>First element</div>
+  <div>Second element</div>
+</>
+
+// 编译后
+_jsxDEV(React.Fragment, { children: [_jsxDEV("div", { children: "First element" }, void 0, false, { fileName: "<file-path>", lineNumber: 2, columnNumber: 3 }, this), _jsxDEV("div", { children: "Second element" }, void 0, false, { fileName: "<file-path>", lineNumber: 3, columnNumber: 3 }, this)] }, void 0, false, { fileName: "<file-path>", lineNumber: 1, columnNumber: 1 }, this);
+```
+
+
+
+#### 4. React.memo 和 React.forwardRef 包装的组件
+
+React 的高阶组件如 `React.memo` 和 `React.forwardRef` 返回的组件也可以作为 `type`。
+
+##### `React.memo` 包装的组件
+
+```jsx
+const MyComponent = React.memo((props) => {
+  return <div>{props.message}</div>;
+});
+
+// JSX
+<MyComponent message="Hello, World!" />
+
+// 编译后
+_jsxDEV(MyComponent, { message: "Hello, World!" }, void 0, false, { fileName: "<file-path>", lineNumber: 1, columnNumber: 1 }, this);
+```
+
+##### `React.forwardRef` 包装的组件
+
+```jsx
+const MyComponent = React.forwardRef((props, ref) => {
+  return <div ref={ref}>{props.message}</div>;
+});
+
+// JSX
+<MyComponent message="Hello, World!" />
+
+// 编译后
+_jsxDEV(MyComponent, { message: "Hello, World!" }, void 0, false, { fileName: "<file-path>", lineNumber: 1, columnNumber: 1 }, this);
+```
+
+#### 5. `React.lazy` 动态加载的组件
+
+`React.lazy` 用于代码拆分，可以动态加载组件。
+
+```jsx
+const MyComponent = React.lazy(() => import('./MyComponent'));
+
+// JSX
+<Suspense fallback={<div>Loading...</div>}>
+  <MyComponent />
+</Suspense>
+
+// 编译后
+_jsxDEV(Suspense, { fallback: _jsxDEV("div", { children: "Loading..." }, void 0, false, { fileName: "<file-path>", lineNumber: 1, columnNumber: 1 }, this), children: _jsxDEV(MyComponent, {}, void 0, false, { fileName: "<file-path>", lineNumber: 1, columnNumber: 1 }, this) }, void 0, false, { fileName: "<file-path>", lineNumber: 1, columnNumber: 1 }, this);
+```
+
+#### 总结
+
+在 React 中，`jsxDEV` 函数的第一个参数 `type` 可以是：
+
+1. HTML 元素的字符串名称（如 `"div"`, `"span"` 等）。
+2. 函数组件或类组件。
+3. `React.Fragment`。
+4. 使用 `React.memo` 或 `React.forwardRef` 包装的组件。
+5. 使用 `React.lazy` 动态加载的组件。
+
+
+
+
+
 **React17及以后可以不用再主动引入 React 而直接在文件中写 jsx 语法，但是要手动配置开启automatic**。因为新版项目中将 jsx不再转为 React.createElement，但是babel转换后的代码在浏览器中的执行结果是一样的——虚拟DOM对象树。
 
 ```jsx
@@ -993,7 +1206,7 @@ export function createHostRootFiber() {
 
 
 
-前面已经创建好整个项目的根Fiber节点了，现在要根据虚拟DOM构建一个完整的Fiber树。而虚拟DOM是通过ReactDOM.render方法传入的，所以需要**将虚拟DOM方法根Fiber的更新队列上的**。对于根节点来说，更新队列上放的是虚拟DOM。 每个fiber节点都有一个更新队列，用于存放需要更新的信息放到队列中。
+前面已经创建好整个项目的根Fiber节点了，现在要根据虚拟DOM构建一个完整的Fiber树。而虚拟DOM是通过ReactDOM.render方法传入的，所以需要**将虚拟DOM放到根Fiber的更新队列上的**。对于根节点来说，更新队列上放的是虚拟DOM。 每个fiber节点都有一个更新队列，用于存放需要更新的信息放到队列中。
 
 ​	
 
@@ -1358,7 +1571,7 @@ React的事件系统依赖的是事件代理，利用事件捕获和冒泡来实
 - 可以大量节省内存占用，减少事件注册
 - 当新增子对象时无需再次对其绑定
 
-![image-20240121132546816](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240121132546816.png)
+![image-20240121132546816](images\image-20240121132546816.png)
 
 
 
@@ -1815,7 +2028,7 @@ export const SyntheticMouseEvent = createSyntheticEvent(MouseEventInterface);
 
 [流程图](https://www.processon.com/diagraming/65b32e8ec1249f2ce98ccdee0)
 
-<img src="C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240126123549339.png" alt="image-20240126123549339"  />
+<img src="images\image-20240126123549339.png" alt="image-20240126123549339"  />
 
 
 
@@ -2628,6 +2841,7 @@ commitRoot，commit阶段
 
 
 
+![image-20240706112759506](D:\learn-notes\珠峰架构\images\image-20240706112759506.png)
 
 
 
@@ -2641,6 +2855,16 @@ commitRoot，commit阶段
 
 
 
+## 任务调度系统
+
+可以给react内部发很多不同的任务，内部根据任务的优先级排序，优先级高的先执行。
+
+优先级调度和lane模型。
+
+### 基础知识
+
+- 最小堆
+- 二叉树
 
 
 
