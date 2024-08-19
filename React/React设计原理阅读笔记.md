@@ -37,15 +37,17 @@ React的仓库源码是采用monorepo方式管理，项目中的不同模块与�
    > 1. 基于状态的声明式渲染
    > 2. 组件化的层次架构
    >
-   > 但随着前端应用的复杂度提升，状态管理的难度也提升了，为此需要引入额外的**状态管理**方案，Redux，Pinia和Vuex等。
+   >    
    >
-   > 当采用SPA构建应用时，又需要增加**客户端路由**方案，React-Router，Vue-Router等。
+   > - 但随着前端应用的复杂度提升，状态管理的难度也提升了，为此需要引入额外的**状态管理**方案，Redux，Pinia和Vuex等。
    >
-   > 为了提高客户端首屏页面渲染速度，优化SEO，需要使用SSR。
+   > - 当采用SPA构建应用时，又需要增加**客户端路由**方案，React-Router，Vue-Router等。
    >
-   > 还有一些其他功能，比如构建支持，数据流方案，文档工具等，这些功能在React和Vue的核心库中都没有。
+   > - 为了提高客户端首屏页面渲染速度，优化SEO，需要使用SSR。
    >
-   > 所以React和Vue本身仅仅时库，而不是框架。
+   > - 还有一些其他功能，比如构建支持，数据流方案，文档工具等，这些功能在React和Vue的核心库中都没有。
+   >
+   > 所以React和Vue本身仅仅是库，而不是框架。
    >
    > 框架——**包含库本身以及附加功能**的一套解决方案。典型的框架代表有：
    >
@@ -57,7 +59,7 @@ React的仓库源码是采用monorepo方式管理，项目中的不同模块与�
 
 2. Vue称自己是“构建用户界面的渐进式框架”，其中的“渐进式”怎么理解？
 
-   > 渐进式是指：“可以根据需求选择性的引入所需要的附加功能”。
+   > 渐进式是指：“可以根据需求选择性的引入所需要的附加功能”。而不是像angularJS一样开箱即用。
 
 
 
@@ -236,7 +238,7 @@ react每次更新的流程都是从应用的根节点开始，遍历整个应用
 
 ### 前端框架使用技术
 
-1. **细粒度更新**
+1. **细粒度更新，自动依赖收集**
 
 例子：
 
@@ -258,8 +260,8 @@ useState
 
 ```js
 function useState(value){
-  const getter = ()=>value;
-  const setter = (newVale)=> value = newValue;
+  const getter = () => value;
+  const setter = (newVale) => value = newValue;
   return [getter, setter];
 }
 
@@ -297,7 +299,7 @@ useEffect(()=>{
   console.log('test show')
 })
 
-setCount(2 )
+setCount(2)
 ```
 
 
@@ -308,62 +310,62 @@ setCount(2 )
 const effectStack = []
 
 function subscribe(effect,subs){
-    subs.add(effect)
+  subs.add(effect)
 
-    effect.deps.add(subs)
+  effect.deps.add(subs)
 }
 
 function cleanup(effect){
-    let subs = effect.deps
-    for ( const sub of subs ){
-        sub.delete(effect)
-    }
-    effect.deps.clear()
+  let subs = effect.deps
+  for ( const sub of subs ){
+    sub.delete(effect)
+  }
+  effect.deps.clear()
 }
 
 function useState(value){
-    const subs = new Set()
+  const subs = new Set()
 
-    const getter = ()=>{
-        const effect = effectStack[effectStack.length-1]
-        if(effect){
-            subscribe(effect,subs)
-        }
-        return value
+  const getter = ()=>{
+    const effect = effectStack[effectStack.length-1]
+    if(effect){
+      subscribe(effect,subs)
     }
-    
-    const setter = (nextValue)=>{
-        value = nextValue
-        for(const effect of [...subs]){
-            effect.execute()
-        }
+    return value
+  }
+
+  const setter = (nextValue)=>{
+    value = nextValue
+    for(const effect of [...subs]){
+      effect.execute()
     }
-    return [getter,setter]
+  }
+  return [getter,setter]
 }
 
 
 function useEffect(callback){
-    const execute = ()=>{
-        cleanup(effect)
-        effectStack.push(effect)
-        try{
-            callback()
-        }finally{
-           effectStack.pop()
-        }
+  const execute = ()=>{
+    cleanup(effect)  // 先清除所有的与本effect有关的订阅发布关系
+    effectStack.push(effect)
+    try{
+      callback()
+    }finally{
+      effectStack.pop()
     }
-    effect = {
-        execute,
-        deps:new Set()
-    }
-    
-    execute()
+  }
+  effect = {
+    execute,
+    deps:new Set()
+  }
+
+  execute()
 }
 
 function useMemo(callback){
-    const [s,set] = useState()
-    useEffect(()=>set(callback))
-    return s
+  const [s,set] = useState()
+  useEffect(()=>set(callback))
+  return s
 }
 ```
 
@@ -408,12 +410,10 @@ AOT可以对模板进行编译时优化，可以减少框架在执行：根据�
 
 
 
-React的是采用jsx描述UI的，因为JSX的本质是JS，非常灵活，使得JSX难以进行AOT。如果要为JSX引入AOT，那么一般可以考虑两方面：
+React是采用jsx描述UI的，因为JSX的本质是JS，非常灵活，使得JSX难以进行AOT。如果要为JSX引入AOT，那么一般可以考虑两方面：
 
 1. 使用新的AOT实现，代表方案：prepack
 2. 约束JSX的灵活性，代表方案：solidjs内置逻辑组件
-
-
 
 
 
@@ -463,31 +463,152 @@ React使用JSX描述UI，JSX编译为React.createElement方法调用，其对应
 
 
 
+## 第二章
+
+react是一个重运行时的框架。所以react官方的迭代重点是对运行时的代码进行优化。
+
+- React15以及之前的版本面对的问题？
+- React官方是如何在react16以后的版本中逐渐解决这些问题的？
+- React15到React16底层架构有什么改变
+
+
+
+React是基于js创建快速响应的web应用的框架。为了快速响应，需要解决的问题有两个：
+
+1. 执行大计算量的任务是或者设备性能不足时导致页面卡顿（CPU瓶颈）
+2. 进行网络数据访问时，等待数据返回后的继续操作（I/O瓶颈）
+
+
+
+在react中最有可能造成CPU瓶颈的是虚拟DOM相关的任务。
+
+不同框架在解决“减少运行时代码执行流程”的问题上努力的方向不同。Vue3是能在预编译时期，通过标记静态节点减少不必要的运行时代码的执行。
+
+react作为重运行时的框架，选择的时优化运行时代码来优化这个问题，具体做法是将虚拟DOM的执行过程拆分为一个个可以打断的独立执行的宏任务，尽可能在一个执行时间限制内执行完。让一个耗时的宏任务拆为多个不会造成掉帧的小宏任务。减少掉帧的可能性而不是不掉帧（时间切片）。
+
+
+
+对于前端开发，典型的I/O瓶颈就是网络延迟。需要在网络延迟客观存在的情况下，减少网络延迟对用户影响。为此，react将导致的数据变化，再导致的UI变化的不同用户操作做了优先级的区分。因为用户对不同操作的卡顿的感知程度是不一样的。而UI要更新，都是因为数据驱动的，而数据的改变都是因为用户的某种操作导致的。那么只要给不同的操作赋予不同的优先级，尽量的去减少用户感知到卡顿的情况发生。
+
+为了处理I/O方面的瓶颈，react需要做三件事：
+
+1. 为不同操作出发的数据更新赋予不同的优先级
+2. 所有优先级统一调度，优先处理高优先级的更新
+3. 低优先级的更新任务能被更高优先级的更新任务给打断
+
+为此，react的底层实现了以下三部分来完成上面的事情：
+
+1. 实现用于调度优先级的调度器
+2. 调度器所使用的调度算法
+3. 支持可中断的虚拟DOM（Fiber链表）
 
 
 
 
 
+React16重构的底层代码。因为React15的重VDOM的diff计算是一个没办法中断的过程，无法实现时间切片。
+
+React15的架构：
+
+1. reconciler（协调器）—— 基于虚拟DOM进行diff算法，计算并标记出UI的变化内容
+2. renderer（渲染器）——将UI的变化渲染到宿主环境中
+
+在reconciler模块中，挂在组件回调用mountComponent，更新组件回调用updateComponent，这两个方法都是递归更新子组件，且这个这个过程无法中断。
+
+
+
+React16的架构：
+
+1. scheduler（调度器）——负责根据调度算法调度任务的优先级，高优先级的任务优先进入reconciler
+2. reconciler（协调器）——基于虚拟DOM和Fiber链表进行diff算法，计算并标记出UI的变化内容
+3. renderer（渲染器）——将UI的变化渲染到宿主环境中
+
+在新架构中将原来的递归且不可中断的流程变为了可中断的循环的过程。每次循环开始前都会判断是否有任务同时当前时间切片是否有空余时间（shouldYield），没有的情况下，暂停本帧中js的执行，并注册一个下一帧继续执行的回调函数。然后将主线程的占用释放去执行渲染线程的任务。
+
+
+
+scheduler将调度后的任务交给reconciler后，reconciler阶段进行diff算法比较，给虚拟DOM对应的fiber节点的不同属性上标注各种副作用的flag，标识是更新，删除还是修改。
+
+scheduler模块和reconciler模块的工作都是在内存中进行的，当reconciler模块工作结束后，将处理的结果交给renderer模块，renderer模块根据fiber链表上各个节点上的标识，进行宿主环境中对应的更新UI的操作。
 
 
 
 
 
+### Fiber架构
+
+React15中的协调采用的是递归的方式，被称为Stack Reconciler，React16以后的Reconciler是基于Fiber链表的，所以又被称为Fiber Reconciler。
+
+Fiber本质是一种类似链表的数据结构，所以链表中都存在节点，叫FiberNode节点。
+
+FiberNode节点使用一个Fiber工厂函数创建的实例对象，它的上面有一系列可以分为不同组的属性：
+
+1. 作为与虚拟DOM一一对应的链表中的节点所含有的属性
+
+   - 保存元素的类型
+
+   - 对应的DOM元素
+
+     ```js
+     function FiberNode(tag,pendingProps,key,mode){
+       this.tag = tag
+       this.key = key
+       this.elementType = null
+       this.type = null
+       this.stateNode = null
+     }
+     ```
+
+2. 作为工作单元所含有的属性
+
+   - 记录元素变化的数据
+
+   - 保存本次更新中该React元素变化的数据、要执行的工作（增，删，改，更新ref，副作用等）
+
+     ```js
+     this.flag = NoFlages
+     this.substreeFlags = NoFlags
+     this.deleteions = null
+     ```
+
+     
+
+3. 作为数据结构的链表相关属性
+
+   ```js
+   this.return = null 
+   this.child = null
+   this.sibling = null
+   ```
+
+4. 和调度优先级相关的属性
+
+   ```js
+   this.lanes = NoLanes
+   this.childLanes = NoLanes
+   ```
+
+5. 双缓存属性
+
+   ```js
+   this.alternate = null
+   ```
+
+   
+
+React内部对于只有唯一一个文本节点的FiberNode，不会生产独立的FiberNode了。
+
+
+
+### 双缓存机制
+
+Fiber架构中，同时存在两颗Fiber Tree，一颗对应当前真实UI的Fiber tree，另一颗是内存中正在构建的Fiber tree。源码中current一般就是指当前页面UI对应的FiberNode，workInProgress就是指代内存中对应FiberNode。这两个fiber NOde的alternate相互指向对方。
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
+### 挂载阶段Fiber树的构建
 
 
 

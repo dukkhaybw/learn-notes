@@ -1,7 +1,7 @@
 - 关注技术细节
 - 设计思想
 - 框架的设计权衡
-- 从宏观的角度触发，理解一些具体实现为什么选择这种方案
+- 从设计角度出发，理解一些具体实现为什么选择这种方案
 
 
 
@@ -112,7 +112,7 @@ div.innerHTML = html
 
 为了渲染出页面，首先要把字符串解析成 DOM 树，这是一个 DOM 层面的计算。涉及 DOM 的运算要远比 JavaScript 层面的计算性能差，这有一个跑分结果可供参考，如图。
 
-![image-20231228103230870](C:\Users\dukkha\Desktop\learn-notes\vue\images\image-20231228103230870.png)
+![image-20231228103230870](images\image-20231228103230870.png)
 
 上边是纯 JavaScript 层面的计算，循环 10000 次，每次创建一个 JavaScript 对象（虚拟DOM对象）并将其添加到数组中；下边是 DOM 操作， 每次创建一个 DOM 元素并将其添加到页面中。跑分结果显示，纯 JavaScript 层面的操作要比 DOM 操作快得多，它们不在一个数量级上。
 
@@ -122,7 +122,7 @@ div.innerHTML = html
 
 
 
-虚拟 DOM 创建页面的过程，虚拟 DOM 创建页面的过程分为两步：
+虚拟 DOM **创建页面**的过程，虚拟 DOM 创建页面的过程分为两步：
 
 - 第一步是创建 JavaScript 对象，这个对象可以理解为真实 DOM 的描述；
 - 第二步是递归地遍历虚拟 DOM 树并创建真实 DOM。
@@ -133,7 +133,7 @@ div.innerHTML = html
 
 innerHTML 和虚拟 DOM 在**创建页面时**的性能：
 
-![image-20231228103717384](C:\Users\dukkha\Desktop\learn-notes\vue\images\image-20231228103717384.png)
+![image-20231228103717384](images\image-20231228103717384.png)
 
 可以看到，无论是纯 JavaScript 层面的计算，还是 DOM 层面的计 算，其实两者差距不大。这里从宏观的角度只看数量级上的差 异。如果在同一个数量级，则认为没有差异。在创建页面的时候，都需要新建所有 DOM 元素。
 
@@ -145,7 +145,7 @@ innerHTML 和虚拟 DOM 在**创建页面时**的性能：
 
 使用虚拟 DOM 更新页面，它需要重新创建 JavaScript 对象（虚拟 DOM 树），然后比较新旧虚拟 DOM，找到变化的元素并更新它。
 
-![image-20231228104101281](C:\Users\dukkha\Desktop\learn-notes\vue\images\image-20231228104101281.png)
+![image-20231228104101281](images\image-20231228104101281.png)
 
 在更新页面时，虚拟 DOM 在 JavaScript 层面的运算要**比创建页面时**多出一个 Diff 的性能消耗，然而它毕竟也是 JavaScript 层面的运算，所以不会产生数量级的差异。
 
@@ -153,7 +153,7 @@ innerHTML 和虚拟 DOM 在**创建页面时**的性能：
 
 另外，当更新页面时，影响虚拟 DOM 的性能因素与影响 innerHTML 的性能因素不同。对于虚拟 DOM 来说，无论页面多大，都只会更新变化的内容，而对于 innerHTML 来说，页面越大， 就意味着更新时的性能消耗越大。如果加上性能因素，那么最终它们 在更新页面时的性能如图所示。
 
-![image-20231228104341810](C:\Users\dukkha\Desktop\learn-notes\vue\images\image-20231228104341810.png)
+![image-20231228104341810](images\image-20231228104341810.png)
 
 
 
@@ -161,7 +161,7 @@ innerHTML 和虚拟 DOM 在**创建页面时**的性能：
 
 粗略地总结一下 innerHTML、虚拟 DOM 以及原生 JavaScript（指 createElement 等方法）在**更新页面时**的性能
 
-![image-20231228104435412](C:\Users\dukkha\Desktop\learn-notes\vue\images\image-20231228104435412.png)
+![image-20231228104435412](images\image-20231228104435412.png)
 
 原生 DOM 操作方法的心智负担最大，因为要手动创建、删除、修改大量的 DOM 元素。但它的性能是最高的，不过为了使其性能最佳，要承受巨大的心智负担。另外，以这种方式编写的代码，可维护性也极差。
 
@@ -221,9 +221,9 @@ Render(obj, document.body)
 
 为了满足用户的需求，能不能引入编译的手段，把 HTML 标签编译成树型结构的数据对象，这样不就可以继续使用 Render 函数了。
 
-![image-20231228125036439](C:\Users\dukkha\Desktop\learn-notes\vue\images\image-20231228125036439.png)
+![image-20231228125036439](images\image-20231228125036439.png)
 
-为此，编写了一个叫作 Compiler 的程序，它的作用就是把 HTML 字符串编译成树型结构的数据对象，于是交付给用户去用了。 那么用户该怎么用呢？最简单的方式就是让用户分别调用 Compiler 函数和 Render 函数：
+为此，编写了一个叫作 Compiler 的程序，它的作用就是把 HTML 字符串编译成树型结构的数据对象，于是交付给用户去用了。 那么用户该怎么用？最简单的方式就是让用户分别调用 Compiler 函数和 Render 函数：
 
 ```js
 const html = `
@@ -245,11 +245,11 @@ Render(obj, document.body)
 
 既然编译器可以把 HTML 字符串编译成数据对象，那么能不能直接编译成命令式代码。
 
-![image-20231228125841104](C:\Users\dukkha\Desktop\learn-notes\vue\images\image-20231228125841104.png)
+![image-20231228125841104](images\image-20231228125841104.png)
 
 
 
-这样只需要一个 Compiler 函数就可以了，连 Render 都不需要了。其实这就变成了一个纯编译时的框架，因为不支持任何运行时内容，用户的代码通过编译器编译后才能运行。 
+这样只需要一个 Compiler 函数就可以了，连 Render 都不需要了。其实这就变成了一个纯编译时的框架，因为不支持任何运行时内容，用户的代码通过编译器编译后才能直接运行。 
 
 一个框架既可以是纯运行时的，也可以是纯编译时的，还可以是既支持运行时又支持编译时的。那么，它们都有哪些优缺点呢？是不是既支持运行时又支持编译时的框架最好呢？ 
 
@@ -313,6 +313,8 @@ Vue.js 在输出资源的时候，会输出两个版本，其中一个用于开�
 
 
 
+
+
 ### Tree-Shaking
 
 Vue.js 内建了很多组件，例如Transition组件，如果项目中根本就没有用到该组件，那么它的代码不需要包含在项目最终的构建资源中。
@@ -336,7 +338,7 @@ webpack 以及压缩工具（如 terser）都能识别它。
 
 ### 构建产物
 
-Vue.js 的 构建产物除了有环境上的区分之外，还会根据使用场景的不同而输出其他形式的产物。
+Vue.js 的构建产物除了有环境上的区分之外，还会根据使用场景的不同而输出其他形式的产物。
 
 希望用户可以直接在 HTML 页面中使用 script标签引入框架并使用，需要输出一种叫作 IIFE 格式的资源。 IIFE 的全称是 Immediately Invoked Function Expression，即“立即调用的 函数表达式”。vue.global.js 文件就是 IIFE 形式的资源，它的代码结构如下所示：
 
@@ -351,7 +353,7 @@ var Vue = (function(exports){
 
 这样当我们使用 script 标签直接引入 vue.global.js 文件后， 全局变量 Vue 就是可用的了。
 
-在 rollup.js 中，我们可以通过配置 format: 'iife' 来输出这种 形式的资源：
+在 rollup.js 中，我们可以通过配置 format: 'iife' 来输出这种形式的资源：
 
 ```js
 // rollup.config.js
@@ -935,7 +937,7 @@ render() {
 
 如上面的代码所示，在生成的虚拟 DOM 对象中多出了一个 patchFlags 属性，假设数字 1 代表“ class 是动态的”，这样渲染器看到这个标志时就知道：“只有 class 属性会发生改 变。”对于渲染器来说，就相当于省去了寻找变更点的工作量，性能自然就提升了。
 
-通过这个例子，了解到编译器和渲染器之间是存在信息交流的，它们互相配合使得性能进一步提升，而它们之间交流的媒介就是 虚拟 DOM 对象。后面，会看到一个虚拟 DOM 对象中会包含多种数据字段，每个字段都代表一定的含义。
+**通过这个例子，了解到编译器和渲染器之间是存在信息交流的，它们互相配合使得性能进一步提升，而它们之间交流的媒介就是 虚拟 DOM 对象。后面，会看到一个虚拟 DOM 对象中会包含多种数据字段，每个字段都代表一定的含义。**
 
 **虚拟 DOM 要比模板更加灵活，但模板要比虚拟 DOM 更加直观。**
 
@@ -1270,7 +1272,7 @@ const obj = new Proxy(data, {
 
 其中 WeakMap 的键是原始对象 target，WeakMap 的值是一个 Map 实例，而 Map 的键是原始对象 target 的 key，Map 的值是一个由副作用函数组成的 Set。它们的关系如图：
 
-![image-20231229203805607](C:\Users\dukkha\Desktop\learn-notes\vue\images\image-20231229203805607.png)
+![image-20231229203805607](images\image-20231229203805607.png)
 
 
 
@@ -1345,11 +1347,11 @@ data
        └── effectFn
 ```
 
-![image-20231229212010582](C:\Users\dukkha\Desktop\learn-notes\vue\images\image-20231229212010582.png)
+![image-20231229212010582](images\image-20231229212010582.png)
 
 副作用函数 effectFn 分别被字段 data.ok 和字段 data.text 所对应的依赖集合收集。当字段 obj.ok 的值修改为 false，并触发副作用函数重新执行后，由于此时字段 obj.text 不会被读取，只会触发字段 obj.ok 的读取操作，所以理想情况下副作用函数 effectFn 不应该被字段 obj.text 所对应的依赖集合收集。如下图：
 
-![image-20231229212131253](C:\Users\dukkha\Desktop\learn-notes\vue\images\image-20231229212131253.png)
+![image-20231229212131253](images\image-20231229212131253.png)
 
 但按照前文的实现，还做不到这一点。当把字段 obj.ok 的值修改为 false，并触发副作用函数重新执行之后， 整个依赖关系仍然保持原样，因为源码的text属性已经收集好了副作用函数而没有被删除过，这时就产生了遗留的副作用函数。
 
@@ -7330,5 +7332,7 @@ function parseChildren(context, ancestors) {
 > "-//W3C//DTD XHTML 1.0 Frameset//EN"
 > "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
 > ```
+>
+> 
 >
 > 准标准模式与标准模式非常接近，很少需要区分。人们在说到“标准模式”时，可能指其中任何一个。而对文档模式的检测也不会区分它们。

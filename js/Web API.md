@@ -295,11 +295,13 @@ let hasDOM1 = !!(document.getElementById && document.createElement &&
 
 navigator.geolocation 属性暴露了 Geolocation API，可以让浏览器脚本感知当前设备的地理位 置。这个 API 只在安全执行环境（通过 HTTPS 获取的脚本）中可用。
 
+
+
 ## 第十四章：DOM(文档对象模型)
 
 文档对象模型是操作 html 页面的入口。
 
- DOM 文档对象模型是浏览器对 html 源码在浏览器内部的一种表示形式，JavaScript 可以通过 DOM 对 HTML 进行交互。HTML 首先经过 Tokeniser**标记化**，通过**词法分析**，将输入 html 内容解析成多个标记，根据识别后的标记进行**DOM 树构造**, 在 DOM 树构造过程中会创建 Document 对象，然后以 Document 为根节点的 DOM 树不断进行修改，向其中添加各种元素。
+ DOM 文档对象模型是浏览器对 html 源码在浏览器内部的一种表示形式，JavaScript 可以通过 DOM 对 HTML 任何部分进行操作。HTML 首先经过 Tokeniser**标记化**，通过**词法分析**，将输入 html 内容解析成多个标记，根据识别后的标记进行**DOM 树构造**, 在 DOM 树构造过程中会创建 Document 对象，然后以 Document 为根节点的 DOM 树不断进行修改，向其中添加各种元素。
 
 **DOM 是由多层节点构成的树结构文档**。其中，节点分为很多类型，节点对象上有不同的属性，数据和方法，同时节点对象之间可能存在某种关系。
 
@@ -331,16 +333,42 @@ if (ele.nodeType === 1) {
 }
 ```
 
-### 根据节点之间的关系获取其他节点的属性
+
+
+### 根据节点之间的关系获取其他节点  的属性
 
 子元素，父元素，兄弟元素，祖先元素，后代元素
 
-- parentNode.childNodes：返回值为一个**动态**的该元素的所有子节点（包含元素节点和文本节点）组成的类数组对象，该对象是 NodeList 构造函数的实例。NodeList 是一个类数组对象，用于存储可以按索引号存取的有序节点。NodeList 是**实时的活动对象**，**而不是第一次访问时所获得内容的快照**。
+- node.childNodes：返回值为一个**动态**的该元素的所有子节点（包含元素节点和文本节点）组成的类数组对象，该对象是 NodeList 构造函数的实例。NodeList 是一个类数组对象，用于存储可以按索引号存取的有序节点。NodeList 是**实时的活动对象**，**而不是第一次访问时所获得内容的快照**。
   - 使用中括号或使用 item()方法访问 NodeList 中的元素。 someNode.childNodes[0]， someNode.childNodes.item(1)， someNode.childNodes.length;
-  - **把 NodeList 对象转换为数组，** **let arrayOfNodes = Array.prototype.slice.call(someNode.childNodes,0)**  
-    **let arrayOfNodes = Array.from(someNode.childNodes);**
+  - **把 NodeList 对象转换为数组，** **let arrayOfNodes = Array.prototype.slice.call(someNode.childNodes,0)**                    **let arrayOfNodes = Array.from(someNode.childNodes);**
   - 获取当前元素的所有子节点（包含各种类型的节点）
 - ele.children:获取当前元素中所有的元素子节点（ie 低版本中也会将注释看作元素子节点）。--------**面试**
+
+  扩展：
+
+  > `dom.children` 和 `dom.childNodes` 是访问 DOM 节点的子元素的两种不同方式，它们之间有一些关键的区别：
+  >
+  > 
+  >
+  > 1. **节点类型**：
+  >    - `dom.childNodes` 包括元素节点、文本节点和注释节点等所有类型的子节点。这意味着，除了常规的 HTML 元素外（例如 `<div>`、`<span>`等），它还可以包含文本（包括空白字符）和注释。
+  >    - `dom.children` 仅包含元素节点，即那些实际的 HTML 元素。它不包括文本节点或注释节点。
+  > 2. **返回类型**：
+  >    - `dom.childNodes` 返回一个 `NodeList` 对象，这个对象是一个节点的集合，包括文档中的所有类型的节点。
+  >    - `dom.children` 返回一个 `HTMLCollection` 对象，它是一个仅包含元素节点的集合。
+  > 3. **实时性**：
+  >    - 通过 `childNodes` 获取的 `NodeList` 是实时的，反映了 DOM 的当前状态。
+  >    - `HTMLCollection` 对象（例如由 `dom.children` 返回的）总是实时的，反映了 DOM 的当前状态。当 DOM 结构发生改变时，`HTMLCollection` 会自动更新。
+  > 4. **使用场景**：
+  >    - 当需要处理元素的所有子节点（包括文本和注释节点）时，应使用 `dom.childNodes`。
+  >    - 当仅需处理元素的子元素节点（忽略文本和注释节点）时，`dom.children` 更加适合。
+  >
+  > 
+  >
+  > 总结来说，根据你的具体需求选择使用 `dom.children` 或 `dom.childNodes`。如果你需要处理所有类型的子节点，包括文本和注释，`dom.childNodes` 是一个好的选择。如果你只关心子元素本身，而不关心它们之间的文本或注释，那么 `dom.children` 会更为合适。
+
+  
 
 - ele.parentNode：返回某节点的父节点。
 - ele.previousSibling：返回某节点的前一个兄弟节点或者 null。
@@ -360,6 +388,10 @@ if (ele.nodeType === 1) {
 
 - ownerDocument：所有节点都有的属性。指向代表整个文档的文档节点 （即：document）。
 
+上面这些属性执行的dom元素都只是只读的不能用于修改。
+
+
+
 ### 节点操作（增删改查和移动节点）
 
 - document.createElement ( '标签名' ) ：创建一个 dom 元素。
@@ -374,15 +406,19 @@ if (ele.nodeType === 1) {
 
 - parent.removeChild()：接收一个参数，即要移除 的节点。被移除的节点会被返回。
 
-  上面介绍的 4 个方法都用于操纵某个节点的子元素，也就是说使用它们之前必须先取得父节点（使 用前面介绍的 parentNode 属性）。
+  **上面介绍的 4 个方法都用于操纵某个节点的子元素，也就是说使用它们之前必须先取得父节点**（使用前必须获取到 parentNode）。
 
-- cloneNode()：返回与调用它的节点一模一样的节 点。cloneNode()方法接收一个布尔值参数，表示是否深复制。在传入 true 参数时，会进行深复制， 即复制节点及其整个子 DOM 树。如果传入 false，则只会复制调用该方法的节点。复制返回的节点属 于文档所有，但尚未指定父节点，所以可称为**孤儿节点**（orphan）。可以通过 appendChild()、 insertBefore()或 replaceChild()方法把孤儿节点添加到文档中。该方法不会复制添加到 DOM 节点上的 js 属性，比如事件处理程序，这个方法只复制 HTML 属性，以及可选性地复制子节点。
+  
+
+- cloneNode()：返回与调用它的节点一模一样的节 点。cloneNode()方法接收一个布尔值参数，表示是否深复制。在传入 true 参数时，会进行深复制， 即复制节点及其整个子 DOM 树。如果传入 false，则只会复制调用该方法的节点。复制返回的节点属 于文档所有，但尚未指定父节点，所以可称为**孤儿节点**（orphan）。可以通过 appendChild()、 insertBefore()或 replaceChild()方法把孤儿节点添加到文档中。**该方法不会复制添加到 DOM 节点上的 js 属性，比如事件处理程序，这个方法只复制 HTML 属性，以及可选性地复制子节点。**
 
 - normalize()：处理文档子树中的文本节 点。在节点上调用 normalize()方法会检测这个节点的所有后代，如果发现空文本节点，则将其删除；如果两个同胞节点是相邻的，则将其合并为一个文本节点。
 
-##### 节点类型
 
-### Document 类型
+
+### 节点类型
+
+#### **Document 类型**
 
 指代整个文档。文档对象 document 是 HTMLDocument 的实例（HTMLDocument 继承 Document），表示整个 HTML 页面。document 是 window 对象的属性，因此是一个全局对象。
 
@@ -399,8 +435,9 @@ document 对象
 - ownerDocument : null
 
 - childNodes: 可能是 DocumentType(文档类型标签)、documentElement(html 标签)、comment(注释)
-  - document.documentElement
+  - document.documentElement ：指向html
   - document.doctype
+  - document.body：指向body
 
 document.title ：读写页面的标题
 
@@ -418,7 +455,7 @@ domain 属性是可以设置的。出于安全考虑，给 domain 属性设置�
 
  document.domain = "nczonline.net"; // 出错！
 
-当页面中包含来自某个不同子域的窗格（frame）或内嵌窗格（iframe）时，设置 document.domain 是有用的。因为跨源通信存在安全隐患，所以不同子域的页面间无法通过 JavaScript 通信。此时，在每个页面上把 document.domain 设置为相同的值，这些页面就可以访问对方的 JavaScript 对象了。比如，一个加载自 www.wrox.com 的页面中包含一个内嵌窗格，其中的页面加载自 p2p.wrox.com。这两个页面的 document.domain 包含不同的字符串，内部和外部页面相互之间不能访问对方的 JavaScript 对象。如果每个页面都把 document.domain 设置为 wrox.com，那这两个页面之间就可以通信了。
+**当页面中包含来自某个不同子域的窗格（frame）或内嵌窗格（iframe）时，设置 document.domain 是有用的。**因为跨源通信存在安全隐患，所以不同子域的页面间无法通过 JavaScript 通信。此时，在每个页面上把 document.domain 设置为相同的值，这些页面就可以访问对方的 JavaScript 对象了。比如，一个加载自 www.wrox.com 的页面中包含一个内嵌窗格，其中的页面加载自 p2p.wrox.com。这两个页面的 document.domain 包含不同的字符串，内部和外部页面相互之间不能访问对方的 JavaScript 对象。如果每个页面都把 document.domain 设置为 wrox.com，那这两个页面之间就可以通信了。
 
 浏览器对 domain 属性还有一个限制，即这个属性一旦放松就不能再收紧。比如，把 document.domain 设置为"wrox.com"之后，就不能再将其设置回"p2p.wrox.com"，后者会导致错误，比如： // 页面来自 p2p.wrox.com document.domain = "wrox.com"; // 放松，成功 document.domain = "p2p.wrox.com"; // 收紧，错误！
 
@@ -431,6 +468,8 @@ document.writeIn()：写入后结尾追加一个换行符
 在页面渲染期间通过 document.write()向文档中输出内容。如果是在页面加载完之后再调用 document.write()，则输出的内容会重写整个页面。
 
 document.open() 与 document.close()
+
+
 
 ### Element 对象
 
@@ -454,7 +493,8 @@ parentNode 值为 Document 或 Element 对象；
 - element.classList：
   - add('calssName')
   - remove('calssName')
-  - ...
+
+
 
 ### Text 对象
 
@@ -512,14 +552,29 @@ for (let i = 0; i < 3; ++i) {
 ul.appendChild(fragment);
 ```
 
+
+
 ### 获取节点的 api
 
-- document.getElementById ( ) , getElementById（）方法的**上下文只能是 document**，这是因为 document 是 HTMLDocument 的实例（HTMLDocument 继承 Document），而 getElementById 则是 Document 原型对象上方法。返回一个匹配特定 ID 的元素，如果当前文档中拥有特定 ID 的元素不存在则返回 null。
-- context.getElementsByTagName ([’标签名‘]) ：在指定的上下文中，基于元素的标签名动态获取一组元素的集合（HTMLCollection 元素集合，类数组对象，每项元素都是一个 dom 元素对象），这个集合对象上还有一个方法 namedItem，调用它并传入一个字符串，可以获取其中 name 标签属性为参数字符串的元素。
+- **document**.getElementById ( ) , getElementById（）方法的**上下文只能是 document**，这是因为 document 是 HTMLDocument 的实例（HTMLDocument 继承 Document），而 getElementById 则是 Document 原型对象上方法。返回一个匹配特定 ID 的元素，如果当前文档中拥有特定 ID 的元素不存在则返回 null。
+
+  > 这个方法是全局 `document` 对象**特有**的，因为 ID 在整个文档中应该是唯一的。没有理由在子元素上提供相同的方法，因为 ID 的唯一性意味着你无法在文档的不同部分找到多个具有相同 ID 的元素。
+
+- **someNode**.getElementsByTagName ([’标签名‘]) ：在指定的上下文中，基于元素的标签名动态获取一组元素的集合（HTMLCollection 元素集合，类数组对象，每项元素都是一个 dom 元素对象），这个集合对象上还有一个方法 namedItem，调用它并传入一个字符串，可以获取其中 name 标签属性为参数字符串的元素。
 
   HTMLCollection 对象还有一个额外的方法 namedItem()，可通过标签的 name 属性取得某一项 的引用。例如，假设页面中包含`<img src="myimage.gif" name="myImage"> `元素： img 那么也可以像这样从 images 中取得对这个 img 元素的引用： let myImage = images.namedItem("myImage"); 对于 name 属性的元素，还可以直接使用中括号来获取，如下面的例子所示： let myImage = images["myImage"];
 
   要取得文档中的所有元素，可以给 getElementsByTagName()传入\*。
+
+  ```js
+  // 在整个文档中搜索所有的 <div> 元素
+  var divs = document.getElementsByTagName('div');
+  
+  // 在某个特定元素内部搜索所有的 <span> 元素
+  var spans = someElement.getElementsByTagName('span');
+  ```
+
+  
 
 - context.getElementsByClassName ([‘类名’]) ：在指定的上下文中，基于元素的类名获取一组元素的集合（不兼容 ie6 到 8，HTMLCollection 元素集合，类数组对象，每项元素都是一个 dom 元素对象）
 
@@ -528,6 +583,8 @@ ul.appendChild(fragment);
 - context.querySlector('css 选择器') 不兼容 ie6 到 8
 
 - context.querySlectorAll('css 选择器') 不兼容 ie6 到 8
+
+
 
 ### 设置 dom 元素样式
 
@@ -585,7 +642,7 @@ div.mycolor = "red";
 alert(div.getAttribute("mycolor")); // null（IE 除外）
 ```
 
-### 例子
+#### 例子
 
 用 js 获取的 div 元素对象的原型链`__proto__`往上指向 HTMLDivElement.prototype，继续往上指向 HTMLElement.prototype,继续往上指向 Element.prototype，继续往上指向 Node.prototype,再往上指向 EventTarget.prototype，再往上指向 Object.prototype
 
@@ -597,16 +654,16 @@ element.offsetWidth
 
 element.offsetHeight
 
-##### DOM 编程
+### DOM 编程
 
 动态创建脚本：
 
 ```js
 方式一：
 function loadScript(url) {
- let script = document.createElement("script");
- script.src = url;
- document.body.appendChild(script);
+  let script = document.createElement("script");
+  script.src = url;
+  document.body.appendChild(script);
 }
 
 
@@ -615,7 +672,7 @@ let script = document.createElement("script");
 script.appendChild(document.createTextNode("function sayHi(){alert('hi');}"));
 document.body.appendChild(script);
 
-方式三：
+方式三(IE)：
 var script = document.createElement("script");
 script.text = "function sayHi(){alert('hi');}";
 document.body.appendChild(script);
@@ -623,20 +680,22 @@ document.body.appendChild(script);
 
 方式四：兼容
 function loadScriptString(code){
- var script = document.createElement("script");
- script.type = "text/javascript";
- try {
- script.appendChild(document.createTextNode(code));
- } catch (ex){
- script.text = code;
- }
- document.body.appendChild(script);
+  var script = document.createElement("script");
+  script.type = "text/javascript";
+  try {
+    script.appendChild(document.createTextNode(code));
+  } catch (ex){
+    script.text = code;
+  }
+  document.body.appendChild(script);
 }
 ```
 
-通过 innerHTML 属性创建的`<script>`元素永远不会执行。浏览器会尽责地创建`<script>`元素，以及其中的脚本文本，但解析器会给这个`<script>` 元素打上永不执行的标签。只要是使用 innerHTML 创建的 `<script>`元素，以后也没有办法强制其执行。
+**通过 innerHTML 属性创建的`<script>`元素永远不会执行。**浏览器会尽责地创建`<script>`元素，以及其中的脚本文本，但解析器会给这个`<script>` 元素打上永不执行的标签。只要是使用 innerHTML 创建的 `<script>`元素，以后也没有办法强制其执行。
 
-##### 动态样式
+
+
+### 动态样式
 
 ```js
 方式一：
@@ -683,6 +742,8 @@ function loadStyleString(css){
 
 注意应该把元素添加到元素而不是 元素，这样才能保证所有浏览器都能正常运行。
 
+
+
 #### MutationObserver 接口
 
 MutationObserver 接口，可以在 DOM 被修改时异步执行回调（微任务）。**使 用 MutationObserver 可以观察整个文档、DOM 树的一部分，或某个元素。此外还可以观察元素属性、子节点、文本，或者前三者任意组合的变化。**
@@ -701,7 +762,7 @@ mutationRecords：数组，数组中包含的信息有发生的变化，哪一�
 MutationObserver：是上面的observer实例对象
 ```
 
-observer 实例默认并不会关联任何 DOM 部分。要把这个实例和某个 DOM 部分关联起来，需要使用实例对象上的 observe（）方法，这个方法接收两个必需的参数：要观察其变化的 DOM 节点，以及 一个 MutationObserverInit 对象。MutationObserverInit **对象用于控制观察哪些方面的变化**，是一个键/值对形式配置选项。
+observer 实例默认并不会关联任何 DOM 部分。要把这个实例和某个 DOM 部分关联起来，需要使用实例对象上的 observe（）方法，这个方法接收两个必需的参数：要观察其变化的 DOM 节点，以及一个 MutationObserverInit 对象。MutationObserverInit **对象用于控制观察哪些方面的变化**，是一个键/值对形式配置选项。
 
 **MutationObserverInit**:控制观察范围，该配置对象的具体取值和含义：
 
@@ -758,6 +819,8 @@ MutationObserver 实例与目标节点之间的引用关系是非对称的。Mut
 MutationRecord 的引用 、
 
 记录队列中的每个 MutationRecord 实例至少包含对已有 DOM 节点的一个引用。如果变化是 childList 类型，则会包含多个节点的引用。记录队列和回调处理的默认行为是耗尽这个队列，处理 每个 MutationRecord，然后让它们超出作用域并被垃圾回收。 有时候可能需要保存某个观察者的完整变化记录。保存这些 MutationRecord 实例，也就会保存 它们引用的节点，因而会妨碍这些节点被回收。如果需要尽快地释放内存，建议从每个 MutationRecord 中抽取出最有用的信息，然后保存到一个新对象中，最后抛弃 MutationRecord。
+
+
 
 ## 第 15 章 DOM 扩展
 
@@ -2041,7 +2104,7 @@ DOM3 Events 定义的事件类型：
   >
   >   ```html
   >   <input type="text" value="选择这段文字试试" id="myInput">
-  >       
+  >           
   >   <script>
   >     document.getElementById('myInput').addEventListener('select', function(event) {
   >       console.log('文本被选择');
