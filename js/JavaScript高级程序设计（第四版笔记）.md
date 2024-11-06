@@ -2477,52 +2477,142 @@ p.then();
 
 函数既可以是普通函数，也可以是构造函数，也可以是对象。既可以作为函数返回值返回，也可以作为函数实参传递。
 
+
+
+
+
+函数概念扩展：JavaScript中一个函数一般什么情况下被称作函数，什么情况下被称作方法？
+
+在 JavaScript 中，**函数** 和 **方法** 的概念虽然都指代可执行的代码块，但它们之间的区别主要取决于它们的上下文（即它们的调用方式）。
+
+### 函数（Function）
+
+- **定义**：在 JavaScript 中，函数通常是一个独立的代码块，它可以通过名字来调用执行，并且可以接受参数和返回值。
+- **使用场景**：当一个函数独立存在，不依赖于对象的上下文时，它被称为函数。
+
+#### 例子：
+
+```
+javascriptCopy code// 定义一个独立的函数
+function greet(name) {
+  return `Hello, ${name}!`;
+}
+
+// 调用这个函数
+console.log(greet('Alice'));  // 输出: Hello, Alice!
+```
+
+在这个例子中，`greet` 是一个函数，因为它是独立定义的，并且没有依赖任何对象。
+
+### 方法（Method）
+
+- **定义**：方法是一个与对象关联的函数。当函数作为对象的属性存在时，它被称为方法。
+- **使用场景**：当函数作为对象的属性并且通过对象来调用时，它被称为方法。
+
+#### 例子：
+
+```
+javascriptCopy code// 定义一个对象
+const person = {
+  name: 'Alice',
+  // 定义一个方法
+  greet: function() {
+    return `Hello, ${this.name}!`;
+  }
+};
+
+// 调用这个方法
+console.log(person.greet());  // 输出: Hello, Alice!
+```
+
+在这个例子中，`greet` 是 `person` 对象的一个方法，因为它是作为对象的属性定义的，并且通过对象 `person` 调用。
+
+### 区别总结：
+
+1. **函数**：独立存在并且可以在全局或局部作用域中被调用，不与任何对象绑定。
+   - 例如：`function add(a, b) { return a + b; }`
+2. **方法**：作为对象的属性存在，并通过对象调用。方法通常会使用 `this` 关键字来访问调用它的对象的属性。
+   - 例如：`obj.methodName()` 或 `obj['methodName']()`
+
+### 特殊情况：
+
+一个函数可以同时被视为函数和方法，这取决于它如何被调用。例如：
+
+```
+javascriptCopy codefunction sayHi() {
+  console.log('Hi!');
+}
+
+const greeter = {
+  sayHi: sayHi  // 这里 sayHi 函数作为方法赋值给对象
+};
+
+// 作为函数调用
+sayHi();  // 输出: Hi!
+
+// 作为方法调用
+greeter.sayHi();  // 输出: Hi!
+```
+
+在上面的例子中，`sayHi` 函数既可以独立调用（作为函数），也可以通过 `greeter` 对象调用（作为方法）。这就是函数和方法的区别和联系。
+
+
+
 ## 第八章
 
 ### 对象
 
+什么是对象？一组属性的无序集合（一组没有特定顺序的key和value）。
+
+对象的每个**属性**或**方法**都由一个名称（key）来标识，这个名称映射到一个值（value）。
+
+可以把 对象想象成一张散列表，其中的内容就是一组名/值对，值可以是基本数据类型的值或者引用数据类型的值（对象或者函数）。  对象的某个属性的值如果是一个函数，那么一般被叫做方法。
+
+
+
 #### 创建方式：
 
-1. let obj = new Object ( )
+1. let obj = new Object ( )    new Object构造函数
    - obj.key=value
    - obj[varity] = value
-2. let obj = { key:value, key2: value2 ... }
+2. let obj = { key:value, key2: value2 ... }   对象字面量写法
 
-对象的属性值（key）不能是引用数据类型且不能重复,如果是引用类型的话，会自动转为字符串类型，value 可以是任意数据类型的值
+对象的属性标识（key）不能是引用数据类型且不能重复，如果是引用类型的话，会自动转为字符串类型，value 可以是任意数据类型的值
 
-```面试
+```js
 let obj = {
-    123:'abc',
-    name:'javk',
-    true:true,
-    [{}]:123,
-    [[10,20]]:456,
-    [Symbol('abc')]:10,
-    null:'qwe',
-    undefined:'true',
-    // Symbol('abc'):'tom'  //报错
+  123:'abc',
+  name:'javk',
+  true:true,
+  [{}]:123,
+  [[10,20]]:456,
+  [Symbol('abc')]:10,
+  null:'qwe',
+  undefined:'true',
+  // Symbol('abc'):'tom'  //报错
 }
-    console.dir(obj)
-    //Object
+console.dir(obj)
+/** Object
 		10,20: 456
 		123: "abc"
 		[object Object]: 123
 		name: "javk"
 		null: "qwe"
 		true: true
-        undefined: "true"
+    undefined: "true"
 		Symbol(abc): 10
 		__proto__: Object
-    console.log(obj[undefined]);   //true
-    console.log(obj.null);  //qwe
-    console.log(obj[{}]);  //123
-    console.log(obj[[10,20]]);  //456
+		*/
+console.log(obj[undefined]);   //true
+console.log(obj.null);  //qwe
+console.log(obj[{}]);  //123
+console.log(obj[[10,20]]);  //456
 
 obj[true] === obj["true"]  //true 其它非字符串数据作为属性名和其对应的字符串格式作为属性名没啥区别
 
 obj[0] === obj['0']   //true   其它非字符串数据作为属性名和其对应的字符串格式作为属性名没啥区别
 
-obj[undefined] === obj['undefined']  其它非字符串数据作为属性名和其对应的字符串格式作为属性名没啥区别
+obj[undefined] === obj['undefined']  // 其它非字符串数据作为属性名和其对应的字符串格式作为属性名没啥区别
 
 obj[{}]='string'   // [object Object]:'string'
 
@@ -2533,14 +2623,136 @@ let m = [100, 200];
 let obj = {};
 obj[n] = "珠峰"; //=>obj[{x:100}](错误) 但是对象不能作为属性名，需要把其转换为字符串 =>{"[object Object]":"珠峰" }
 obj[m] = "培训"; //=>obj[[100,200]] =>{ "100,200":"培训" }
->如果非要让属性名是个对象，只能基于ES6中的新数据结构 Map 处理
+// 如果非要让属性名是个对象，只能基于ES6中的新数据结构 Map 处理
 ```
 
-上述创建方式的不足：创建具有同样接口的多个对象需要重复编写很多代码。
+
+
+上述创建方式的不足：创建具有同样属性或者方法的多个对象需要重复编写很多代码。
+
+
+
+扩展：
+
+在 JavaScript 中，每个对象的属性或方法都有一组称为“**特征**”的属性（就是描述这些属性或者方法的属性），这些特征（或属性描述符）决定了该属性或方法的行为和可操作性。这些特征是 JavaScript 的对象模型的一部分，用于控制属性的可配置性、可枚举性、可写性等特性。
+
+### 属性的特征（Property Attributes）
+
+JavaScript 对象的属性可以分为两种类型：
+
+1. **数据属性（Data Property）**：存储实际数据值的属性。
+2. **访问器属性（Accessor Property）**：通过 getter 和 setter 方法来获取和设置值的属性。
+
+每种类型的属性都有一组特征，这些特征是通过 `Object.defineProperty()` 方法或 `Object.getOwnPropertyDescriptor()` 方法访问和控制的。
+
+#### 1. 数据属性的特征
+
+数据属性有四个主要特征：
+
+1. **`value`**：属性的值，默认是 `undefined`。
+
+2. `writable`
+
+   ：表示属性是否可写。
+
+   - 值为 `true` 时，表示属性的值可以被修改。
+   - 值为 `false` 时，表示属性的值是只读的。
+
+3. `enumerable`
+
+   ：表示属性是否可枚举。
+
+   - 值为 `true` 时，可以通过 `for...in` 循环或 `Object.keys()` 访问属性。
+   - 值为 `false` 时，属性不会出现在迭代中。
+
+4. `configurable`
+
+   ：表示属性是否可配置。
+
+   - 值为 `true` 时，可以删除或更改属性的特征。
+   - 值为 `false` 时，无法删除属性，也不能更改它的特征（除非 `writable` 是 `true` 且只能修改 `value`）。
+
+#### 2. 访问器属性的特征
+
+访问器属性通过 getter 和 setter 来定义，它们有以下四个特征：
+
+1. `get`：获取属性值的函数，如果没有 getter 则为 undefined
+   - 用来定义一个函数，在获取属性值时调用。
+2. `set`：设置属性值的函数，如果没有 setter 则为 undefined
+   - 用来定义一个函数，在设置属性值时调用。
+3. **`enumerable`**：与数据属性相同，表示属性是否可枚举。
+4. **`configurable`**：与数据属性相同，表示属性是否可配置。
+
+### 示例：使用 `Object.defineProperty` 设置属性特征
+
+可以使用 `Object.defineProperty` 方法来定义或修改对象的属性特征。以下是一个示例：
+
+```js
+const person = {};
+
+// 定义一个数据属性 'name'，并设置特征
+Object.defineProperty(person, 'name', {
+  value: 'Alice', // 属性的值
+  writable: false, // 不可写
+  enumerable: true, // 可枚举
+  configurable: false // 不可配置
+});
+
+console.log(person.name); // 输出: Alice
+
+person.name = 'Bob'; // 因为 writable 是 false，这里不会修改 'name'
+console.log(person.name); // 仍然输出: Alice
+```
+
+在这个例子中：
+
+- `writable` 设置为 `false`，因此无法修改 `name` 的值。
+- `enumerable` 设置为 `true`，因此 `name` 属性是可枚举的，可以出现在 `for...in` 循环或 `Object.keys()` 的结果中。
+- `configurable` 设置为 `false`，因此不能删除属性或更改其特征。
+
+### 访问器属性的示例
+
+使用 getter 和 setter 创建访问器属性：
+
+```js
+const person = {
+  firstName: 'Alice',
+  lastName: 'Smith',
+
+  // 定义访问器属性 fullName
+  get fullName() {
+    return `${this.firstName} ${this.lastName}`;
+  },
+  set fullName(value) {
+    [this.firstName, this.lastName] = value.split(' ');
+  }
+};
+
+console.log(person.fullName); // 输出: Alice Smith
+
+person.fullName = 'Bob Johnson';
+console.log(person.firstName); // 输出: Bob
+console.log(person.lastName); // 输出: Johnson
+```
+
+在这个例子中：
+
+- `fullName` 是一个访问器属性，有一个 getter 和一个 setter。
+- 通过 `get` 和 `set` 方法控制属性的读取和写入行为。
+
+### 总结
+
+在 JavaScript 中，对象的每个属性和方法都有一组特征（或称属性描述符），这些特征控制了属性的行为，比如是否可写、是否可枚举、是否可配置等。这些特征为对象属性提供了更细粒度的控制。
+
+
 
 #### 对象的属性的属性描述符：
 
-对象的每个属性的都有对该属性的底层描述特性项。
+对象的每个属性的都有对该属性的底层描述特性项。  也就是描述一个对象属性的的属性。
+
+这些属性的属性是规范定义，然后由js引擎实现的。开发者不能在 JavaScript 中直接访问这些特性。
+
+在规范文件中或者书本上一般用两个中括号把这些描述属性的属性的名称括起来，比如[[Enumerable]]。
 
 1. 数据属性（可读可写）
 
@@ -2557,8 +2769,8 @@ obj[m] = "培训"; //=>obj[[100,200]] =>{ "100,200":"培训" }
    修改对象属性的描述性特征项必须使用： **Object.defineProperty（）**，该方法接受三个参数：
 
    1. 添加或修改属性的对象（要修改某个属性描述特征项的对象）
-
-2. 新属性名（要修改某个属性描述特征项的属性） 3. 描述符对象
+   1. 新属性名（要修改某个属性描述特征项的属性） 
+   1. 描述符对象
 
 3. 访问器属性（**无法存放数据**）**访问器属性无法直接定义，必须使用 Object.defineProperty（）去定义**
 
@@ -2576,29 +2788,27 @@ obj[m] = "培训"; //=>obj[[100,200]] =>{ "100,200":"培训" }
 
    - get 和 set 函数不一定都要定义，非严格模式下只定义其中一个不会报错。
 
-   > let book = { year\_: 2017, edition: 1}; //存放了数据本体
-   >
-   > Object.defineProperty(book, "year", {
-   >
-   > get() {
-   >
-   > return this.year\_; //实现 year 对真正数据 year 的代理
-   >
-   > },
-   >
-   > set(newValue) { if (newValue > 2017) {
-   >
-   > this.year\_ = newValue; this.edition += newValue - 2017; //实现在对 year 进行操作时，顺便处理其他任务，或更新真正数据的 year
-   >
-   > }
-   >
-   > }
-   >
-   > });
-   >
-   > book.year = 2018;
-   >
-   > console.log(book.edition); // 2
+   ```js
+   let book = { year\_: 2017, edition: 1}; //存放了数据本体
+   
+   Object.defineProperty(book, "year", {
+     get() {
+       return this.year\_; //实现 year 对真正数据 year 的代理
+     },
+     set(newValue) { 
+       if (newValue > 2017) {
+         this.year\_ = newValue; this.edition += newValue - 2017; //实现在对 year 进行操作时，顺便处理其他任务，或更新真正数据的 year
+   
+       }
+     }
+   });
+   
+   book.year = 2018;
+   
+   console.log(book.edition); // 2
+   ```
+   
+   
 
 #### **对象方法**
 
@@ -2697,6 +2907,8 @@ obj[m] = "培训"; //=>obj[[100,200]] =>{ "100,200":"培训" }
   - 可以通过解构来复制 对象属性 ，但是复制的是对象的引用
   - **多个属性的解构赋值是一个输出无关的顺序化操作**
   - 如果一个解构表达式涉及 多个赋值，开始的赋值成功而后面的赋值出错，则整个解构赋值只会完成一部分
+
+
 
 ### 创建对象
 
@@ -4798,7 +5010,7 @@ p.then(
 
 
        //同步执行executor回调函数，executor中并没有开启异步任务而直接调用 resolve 或者 reject 修改了实例对象p的状态，同时存放的传给resolve（）的value值到promise实例对象上，再循环实例对象p中已经存的存放回调函数的空数组并传入参数，因为数组为空，所以等价于没有做任何处理。但是将执行的结果保存在了实例对象p 的属性上了。之后，同步代码执行到p.then（），then方法内部直接判断p的状态值后直接调用对应的成功回调或失败回调，并通过取出实例对象的属性做实参传入。
-
+    
        let p = new Promise(function (resolve, reject) {
          setTimeout(function () {
            //启动了异步任务
