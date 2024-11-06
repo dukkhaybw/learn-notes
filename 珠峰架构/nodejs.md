@@ -135,11 +135,13 @@ Array.prototype.reduce = function(callback,initalValue){
 
 #### 高阶函数的应用
 
-例如，现在项目中有一个核心方法。它 的业务逻辑已经非常完善了。但是某个开发者想自己在执行这个核心代码逻辑之前做点自己的逻辑，核心代码执行之后再做自己的逻辑。
+例如，现在项目中有一个核心方法。它的业务逻辑已经非常完善了。但是某个开发者想自己在执行这个核心代码逻辑之前做点自己的逻辑，核心代码执行之后再做自己的逻辑。
 
-**作用一：可以在原来核心代码逻辑的前面和后面分别增加自己的代码。但是这样做的不足：别人在调取这段核心代码时也会执行到自己添加的代码（破坏了原有函数）。——面向切片编程（AOP）**
+**作用一：可以在原来核心代码逻辑的前面和后面分别增加自己的代码。但是这样做的不足：别人在调取这段核心代码时也会执行到自己添加的代码（破坏了原有函数）。**
 
-在 Vue2 中就用了 AOP 思想对数组原型上的方法进行额外逻辑捕获。
+**面向切片编程（AOP）**
+
+在 Vue2 中就用了 AOP 思想对数组原型上的方法进行额外逻辑补充。
 
 1. 扩展方法，基于原来的代码进行一系列扩展而不破坏原函数
 
@@ -153,7 +155,7 @@ let newFn = say.before(function () {
   console.log('say before');
 });
 
-newFn(); // 它会将befor函数传入的函数先执行，然后再执行say方法
+newFn(); // 它会将befor函数接受的函数先执行，然后再执行say方法
 
 // 箭头函数没有this,arguments,没有原型
 Function.prototype.before = function (callback) {
@@ -198,8 +200,6 @@ function perform(fn, wrappers) {
 
 
 函数自身不在定义函数时所在的词法作用域中执行就能形成闭包。
-
-
 
 **作用二：形成闭包保存变量**
 
@@ -322,7 +322,7 @@ let fn = after(3, function () {
 
 扩展：判断数据类型
 
-1. typeof 可以判断基础类型 typeof null == ’object‘ （缺陷就是只能判断基本类型），且不能判断 null
+1. typeof 可以判断基本类型 typeof null == ’object‘ （缺陷就是只能判断基本类型），且不能判断 null
 
    > 面试题：为什么 typeof null 返回 ‘object’ ？
    >
@@ -339,6 +339,8 @@ let fn = after(3, function () {
    > | `null`       | 全为 0          |
 
 2. Object.prototype.toString.call 比较严格（知道数据的类型，但无法细分谁是谁的实例）
+
+   如果直接运行Object.prototype.toString(value)  则并不会得到预想的想过，得到的都是[object Object]，因为相当于toString在执行时，内部this指向的是一个对象。
 
    > ```js
    > Object.prototype.toString.call(undefined); //  '[object Undefined]'
@@ -359,16 +361,16 @@ let fn = after(3, function () {
    >
    > Object.prototype.toString.call(null); // '[object Null]'
    >
-   > Object.prototype.toString.call({}); //  '[object Object]'
+   > Object.prototype.toString.call({ }); //  '[object Object]'
    >
    > Object.prototype.toString.call(new Set()); //  '[object Set]'
    >
    > Object.prototype.toString.call(new WeakMap()); // '[object WeakMap]'
    > ```
 
-3. instanceof xxx 是 Xxx 的实例
+3. instanceof xxx 是 Xxx 的实例（面试：instanceof的原理或者自己实现一个instanceof）
 
-   > ({})instanceof Object // true
+   > ({}) instanceof Object // true
 
 4. constructor 找到对应实例的构造函数
 
@@ -399,7 +401,12 @@ function uncurry(fn) {
   return function (...args) {
     let current = fn;
     for (let arg of args) {
-      current = current(arg);
+      if (typeof current === 'function') {
+        current = current(arg);
+        continue;
+      } else {
+        return current;
+      }
     }
     return current;
   };
@@ -553,7 +560,7 @@ console.log(composedFn1(str));
 ```js
 const fs = require('fs');
 
-let school = {};
+let school = { };
 
 fs.readFile('./name.txt', 'utf8', function (err, data) {
   school.name = data;
@@ -4913,16 +4920,14 @@ app.listen(3000,()=>{
 koa中每个功能可以以插件(中间件)的方式进行添加，中间件的本质是一个函数。这个函数接受两个参数
 
 ```js
-app.use(function (ctx,next){
+app.use(function (ctx, next){
   ctx.body = 'hello world'
 })
 ```
 
 
 
-
-
-
+### 中间件
 
 
 

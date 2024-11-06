@@ -1,5 +1,5 @@
 - 关注技术细节
-- 设计思想
+- 高层设计思想
 - 框架的设计权衡
 - 从设计角度出发，理解一些具体实现为什么选择这种方案
 
@@ -16,15 +16,16 @@
 内容：
 
 - 基于对框架的设计理解，逐渐实现vue3中的各个功能模块
-- 类HTML语法的模板解析器和实现一个支持插件架构的模板编译器
+  - 基于ECMAScript 规范，基于 Proxy 实现一个完善 的响应系统
+  -  基于WHATWG 规范，实现一个类 HTML 语法的模板解析器，并在此基础上实现一个支持插件架构的模板编译器
 - 框架设计的核心要素和设计时的权衡
-- 三种基于虚拟DOM的DIff算法
+- 三种基于虚拟DOM的Diff算法
 - vue中组件化的实现原理
 - 服务端，客户端渲染，同构渲染之间的差异与原理
 
 
 
-## 第一章
+## 第一章  框架设计概览
 
 以全局视角，审视**视图层框架**的设计问题，不然容易困在细节中而看不清全貌和整体的方向。
 
@@ -135,7 +136,7 @@ innerHTML 和虚拟 DOM 在**创建页面时**的性能：
 
 ![image-20231228103717384](images\image-20231228103717384.png)
 
-可以看到，无论是纯 JavaScript 层面的计算，还是 DOM 层面的计 算，其实两者差距不大。这里从宏观的角度只看数量级上的差 异。如果在同一个数量级，则认为没有差异。在创建页面的时候，都需要新建所有 DOM 元素。
+可以看到，无论是纯 JavaScript 层面的计算，还是 DOM 层面的计算，其实两者差距不大。这里从宏观的角度只看数量级上的差 异。如果在同一个数量级，则认为没有差异。在创建页面的时候，都需要新建所有 DOM 元素。
 
 
 
@@ -251,7 +252,7 @@ Render(obj, document.body)
 
 这样只需要一个 Compiler 函数就可以了，连 Render 都不需要了。其实这就变成了一个纯编译时的框架，因为不支持任何运行时内容，用户的代码通过编译器编译后才能直接运行。 
 
-一个框架既可以是纯运行时的，也可以是纯编译时的，还可以是既支持运行时又支持编译时的。那么，它们都有哪些优缺点呢？是不是既支持运行时又支持编译时的框架最好呢？ 
+一个框架既可以是纯运行时的，也可以是纯编译时的，还可以是既支持运行时又支持编译时的。那么，它们都有哪些优缺点？是不是既支持运行时又支持编译时的框架最好？ 
 
 
 
@@ -267,7 +268,7 @@ Render(obj, document.body)
 
 
 
-## 第二章
+## 第二章    框架设计的核心要素
 
 框架设计的关注点：
 
@@ -310,8 +311,6 @@ Vue.js 在输出资源的时候，会输出两个版本，其中一个用于开�
 当 Vue.js 用于构建生产环境的资源时，会把` __DEV__ `常量设置为 false，这时这段分支代码永远都不会执行，因为判断条件始终为假，这段永远不会 执行的代码称为 dead code，它不会出现在最终产物中，在构建资源的时候就会被移除。
 
 这样就做到了在开发环境中为用户提供友好的警告信息的同时，不会增加生产环境代码的体积。
-
-
 
 
 
@@ -396,8 +395,6 @@ export default config
 vue3中实现特性开关：
 
 - 本质是使用rollup.js的预定义常量插件 + tree-shaking机制来实现
-
-  
 
   
 
@@ -624,7 +621,7 @@ export default {
 
 ```
 
-h 函数的返回值就是一个对象，其作用是让编写虚拟 DOM 变得更加轻松。如果把上面 h 函数调用的代码改成 JavaScript 对 象，就需要写更多内容：
+h 函数的返回值就是一个对象，其作用是让**编写**虚拟 DOM 变得更加轻松。如果把上面 h 函数调用的代码改成 JavaScript 对 象，就需要写更多内容：
 
 ```js
 export default {
@@ -735,7 +732,7 @@ const MyComponent = function () {
 
 ```
 
-可以定义用虚拟 DOM 来描述组件。可以让虚拟 DOM 对象中的 tag 属性来存储组件函数：
+可以扩展虚拟DOM节点种类来描述组件。可以让虚拟 DOM 对象中的 tag 属性来存储组件函数：
 
 ```js
 const vnode = {
@@ -826,13 +823,15 @@ vnode.tag 是表达组件的对象，调用该对象的 render 函数得到组�
 
 
 
-### 模板的工作原理
+### 编译器
+
+无论是手写虚拟 DOM（渲染函数）还是使用模板，都属于声明式地描述 UI，并且 Vue.js 同时支持这两种描述 UI 的方式。
 
 上文讲解了虚拟 DOM 是如何渲染成真实 DOM 的。
 
 那模板是如何工作的呢？这就要提到 Vue.js 框架中的另外一个重要组成部分：编译器。
 
-编译器和渲染器一样，只是一段程序而已，不过它们的工作内容不同。编译器的作用其实就是将模板编译为渲染函数，例如给出如下模板：
+编译器和渲染器一样，只是一段程序，不过它们的工作内容不同。编译器的作用其实就是将模板编译为渲染函数，例如给出如下模板：
 
 ```vue
 <div @click="handler">
@@ -852,18 +851,18 @@ render() {
 
 ```vue
 <template>
-	<div @click="handler">
-    	click me
-    </div>
+  <div @click="handler">
+     click me
+  </div>
 </template>
 
 <script>
-    export default {
-        data() {/* ... */},
-        methods: {
-            handler: () => {/* ... */}
-        }
+  export default {
+    data() {/* ... */},
+    methods: {
+      handler: () => {/* ... */}
     }
+  }
 </script>
 ```
 
@@ -881,7 +880,7 @@ export default {
 }
 ```
 
-所以，无论是使用模板还是直接手写渲染函数，对于一个组件来说，它要渲染的内容最终都是通过渲染函数产生的，然后渲染器再把渲染函数返回的虚拟 DOM 渲染为真实 DOM，这就是模板的工作原 理，也是 Vue.js 渲染页面的流程。
+所以，无论是使用模板还是直接手写渲染函数，对于一个组件来说，它要渲染的内容最终都是通过渲染函数产生的，然后渲染器再把渲染函数返回的虚拟 DOM 渲染为真实 DOM，这就是模板的工作原理，也是 Vue.js 渲染页面的流程。
 
 
 
@@ -951,18 +950,18 @@ render() {
 
 ## 第四章
 
-- 响应式数据和副作用函数
+- 什么是响应式数据和副作用函数
 - 避免无限递归
-- 嵌套的副作用函数
+- 对嵌套的副作用函数的支持
 - 副作用函数之间的影响
-- 基于语言规范，Proxy实现完善一些的响应式数据
+- 基于语言规范，Proxy实现完善一些的对象代理
 - 响应式系统的设计与实现
 
 
 
 ### 响应式数据
 
-假设在一个副作用函数中读取了某个对象的属性：
+假设在一个副作用函数中读取了**某个对象**的属性：
 
 ```js
 const obj = { text: 'hello world' }
@@ -989,9 +988,9 @@ obj.text = 'hello vue3' // 修改 obj.text 的值，同时希望副作用函数�
 - 当副作用函数 effect 执行时，会触发字段 obj.text 的读取操作； 
 - 当修改 obj.text 的值时，会触发字段 obj.text 的设置操作。
 
-如果能拦截一个对象的读取和设置操作，当读取字段 obj.text 时，可以把副作用函数 effect 存储起来。当设置 obj.text 时，再把副作用函数 effect 取出并执行即可，
+如果能拦截对一个对象属性的读取和设置操作，当读取字段 obj.text 时，可以把副作用函数 effect 存储起来。当设置 obj.text 时，再把副作用函数 effect 取出并执行即可。
 
-现在问题的关键变成了如何才能拦截一个对象属性的读取和设置操作。在 ES2015 之前，只能通过 Object.defineProperty 函数实现，这是 Vue.js 2 所采用的方式。在 ES2015+ 中，可以使用代理对象 Proxy 来实现，这是 Vue.js 3 所采用的方式。
+那如何才能拦截一个对象属性的读取和设置操作。在 ES2015 之前，只能通过 Object.defineProperty 函数实现，这是 Vue.js 2 所采用的方式。在 ES2015+ 中，可以使用代理对象 Proxy 来实现，这是 Vue.js 3 所采用的方式。
 
 采用 Proxy 来实现：
 
@@ -1003,23 +1002,23 @@ const bucket = new Set()
 const data = { text: 'hello world' }
 // 对原始数据的代理
 const obj = new Proxy(data, {
-    // 拦截读取操作
-    get(target, key) {
-        // 将副作用函数 effect 添加到存储副作用函数的桶中
-        bucket.add(effect)
-        // 返回属性值
-        return target[key]
-    },
-    
-    // 拦截设置操作
-    set(target, key, newVal) {
-        // 设置属性值
-        target[key] = newVal
-        // 把副作用函数从桶里取出并执行
-        bucket.forEach(fn => fn())
-        // 返回 true 代表设置操作成功
-        return true
-    }
+  // 拦截读取操作
+  get(target, key) {
+    // 将副作用函数 effect 添加到存储副作用函数的桶中
+    bucket.add(effect)
+    // 返回属性值
+    return target[key]
+  },
+
+  // 拦截设置操作
+  set(target, key, newVal) {
+    // 设置属性值
+    target[key] = newVal
+    // 把副作用函数从桶里取出并执行
+    bucket.forEach(fn => fn())
+    // 返回 true 代表设置操作成功
+    return true
+  }
 })
 ```
 
@@ -1040,16 +1039,14 @@ setTimeout(() => {
 
 
 
-
-
 **改进：直接通过名字 （effect）来获取副作用函数，这种硬编码的方式很不灵活。一旦副作用函数的名字不叫 effect，那么这段代码就不能正确地工作。**
 
-提供一个用来注册副作用函数的机制：
+提供一个用来注册副作用函数的工具函数：
 
 ```js
 // 用一个全局变量存储被注册的副作用函数
 let activeEffect
-// effect 函数用于注册副作用函数
+// effect 工具函数用于注册副作用函数
 function effect(fn) {
     // 当调用 effect 注册副作用函数时，将副作用函数 fn 赋值给activeEffect
     activeEffect = fn
@@ -1091,7 +1088,7 @@ const obj = new Proxy(data, {
 
 
 
-如果再对这个系统稍加测试，例如在响应式数据 obj 上设置一个不存在的属性时：
+如果在响应式数据 obj 上**设置**一个不存在的属性时：
 
 ```js
 effect(
@@ -1116,7 +1113,7 @@ setTimeout(() => {
 
 导致该问题的根本原因是，**没有在副作用函数与被操作的目标属性之间建立明确的联系**。
 
-例如当读取属性时，无论读取的是哪一个属性，其实都一样，都会把副作用函数收集到“桶”里；当设置属性时，无论设置的是哪一个属性，也都会把“桶”里的副作用函 数取出并执行。副作用函数与被操作的字段之间没有明确的联系。解决方法很简单，只需要在副作用函数与被操作的字段之间建立联系即可，这就需要重新设计“桶”的数据结构，而不能简单地使用一个 Set 类型的数据作为“桶”了。
+例如当读取属性时，无论读取的是哪一个属性，其实都一样，都会把副作用函数收集到“桶”里；当设置属性时，无论设置的是哪一个属性，也都会把“桶”里的副作用函数取出并执行。副作用函数与被操作的字段之间没有明确的联系。解决方法很简单，只需要在副作用函数与被操作的字段之间建立联系即可，这就需要重新设计“桶”的数据结构，而不能简单地使用一个 Set 类型的数据作为“桶”了。
 
 
 
@@ -1141,7 +1138,7 @@ effect(function effectFn() {
 ```js
 target
   └── text
- 	   └── effectFn
+ 	      └── effectFn
 ```
 
 
@@ -1160,8 +1157,8 @@ effect(function effectFn2() {
 ```
 target
   └── text
- 	   └── effectFn1
- 	   └── effectFn2
+ 	     └── effectFn1
+ 	     └── effectFn2
 ```
 
 
@@ -1178,9 +1175,9 @@ effect(function effectFn2() {
 ```js
 target
   └── text1
- 	   └── effectFn2
+ 	       └── effectFn2
   └── text2
- 	   └── effectFn2
+ 	       └── effectFn2
 ```
 
 
@@ -1199,16 +1196,16 @@ effect(function effectFn2() {
 ```js
 target1
   └── text1
- 	   └── effectFn1
+ 	      └── effectFn1
 
 target2
   └── text2
- 	   └── effectFn2
+  	     └── effectFn2
 ```
 
 
 
-这个联系建立起来之后， 就可以解决前文提到的问题了。拿上面的例子来说，如果设置了 obj2.text2 的值，就只会导致 effectFn2 函数重新执行，并不会 导致 effectFn1 函数重新执行。
+这个联系建立起来之后， 就可以解决前文提到的问题了。拿上面的例子来说，如果设置了 obj2.text2 的值，就只会导致 effectFn2 函数重新执行，并不会导致 effectFn1 函数重新执行。
 
 
 
@@ -1274,7 +1271,7 @@ const obj = new Proxy(data, {
 
 ![image-20231229203805607](images\image-20231229203805607.png)
 
-
+把 Set 数据结构所存储的副作用函数集合称为 key 的依赖集合。
 
 对上文中的代码做一些封装处理。
 
@@ -1342,7 +1339,7 @@ effect(function effectFn() {
 ```js
 data
   └── ok
-      └── effectFn
+       └── effectFn
   └── text
        └── effectFn
 ```
@@ -1503,6 +1500,54 @@ function trigger(target, key) {
 
 ### 嵌套的 effect 与 effect 栈
 
+扩展： Vue.js 的渲染函数就是在一个 effect 中执行的。
+
+在 Vue 3 中，组件的渲染函数实际上是由 Vue 的响应式系统自动包装在一个 `effect` 中进行管理的。当组件中使用的响应式数据发生变化时，Vue 会触发这个 `effect`，重新执行渲染函数，以更新 DOM。
+
+**响应式系统的 `effect`**：
+
+- 当 Vue.js 检测到一个组件使用了响应式数据时（如 `state.count`），它会自动将这个组件的渲染函数包装在一个 `effect` 中。这是 Vue 内部的实现细节，你在代码中看不到这个 `effect` 的直接调用。
+- 当 `state.count` 发生变化时，Vue 会自动触发这个 `effect`，从而重新执行渲染函数。
+
+虽然无法直接看到 Vue.js 自动包装渲染函数的 `effect`，但可以通过 Vue 的源码或者 Vue 自定义渲染器来证明这一点。以下是用 Vue 3 自定义渲染器来解释这个机制的示例代码：
+
+可以使用 Vue 3 提供的 `@vue/reactivity` 包，手动模拟 Vue 的渲染机制，来展示渲染函数如何在 `effect` 中执行。
+
+```js
+import { reactive, effect } from '@vue/reactivity';
+import { h, createApp } from 'vue';
+
+// 手动创建一个响应式状态
+const state = reactive({ count: 0 });
+
+// 创建一个渲染函数
+function render() {
+  console.log('Render function executed with count:', state.count);
+  return h('div', [
+    h('p', `Count: ${state.count}`),
+    h('button', {
+      onClick: () => state.count++,
+    }, 'Increment')
+  ]);
+}
+
+// 手动创建一个 effect 来模拟 Vue 内部的渲染过程
+effect(() => {
+  // 每当 state.count 变化时，effect 会重新执行 render 函数
+  const vnode = render();
+  app._component.render = () => vnode;
+  app._container && app.mount(app._container); // 模拟组件的挂载和更新
+});
+
+// 创建 Vue 应用并挂载
+const app = createApp({ render });
+app.mount('#app');
+```
+
+
+
+
+
 effect可以嵌套。
 
 ```js
@@ -1605,7 +1650,7 @@ data
 
 修改了字段 obj.foo 的值，发现 effectFn1 并没有重新执行，反而使得 effectFn2 重新执行了，这不符合预期。
 
-出现上述问题的原因：全局变量 activeEffect 来存储通过 effect 函数注册的副作用函数，这意味着同一时刻 activeEffect 所存储的副作用函数只能有一个。当副作用函数发生嵌套时，内层副作用函数的执行会覆盖 activeEffect 的值，并且永远不会恢复到原来的值。这时如果再有响应式数据进行依赖收集，即使这个响应式数据是在外层副作用函 数中读取的，它们收集到的副作用函数也都会是内层副作用函数。
+出现上述问题的原因：全局变量 activeEffect 用来存储通过 effect 函数注册的副作用函数，这意味着同一时刻 activeEffect 所存储的副作用函数只能有一个。当副作用函数发生嵌套时，内层副作用函数的执行会覆盖 activeEffect 的值，并且永远不会恢复到原来的值。这时如果再有响应式数据进行依赖收集，即使这个响应式数据是在外层副作用函数中读取的，它们收集到的副作用函数也都会是内层副作用函数。
 
 解决办法：维护一个副作用函数栈 effectStack， 在副作用函数执行时，将当前副作用函数压入栈中，待副作用函数执行完毕后将其从栈中弹出，并始终让 activeEffect 指向栈顶的副作用函数。
 
@@ -1679,7 +1724,7 @@ const data = { foo: 1 }
 const obj = new Proxy(data, { /* ... */ })
 
 effect(() => {
-    console.log(obj.foo)
+  console.log(obj.foo)
 })
 
 obj.foo++
@@ -1840,7 +1885,9 @@ obj.foo++
 obj.foo++
 ```
 
+整段代码的效果是，连续对 obj.foo 执行两次自增操作，会同步 且连续地执行两次 scheduler 调度函数，这意味着同一个副作用函 数会被 jobQueue.add(fn) 语句添加两次，但由于 Set 数据结构的 去重能力，最终 jobQueue 中只会有一项，即当前副作用函数。类似 地，flushJob 也会同步且连续地执行两次，但由于 isFlushing 标 志的存在，实际上 flushJob 函数在一个事件循环内只会执行一次， 即在微任务队列内执行一次。当微任务队列开始执行时，就会遍历 jobQueue 并执行里面存储的副作用函数。由于此时 jobQueue 队列内只有一个副作用函数，所以只会执行一次，并且当它执行时，字段 obj.foo 的值已经是 3 了，这样我们就实现了期望的输出。
 
+这个功能有点类似于在 Vue.js 中连续多次 修改响应式数据但只会触发一次更新，实际上 Vue.js 内部实现了一个 更加完善的调度器，思路与上文介绍的相同。
 
 
 
@@ -1852,14 +1899,14 @@ obj.foo++
 
 ```js
 effect(
-    // 指定了 lazy 选项，这个函数不会立即执行
-    () => {
-        console.log(obj.foo)
-    },
-    // options
-    {
-        lazy: true
-    }
+  // 指定了 lazy 选项，这个函数不会立即执行
+  () => {
+    console.log(obj.foo)
+  },
+  // options
+  {
+    lazy: true
+  }
 )
 ```
 
@@ -1867,23 +1914,23 @@ effect(
 
 ```js
 function effect(fn, options = {}) {
-    const effectFn = () => {
-        cleanup(effectFn)
-        activeEffect = effectFn
-        effectStack.push(effectFn)
-        fn()
-        effectStack.pop()
-        activeEffect = effectStack[effectStack.length - 1]
-    }
-    effectFn.options = options
-    effectFn.deps = []
-    // 只有非 lazy 的时候，才执行
-    if (!options.lazy) { // 新增
-        // 执行副作用函数
-        effectFn()
-    }
-    // 将副作用函数作为返回值返回
-    return effectFn // 新增
+  const effectFn = () => {
+    cleanup(effectFn)
+    activeEffect = effectFn
+    effectStack.push(effectFn)
+    fn()
+    effectStack.pop()
+    activeEffect = effectStack[effectStack.length - 1]
+  }
+  effectFn.options = options
+  effectFn.deps = []
+  // 只有非 lazy 的时候，才执行
+  if (!options.lazy) { // 新增
+    // 执行副作用函数
+    effectFn()
+  }
+  // 将副作用函数作为返回值返回
+  return effectFn // 新增
 }
 ```
 
@@ -2022,28 +2069,28 @@ console.log(sumRes.value) // 3
 
 ```js
 function computed(getter) {
-    let value
-    let dirty = true
+  let value
+  let dirty = true
 
-    const effectFn = effect(getter, {
-        lazy: true,
-        // 添加调度器，在调度器中将 dirty 重置为 true
-        scheduler() {
-            dirty = true
-        }
-    })
-
-    const obj = {
-        get value() {
-            if (dirty) {
-                value = effectFn()
-                dirty = false
-            }
-            return value
-        }
+  const effectFn = effect(getter, {
+    lazy: true,
+    // 添加调度器，在调度器中将 dirty 重置为 true
+    scheduler() {
+      dirty = true
     }
+  })
 
-    return obj
+  const obj = {
+    get value() {
+      if (dirty) {
+        value = effectFn()
+        dirty = false
+      }
+      return value
+    }
+  }
+
+  return obj
 }
 ```
 
@@ -2064,9 +2111,9 @@ obj.foo++
 
 ```
 
-sumRes 是一个计算属性，并且在另一个 effect 的副作用函数中读取了 sumRes.value 的值。如果此时修改 obj.foo 的值，期望副作用函数重新执行，就像在 Vue.js 的模板中读取计算属性值的时候，一旦计算属性发生变化就会触发重新渲染一样。但是如果尝试运行上面这段代码，会发现修改 obj.foo 的 值并不会触发副作用函数的渲染。
+sumRes 是一个计算属性，并且在另一个 effect 的副作用函数中读取了 sumRes.value 的值。如果此时修改 obj.foo 的值，期望副作用函数重新执行，就像在 Vue.js 的模板中读取计算属性值的时候，一旦计算属性发生变化就会触发重新渲染一样。但是如果尝试运行上面这段代码，会发现修改 obj.foo 的值并不会触发副作用函数的渲染。
 
-从本质上看这就是一个典型的 effect 嵌套。一个计算属性内部拥有自己的 effect，并且它是懒执行的，只有当真正读取计算属性的值时才会执行。对于计算属性的 getter 函数来说，它里面访问的响应式数据只会把 computed 内部的 effect 收集为依赖。而当把计算属性用于另外一个 effect 时， 就会发生 effect 嵌套，外层的 effect 不会被内层 effect 中的响 应式数据收集。
+从本质上看这就是一个典型的 effect 嵌套。一个计算属性内部拥有自己的 effect，并且它是懒执行的，只有当真正读取计算属性的值时才会执行。对于计算属性的 getter 函数来说，它里面访问的响应式数据只会把 computed 内部的 effect 收集为依赖。而当把计算属性用于另外一个 effect 时， 就会发生 effect 嵌套，外层的 effect 不会被内层 effect 中的响应式数据收集。
 
 解决办法：当读取计算属性的值时，可以手动调用 track 函数进行追踪；当计算属性依赖的响应式数据发生变化时，可以手动调用 trigger 函数触发响应：
 
@@ -2446,11 +2493,11 @@ watch(obj, async () => {
 
 这段代码会发生竞态问题。假设第一次修改 obj 对象的某个字段值，这会导致回调函数执行，同时发送了第一次请求 A。随着时间的推移，在请求 A 的结果返回之前，对 obj 对象的某个字段值进行了第二次修改，这会导致发送第二次请求 B。此时请求 A 和请求 B 都在进行中，那么哪一个请求会先返回结果呢？不确定，如果请求 B 先于请求 A 返回结果，就会导致最终 finalData 中存储的是 A 请求的结果。
 
-![image-20231231110824018](C:\Users\dukkha\Desktop\learn-notes\vue\images\image-20231231110824018.png)
+![image-20231231110824018](.\images\image-20231231110824018.png)
 
 由于请求 B 是后发送的，因此认为请求 B 返回的数据才是 “最新”的，而请求 A 则应该被视为“过期”的，所以希望变量 finalData 存储的值应该是由请求 B 返回的结果，而非请求 A 返回的结果。
 
-请求 A 是副作用函数第一次执行所产生的副作用，请求 B 是副作用函数第二次执行所产 生的副作用。由于请求 B 后发生，所以请求 B 的结果应该被视为“最 新”的，而请求 A 已经“过期”了，其产生的结果应被视为无效。通过这 种方式，就可以避免竞态问题导致的错误结果。
+请求 A 是副作用函数第一次执行所产生的副作用，请求 B 是副作用函数第二次执行所产 生的副作用。由于请求 B 后发生，所以请求 B 的结果应该被视为“最 新”的，而请求 A 已经“过期”了，其产生的结果应被视为无效。通过这种方式，就可以避免竞态问题导致的错误结果。
 
 归根结底，需要的是一个让副作用过期的手段。为了让问题更加清晰，先拿 Vue.js 中的 watch 函数来复现场景，看看 Vue.js 是如何帮助开发者解决这个问题的，然后尝试实现这个功能。
 
@@ -2560,15 +2607,19 @@ setTimeout(() => {
 
 如以上代码所示，修改了两次 obj.foo 的值，第一次修改是立即执行的，这会导致 watch 的回调函数执行。由于在回调函数内调用了 onInvalidate，所以会注册一个过期回调，接着发送请求 A。假设请求 A 需要 1000ms 才能返回结果，而在 200ms 时第二次修改了 obj.foo 的值，这又会导致 watch 的回调函数执行。这时要注意的是，在实现中，每次执行回调函数之前要先检查过期回调是否存在，如果存在，会优先执行过期回调。由于在 watch 的回调 函数第一次执行的时候，已经注册了一个过期回调，所以在watch 的回调函数第二次执行之前，会优先执行之前注册的过期回调，这会使得第一次执行的副作用函数内闭包的变量 expired 的值变 为 true，即副作用函数的执行过期了。于是等请求 A 的结果返回时， 其结果会被抛弃，从而避免了过期的副作用函数带来的影响，如图：
 
-![image-20231231111951514](C:\Users\dukkha\Desktop\learn-notes\vue\images\image-20231231111951514.png)
+![image-20231231111951514](.\images\image-20231231111951514.png)
 
 
 
 ## 第五章
 
-响应式数据本身，实现响应式数据都需要考虑哪些内容，其中的难点又是什么。如何拦截 for...in 循环？track 函数如何追踪拦截到的 for...in 循环？如何对数组进行代理？如何支持集合类型的代理？
+响应式数据本身，实现响应式数据都需要考虑哪些内容，其中的难点又是什么。
 
+实现响应式数据并不是像上一章讲述的那样，单纯地拦截 get/set 操作即可。
 
+如何拦截 for...in 循环？track 函数如何追踪拦截到的 for...in 循环？如何对数组进行代理？如何支持集合类型的代理，如 Map、Set、WeakMap 以及 WeakSet 等？该如何对集合类型进行代理？
+
+想要实现完善的响应式数据，需要深入语言规范。本章在讲解完整的响应式系统实现的同时，也会从语言规范的层面来分析原因，对响应式数据有更深入的理解。
 
 ### proxy
 
@@ -2594,7 +2645,7 @@ const p2 = new Proxy(fn, {
 p2('hcy') // 输出：'我是：hcy'
 ```
 
-Proxy 只能够拦截对一个 对象的基本操作。
+Proxy 只能够拦截对一个对象的基本操作。
 
 那典型的非基本操作：调用对象的方法。（复合操作）
 
@@ -2695,7 +2746,7 @@ const obj = {
 }
 ```
 
-使用 this.foo 读取 foo 属性值时，这里的 this 指向的 是谁？回顾一下整个流程。首先，通过代理对象 p 访问 p.bar，这会触发代理对象的 get 拦截函数执行：
+使用 this.foo 读取 foo 属性值时，这里的 this 指向的是谁？回顾一下整个流程。首先，通过代理对象 p 访问 p.bar，这会触发代理对象的 get 拦截函数执行：
 
 ```js
 const p = new Proxy(obj, {
@@ -2758,9 +2809,9 @@ const p = new Proxy(obj, {
 | [[GetPrototypeOf]]    | ( ) → Object \| null                              | 查明为该对象提供继承属性的对象， null 代表没有继承属性       |
 | [[SetPrototypeOf]]    | (Object \| Null) → Boolean                        | 将该对象与提供继承属性的另一个对 象相关联。传递 null 表示没有继承属性，返回 true 表示操作成功完 成，返回 false 表示操作失败 |
 | [[IsExtensible]]      | ( ) → Boolean                                     | 查明是否允许向该对象添加其他属性                             |
-| [[PreventExtensions]] | ( ) → Boolean                                     | 控制能否向该对象添加新属性。如果操作成功则返回 true，如果操作失败 则返回 false |
+| [[PreventExtensions]] | ( ) → Boolean                                     | 控制能否向该对象添加新属性。如果操作成功则返回 true，如果操作失败则返回 false |
 | [[GetOwnProperty]]    | (propertyKey) → Undefined  \| Property Descriptor | 返回该对象自身属性的描述符，其键 为 propertyKey，如果不存在这样的 属性，则返回 undefined |
-| [[DefineOwnProperty]] | (propertyKey, PropertyDescriptor) → Boolean       | 创建或更改自己的属性，其键为 propertyKey，以具有由 PropertyDescriptor 描述的状态。如 果该属性已成功创建或更新，则返回 true；如果无法创建或更新该属性， 则返回 false |
+| [[DefineOwnProperty]] | (propertyKey, PropertyDescriptor) → Boolean       | 创建或更改自己的属性，其键为 propertyKey，以具有由 PropertyDescriptor 描述的状态。如果该属性已成功创建或更新，则返回 true；如果无法创建或更新该属性， 则返回 false |
 | [[HasProperty]]       | (propertyKey) → Boolean                           | 返回一个布尔值，指示该对象是否已 经拥有键为 propertyKey 的自己的或 继承的属性 |
 | [[Get]]               | (propertyKey, Receiver) → any                     | 从该对象返回键为 propertyKey 的属 性的值。如果必须运行 ECMAScript 代码来检索属性值，则在运行代码时 使用 Receiver 作为 this 值 |
 | [[Set]]               | (propertyKey, value, Receiver) → Boolean          | 将键值为 propertyKey 的属性的值设 置为 value。如果必须运行 ECMAScript 代码来设置属性值，则 在运行代码时使用 Receiver 作为 this 值。如果成功设置了属性值，则 返回 true；如果无法设置，则返回 false |
@@ -2842,7 +2893,7 @@ effect(()=>{
 })
 ````
 
-响应系统应该拦截一切读取操 作，以便当数据变化时能够正确地触发响应。下面列出了对一个普通 对象的所有可能的读取操作。
+响应系统应该拦截一切读取操作，以便当数据变化时能够正确地触发响应。下面列出了对一个普通对象的所有可能的读取操作。
 
 - 访问属性：obj.foo。
 - 判断对象或原型上是否存在给定的 key：key in obj。
@@ -2854,13 +2905,22 @@ effect(()=>{
 
 - 对于 in 操作符，寻找与 in 操作符对应的拦截函数，如果找不到直接与in相关的自定义内部方法和行为的拦截函数名字，这时就需要去查看ECMA规范，规范中会明确定义 in 操作符的运行时逻辑
 
-  ![image-20240103114758916](C:\Users\dukkha\Desktop\learn-notes\vue\images\image-20240103114758916.png)
+  <img src=".\images\image-20240103114758916.png" alt="image-20240103114758916" style="zoom:150%;" />
 
-  关键点在第 6 步，可以发现，in 操作符的运算结果是通过调用一 个叫作 HasProperty 的抽象方法得到的。关于 HasProperty 抽象 方法，可以在 ECMA-262 规范的 7.3.11 节中找到，它的操作如图：
+  1. 让 lref 的值为 RelationalExpression 的执行结果。 
+  2. 让 lval 的值为 ? GetValue(lref)。 
+  3. 让 rref 的值为 ShiftExpression 的执行结果。 
+  4. 让 rval 的值为 ? GetValue(rref)。 
+  5. 如果 Type(rval) 不是对象，则抛出 TypeError 异常。 
+  6. 返回 ? HasProperty(rval, ? ToPropertyKey(lval))。
 
-  ![image-20240103114837723](C:\Users\dukkha\Desktop\learn-notes\vue\images\image-20240103114837723.png)
+  
 
-  在第 3 步中，可以看到 HasProperty 抽象方法的返回值是通过 调用对象的内部方法 [[HasProperty]] 得到的。而 [[HasProperty]] 内部方法对应的拦截函数名叫 has，因此可以通过 has 拦截函数实现对 in 操作符的代理。
+  关键点在第 6 步，可以发现，in 操作符的运算结果是通过调用一个叫作 HasProperty 的抽象方法得到的。关于 HasProperty 抽象 方法，可以在 ECMA-262 规范的 7.3.11 节中找到，它的操作如图：
+
+  <img src=".\images\image-20240103114837723.png" alt="image-20240103114837723" style="zoom:150%;" />
+
+  在第 3 步中，可以看到 HasProperty 抽象方法的返回值是通过调用对象的内部方法 [[HasProperty]] 得到的。而 [[HasProperty]] 内部方法对应的拦截函数名叫 has，因此可以通过 has 拦截函数实现对 in 操作符的代理。
 
   ```js
   const obj = { foo: 1 }
@@ -2876,26 +2936,26 @@ effect(()=>{
 
   在规范的 14.7.5.6 节中定义了 for...in 头部的执行规则：
 
-  ![image-20240103115348142](C:\Users\dukkha\Desktop\learn-notes\vue\images\image-20240103115348142.png)
+  <img src=".\images\image-20240103115348142.png" alt="image-20240103115348142" style="zoom: 200%;" />
 
   其中的关键点在于 EnumerateObjectProperties(obj)。这 里的 EnumerateObjectProperties 是一个抽象方法，该方法返回 一个迭代器对象，规范的 14.7.5.9 节给出了满足该抽象方法的示例实现，如下面的代码所示：
 
   ```js
   function* EnumerateObjectProperties(obj) {
-      const visited = new Set();
-      for (const key of Reflect.ownKeys(obj)) {
-          if (typeof key === "symbol") continue;
-          const desc = Reflect.getOwnPropertyDescriptor(obj, key);
-          if (desc) {
-              visited.add(key);
-              if (desc.enumerable) yield key;
-          }
+    const visited = new Set();
+    for (const key of Reflect.ownKeys(obj)) {
+      if (typeof key === "symbol") continue;
+      const desc = Reflect.getOwnPropertyDescriptor(obj, key);
+      if (desc) {
+        visited.add(key);
+        if (desc.enumerable) yield key;
       }
-      const proto = Reflect.getPrototypeOf(obj);
-      if (proto === null) return;
-      for (const protoKey of EnumerateObjectProperties(proto)) {
-          if (!visited.has(protoKey)) yield protoKey;
-      }
+    }
+    const proto = Reflect.getPrototypeOf(obj);
+    if (proto === null) return;
+    for (const protoKey of EnumerateObjectProperties(proto)) {
+      if (!visited.has(protoKey)) yield protoKey;
+    }
   }
   ```
 
@@ -2930,7 +2990,7 @@ effect(()=>{
 
 规范的 13.5.1.2 节中明确定 义了 delete 操作符的行为：
 
-![image-20240103123715786](C:\Users\dukkha\Desktop\learn-notes\vue\images\image-20240103123715786.png)
+<img src=".\images\image-20240103123715786.png" alt="image-20240103123715786" style="zoom:200%;" />
 
 由第 5 步中的 d 子步骤可知，delete 操作符的行为依赖 [[Delete]] 内部方法。该内部方法可以使用 deleteProperty 拦截：
 

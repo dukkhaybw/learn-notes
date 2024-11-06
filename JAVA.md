@@ -2,6 +2,38 @@
 
 # JAVA
 
+java有许多优秀的语言特性。java是一个完整的平台，有庞大的库（大量可重用的代码），是一个提供了安全性，跨操作系统的可移植性，自动垃圾收集，绘图功能，网络连接功能和数据库存取功能等服务的**执行环境**。
+
+java语法易读和易理解。
+
+
+
+
+
+java的特点：
+
+1. 简单性
+
+   java语言在设计的时候就借鉴了c++，但是提出了c++中很少使用，难以理解，容易混淆的特性。（没有头文件，指针运算），结构，联合，操作符重载，虚基类等。
+
+2. 面向对象
+
+   不支持多继承，但是接口特性强大。
+
+3. 分布式
+
+   java提供的例程库用于处理http，ftp等基于tcp/ip协议。
+
+4. 健壮性
+
+   java强调早期问题的检测，运行时检测，与C++不同的是，java采用的指针模型可以消除重写内存和损坏数据的可能性。java的编译器也能检测许多在其他语言的运行时才能检测出来的问题。
+
+5. 安全性
+
+   因为java要用于开发网络应用和分布式系统，所以java在设计之初，就考虑了安全性，比如防止蠕虫病毒攻击的运行时堆栈溢出，无法破坏自己进程空间之外的内存，无法实现未经授权的文件读写。基于安全沙箱环境。
+
+
+
 ## 语言概述
 
 程序：计算机能运行的一系列有序指令的集合，它为了解决某个问题。
@@ -60,6 +92,8 @@ JDK、JRE 和 JVM 的包含关系
 - JDK = JRE + 开发工具集（例如 Javac,java 编译工具等) 
 - JRE = JVM + Java SE 标准类库（java 核心类库） 
 - 如果只想运行开发好的 .class 文件只需要 JRE
+
+
 
 
 
@@ -122,9 +156,37 @@ java Hello (不能带.class后缀) ：该指令是指找到Hello这个主类来�
 
 
 
+### 文档注释
+
+通过文档注释，注释的内容可以被Jdk提供的工具javadoc解析，生成一套以网页文件形式展示的程序的说明文档，一般用于对类进行注释。
+
+```java
+/**
+	*	@author name
+	* @version 1.0.0
+	*/
+public class Comment{
+  public static void main(String[] args){
+    
+  }
+}
+```
+
+@xxxxx 被叫做javadoc标签，并不是随便写的。
 
 
-数据类型
+
+```shell
+javadoc -d 目录名 -xx -yy 文件名.java
+
+javadoc -d d:\\temp -author -version Comment.java
+```
+
+
+
+
+
+### 数据类型
 
 每一种数据都属于某种明确的数据类型，在内存中分配了不同大小的内存空间(字节)。
 
@@ -212,7 +274,7 @@ char c3 = '韩';
 char c4 = 97;
 ```
 
-- 在java中字符的本质是一个整数，输出时对应的时unicode编码集中的字符
+- 在java中字符的本质是一个整数，输出时对应的是unicode编码集中的字符
 - 可以直接给一个char类型的变量赋值一个整数
 - char类型的值或者变量是可以进行运算的，相当于一个整数参与运算
 
@@ -235,6 +297,10 @@ System.out.println(c5); //99->对应的字符->编码表 ASCII(规定好的)=>c
 ```
 
 注意‘a’ + 10 不是‘a10’，因为‘a’不是字符串，只有字符串才是拼接功能。
+
+
+
+![image-20241004160204946](D:\learn-notes\images\image-20241004160204946.png)
 
 
 
@@ -263,6 +329,9 @@ boolean：true、false。
 - 有多种类型的数据混合运算时，系统首先自动将所有数据转换成容量最大的那种数据类型，然后再进行计算。
 
   ```java
+  int a = 'c';  //  可以
+  double d = 80;  // 可以
+  
   int n1 = 10; //ok
   //float d1 = n1 + 1.1;//错误 n1 + 1.1 => 结果类型是 double
   //double d1 = n1 + 1.1;//对 n1 + 1.1 => 结果类型是 double
@@ -284,9 +353,11 @@ boolean：true、false。
   ```java
   // 当把具体数赋给 byte 时，先判断该数是否在 byte 范围内，如果是就可以
   byte b1 = 10; //对 , byte:-128-127
-  // int n2 = 1; //n2 是 int
-  // byte b2 = n2; //错误，原因： 如果是变量赋值，判断类型
-  // char c1 = b1; //错误， 原因 byte 不能自动转成 char
+  
+  int n2 = 1; //n2 是 int
+  byte b2 = n2; //错误，原因： 如果是变量赋值，判断类型
+  
+  char c1 = b1; //错误， 原因 byte 不能自动转成 char
   ```
 
   
@@ -298,7 +369,9 @@ boolean：true、false。
   byte b3 = 2;
   short s1 = 1;
   //short s2 = b2 + s1;//错, b2 + s1 => int
+  
   int s2 = b2 + s1;//对, b2 + s1 => int
+  
   //byte b4 = b2 + b3; //错误: b2 + b3 => int
   ```
 
@@ -325,6 +398,170 @@ boolean：true、false。
   ```
 
   
+
+
+
+在java中，为什么 int a = 10 或者  byte b = 10 并不会出现编译错误，而float c = 1  + 1.1就会报编译错误？ 
+
+在 Java 中，出现这个现象的原因与 **数据类型的精度和自动类型提升规则** 相关。
+
+1. **`int a = 10` 和 `byte b = 10` 不会报错**
+
+**原因：常量表达式可以直接赋值**
+
+- 当你写 `int a = 10` 或者 `byte b = 10` 时，`10` 是一个编译时的常量表达式，编译器知道它的值并且可以安全地将其赋值给 `int` 和 `byte` 类型的变量。
+- Java 编译器会自动处理**常量表达式**的赋值。对于 `byte`、`short`、`char` 这些数据类型，只要你赋的值在它们的范围之内（例如 `byte` 的范围是 `-128` 到 `127`），编译器会自动将常量值赋给变量。
+
+```java
+byte b = 10;  // 合法，因为 10 是常量，且在 byte 的范围内
+int a = 10;   // 合法，因为 10 是常量并适合 int 类型
+```
+
+2. **`float c = 1 + 1.1` 会报编译错误**
+
+**原因：默认的 `double` 类型不能隐式转换为 `float`**
+
+- 在 Java 中，**小数的默认类型是 `double`**。因此，`1.1` 是一个 `double` 类型的常量，而不是 `float` 类型的常量。
+- 当你写 `float c = 1 + 1.1` 时，`1` 是 `int` 类型，而 `1.1` 是 `double` 类型。根据 Java 的自动类型提升规则，`int` 和 `double` 进行运算时，`int` 会被自动提升为 `double`，然后 `1 + 1.1` 的结果是 `double` 类型。
+- `double` 类型的值不能直接赋值给 `float` 类型，因为 `double` 的精度比 `float` 高，直接赋值会有可能丢失精度。Java 需要你显式地进行类型转换。
+
+**解决办法：显式类型转换**
+
+你可以使用强制类型转换来将 `double` 转换为 `float`：
+
+```java
+float c = (float) (1 + 1.1);  // 合法，因为你显式地将 double 转换为 float
+```
+
+**为什么 `float c = 1.1` 也会报错？**
+
+即使你直接写 `float c = 1.1;`，也会报错，因为 `1.1` 是 `double` 类型，不能隐式转换为 `float`。
+
+解决办法是加上后缀 `f`，明确告诉编译器这是一个 `float` 类型的常量：
+
+```
+java
+
+
+复制代码
+float c = 1.1f;  // 合法，1.1f 是 float 类型常量
+```
+
+3. **总结**
+
+- **`int`、`byte` 和其他整数类型的常量**可以直接赋值给变量，只要数值在该类型的范围内，编译器会自动处理。
+- **`double` 是 Java 中浮点数的默认类型**，而 `float` 的精度较低，所以不能隐式地将 `double` 赋值给 `float`，需要进行显式的类型转换或使用 `float` 类型常量（后缀 `f`）。
+- 通过显式转换或使用 `f` 后缀，**可以避免编译错误**
+
+
+
+
+
+
+
+在 Java 中，不同类型之间的赋值操作遵循严格的类型转换规则。这些规则决定了在特定情况下是否需要显式转换（强制类型转换）以及编译器是否会自动进行隐式转换。你提到的两个情况：
+
+1. **`int a = 10;` 或 `byte b = 10;`** 不会出现编译错误。
+2. **`float c = 1 + 1.1;`** 会出现编译错误。
+
+以下是对此现象的详细解释：
+
+1. **整数赋值与隐式转换**
+
+a. **`int a = 10;`**
+
+- **解析**：这里将整数常量 `10` 赋值给变量 `a`，其类型为 `int`。
+- **原因**：`10` 是一个整数常量，默认类型为 `int`。将 `int` 赋值给 `int` 类型变量是完全匹配的，不需要任何转换，因此不会出现编译错误。
+
+b. **`byte b = 10;`**
+
+- **解析**：将整数常量 `10` 赋值给变量 `b`，其类型为 `byte`。
+
+- **原因**：
+
+  - 虽然 `byte` 的取值范围是 `-128` 到 `127`，而 `10` 处于这个范围内。
+  - Java 允许**编译时常量表达式**（如直接赋值的整数常量）从较大的整数类型（如 `int`）隐式地**窄化**到较小的整数类型（如 `byte`、`short` 或 `char`），前提是该常量值在目标类型的范围内。
+  - 因此，`byte b = 10;` 是合法的，不需要显式转换。
+
+  ```java
+  byte b = 10; // 合法，因为10在byte的范围内
+  ```
+
+2. **浮点数赋值与编译错误**
+
+#### **`float c = 1 + 1.1;`**
+
+- **解析**：将表达式 `1 + 1.1` 的结果赋值给变量 `c`，其类型为 `float`。
+
+- **原因**：
+
+  - 在 Java 中，默认的浮点数类型是 `double`。因此，`1.1` 被解析为 `double` 类型。
+  - 表达式 `1 + 1.1` 中，`1` 被提升为 `double`，然后与 `1.1` 进行加法运算，结果是 `double` 类型。
+  - 试图将 `double` 类型的结果赋值给 `float` 类型的变量 `c` 时，**从 `double` 到 `float` 是一种** **窄化转换**，即从较高精度的类型转换为较低精度的类型。
+  - Java 不允许**隐式的窄化转换**，因为这可能导致精度丢失或数据截断。因此，这会导致编译错误。
+
+  ```java
+  float c = 1 + 1.1; // 编译错误：可能会丢失精度，从 double 转换为 float
+  ```
+
+**如何修复这个错误？**
+
+有几种方法可以将表达式的结果正确赋值给 `float` 类型的变量：
+
+a. **使用浮点数字面量（`f` 或 `F`）**
+
+通过在数字后面加上 `f` 或 `F`，将其明确声明为 `float` 类型。
+
+```
+java
+
+
+复制代码
+float c = 1.0f + 1.1f; // 合法，所有数值都是 float 类型
+```
+
+b. **显式强制类型转换**
+
+使用强制类型转换将 `double` 类型的结果转换为 `float`。
+
+```
+java
+
+
+复制代码
+float c = (float)(1 + 1.1); // 合法，通过强制转换
+```
+
+c. **分步赋值**
+
+将 `double` 类型的表达式结果赋值给一个 `double` 类型的变量，然后再将其转换为 `float`。
+
+```
+java复制代码double temp = 1 + 1.1;
+float c = (float) temp; // 合法，通过分步转换
+```
+
+3. **总结**
+
+- **整数赋值**：
+  - **`int a = 10;`**：直接将 `int` 类型的常量赋值给 `int` 变量，完全匹配，无需转换。
+  - **`byte b = 10;`**：虽然 `byte` 类型小于 `int`，但 Java 允许编译时常量在范围内的隐式窄化转换。
+- **浮点数赋值**：
+  - **`float c = 1 + 1.1;`**：表达式结果为 `double` 类型，无法隐式转换为 `float`，导致编译错误。
+  - **解决方法**：使用浮点数字面量 (`f`/`F`) 或显式强制类型转换。
+
+4. **补充说明：类型转换的原则**
+
+Java 中的类型转换遵循以下基本原则：
+
+1. **自动类型转换（隐式转换）**：
+   - **适用情况**：从较小的数据类型转换为较大的数据类型（如 `int` 到 `long`，`float` 到 `double`）。
+   - **原因**：不涉及精度丢失或数据截断，编译器自动处理。
+2. **强制类型转换（显式转换）**：
+   - **适用情况**：从较大的数据类型转换为较小的数据类型（如 `double` 到 `float`，`long` 到 `int`）。
+   - **原因**：可能涉及精度丢失或数据截断，需要程序员明确声明转换意图。
+
+理解这些类型转换规则，有助于避免在编写 Java 代码时遇到不必要的编译错误。
 
 
 
@@ -367,8 +604,6 @@ System.out.println(b1);
 
 - byte和short,char 类型在进行运算时，当做int类型处理
 
-
-
 ```java
 short s = 12; //ok
 s = s-9; //错误 int ->short
@@ -406,7 +641,7 @@ System.out.printIn(s1 + " " + s2 + " " + s3 + " " + s4);
 
 
 
-字符串类型转为基本类型：
+字符串类型转为基本类型：通过基本类型的包装类再调用parseXXX方法即可。
 
 ```java
 //String->对应的基本数据类型
@@ -590,6 +825,15 @@ b++; // b = (byte)(b+1);
 
 
 
+```java
+byte b = 3;
+b += 2;   // 等价于 b = (byte) (b + 2)
+
+b++; // 等价于 b = (byte) (b + 1)
+```
+
+
+
 ### 三元运算符
 
 条件表达式 ? 表达式 1: 表达式 2; 
@@ -632,12 +876,16 @@ if ( a > b) {
 标识符的命名规则(必须遵守)：
 
 - 由26个英文字母大小写，0-9 ，或 $ 组成
+
 - 数字不可以开头。int 3ab = 1;//错误
+
 - 不可以使用关键字和保留字，但能包含关键字和保留字
+
 - Java中严格区分大小写，长度无限制。int totalNum = 10: int n = 90:
+
 - 标识符不能包含空格。int a b = 90;
 
-### 
+  
 
 命名规范：
 
@@ -894,23 +1142,83 @@ char gender = scanner.next().charAt(0)  // 接收字符
 
 
 
+在java中只要是一个表达式就一定会有一个值返回。
+
 switch注意事项和细节
 
-1. 表达式数据类型应和case 后的常量类型一致，或者是可以自动转成可以相互比较类型，比如输入的是字符，而常量是 int
+1. 表达式返回值的数据类型应和case后的**常量**类型一致，或者是可以自动转成可以相互比较类型，比如输入的是字符，而常量是 int
 
-2. switch(表达式)中表达式的返回值必须是：byte，short，int，char，enum，String中的一种
+   ```java
+   public class Details{
+     public static void main(String[] args){
+       char c = 'c';
+       switch(c){
+         case 'a':
+           // ....
+           break;
+         case "b":
+           // ....
+           break;
+       }
+     }
+   }
+   
+   // 编译阶段直接报错，因为字符串"b" 不能和char进行兼容。
+   ```
+
+   
+
+   ```java
+   public class Details{
+     public static void main(String[] args){
+       char c = 'c';
+       switch(c){
+         case 'a':
+           // ....
+           break;
+         case 20:
+           // ....
+           break;
+       }
+     }
+   }
+   
+   // 编译和执行都能通过，因为char类型可以自动转换为int类型
+   ```
+
+   
+
+   
+   
+2. **switch(表达式)中表达式的返回值必须是：byte，short，int，char，enum，String中的一种**
 
    ````java
    double c = 1.1;
    switch(c){//错误
-   	case 1.1 : //错误
-           System.out.println( "ok3");
-           break;
+     case 1.1 : //错误
+       System.out.println( "ok3");
+       break;
    ````
 
-3. case子句中的值必须是常量（或者常量表达式），而不能是变量
+3. **case子句中的值必须是常量（或者常量表达式），而不能是变量**
+
+   ```java
+   int a = 1;
+   int c = 2;
+   
+   switch(c){
+     case a : //错误
+       System.out.println( "ok3");
+       break;
+   ```
+
+   
+
 4. default子句是可选的，当没有匹配的case时，执行default
+
 5. break语句用来在执行完一个case分支后使程序跳出switch语句块; 如果没有写break，程序会顺序执行到switch结尾，或者直到遇到break语句
+
+   
 
 <img src=".\images\image-20230818090119123.png" alt="image-20230818090119123" style="zoom:200%;" />
 
@@ -930,9 +1238,515 @@ switch注意事项和细节
 
 
 
-### 面向对象编程基础
+## 数组
 
-#### 类与对象
+java中的数组只能存放多个同一类型的数据。数组属于引用类型下面的一种子类型。
+
+定义数组方式：
+
+1. 数据类型[] 数组名字 ={元素值1,....};
+2. 数据类型 数组名字[] ={元素值1,....};
+3. 数据类型[] 数组名字 = new 数据类型[length];
+
+ java中数组创建后，如果没有赋值，则根据类型不同，会有不同的默认值。
+
+
+
+
+
+### 二维数组
+
+动态初始化：
+
+类型`[][]` 数组名 = new 类型`[n][m]`   表示一个有n个元素的数组（行），数组中的每一个元素又是一个有m个元素的数组（列）。
+
+
+
+
+
+## IEDA
+
+IEDA以项目为单位管理代码。
+
+
+
+
+
+## 包
+
+在同一个包中不能有同名的类。
+
+包的作用：
+
+1. 区分相同名字的类
+2. 用于分组管理不同的类
+3. 控制访问范围
+
+
+
+包的基本语法：
+
+package xxx.yyy.zzz
+
+package是一个关键字，表示打包，把包中的类进行打包。
+
+ xxx.yyy.zzz表示一个包名
+
+xxx.yyy也表示一个包名
+
+这段代码；package xxx.yyy.zzz一般放在相应包下的类文件的第一行（且只有一句），声明当前类所在的包。
+
+
+
+
+
+
+
+系统包和自定义包。
+
+
+
+包的本质：实际上就是创建不同的文件夹来保存类文件。
+
+
+
+包的命名规则：
+
+1. 只能包含数字、字母、下划线、小圆点，但不能用数字开头，不能是关键字或保留字
+
+- demo.class.exec1（x）
+
+- demo.12a  （x）
+
+- demo.ab12.oa（√）
+
+  
+
+命名规范：
+
+- 一般是小写字母+小圆点一般是
+- com.公司名.项目名.业务模块名
+- 比如:com.hspedu.oa.model        com.hspedu.oa.controller
+- 举例:
+  - com.sina.crm.user // 用户模块
+  - com.sina.crm.order // 订单模块
+  - com.sina.crm.utils // 工具类
+
+
+
+
+
+一个包下面可以有很多类文件，java中常用的包有：
+
+1. java.lang.*：lang包是基本包，默认就会引入的，不需要自己再引入，lang包下面的类直接在代码中使用就可以。
+2. java.util.*：由java系统提供的工具包，工具类
+3. java.net.*：网络包，开发网络通信应用时要使用的包
+4. java.awt.*：用java来做桌面端应用程序的包，GUI
+
+
+
+
+
+**如何引入包：**
+
+引入一个包的目的是使用包下面的类。
+
+1. import java.util.Scanner：表示只引入该包下的这一个类（建议使用这种）
+2. import java.util.*：表示引入该包下的所有类都引入
+
+
+
+
+
+
+
+## 访问修饰符
+
+java中提供了四种访问控制修饰符，，用于控制方法和属性的访问权限（范围）。
+
+1. public：对所有范围公开
+2. protected：对子类和同一个包中的其他类可以访问
+3. 默认（什么都不写）：向同一个包中的类公开
+4. private：只有本类自己可以访问
+
+![image-20241009194848533](D:\learn-notes\images\image-20241009194848533.png)
+
+
+
+
+
+在 Java 中，访问修饰符（**Access Modifiers**）决定了类、属性、方法等成员的可访问范围。主要有四种访问修饰符：
+
+1. **`public`**：任何地方都可以访问。
+2. **`protected`**：同一个包内和不同包的子类中可以访问。
+3. **（默认，包级访问，default）**：仅在同一个包内可以访问（如果不指定修饰符，默认即为此访问级别）。
+4. **`private`**：只能在类的内部访问，其他任何地方都无法访问。
+
+下面从**类自身**、**类的子类**、**类的实例对象**、**子类的实例对象**四个角度，详细讲解这些修饰符的使用及它们的访问权限，并通过代码示例辅助理解。
+
+1. **类自身的访问权限**
+
+类自身可以访问所有的成员变量和方法，不论是 `private`、`protected`、`default` 还是 `public`。即类内部的所有方法和属性都是可见的。
+
+代码示例：
+
+```java
+class ParentClass {
+  public int publicVar = 1;
+  protected int protectedVar = 2;
+  int defaultVar = 3; // 默认访问修饰符
+  private int privateVar = 4;
+
+  public void printVars() {
+    // 类的自身可以访问所有成员
+    System.out.println("Public: " + publicVar);
+    System.out.println("Protected: " + protectedVar);
+    System.out.println("Default: " + defaultVar);
+    System.out.println("Private: " + privateVar);  // 类内部可以访问 private 成员
+  }
+}
+```
+
+2. **类的子类的访问权限**
+
+类的子类可以访问 `public`、`protected` 和 `default`（同包时），但无法直接访问 `private` 的成员。如果子类和父类不在同一个包中，子类只能访问 `public` 和 `protected` 的成员，不能访问 `default` 和 `private`。
+
+代码示例：
+
+```java
+public class ParentClass {
+  public int publicVar = 1;
+  protected int protectedVar = 2;
+  int defaultVar = 3; // 包访问权限
+  private int privateVar = 4;
+
+  public void printVars() {
+    System.out.println("ParentClass - privateVar: " + privateVar);
+  }
+}
+
+class ChildClass extends ParentClass {
+  public void printChildVars() {
+    System.out.println("Public: " + publicVar); // 可以访问
+    System.out.println("Protected: " + protectedVar); // 可以访问
+    System.out.println("Default: " + defaultVar); // 同包可以访问
+    // System.out.println("Private: " + privateVar); // 不可以访问，编译错误
+  }
+}
+```
+
+如果子类在不同包中：
+
+```java
+package other;
+
+import ParentClass;
+
+public class DifferentPackageChild extends ParentClass {
+  public void printChildVars() {
+    System.out.println("Public: " + publicVar); // 可以访问
+    System.out.println("Protected: " + protectedVar); // 可以访问
+    // System.out.println("Default: " + defaultVar); // 不可以访问，编译错误
+    // System.out.println("Private: " + privateVar); // 不可以访问，编译错误
+  }
+}
+```
+
+3. **类的实例对象的访问权限**
+
+通过类的实例对象，只能访问 `public` 成员。其他如 `protected`、`default` 和 `private` 都不能通过外部实例对象访问，除非是在同一个包中的 `default` 成员。
+
+代码示例：
+
+```java
+public class TestAccess {
+  public static void main(String[] args) {
+    ParentClass parent = new ParentClass();
+    System.out.println(parent.publicVar); // 可以访问
+    // System.out.println(parent.protectedVar); // 编译错误，不能通过实例访问
+    // System.out.println(parent.defaultVar); // 编译错误，不能通过实例访问（除非同包）
+    // System.out.println(parent.privateVar); // 编译错误，不能通过实例访问
+  }
+}
+```
+
+4. **子类的实例对象的访问权限**
+
+子类的实例对象同样只能访问 `public` 成员，其他如 `protected` 和 `default` 成员不能通过外部实例对象直接访问，`private` 成员也不可以访问。
+
+代码示例：
+
+```java
+public class TestAccess {
+  public static void main(String[] args) {
+    ChildClass child = new ChildClass();
+    System.out.println(child.publicVar); // 可以访问
+    // System.out.println(child.protectedVar); // 编译错误，不能通过实例访问
+    // System.out.println(child.defaultVar); // 编译错误，不能通过实例访问（除非同包）
+    // System.out.println(child.privateVar); // 编译错误，不能通过实例访问
+  }
+}
+```
+
+### 总结
+
+| **访问修饰符** | **类自身** | **子类（同包）** | **子类（不同包）** | **实例对象** |
+| -------------- | ---------- | ---------------- | ------------------ | ------------ |
+| `public`       | 访问       | 访问             | 访问               | 访问         |
+| `protected`    | 访问       | 访问             | 访问               | 不可访问     |
+| `default`      | 访问       | 访问             | 不可访问           | 不可访问     |
+| `private`      | 访问       | 不可访问         | 不可访问           | 不可访问     |
+
+- **`public`**：无论在类内部、子类或通过实例，都可以访问。
+- **`protected`**：可以被类自身、同包的子类、不同包的子类访问，但不能通过实例访问。
+- **`default`**（包级访问）：只能被类自身、同包的子类访问，不能跨包访问，也不能通过实例访问。
+- **`private`**：只能在类自身内部访问，其他地方都不能访问。
+
+
+
+
+
+## 接口
+
+在 **Java** 中，接口可以定义**常量**（`public static final`）属性，但**不能定义普通的实例属性**。接口的目的是定义类应实现的行为，因此它不应该包含状态（实例属性），而只能定义行为（方法）。但是，接口可以包含常量，这些常量通常用于为实现接口的类提供一些全局的值。
+
+### 1. **接口中的属性（常量）定义与使用**：
+
+- 在接口中定义的属性必须是**`public static final`**，即**常量**。虽然你可以省略这些修饰符，但接口中的所有属性默认就是 `public static final` 的。
+- 常量必须在定义时进行初始化。
+
+#### 代码示例：
+
+```java
+public interface MyInterface {
+  // 定义一个常量，默认是 public static final
+  int MAX_SIZE = 100;
+
+  // 抽象方法，必须在实现类中实现
+  void doSomething();
+}
+
+class MyClass implements MyInterface {
+  @Override
+  public void doSomething() {
+    System.out.println("常量 MAX_SIZE 的值是：" + MAX_SIZE);
+  }
+
+  public static void main(String[] args) {
+    MyClass obj = new MyClass();
+    obj.doSomething();
+  }
+}
+```
+
+在这个例子中，`MAX_SIZE` 是接口中的一个常量，它可以直接在实现类中使用，接口常量通常用于配置全局的、不变的值。
+
+2. **接口中不能定义普通实例属性**：
+
+接口中的属性只能是常量，不能定义普通的实例属性，因为接口的主要目的是提供行为契约（即方法定义），而不是持有状态（即属性）。普通实例属性是类的职责，而不是接口的职责。
+
+3. **为什么在接口中定义常量（属性）？**
+
+- **全局常量**：接口中的常量可以在多个类中共享，不需要重复定义。例如，一些常量值可能是某个接口所关联的业务逻辑的一部分，它可以被多个实现类使用。
+- **提高代码可读性和维护性**：定义接口常量可以避免魔法值（magic numbers）出现在代码中，增强代码的可读性。所有实现类都可以通过接口直接访问常量。
+- **避免重复**：如果多个类都使用同样的常量值，可以通过接口统一定义，避免重复代码。
+
+**使用场景示例：**
+
+- **错误代码或状态标志**： 在定义错误代码或状态标志时，接口常常用于保存这些常量：
+
+```java
+public interface ErrorCode {
+  int SUCCESS = 0;
+  int ERROR_NOT_FOUND = 404;
+  int ERROR_INTERNAL = 500;
+}
+
+public class MyService implements ErrorCode {
+  public int processRequest() {
+    // 使用接口常量
+    return SUCCESS;
+  }
+}
+```
+
+- **接口版本控制**： 接口常量可以用于定义不同版本的标识：
+
+  ```java
+  public interface ApiVersion {
+      String VERSION_1 = "v1.0";
+      String VERSION_2 = "v2.0";
+  }
+  
+  public class ApiService implements ApiVersion {
+      public void printVersion() {
+          System.out.println("API 版本: " + VERSION_1);
+      }
+  }
+  ```
+
+**总结：**
+
+- **接口中可以定义常量（`public static final`）属性**，但不能定义普通的实例属性。
+- 常量用于定义全局、不可变的值，增强代码的可读性和维护性。
+- 常见的使用场景包括定义错误代码、状态标志、API 版本等。
+
+
+
+
+
+在 **Java** 中，接口的方法可以有具体实现，但这取决于 Java 的版本。
+
+- 在 Java 8及之后的版本中，接口可以包含两种有具体实现的方法：
+  1. **默认方法**（`default` methods）
+  2. **静态方法**（`static` methods）
+
+1. **默认方法**（`default` methods）
+
+Java 8 引入了**默认方法**，接口中的方法可以使用 `default` 关键字修饰并提供具体实现。这允许接口在不破坏现有实现的情况下向后兼容。例如，当接口需要添加新的功能时，可以通过 `default` 方法来避免对所有实现类进行修改。
+
+**代码示例：**
+
+```java
+public interface MyInterface {
+  // 默认方法，有具体实现
+  default void defaultMethod() {
+    System.out.println("这是一个默认方法的实现");
+  }
+
+  // 抽象方法，必须在实现类中实现
+  void abstractMethod();
+}
+
+public class MyClass implements MyInterface {
+  // 实现抽象方法
+  @Override
+  public void abstractMethod() {
+    System.out.println("实现了抽象方法");
+  }
+
+  public static void main(String[] args) {
+    MyClass myClass = new MyClass();
+    myClass.abstractMethod();   // 输出: 实现了抽象方法
+    myClass.defaultMethod();    // 输出: 这是一个默认方法的实现
+  }
+}
+
+```
+
+在这个例子中，`MyInterface` 定义了一个 `defaultMethod`，并提供了具体的实现。实现类 `MyClass` 可以选择重写 `defaultMethod`，也可以直接使用接口中的实现。
+
+2. **静态方法**（`static` methods）
+
+Java 8 还允许在接口中定义**静态方法**，静态方法必须使用 `static` 关键字，并且它们只能通过接口本身调用，不能通过实现类的实例来调用。
+
+代码示例：
+
+```java
+public interface MyInterface {
+  // 静态方法，有具体实现
+  static void staticMethod() {
+    System.out.println("这是一个静态方法的实现");
+  }
+
+  // 抽象方法
+  void abstractMethod();
+}
+
+public class MyClass implements MyInterface {
+  @Override
+  public void abstractMethod() {
+    System.out.println("实现了抽象方法");
+  }
+
+  public static void main(String[] args) {
+    MyClass myClass = new MyClass();
+    myClass.abstractMethod();   // 输出: 实现了抽象方法
+
+    // 调用接口中的静态方法
+    MyInterface.staticMethod(); // 输出: 这是一个静态方法的实现
+  }
+}
+
+```
+
+在这个例子中，`MyInterface` 定义了一个 `staticMethod`，并提供了具体实现。静态方法只能通过接口类名来调用，不能通过实现类或其实例调用。
+
+3. **抽象方法**
+
+除了默认方法和静态方法，接口中的其他方法仍然是抽象方法，必须在实现类中进行实现。
+
+**为什么要在接口中定义默认方法和静态方法？**
+
+- **默认方法**的主要目的是为了**向后兼容**。在接口中添加新方法时，不需要强制所有实现类都去实现这个新方法，避免对现有代码造成影响。
+- **静态方法**可以用于将与接口紧密相关的辅助工具方法放在接口中，而不是放在工具类里，使代码更具组织性。
+
+4. **Java 9 中的私有方法**
+
+从 Java 9 开始，接口中还可以定义**私有方法**（`private` methods），用于辅助其他默认方法或静态方法。私有方法只能在接口内部被调用，不能被外部类或实现类直接调用。
+
+代码示例：
+
+```java
+public interface MyInterface {
+  // 默认方法
+  default void defaultMethod() {
+    privateMethod();
+    System.out.println("默认方法调用了私有方法");
+  }
+
+  // 私有方法
+  private void privateMethod() {
+    System.out.println("这是私有方法的实现");
+  }
+}
+
+public class MyClass implements MyInterface {
+  public static void main(String[] args) {
+    MyClass myClass = new MyClass();
+    myClass.defaultMethod(); // 输出: 这是私有方法的实现
+    //      默认方法调用了私有方法
+  }
+}
+
+```
+
+**总结：**
+
+- Java 8
+
+   开始，接口中可以有具体实现，主要有两种方式：
+
+  - **默认方法（`default`）**：提供默认实现，允许子类继承或重写。
+  - **静态方法（`static`）**：定义静态工具方法，只能通过接口名调用。
+
+- **Java 9** 开始，接口还可以包含**私有方法**，用于在接口内部复用代码。
+
+- 这些特性增加了接口的灵活性，使得在不破坏现有实现的情况下扩展接口变得更加容易。
+
+
+
+
+
+
+
+java基础
+
+javaweb
+
+主流的框架和项目管理
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

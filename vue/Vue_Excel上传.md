@@ -63,7 +63,7 @@ function readFile(file) {
 
 excel 表格解析包——xlsx
 
-```
+```js
 let workbook = xlsx.read(data,{type:'binary'}),
 	worksheet = workbook.Sheets[work.SheetNames[0]]
 data = xlsx.utils.sheet_to_json(worksheet)    //excel表格数据变为json格式
@@ -84,31 +84,29 @@ data.forEach(item=>{
 	}
 })
 
-
-
 ```
 
 workbook 的数据格式：
 
-![image-20210808204615381](.\typora-user-images\image-20210808204615381.png)
+![image-20210808204615381](..\typora-user-images\image-20210808204615381.png)
 
 SheetNames：表示一个 excel 文件中的多个多个子表。
 
-![image-20210808204737033](.\typora-user-images\image-20210808204737033.png)
+![image-20210808204737033](..\typora-user-images\image-20210808204737033.png)
 
 Sheets：每个子表中的具体信息
 
-![image-20210808204819288](.\typora-user-images\image-20210808204819288.png)
+![image-20210808204819288](..\typora-user-images\image-20210808204819288.png)
 
 每个子表的基本结构：
 
-![image-20210808204937366](.\typora-user-images\image-20210808204937366.png)
+![image-20210808204937366](..\typora-user-images\image-20210808204937366.png)
 
 !ref:数据开始和结束对应的单元格
 
-![image-20210808205037833](.\typora-user-images\image-20210808205037833.png)
+![image-20210808205037833](..\typora-user-images\image-20210808205037833.png)
 
-![image-20210808205053652](.\typora-user-images\image-20210808205053652.png)
+![image-20210808205053652](..\typora-user-images\image-20210808205053652.png)
 
 !margins:表示页码信息。
 
@@ -116,4 +114,4 @@ Sheets：每个子表中的具体信息
 
 xlsx.utils.sheet_to_json(worksheet)方法转为 json 格式的数据：
 
-![image-20210808210714274](.\typora-user-images\image-20210808210714274.png)
+![image-20210808210714274](..\typora-user-images\image-20210808210714274.png)
