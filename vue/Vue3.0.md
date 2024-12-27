@@ -68,7 +68,146 @@ vue3.4源码和之前源码的变化对比；使用时注意事项和技巧。
    } 
    ```
 
-   先将源代码变为用于生成虚拟DOM的函数（h函数），函数在浏览器中执行后得到虚拟DOM树，再解析渲染虚拟DOM为真实DOM插入到页面中，这样的好处是在操作更新的使用可以进行diff比较，最后再最小化更新。
+   扩展：
+
+   > `vnode` 对象中各属性的含义及其可能的值：
+   >
+   > 1. `__v_isVNode`
+   >
+   > - **含义**: 表明这是一个 VNode 对象，作为一个标识属性。
+   > - **类型**: `boolean`
+   > - **值**: 总是 `true`。
+   >
+   > ------
+   >
+   > 2. `__v_skip`
+   >
+   > - **含义**: 用于优化机制，跳过某些不必要的检查。
+   > - **类型**: `boolean`
+   > - **值**: 通常是 `true`。
+   >
+   > ------
+   >
+   > 3. `type`
+   >
+   > - **含义**: 表示 VNode 的类型，定义了这个节点要渲染的内容。
+   > - 类型:
+   >   - 可以是字符串（HTML 标签名，如 `'div'`）
+   >   - 对象（组件定义对象）
+   >   - Symbol（特殊类型，比如 `Fragment`, `Text`, `Comment` 等）
+   > - 值:
+   >   - HTML 标签名：如 `'div'`, `'span'`
+   >   - 组件定义对象：如 `{ render: () => {}, props: {} }`
+   >   - 特殊标志符：如 `Symbol('Fragment')`, `Symbol('Text')`
+   >
+   > ------
+   >
+   > 4. `props`
+   >
+   > - **含义**: 表示该节点的属性或特性集合。
+   > - **类型**: `object | null`
+   > - 值:
+   >   - 如果存在，通常是一个普通对象，键值对表示属性名和属性值。
+   >   - 如果没有任何属性，则可能为 `null`。
+   >
+   > ------
+   >
+   > 5. `key`
+   >
+   > - **含义**: 节点的唯一标识，用于在 `diff` 算法中优化节点的复用。
+   > - **类型**: 任意类型（通常是字符串或数字）
+   > - 值:
+   >   - 从 `props` 中提取（通过 `normalizeKey`），如果未指定，则为 `undefined`。
+   >
+   > ------
+   >
+   > 6. `ref`
+   >
+   > - **含义**: 引用，用于在组件中访问 DOM 元素或子组件实例。
+   > - 类型:
+   >   - `string`
+   >   - `function`
+   >   - `object`
+   > - **值**: 从 `props` 中提取（通过 `normalizeRef`）。
+   >
+   > ------
+   >
+   > 7. `children`
+   >
+   > - **含义**: VNode 的子节点。
+   > - 类型:
+   >   - `string`（文本节点）
+   >   - `Array<VNode>`（多个子节点）
+   >   - `null`（无子节点）
+   > - 值:
+   >   - 文本节点：如 `'Hello, world!'`
+   >   - 子节点数组：如 `[vnode1, vnode2]`
+   >
+   > ------
+   >
+   > 8. `component`
+   >
+   > - **含义**: 如果 VNode 是组件类型，此处保存组件实例；否则为 `null`。
+   > - 类型:
+   >   - 组件实例对象
+   >   - `null`
+   > - 值:
+   >   - 初始值为 `null`，在挂载阶段后填充。
+   >
+   > ------
+   >
+   > 9. `el`
+   >
+   > - **含义**: 挂载的 DOM 元素（即真实 DOM）。
+   > - 类型:
+   >   - DOM 元素对象
+   >   - `null`
+   > - 值:
+   >   - 初始值为 `null`，挂载后指向对应的 DOM 元素。
+   >
+   > ------
+   >
+   > 10. `patchFlag`
+   >
+   > - **含义**: 优化标志，用于指示 VNode 更新的类型，以便优化渲染。
+   > - **类型**: `number | undefined`
+   > - 值:
+   >   - `undefined`：无优化标志。
+   >   - 特定数字：标识不同的优化类型（比如属性变化、子节点变化等）。
+   >
+   > ------
+   >
+   > 11. `dynamicProps`
+   >
+   > - **含义**: 动态属性的数组，仅在 `patchFlag` 指示动态属性存在时使用。
+   > - **类型**: `Array<string> | null`
+   > - 值:
+   >   - 包含动态属性名的数组
+   >   - 或者 `null`。
+   >
+   > ------
+   >
+   > 12. `dynamicChildren`
+   >
+   > - **含义**: 动态子节点列表，仅用于优化渲染。
+   > - **类型**: `Array<VNode> | null`
+   > - 值:
+   >   - 包含动态子节点的数组
+   >   - 或者 `null`。
+   >
+   > ------
+   >
+   > 13. `appContext`
+   >
+   > - **含义**: 当前应用的上下文对象，通常用于提供依赖注入等功能。
+   > - 类型:
+   >   - 应用上下文对象
+   >   - `null`
+   > - 值:
+   >   - 在组件初始化时关联对应的上下文对象
+   >   - 默认为 `null`。
+
+   先将源代码变为用于生成虚拟DOM的函数（h函数，createVNode函数），函数在浏览器中执行后得到虚拟DOM树，再解析渲染虚拟DOM为真实DOM插入到页面中，引入虚拟DOM的好处是在更新的时候使用虚拟DOM树进行diff比较，最小化更新。
 
    同时虚拟DOM可以更好的跨平台，服务端渲染时，将模板字符串转为html字符串，单元测试中使用虚拟DOM，canvas绘图也可以借助虚拟DOM标识canvas元素。
 
@@ -82,7 +221,7 @@ vue3.4源码和之前源码的变化对比；使用时注意事项和技巧。
 
    
 
-   不在代码交给浏览器运行的时候，再去解析模板，生成函数调用（这样性能不够好，需要浏览器执行的时候，现场解析模板得到对应js函数调用），而是将这一步提前在项目编译打包的这个工程化的阶段去处理，生产的代码就是直接的js函数调用代码，再交给浏览器后，浏览器就直接调用执行这些函数，得到虚拟DOM，再生产真实DOM并挂在到页面上。
+   不在代码交给浏览器运行的时候，去解析模板，生成函数调用（这样性能不够好，需要浏览器执行的时候，现场解析模板得到对应js函数调用），而是将这一步提前在项目编译打包的这个工程化的阶段去处理，生产的代码就是直接的js函数调用代码，再交给浏览器后，浏览器就直接调用执行这些函数，得到虚拟DOM，再生产真实DOM并挂在到页面上。
 
    模板=>js函数调用代码的生成：这一步交给编译时库在编译打包阶段提前处理。
 
@@ -104,10 +243,10 @@ vue3.4源码和之前源码的变化对比；使用时注意事项和技巧。
 
 #### 宏观区别：
 
-- vue3.0 的源码采用 monorepo 方式进行管理（将多个项目的代码存储到同一个仓库中），将包拆到不同的 package 目录中，多个包本身相互独立，有自己的功能逻辑，单元测试又方便管理，可以独立打包发布等。vue2.0 整个项目的框架包含了许多包，这些包都在一个仓库下进行管理（一个项目就一个仓库），但项目复杂时或追求扩展的时候，很难进行。
-- vue3.0 的性能优化大幅提高，支持 tree-shaking，不使用就不会被打包（依靠函数式的 api 实现）， vue3.0 中主要就是在写函数；在 vue2.0 中写的代码都是写在一个配置对象（options API）中的，这个对象中哪些属性需要，哪些代码需要都是无法被 vue2.0 判断的，自然没有 tree-shaking 一说，并且Vue2中很多方法（$nextTick）挂载到了实例中导致没有使用也会被打包（一些组件(transition组件)也一样）
+- vue3中是由一个个的独立的模块组成，所以vue3.0 的源码采用 monorepo 方式进行管理（将多个项目的代码存储到同一个仓库中），将包拆到不同的 package 目录中，多个包本身相互独立，有自己的功能逻辑，单元测试又方便管理，可以独立打包发布等。vue2.0 整个项目的框架包含了许多包，这些包都在一个仓库下进行管理（一个项目就一个仓库），但项目复杂时或追求扩展的时候，很难进行。
+- vue3.0 的性能优化大幅提高，支持 tree-shaking（依靠函数式的 api 实现）， vue3.0 中主要就是在写函数；在 vue2.0 中写的代码都是写在一个配置对象（options API）中的，这个对象中哪些属性需要，哪些代码需要都是无法被 vue2.0 判断的，自然没有 tree-shaking 一说，并且Vue2中很多方法（$nextTick）挂载到了实例中导致没有使用也会被打包（一些组件(transition组件)也一样）
 - Vue3允许自定义渲染器，扩展能力强。不会发生以前的事情，改写Vue源码改造渲染方式。 
-- vu2.0 写起来有时很被动，必须按照框架的规则在特定部分写特定代码，写代码不够灵活
+- vu2.0 写起来有时很被动，必须按照框架的规则在特定部分写特定代码，写代码不够灵活，反复横跳
 - vue3.0 的源码体积优化，移除了部分 api，比如 filter 过滤器，实例的\$on,\$off,\$onec 和内联模块
 
 
@@ -347,7 +486,7 @@ my-monorepo/
 ### 安装依赖
 
 ```shell
-pnpm install typescript esbuild minimist -w
+pnpm install typescript esbuild minimist -w -D
 
 pnpm tsc --init
 ```
@@ -414,7 +553,7 @@ vue3源码打包后的生成的文件的格式说明：
 <script src="./reactivity.global.js"></script>
 <script>
     const { reactive, effect, } = VueReactivity;
-    const state = reactive({ name: 'jw', age: 30})
+    const state = reactive({ name: 'xx', age: 18})
     effect(() => { // 副作用函数 (effect执行渲染了页面)
         app.innerHTML = state.name + '今年' + state.age + '岁了'
     });
@@ -1813,5 +1952,63 @@ MVVM模式与MVC模式
 
 
 
+### 插槽
 
+```vue
+<Com>
+  <div></div>
+  <h1 name='hearder'></h1>
+</Com>
+```
+
+插槽只对于组件有效。
+
+当在使用组件时，使用了插槽，在编译阶段，会将组件标签中的各个插槽解析为函数，并作为创建组件对应虚拟dom节点的第三个参数，参数的值是一个对象。
+
+_createElementVNode(组件对应的对象，组件标签使用时的标签属性，组件使用时对应的插槽组成的对象)
+
+模板编译后的结果：
+
+```js
+import { createElementVNode as _createElementVNode, resolveComponent as _resolveComponent, withCtx as _withCtx, openBlock as _openBlock, createBlock as _createBlock } from "vue"
+
+export function render(_ctx, _cache, $props, $setup, $data, $options) {
+  const _component_Com = _resolveComponent("Com")
+
+  return (_openBlock(), _createBlock(_component_Com, null, {
+    default: _withCtx(() => [
+      _createElementVNode("div"),
+      _createElementVNode("h1", { name: "hearder" })
+    ], undefined, true),
+    _: 1 /* STABLE */
+  }))
+}
+
+// Check the console for the AST
+```
+
+
+
+```js
+const RenderComponent = {
+    setup(props, { emit, attrs, expose, slots }) {
+        return (proxy) => {
+            console.log(arguments);
+            return h(Fragment, [slots.footer("fff"), slots.header("hhh")]);
+        };
+    },
+};
+
+const VueComponent = {
+    setup(props) {
+        return (proxy) => {
+            return h(RenderComponent, null, {
+                // 格局格式来区分
+                header: (t) => h("header", "header" + t),
+                footer: (t) => h("footer", "footer" + t),
+            });
+        };
+    },
+};
+```
 

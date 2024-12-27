@@ -10,15 +10,15 @@ A man was standing at a bus stop eating fish and chips（炸薯条）. An old la
 
 So the man picked up the little dog and threw it over a wall.
 
-这个笑话的关键在于理解Do you mind if I throw him a bit？。在这里，男子和老太太对a bit的 理解是不同的。
+这个笑话的关键在于理解Do you mind if I throw him a bit？。在这里，男子和老太太对a bit的理解是不同的。
 
 老太太是把a bit当作动词throw的直接宾语来翻译的，因此她把这句话理解成“我给 你的狗扔点吃的你介意吗？”但是，这名男子是把a bit当作修饰谓语throw 的状语来理解的，因而他的本意是“我把你这（讨厌的）狗扔远一点你介意吗？”听了老太太说“不介意，你扔吧”，于是他就真的把狗扔出去了。
 
-由此可见，正确分析句子的成分是很重要的。
+由此可见，正确分析句子的成分是很重要的。同时也说明同一个句子部分，其逻辑修饰的到底是什么会影响对句子意思的理解。
 
-**不能正确地分析句子的结构和成分，导致的后果就是不能正确地理解句子的意思，或者不知道正确地构造英语句子，这就直接影响到大家使用英语的水平。**
+**不能正确地分析句子的结构和成分，导致的后果就是不能正确地理解句子的意思，或者不知道正确地构造英语句子，这就直接影响到使用英语的水平。**
 
-英语的句子结构是非常有规律的，一个完整的句子都是 由两部分组成：“陈述对象（一般是由名词 或相当于名词的成分来充当）＋陈述内容（说明主语怎么样了，都是用动词来表达）”。
+英语的句子结构是非常有规律的，一个完整的句子都是由两部分组成：“陈述对象（一般是由名词或相当于名词的成分来充当）＋陈述内容（说明主语怎么样了，都是用动词来表达）”。
 
 在动词后面接其他成分，具体接什么成分， 这是由谓语动词决定的，动词决定了一个句子是否有宾语，或者有几个宾语，或者是否需要补足语以及状语。
 
@@ -26,7 +26,7 @@ So the man picked up the little dog and threw it over a wall.
 
 **第一，在分析复杂的难句结构时，首先要找到句子的谓语，包括主句的谓语以及各个从句的谓语；**
 
-**第二，写句子时，一定要知道谓语动词的用法特点**，比如该动词后面是否能接宾语，接什么形式的宾语，**接不定式作宾语还是动名词作宾语**等，这些问题都由谓语动词决定。所以，在下列的句型分析中，读者要特别注意每一种句型的谓语动词的特点。
+**第二，写句子时，一定要知道谓语动词的用法特点**，比如该动词后面是否能接宾语，接什么形式的宾语，**接不定式作宾语还是动名词作宾语**等，这些问题都由谓语动词决定。读者要特别注意每一种句型的谓语动词的特点。
 
 A: Father can lift a pig with one hand. Can your dad do that? 
 
@@ -109,11 +109,9 @@ with one hand可以理解成修饰pig的介词短语作定语， 还可以理解
 
 ### 主语＋系动词＋表语
 
-谓语动词是系动词（linking verb）
+谓语动词是系动词（linking verb），系动词，又叫连系动词，这种动词并没有具体的动作，而只是起连接主语和后面成分的作用。
 
-系动词，又叫连系动词，这种动词并没有具体的动作，而只是起连接主语和后面成分的作用。
-
-这种动词后面所接的成分只要是用来说明主语的特点，表明主语的性质特征的（都可以归属为主系表情况），因此被称之为主语补足语或表语（能表示主语特征的成分）。
+这种动词后面所接的成分只要是用来说明主语的特点，性质特征的（都可以归属为主系表情况），因此被称之为主语补足语或表语（能表示主语特征的成分）。
 
 Losers look for quick fixes. （主谓宾）
 
@@ -136,7 +134,7 @@ The same thing is true of our attitude in life. The problem with people today is
 
    几个感官动词：feel, look, sound, taste, smell
 
-   seem（好像是），appear（好像是）
+   seem（好像是），appear（好像是），be动词
 
    - The rose doesn't smell much.
 
@@ -248,10 +246,6 @@ The same thing is true of our attitude in life. The problem with people today is
 
    - He died a local company manager.   他死的时候是一家公司的经理。
 
-   
-   
-   
-   
    
    
    
@@ -407,7 +401,7 @@ The same thing is true of our attitude in life. The problem with people today is
 - They **are looking for** one-minute solutions to everything.
 - This attitude **leads to** disappointment.
 
-若是不及物动词，则可以加适当的介词，然后再接宾语，比如looking for和leads to。介词后面都是名词性质的单词，短语或者句子。
+**若是不及物动词，则可以加适当的介词，然后再接宾语，比如looking for和leads to。**介词后面都是名词性质的单词，短语或者句子。
 
 #### 主谓宾变长难句
 
@@ -443,7 +437,7 @@ The same thing is true of our attitude in life. The problem with people today is
 
 - He showed the guard his passport.
 
-一般可以进行这样的改写，即把直接宾语提前置谓语后面，然后添加介词to或for，再 把间接宾语放在介词后面。比如上面这个句子可以改写成：
+一般可以进行改写，把直接宾语提前置谓语后面，然后添加介词to或for，再把间接宾语放在介词后面。比如上面这个句子可以改写成：
 
 - He showed his passport to the guard.
 
@@ -503,7 +497,7 @@ The same thing is true of our attitude in life. The problem with people today is
 
 #### 区分双宾语和复合宾语
 
-在 宾语后面加上be动词，若能构成一个语义通顺的句子，即是补足语。 因为宾语与宾语补足语的语义关系就相当于主语与主语补足语的关系， 即类似一个主系表结构，所以，在宾语后面添上一个系动词be，自然应 该是能构成一个逻辑语义通顺的句子。而间接宾语与直接宾语二者之间 就没有这样的语义关系，所以，添上be之后，自然是不能构成一个语义通顺的句子。
+在宾语后面加上be动词，若能构成一个语义通顺的句子，即是补足语。 因为宾语与宾语补足语的语义关系就相当于主语与主语补足语的关系， 即类似一个主系表结构，所以，在宾语后面添上一个系动词be，自然应 该是能构成一个逻辑语义通顺的句子。而间接宾语与直接宾语二者之间 就没有这样的语义关系，所以，添上be之后，自然是不能构成一个语义通顺的句子。
 
 - I made John our chairman.
 
@@ -646,7 +640,7 @@ The same thing is true of our attitude in life. The problem with people today is
 
 从简单句如何过渡到复合句。
 
-一般来讲，一个句子除了有主语和谓语之外，其他可能包含的成分还有宾语、表语、定语、状语、补语和同位语等。在这些成分中，谓语较为特殊，只能由动词来充当，而其他成分则可以由词、短语或者句子来充当。如果用一个完整的句子来充当另一个句子的某个成分时，即构成相应的从句。请看如下图表：
+一般来讲，一个句子有主语、谓语、宾语、表语、定语、状语、补语和同位语等。在这些成分中，谓语较为特殊，只能由动词来充当，而其他成分则可以由词、短语或者句子来充当。如果用一个完整的句子来充当另一个句子的某个成分时，即构成相应的从句。请看如下图表：
 
 ![image-20241024151835694](D:\learn-notes\English-learn\images\image-20241024151835694.png)
 
@@ -665,7 +659,7 @@ The same thing is true of our attitude in life. The problem with people today is
 - 什么是名词性从句
 - 不同种类的简单句如何转化为一个名词性从句
 
-名词或名词短语主要充当四种句子成分：主语、宾语、 表语和同位语。如果把句子当作名词来用，分 别充当另一句话的主语、宾语、表语或同位语，于是便构成了四种从句：主语从句、宾语从句、表语从句和同位语从句。
+名词或名词短语主要充当四种句子成分：主语、宾语、 表语和同位语。如果把句子当作名词来用，分别充当另一句话的主语、宾语、表语或同位语，于是便构成了四种从句：主语从句、宾语从句、表语从句和同位语从句。
 
 因为这四种从句在本质上相当于名词的作用，所以将其统称为名词从句。
 
@@ -680,7 +674,7 @@ The same thing is true of our attitude in life. The problem with people today is
 
 **可以把哪种句子当作名词来用？**
 
-有三类句子：**陈述句、一般疑问句以及特殊疑问句** 可以经过一些变化后被当作句子使用。**这三种句子不是直接放在另一个句子中作成分，而是要作各种变化调整。**
+有三类句子：**陈述句、一般疑问句以及特殊疑问句** 可以经过一些变化后被当作名词使用。**这三种句子不是直接放在另一个句子中作成分，而是要作各种变化调整。**
 
 
 
@@ -721,7 +715,7 @@ native speakers就会纳闷：你要表达的意思到底是“某个东西重�
 
 为什么在宾语从句中that又可以省去？
 
-这是因为对于宾语从句，主句的谓语已经出现，谓语后面所接的成分自然是宾语，所以在不 会影响句子意思的情况下，可以把that省去。比如I think you are right. 或 I think that you are right. 都可以。
+这是因为对于宾语从句，主句的谓语已经出现，谓语后面所接的成分自然是宾语，所以在不会影响句子意思的情况下，可以把that省去。比如I think you are right. 或 I think that you are right. 都可以。
 
 综上所述，在陈述句作名词从句时，需要添加that，这个that相当 于一个“指路牌”，能够帮助我们指明断句的方向，不造成对句子的误 解。
 
@@ -747,7 +741,7 @@ native speakers就会纳闷：你要表达的意思到底是“某个东西重�
 
 #### 特殊疑问句变名词性从句
 
-当把一个特殊疑问句当作名词来使用时， 需要先将疑问句的倒装语序变成陈述句语序，然后分别充当另一个句子 的主语、宾语、表语或同位语等四种成分。
+当把一个特殊疑问句当作名词来使用时， 需要先将疑问句的倒装语序变成陈述句语序，然后分别充当另一个句子的主语、宾语、表语或同位语等四种成分。
 
 ![image-20241024162319639](D:\learn-notes\English-learn\images\image-20241024162319639.png)
 
@@ -764,7 +758,7 @@ native speakers就会纳闷：你要表达的意思到底是“某个东西重�
 
 第三，对于特殊疑问句，不需要添加任何连接词，因为特殊疑问词就充当了连词的作用，从而变成了相应的连接词，只需要把倒装语序还原成陈述语序就可以了。这些特殊疑问词都是在句中充当各种成分的， 比如连接代词可以充当主语、宾语或表语，而连接副词则充当状语。
 
-**要特别关注这些连词是否在句子中充当成分**。比如，that不能作任何成分，只起连接作用，后面要接陈述句； what一定是充当从句的主语或宾语等成分；which和whose后面都要接名词等等。
+**要特别关注这些连词是否在句子中充当成分**。比如，that不能作任何成分，只起连接作用，后面要接陈述句； what一定是充当从句的主语或宾语等成分；which和whose后面都要接名词等。
 
 
 
@@ -1165,7 +1159,7 @@ which 可以作从句的主语或宾语，只不过which的先行词是“物”
 
 先行词是一个句子：
 
-- Tom was late which surprised me.
+- Tom was late, which surprised me.
 - He tore up my photo, which upset me.
 - I became a single mother overnight, which is nothing like becoming famous overnight.
 
@@ -1284,7 +1278,7 @@ when可以引导限制性和非限制性定语从句，其先行词须是表示�
      - This is the day that I will never forget.
        - 在这个句子中，**that** 充当从句中的宾语（“I will never forget the day”），所以不能用 **when**。
      - The time that we spent together was wonderful.
-       - 这里 **that** 充当主语，修饰 **time**，从句的意思是“我们在一起的时间很美好”，此时从句缺少主语，不能用 **when**。
+       - 这里 **that** 充当宾语，修饰 **time**，从句的意思是“我们在一起的时间很美好”，此时从句缺少主语，不能用 **when**。
 
 总结：
 
@@ -1316,7 +1310,7 @@ when可以引导限制性和非限制性定语从句，其先行词须是表示�
 
 #### where
 
-where引导定语从句，其先行词一般是表示地点的名词，如place和 house等。例句：
+where引导定语从句，其先行词一般是表示地点的名词。例句：
 
 - A: Since you work in the theater, can't you get me a free ticket now and then?
 
@@ -1509,7 +1503,7 @@ why用来表示原因，**只引导限制性定语从句**，先行词是reason�
 
 ## 状语
 
-在英语中，**状语**（Adverbial）是一种修饰成分，用来修饰**动词、形容词、其他副词或整个句子**，表示时间、地点、方式、原因、目的、条件、结果等。状语通常用来提供附加信息，说明某个动作或状态的具体情况。
+**状语**（Adverbial）是一种修饰成分，用来修饰**动词、形容词、其他副词或整个句子**，表示时间、地点、方式、原因、目的、条件、结果等。状语通常用来提供附加信息，说明某个动作或状态的具体情况。
 
 **主要作用**
 
@@ -1587,7 +1581,7 @@ when常见的主句和从句时态搭配示例：
 
 3. 主句一般过去时＋从句过去进行时（初级语法中讲过） （**表示过去的动作**）
 
-   注意，此时的时态搭配与主句、从句没有关系，而**只与动作的长短有关系**。短暂动作用一般过去时，延续动作用过去进行时。这一时态配套使用所表示的意义是：在一个延续背景动作的过程中突然发生了一个短暂动作。既然此时的时态搭配与主从句没有关系，因此可以组合成下面两种时态搭配，即“主句过去进行时＋从句一般过去时”，或“主句一般过去时＋从句过去进行时”。
+   注意，此时的时态搭配**只与动作的长短有关系**。短暂动作用一般过去时，延续动作用过去进行时。这一时态配套使用所表示的意义是：在一个延续背景动作的过程中突然发生了一个短暂动作。既然此时的时态搭配与主从句没有关系，因此可以组合成下面两种时态搭配，即“主句过去进行时＋从句一般过去时”，或“主句一般过去时＋从句过去进行时”。
 
    - The doorbell **rang** when I **was telephoning**.    门铃响的时候，我正在打电话。
    - The doorbell rang when suddenly I was telephoning.*****
@@ -1761,7 +1755,7 @@ until的用法有以下三个要点：
 
 1. **延续动词＋until＋短暂动词或时间点**
 
-   当主句或句子的谓语动词是延续动词时，通常用肯定形式。until的后面若接从句，则从句的谓语必定是短暂动词，或者接表示时间点 （point of time）的名词短语。
+   当主句谓语动词是延续动词时，通常用肯定形式。until的后面若接从句，则从句的谓语必定是短暂动词，或者接表示时间点 （point of time）的名词短语。
 
    作连接词：
 
@@ -1775,11 +1769,11 @@ until的用法有以下三个要点：
 
 2. **短暂动词＋until＋短暂动词或时间点**
 
-   若主句或句子的谓语动词是短暂动词，则要用否定形式。因为否定之后表示的是一个状态，而状态则是延续的，这就是常说的not... until（直到……才）的结构。
+   若主句的谓语动词是短暂动词，则要用否定形式。因为否定之后表示的是一个状态，而状态则是延续的，这就是常说的not... until（直到……才）的结构。
 
    - He **didn't leave** the office **until** his boss **came** back.
 
-     这里主句的谓语leave是短暂动词，不能与表示持续时间的until连用，所以必须否定成didn't leave表示一 个持续的状态，才能与until连用。这里表示“没有离开”这个状态一直持续到“老板回来”这个时间点为止。从句 的谓语came是短暂动词。
+     主句的谓语leave是短暂动词，不能与表示持续时间的until连用，所以必须否定成didn't leave表示一 个持续的状态，才能与until连用。这里表示“没有离开”这个状态一直持续到“老板回来”这个时间点为止。从句 的谓语came是短暂动词。
 
    - I **did not realize** how special my mother was **until** I **became** an adult.
 
@@ -2597,3 +2591,224 @@ while位于句首，一般意为“尽管”，引导让步状语从句。各种
 - **While** many countries of the world celebrate their own Mother's Day at different times throughout the year, there are some countries such as Denmark, Finland, Italy, Turkey, Australia, and Belgium which also celebrate Mother's Day on the second Sunday of May.
 - **While** the government pushed for a total breakup of the software maker, Microsoft fought fiercely against any positions that would affect its ability to compete in the marketplace.
 - **While** even the modestly educated sought an elevated tone when they put pen to paper before the 1960s, even the most well regarded writing since then has sought to capture spoken English on the page.
+
+
+
+## 完成时态
+
+- 完成时态的构成
+- 完成时态基本意义，回顾性思维
+- 完成时的三种用法：
+  - 延续事件
+  - 重复事件
+  - 单一事件
+- 完成时最高级句型
+- since时间连词
+- 过去完成时
+- 将来完成时
+
+**构成**
+
+构成：have + done
+
+通过have的不同变化表示时态的不同（过去，现在还是将来）。过去分词表示体态。
+
+三种完成时态的本质意义是相同的，区别只是动作发生的时间不同而已。
+
+
+
+**完成时态的意义**
+
+完成时态的核心意义用来表示“回顾 （retrospect）”。
+
+回顾涉及两个时间点，从一个时间点回顾到另外一个时间点。完成时态必定涉及前后两个时间。
+
+现在完成时（present perfect tense）：站在“现在 （present）”的时间角度回顾一个“过去”的事件，是把“过去”和“现在”这 两个时间点联系在一起，来表达一个事件。
+
+![image-20241127131733855](D:\learn-notes\English-learn\images\image-20241127131733855.png)
+
+过去完成时（past perfect tense）：站在“过去（past）”的时间角度回顾“更远的过去”的事件，是把“更远的过去”和“过去”联系在一起来 表达一个事件。
+
+![image-20241127131759442](D:\learn-notes\English-learn\images\image-20241127131759442.png)
+
+
+
+将来完成时（future perfect tense）：站在未来的时间角度回顾在此之前发生的事件。
+
+![image-20241127131833652](D:\learn-notes\English-learn\images\image-20241127131833652.png)
+
+完成时态表示的就是一个横跨前后两个时间点的事件。所以动作一般需要有延续性的特点。而状态一般都具有延续性的特点。
+
+这个动作横跨前后两个时间点的方式：
+
+1. 这个动作一直不停，从前一个时间点延续到后一个时间点
+2. 这个动作中间会间隔，但是是不断重复的从前一个时间点到后一个时间点
+3. 这个动作在前一个时间点已经结束，但是它造成的影响延续到了后一个时间点
+
+以现在完成时为例子：
+
+一个过去的事件与现在发生联系的方式有上述三种，对应于三种事件：
+
+1．延续事件（continuous event）：一个过去发生的事件“延续”到现在；
+
+![image-20241127132501226](D:\learn-notes\English-learn\images\image-20241127132501226.png)
+
+2．重复事件（repeated event）：一个过去发生的事件“重复”到现在；、
+
+![image-20241127132510133](D:\learn-notes\English-learn\images\image-20241127132510133.png)
+
+3．单一事件（single event）：一个过去发生的短暂事件没有“延续”或“重复”到现在，但它的影响“延续”到了现在，或者说一个过去发生并结束了的事件对现在仍然有影响。
+
+![image-20241127132517938](D:\learn-notes\English-learn\images\image-20241127132517938.png)
+
+**完成时态具有“延续”、“重复”和“单一短暂活动”这三种核心意义和用法。**
+
+
+
+现在完成时表示站在“现在时间”的角度回顾“过去”。既然是回顾自己从过去到现在的经历，因此现在完成时态的这种思维用法在个人自传中少不了。
+
+What I **Have Lived** for 
+
+Three passions, simple but overwhelmingly strong, **have governed** my life: the longing for love, the search for knowledge, and unbearable pity for the suffering of mankind. These passions, like great winds, **have blown** me hither and thither, in a wayward course, over a deep ocean of anguish, reaching to the very verge of despair.
+
+
+
+克林顿卸任前的讲说，通过现在完成时态来“回顾”和吹嘘自己的政绩的：
+
+In all the work I **have done** as president, every decision I **have made**, every executive action I **have taken**, every bill I **have proposed** and **signed**, I'**ve tried** to give all Americans the tools and conditions to build the future of our dreams, in a good society, with a strong economy, a cleaner environment, and a freer, safer, more prosperous world. (Selection of President Bill Clinton's farewell address to the nation on Jan. 18, 2001.)
+
+如果克林顿现在再说这番话， 那他就该用“一般过去时态”了，因为他现在已不是总统。
+
+In all the work I **did** as president, every decision I **made**, every executive action I **took**, every bill I **proposed** and **signed**, I **tried** to give all Americans the tools and conditions to build the future of our dreams, in a good society, with a strong economy, a cleaner environment, and a freer, safer, more prosperous world.
+
+英语时态是与说话的时间点和语境密切相关的活生生的思维表达，而不是僵化的死规则。
+
+
+
+02年2月22日，美国总统小布什应邀访华，并在清华大学发表了演说。小布什是如何使用“现在完成时态”来“回顾”中美外交这30年的风雨历程的：
+
+During the 30 years since, America and China **have exchanged** many handshakes of friendship and commerce. And as we **have had** more contact with each other, the citizens of both countries **have** gradually **learned** more about each other. And that's important.
+
+We'**ve had** many discussions with your leaders, and I'**ve reiterated** support for the "One China" policy. It**'s been** my government's policy for a long period of time, and I **haven't changed** it.
+
+如果小布什用了一般过去时态，说成： The "One China" policy was my government's policy for a long period of time.（我们美国政府曾经在很长一段时间内坚持了“一个中国”的政策。）这句话地言外之意是，现在美国政府不再坚持这个重要政策了，那么接下来的一句话他就不会说：I haven't changed it.  而是要说：I have changed it.（但我现在已经改变了这个政策。）
+
+
+
+## 单词部分
+
+turn down是一个**短语动词**。
+
+1. **拒绝**
+
+表示拒绝某人的提议、请求或邀请。
+
+- She turned down the job offer because she wanted to travel.
+
+2. **调低**
+
+表示调低某个设备的音量、亮度等。
+
+- Can you turn down the volume on the TV? It's too loud.
+
+3. **减少**
+
+表示减少某事物的数量或程度。
+
+- We need to turn down the heat to prevent the food from burning.
+
+4. **拒绝考虑**
+
+表示不考虑或不接受某种想法或建议。
+
+- The committee turned down his proposal for the new project.
+
+5. **翻转或折叠**
+
+表示将某物翻转或折叠。
+
+- Turn down the corners of the blanket to make a neat edge.
+
+
+
+
+
+hither = here
+
+- *adv.*到这里，向此地
+- *adj.*位于这边的，近这边的
+
+
+
+thither = there
+
+- *adv.*向那方；到那边
+- *adj.*对岸的；那边的
+
+
+
+
+
+wayward
+
+- *adj.*任性的；不规则的；刚愎的
+- resistant to guidance or discipline
+
+
+
+anguish
+
+- *n.*剧痛，极度痛苦
+- *v.*感到痛苦
+- extreme mental distress
+- suffer great pains or distress
+
+
+
+verge
+
+- n.*边缘；<英>（道路旁的）植草路肩，绿地；极限，临界点；山墙突瓦；权杖  a region marking a boundary
+- *v.*趋向，接近，濒临；处在边缘  border on; come close to
+
+
+
+overwhelmingly
+
+- *adv.*压倒性地，不可抵抗地    incapable of being resisted
+
+
+
+
+
+ecstasy
+
+- *n.*狂喜，陶醉；摇头丸（Ecstasy）；（情绪或宗教原因引起的）疯狂，出神
+- a state of being carried away by overwhelming emotion
+
+
+
+
+
+sacrifice
+
+- *n.*牺牲，献出；献祭，供奉；祭牲，供品；弃子，弃卒；（棒球中）牺牲打（sacrifice bunt/fly）
+- the act of losing or surrendering something as a penalty for a mistake or fault or failure to perform etc.
+- *v.*牺牲，献出；献祭，以……为祭品；（棋）（故意）弃子，弃卒；（棒球）做牺牲打；（棒球）以牺牲打使（跑垒者）进垒；（桥牌）作牺牲性叫牌；亏本出售
+- endure the loss of
+
+
+
+
+
+abyss
+
+- *n.*危险（可怕）的局面，绝境；深渊，深不可测的地方；（人与人之间的）巨大差异，鸿沟；（地狱中的）无底深渊
+- An **abyss** is a very deep hole in the ground. 深渊
+
+
+
+
+
+handshakes 
+
+- If you give someone a **handshake**, you take their right hand with your own right hand and hold it firmly or move it up and down, as a sign of greeting or to show that you have agreed about something such as a business deal. 握手

@@ -103,13 +103,47 @@ export const mul =(num1,num2)=>{
 
 ```js
 entry: './src/index.js';
+
+
+entry:['url1','url2']  // 这两个文件的内容都会打包到一个main.js文件中
 // 单入口等价于下面这种写法
+
+
 entry: {
   main: './src.index.js';
 }
+
+
+entry:(context, environment) => {
+    console.log('Context:', context);
+    console.log('Environment:', environment);
+
+    // 根据环境变量动态返回入口文件
+    if (environment.production) {
+      return './src/index.prod.js';
+    } else {
+      return './src/index.dev.js';
+    }
+    //  也可以返回对象或者数组
+  },
+      
+     
+      
+  entry:{
+      main:{
+          import './src/index.js',
+          dependOn:'xxx',
+          runtime:'runtime-name'// 单独设置这个入口模块的runtime代码
+      }
+  }
 ```
 
+如果 `entry` 字段被配置为一个函数，那么 Webpack 会在运行时调用这个函数，并传递一些特定的参数。
 
+以下是 Webpack 内部对 `entry` 函数的处理逻辑及其传参的详细解释：
+
+- **`context`**: Webpack 的上下文路径，通常是配置中的 `context` 字段值。如果没有显式设置 `context`，默认是 Webpack 配置文件所在的目录。
+- **`environment`**: 一个对象，包含 Webpack CLI 或构建脚本中传递的 `mode` 和其他环境变量。
 
 ## output
 
@@ -164,7 +198,7 @@ loader 的几种使用方式：
 
 
 
-如果你有不同类型的文件，并且想针对不同情况执行不同的 loader，你可以使用 Webpack 的 `oneOf` 配置。`oneOf` 是 Webpack 4 及以上版本中的一个功能，用来提高性能，确保每个文件只经过其中一个 loader 处理。
+如果有不同类型的文件，并且想针对不同情况执行不同的 loader，可以使用 Webpack 的 `oneOf` 配置。`oneOf` 是 Webpack 4 及以上版本中的一个功能，用来提高性能，确保每个文件只经过其中一个 loader 处理。
 
 ```js
 module.exports = {
@@ -192,6 +226,99 @@ module.exports = {
 ```
 
 
+
+### oneOf
+
+`oneOf` 是用来优化模块规则匹配的一个关键字。它允许你定义一组规则，但 **每个文件只会匹配其中一个规则**，而不会继续匹配后续规则。这种机制可以提升构建效率，避免文件被多个规则重复处理。
+
+#### **`oneOf` 的工作方式**
+
+- `oneOf` 是 `module.rules` 中的一个属性，值是一个规则数组。
+- Webpack 会按顺序遍历数组中的规则，遇到第一个匹配的规则后就停止继续匹配。
+- 如果没有匹配任何规则，Webpack 会抛出错误，除非你提供了默认的处理方式。
+
+以下是一个典型的 Webpack 配置，使用 `oneOf` 优化规则匹配：
+
+````js
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: 'babel-loader',
+      },
+      {
+        oneOf: [
+          {
+            test: /\.css$/,
+            use: ['style-loader', 'css-loader'], // 处理 CSS 文件
+          },
+          {
+            test: /\.scss$/,
+            use: ['style-loader', 'css-loader', 'sass-loader'], // 处理 SCSS 文件
+          },
+          {
+            test: /\.(png|jpe?g|gif)$/i,
+            type: 'asset/resource', // 处理图片文件
+          },
+        ],
+      },
+    ],
+  },
+};
+
+````
+
+在这个配置中：
+
+- 如果文件是 `.css`，会应用 `css-loader` 和 `style-loader`。
+- 如果文件是 `.scss`，会应用 `sass-loader`。
+- 如果文件是图片格式（`.png`, `.jpg`, `.gif`），会使用 `asset/resource`。
+
+`oneOf` 确保每个文件 **只匹配第一个符合条件的规则**，后续规则不再处理该文件。
+
+
+
+#### **`oneOf` 的优点**
+
+1. **性能优化：**
+   - 避免文件被多个规则重复匹配。
+   - Webpack 在找到匹配规则后停止继续匹配，减少不必要的开销。
+2. **明确的规则优先级：**
+   - 通过规则的顺序，控制不同规则的优先级。
+3. **更清晰的配置结构：**
+   - 将相关的规则归纳到一起，配置更具可读性。
+
+------
+
+#### **`oneOf` 的注意事项**
+
+1. **顺序很重要：**
+
+   - `oneOf` 中的规则按顺序匹配，先定义的规则优先级高。
+   - 如果规则顺序不合理，可能会导致预期外的行为。
+
+2. **默认规则：**
+
+   - 如果没有任何规则匹配，Webpack 会抛出错误。
+   - 可以在 `oneOf` 中添加一个默认规则，例如 `file-loader` 或 `asset/resource`，以确保所有文件都有处理方式。
+
+   ```js
+   oneOf: [
+     // 前面的规则...
+     {
+       // 默认规则
+       type: 'asset/resource',
+     },
+   ];
+   ```
+
+3. **与其他配置的兼容性：**
+
+   - `oneOf` 适用于需要明确优先级的场景，但某些场景（如 `include` 和 `exclude` 配置）可能需要额外注意规则的适配性。
+
+   
 
 ## plugin
 
@@ -246,12 +373,19 @@ module.exports = {
         removeComments: true
       },
       hash: true, //在引入打包后的js文件时，给它在script标签中src文件名的后面加上hash值，而不是打包后的js文件有hash值 <script type=text/javascript src=boundle.js?fd7b1ef895541b8c9717></script>，解决浏览器缓存的问题，可以不用该方法而给js打包文件加hash值。
-      //chunks:[]  //没有该字段时，默认情况下，在多入口时，生成的多个chunk都会被引入到上面的template字段引入指定的html模板文件的最后面，同时引入的顺序是以entry字段中各个入口模块的循序为准，所以如果模块打包后的结果存在依赖关系的话，必须保证它们的顺序正确。
+        
+      //chunks:[]  没有该字段时，默认情况下，在多入口时，生成的多个chunk都会被引入到上面的template字段引入指定的html模板文件的最后面，同时引入的顺序是以entry字段中各个入口模块的循序为准，所以如果模块打包后的结果存在依赖关系的话，必须保证它们的顺序正确。
+        
       chunks: ['login', 'index'], //表示只即使有很多打包入口模块，都只在打包后html模板的中引入login和index两个chunk，且顺序以entry时出现的顺序引入。
+        
       chunksSortMode: 'manual' //表示采用chunks中的顺序引入而不用entry中的引入顺序
     })
   ];
   ```
+
+  
+
+  
 
   ```js
   // webpack.config.js
@@ -417,6 +551,10 @@ module.export = {
   }
 };
 ```
+
+
+
+
 
 ```js
 module.export = {
@@ -942,11 +1080,15 @@ module.exports ={
         static:path.resolve(__dirname,'public'),
         port:8080,
         open:true,
+        compress:true,  // 启动gzip压缩
+        hot:true, // 启动模块热更新
+        watchFiles:[ 'path'],  // 不写就监控所有文件
+        historyApiFallback:true, // 参数用于设置是否启用 HTML5 历史记录 API，用于处理单页应用的路由问题。默认情况下，当使用浏览器的前进/后退按钮时，devServer 会尝试根据 URL 路径查找对应的静态资源，如果找不到就返回 404。如果启用了 historyApiFallback，则会将这些请求重定向到 index.html，然后交给前端路由来处理
         proxy:{
             '/api':'http://localhost:3000',
             '/api2':{
                 target:'http://localhost:3001',
-                pathRewrite:{"^/api":''}
+                pathRewrite:{"^/api2":''}
             }
         },
         // webpack-dev-server 内部就是一个express服务器，devServer就是express执行返回值
@@ -985,7 +1127,11 @@ webpackRequire.f.j = (chunkId, promises) => {
 
 css-loader：处理 CSS 中的 `url` 与 `@import`，并将其视为模块引入，此处是通过 postcss 来解析处理。`css-loader` 的原理就是借助postcss，用 `postcss-value-parser` 解析 CSS 为 AST，并将 CSS 中的 `url()` 与 `@import` 解析为模块。
 
+将 CSS 文件中的样式代码转换成 JavaScript 对象，并在 JavaScript 中导出，以便于其他 Loader 或插件进行处理。
+
 style-loader：使用 DOM API 加载 CSS 资源，由于 CSS 需要在 JS 资源加载完后通过动态创建style标签，容易出现页面抖动，性能低且对于 SSR 不友好。由于性能需要，在线上通常需要单独加载 CSS 资源，这要求打包器能够将 CSS 打包，此时需要借助于 [mini-css-extract-plugin(opens in a new tab)](https://github.com/webpack-contrib/mini-css-extract-plugin) 将 CSS 单独抽离出来。
+
+style-loader将 CSS 样式注入到 Webpack 打包后的 JavaScript 文件中，使得页面能够正确显示样式。它会将 CSS 样式代码插入到页面的 `style` 标签中，或以内联样式的方式插入到 `head` 标签中
 
 ```js
 {
@@ -1072,7 +1218,14 @@ app.listen(3000);
 
 ## CSS 兼容性
 
-PostCSS 是一个独立的工具，可以脱离 webpack 单独使用（postcss-cli 在命令行单独使用 postcss 时需要安装该插件）。可以通过 JavaScript 来转换样式，css 的转换和适配，自动添加浏览器厂商前缀，css 样式重置，css 单位转换。
+PostCSS 是一个独立的工具，可以脱离 webpack 单独使用（postcss-cli 在命令行单独使用 postcss 时需要安装该插件）。可以通过 JavaScript 来转换css样式，css 的转换和适配，自动添加浏览器厂商前缀，css 样式重置，css 单位转换。
+
+- `PostCSS` 将 CSS 解析成 AST（抽象语法树），然后使用插件对 AST 进行处理，最后将处理后的 AST 转换为 CSS 代码
+- [autoprefixer](https://github.com/postcss/autoprefixer) 是 PostCSS 的一个插件，它可以根据指定的浏览器版本自动添加所需的浏览器前缀。通过使用 autoprefixer，我们可以避免手动添加浏览器前缀的麻烦，同时也可以确保项目在各个浏览器中正确地显示
+- [postcss-preset-env](https://github.com/csstools/postcss-preset-env) 是 PostCSS 的一个插件集合，它可以使用未来的 CSS 语法，而不需要等待浏览器支持。postcss-preset-env 包含了一些常用的 CSS 预处理器的语法，如 Sass 和 Less，以及一些未来的 CSS 语法，如 CSS Grid、CSS Variables 等
+- [postcss-less](https://github.com/shellscape/postcss-less) 是 PostCSS 的一个插件，它可以让我们使用 Less 预处理器的语法，从而可以更方便地编写 CSS 代码。通过使用 postcss-less，我们可以在 Webpack 构建项目时自动将 Less 代码转换为标准的 CSS 代码
+
+
 
 还需要结合 Browserlist 的版本兼容配置文件来使用。
 
@@ -1141,10 +1294,10 @@ module.exports = {
 
 type 的四种类型：
 
-1. asset/resource
-2. asset/source
-3. asset/inline
-4. asset
+1. asset/resource 生成单独的文件并导出 URL，在默认情况下，使用`asset/resource`类型的加载器会生成带有`[hash][ext][query]`后缀的文件名。如果需要自定义文件名，可以通过设置`output.assetModuleFilename`属性进行控制
+2. asset/source   导出资产的源代码
+3. asset/inline  导出资产的数据 URI
+4. asset  会自动选择导出数据 URI 还是生成单独的文件,可以设置文件大小限制来实现
 
 ```js
 output:{
@@ -1161,6 +1314,8 @@ output:{
    	type:"asset/resource"
 }
 ```
+
+
 
 - 资源模块是一种模块类型，它允许使用资源文件（字体，图标等）而无需配置额外 loader
 - `raw-loader` => `asset/source` 导出资源的源代码
@@ -1302,6 +1457,150 @@ import png from './assets/images/logo.png?time=2022-8-21';
 
 
 
+
+
+### 图片压缩
+
+- image-webpack-loader可以在Webpack打包过程中对图片进行优化和压缩，从而减小图片文件的大小，提高页面加载速度和响应速度
+- 这个库直接安装的话，比较难安装成功，因为里面依赖了一些二进制文件需要编译，网络环境不好的话，就难安装上
+- 它的底层依赖于imagemin和一系列的图像优化工具，包括 mozjpeg、optipng、pngquant、svgo、gifsicle和webp等，可以自动选择最优的优化工具对图片进行处理
+  - optipng：用于压缩PNG图片的配置项
+  - pngquant：同样用于压缩PNG图片的配置项，可以设置图片质量和压缩速度
+  - svgo：用于压缩SVG图片的配置项，包含多个插件
+  - gifsicle：用于压缩Gif图片的配置项
+  - webp：用于将JPG/PNG图片压缩并转换为WebP图片格式的配置项
+
+```diff
+
+   {
+        test: /\.(png)$/,
+        type: 'asset/resource'
+      },
+      {
+        test: /\.(jpg)$/,
+        type: "asset/inline"
+      },
+      {
+        test: /\.(bmp)$/,
+        type: "asset",
+        parser: {
+          dataUrlCondition: {
+            maxSize: 1024
+          }
+        }
+      },
+      {
+        test: /\.svg$/i,
+       type: "asset/source"
+      },
++     {
++       // 匹配文件的正则表达式，这里表示匹配JPG、PNG、GIF和SVG格式的图片文件
++       test: /\.(jpe?g|png|gif|svg)$/i, 
+	     type:'xxxx'  // 也可以在这里设置
++       use: [
++         {
++            // 使用image-webpack-loader对图片进行优化和压缩
++           loader: 'image-webpack-loader',
++           options: {
++             // 是否禁用图片优化和压缩
++             disable: process.env.NODE_ENV === 'development', 
++             mozjpeg: {
++               progressive: true, // 是否开启渐进式JPEG，可以有效提升JPEG图片加载速度
++               quality: 65 // 压缩JPEG图片的质量，取值范围为0到100，值越大质量越好但文件越大
++             },
++             optipng: {
++               enabled: true // 是否开启PNG图片的优化，可以有效提升PNG图片加载速度
++             },
++             pngquant: {
++               // 压缩PNG图片的质量范围，取值范围为0到1，值越大质量越好但文件越大
++               // 第一个数字表示压缩质量的下限，第二个数字表示压缩质量的上限
++               quality: [0.65, 0.9], 
++               speed: 4 // 压缩PNG图片的速度，取值范围为1到10，值越大速度越快但质量越低
++             },
++             svgo: {
++               plugins: [ // 压缩SVG图片的插件列表，这里包含removeViewBox和cleanupIDs两个插件
++                 { //用于删除SVG图片中的viewBox属性
++                   //viewBox属性是用来指定SVG视口范围的，它的值是一个矩形框的坐标和宽高
++                   removeViewBox: false
++                 },
++                 { //用于删除SVG图片中的无用ID属性
++                   cleanupIDs: true
++                 }
++               ]
++             },
++             gifsicle: {
++               interlaced: true // 是否开启GIF图片的隔行扫描,可以有效提升GIF图片加载速度
++             }
++           }
++         }
++       ]
++     } 
+```
+
+
+
+### 图片响应式
+
+- 响应式图片是指能够根据设备屏幕大小和分辨率等因素动态调整显示大小和清晰度的图片
+- 在不同设备上显示同一张图片时，响应式图片可以自动选择最优的图片版本，从而保证图片显示效果的一致性和优化网站性能
+- responsive-loader是一个webpack的loader，用于实现响应式图片的功能。它可以根据设备屏幕大小和像素密度等因素自动调整图片大小和清晰度，从而提高网站的用户体验和性能
+  - sizes：用于指定不同尺寸的图片大小。在这个例子中，我们指定了4个不同的图片大小，分别是300px、600px、1200px和2000px。当加载图片时，responsive-loader会根据设备的屏幕大小和像素密度等因素自动选择最合适的图片大小
+  - adapter：用于指定图片处理库。在这个例子中，我们使用了sharp库，它是一个高性能的图片处理库，可以用来自动调整图片大小和清晰度
+- srcset和sizes是HTML中img标签的两个属性，用于实现响应式图片的功能，可以根据设备屏幕大小和像素密度等因素自动选择最合适的图片版本和显示大小，从而提高网站的用户体验和性能
+- srcset属性用于指定不同尺寸和清晰度的图片版本，它的值是一个以逗号分隔的图片列表，每个图片元素包含了图片URL和对应的宽度或像素密度等信息
+- sizes属性用于指定图片在不同屏幕尺寸下的显示大小，它的值是一个以逗号分隔的尺寸列表，每个尺寸元素包含了媒体查询和对应的尺寸信息
+- 浏览器加载这个img标签时，它会根据设备的屏幕大小和像素密度等因素，选择最合适的图片版本，并根据sizes属性指定的尺寸大小进行显示
+
+```bash
+npm i responsive-loader sharp --save
+```
+
+
+
+```diff
++     {
++                test: /\.(jpe?g|png)$/i,
++               //oneOf是一个优化选项，用于提高打包的速度
++               oneOf:[
++                   {
++                       //resourceQuery是一个用于匹配请求资源的URL中查询字符中
++                       resourceQuery:/sizes/,
++                       use:[
++                           {
++                            loader:'responsive-loader',
++                            options:{
++                               // sizes:[300,600,1024],
++                               adapter:require('responsive-loader/sharp')
++                            }
++                           }
++                        ]
++                   },
++                   {
++                       type: 'asset/resource',
++                   }
++               ]
++           }  
+```
+
+
+
+源码中使用：
+
+```js
+import responsiveImg from './images/bg.png?sizes[]=300,sizes[]=600,sizes[]=1024';
+console.log(responsiveImg);
+let image = new Image();
+image.srcset = responsiveImg.srcSet;
+image.sizes = `(min-width: 1024) 1024px,100vw`;
+document.body.appendChild(image);
+```
+
+
+
+打印的responsiveImg变量的值
+
+![image-20241226180902970](D:\learn-notes\工程化\images\image-20241226180902970.png)
+
 ## JS 兼容性处理
 
 - Babel 默认只转换新的最新 ES 语法,比如箭头函数
@@ -1310,8 +1609,9 @@ import png from './assets/images/logo.png?time=2022-8-21';
 
 - [babel-loader](https://www.npmjs.com/package/babel-loader)使用 Babel 和 webpack 转译 JavaScript 文件,用来读取加载项目源码中的 js 文件
 - [@babel/core](https://www.npmjs.com/package/@babel/core)Babel 编译的核心包,babel-loader 读取的源码传给@babel/core，由@babel/core 将源码转为 AST 语法树，但是它不知道怎么转为代码，它需要将不同的 ast 部分转发给不同插件或者预设取处理
-- [@babel/preset-env](https://www.babeljs.cn/docs/babel-preset-env)
+- [@babel/preset-env](https://www.babeljs.cn/docs/babel-preset-env) 是 Babel 的一个预设，用于自动检测目标环境并根据需要转换 JavaScript 代码
 - [@babel/preset-react](https://www.npmjs.com/package/@babel/preset-react) React 插件的 Babel 预设
+- `@babel/preset-typescript` 是 Babel 的一个规则集，用于将 TypeScript 代码转译为 JavaScript 代码
 - [@babel/plugin-proposal-decorators](https://babeljs.io/docs/en/babel-plugin-proposal-decorators) 把类和对象装饰器编译成 ES5
 - [@babel/plugin-proposal-class-properties](https://babeljs.io/docs/en/babel-plugin-proposal-class-properties) 转换静态类属性以及使用属性初始值化语法声明的属性
 
@@ -1375,7 +1675,430 @@ loose：true 表示可以以 obj.xxx 的方式给对象添加属性，为 false 
 
 
 
+### babel-polyfill
+
+- Babel默认只转换新的Javascript语法，而不转换新的API，比如
+  - Iterator, Generator, Set, Maps, Proxy, Reflect,Symbol,Promise 等全局对象
+  - 在全局对象上的方法,比如说ES6在Array对象上新增了`Array.find`方法，Babel就不会转码这个方法
+- 如果想让这个方法运行，必须使用 `babel-polyfill`来转换等
+- Babel 7.4之后不再推荐使用@babel/polyfill
+- babel v7 推荐使用@babel/preset-env代替以往的诸多polyfill方案
+- [babel-preset-env](https://babeljs.io/docs/en/babel-preset-env)
+- [babel-polyfill](https://babeljs.io/docs/en/babel-polyfill)
+- [babel-runtime](https://babeljs.io/docs/en/babel-runtime)
+- [babel-plugin-transform-runtime](https://babeljs.io/docs/en/babel-plugin-transform-runtime)
+
+```bash
+npm i @babel/polyfill
+```
+
+- `babel-polyfill` 它是通过向全局对象和内置对象的`prototype`上添加方法来实现的。比如运行环境中不支持`Array.prototype.find`方法，引入`polyfill`, 我们就可以使用`ES6`方法来编写了，但是缺点就是会造成全局空间污染
+- [@babel/preset-env](https://www.npmjs.com/package/@babel/preset-env)为每一个环境的预设
+- `@babel/preset-env`默认只支持语法转化，需要开启`useBuiltIns`配置才能转化API和实例方法
+- `useBuiltIns`可选值包括："usage" | "entry" | false, 默认为 false，表示不对`polyfills` 处理，这个配置是引入 polyfills 的关键
+- `useBuiltIns: false` 此时不对 `polyfill` 做操作。如果项目中手动引入了 `@babel/polyfill`，则无视配置的浏览器兼容，全量引入所有的 `polyfill`，无视需要兼容的浏览器条件，打包体积大
+
+
+
+#### useBuiltIns: false 
+
+src/index.js
+
+```js
+import '@babel/polyfill';
+let sum = (a, b) => a + b;
+let promise = Promise.resolve();
+console.log([1, 2, 3].find(item => item === 2));
+```
+
+webpack.config.js
+
+```diff
+const path = require('path');
+module.exports = {
+    mode: 'development',
+    devtool: false,
+    entry: './src/index.js',
+    output: {
+        path: path.resolve(__dirname, 'dist'),
+        filename: 'main.js'
+    },
+    module: {
+        rules: [
+            {
+                test: /\.js?$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        sourceType: "unambiguous",
++                       presets: [["@babel/preset-env", { useBuiltIns: false }]]
+                    }
+                }
+            }
+        ]
+    },
+    plugins: []
+};
+```
+
+
+
+#### **useBuiltIns: "entry"**
+
+- 在项目入口引入一次（多次引入会报错）
+
+- "useBuiltIns": "entry" 根据配置的浏览器兼容，引入浏览器不兼容的 polyfill。需要在入口文件手动添加 `import '@babel/polyfill'`，会自动根据 browserslist 替换成浏览器不兼容的所有 polyfill，不管自己编写的源代码中是否需要兼容哪些API，都根据条件统一打包到源码中
+
+- 这里需要指定 core-js 的版本,`corejs`默认是2
+
+- 如果配置 `corejs: 3`, 则`import '@babel/polyfill'` 需要改成 `import 'core-js/stable';import 'regenerator-runtime/runtime';`
+
+  ```bash
+  npm install --save core-js@2    npm install --save core-js@3
+  ```
+
+  
+
+  core-js@2
+
+  ```js
+  import '@babel/polyfill';
+  let sum = (a, b) => a + b;
+  let promise = Promise.resolve();
+  console.log([1, 2, 3].find(item => item === 2));
+  ```
+
+  
+
+  core-js@3
+
+
+  ```js
+  import 'core-js/stable';
+  import 'regenerator-runtime/runtime';
+  let sum = (a, b) => a + b;
+  let promise = Promise.resolve();
+  console.log([1, 2, 3].find(item => item === 2));
+  ```
+
+  #### webpack.config.js
+
+  ```diff
+  {
+    test: /\.js?$/,
+    exclude: /node_modules/,
+    use: {
+        loader: 'babel-loader',
+        options: {
+  +         presets: [["@babel/preset-env", { useBuiltIns: 'entry', corejs: { version: 3 } }]]
+        }
+    }
+  }
+  ```
+
+
+
+#### **"useBuiltIns": "usage" **
+
+- "useBuiltIns": "usage" `usage` 会根据配置的浏览器兼容，以及你代码中用到的 API 来进行 polyfill，实现了按需添加
+- 当设置为usage时，polyfill会自动按需添加，不再需要手工引入`@babel/polyfill`
+
+
+
+
+
+### babel-runtime
+
+- 为了解决babel-folyfill全局空间污染的问题，提供了单独的包[babel-runtime](https://babeljs.io/docs/en/babel-runtime)用以提供编译模块的工具函数
+- 简单说 `babel-runtime` 更像是一种按需加载的实现，比如你哪里需要使用 `Promise`，只要在这个文件头部`import Promise from 'babel-runtime/core-js/promise'`就行了
+
+```bash
+npm i babel-runtime --save-dev
+```
+
+src/index.js
+
+```js
+import Promise from 'babel-runtime/core-js/promise';
+const p = new Promise(()=> {});
+```
+
+
+
+### babel-plugin-transform-runtime
+
+- @babel/plugin-transform-runtime插件是为了解决
+  - 多个文件重复引用 相同helpers(帮助函数)=>提取运行时
+  - 新API方法全局污染 -> 局部引入
+- 启用插件`babel-plugin-transform-runtime`后，Babel就会使用`babel-runtime`下的工具函数
+- `babel-plugin-transform-runtime`插件能够将这些工具函数的代码转换成`require`语句，指向为对`babel-runtime`的引用
+- babel-plugin-transform-runtime 就是可以在我们使用新 API 时自动 importbabel-runtime里面的polyfill
+  - 当使用 `async/await` 时，自动引入 `babel-runtime/regenerator`
+  - 当使用 ES6 的静态事件或内置对象时，自动引入 `babel-runtime/core-js`
+  - 移除内联`babel helpers`并替换使用`babel-runtime/helpers` 来替换
+
+```bash
+npm i @babel/plugin-transform-runtime @babel/runtime-corejs3 --save-dev
+```
+
+webpack.config.js
+
+```js
+{
+    test: /\.js?$/,
+    exclude: /node_modules/,
+    use: {
+        loader: 'babel-loader',
+        options: {
+            sourceType: "unambiguous",
+            presets: [["@babel/preset-env", { useBuiltIns: 'usage', corejs: { version: 3 } }]],
+            plugins: [
+                [
+                    "@babel/plugin-transform-runtime",
+                    {
+                        corejs: 3,
+                        helpers: true,
+                        regenerator: true
+                    }
+                ],
+            ]
+        }
+    }
+ }
+```
+
+当我们使用 ES6 的静态事件或内置对象时自动引入 babel-runtime/core-js
+
+```js
+//var _Promise = __webpack_require__("./node_modules/@babel/runtime-corejs3/core-js-stable/promise.js");
+const p = new Promise(() => { });
+console.log(p);
+```
+
+
+
+#### helpers: true
+
+- 移除内联babel helpers并替换使用`babel-runtime/helpers` 来替换
+- 避免内联的 helper 代码在多个文件重复出现
+
+```js
+class A {
+
+}
+class B extends A {
+
+}
+console.log(new B());
+```
+
+#### regenerator: true
+
+- 是否开启`generator`函数转换成使用`regenerator runtime`来避免污染全局域
+
+```js
+//var _regeneratorRuntime = __webpack_require__(/*! @babel/runtime-corejs3/regenerator */ "./node_modules/@babel/runtime-corejs3/regenerator/index.js");
+
+function* gen() {
+
+}
+console.log(gen());
+```
+
+
+
+#### 最佳实践
+
+- @babel/preset-env和plugin-transform-runtime二者都可以设置使用corejs来处理polyfill
+
+####  项目开发
+
+- useBuiltIns使用usage
+
+- plugin-transform-runtime只使用其移除内联复用的辅助函数的特性，减小打包体积
+
+  ```json
+  {
+      "presets": [
+          [
+              "@babel/preset-env",
+              {
+                  "useBuiltIns": "usage",
+                  "corejs": 3
+              }
+          ]
+      ],
+      "plugins": [
+          [
+              "@babel/plugin-transform-runtime",
+              {
+                  corejs: false,
+                  helpers: true,
+                  regenerator: true
+              }
+          ]
+      ]
+  }
+  ```
+
+#### 类库开发
+
+- 类库开发尽量不使用污染全局环境的`polyfill`，因此`@babel/preset-env`只发挥语法转换的功能
+- polyfill由`@babel/plugin-transform-runtime`来处理，推荐使用core-js@3
+
+```json
+{
+    "presets": [
+        [
+            "@babel/preset-env"
+        ]
+    ],
+    "plugins": [
+        [
+            "@babel/plugin-transform-runtime",
+            {
+                "corejs": {
+                    "version": 3
+                }
+            }
+        ]
+    ]
+}
+```
+
+
+
+#### polyfill-service
+
+- [polyfill.io](https://polyfill.io/v3/)自动化的 JavaScript Polyfill 服务
+- [polyfill.io](https://polyfill.io/v3/)通过分析请求头信息中的 UserAgent 实现自动加载浏览器所需的 polyfills
+
+```js
+<script src="https://polyfill.io/v3/polyfill.min.js"></script>
+```
+
+
+
+
+
+## TS
+
+在 Webpack 中，`ts-loader` 和 `babel-loader` 都可以用来将 TypeScript 转换为 JavaScript，但它们的设计目标和工作方式不同，因此在实际使用中会有所区别。
+
+- `ts-loader` 是 Webpack 中的一个加载器，用于将 TypeScript 代码转换成 JavaScript 代码。它是基于 typescript 编译器实现的，支持所有 TypeScript 的语法和特性，可以帮助开发者在 Webpack 中使用 TypeScript 进行开发
+- 直接使用 TypeScript 编译器 (`tsc`) 进行编译。
+- 完全遵循 `tsconfig.json` 的配置，例如模块解析、类型检查等。
+- 内置类型检查功能，能在编译过程中发现类型错误。
+- 可能会导致构建速度变慢，尤其是在大项目中。
+- 完全支持 TypeScript 的所有功能和特性。
+- 如果项目依赖 TypeScript 的高级特性（如路径映射、声明文件生成等），`ts-loader` 更合适。
+
+
+
+webpack.config.js
+
+```diff
+const path = require('path');
+module.exports = {
++ entry: './src/index.ts',
+  module: {
+    rules: [
++     {
++       test: /\.ts$/,
++       use: 'ts-loader',
++       exclude: /node_modules/
++     },
+    ]
+  },
+
+};
+```
+
+
+
+- `@babel/preset-typescript` 是 Babel 的一个预设，用于将 TypeScript 代码转换为 JavaScript 代码
+- 使用 Babel 进行转译，需要借助 `@babel/preset-typescript` 来支持 TypeScript 语法。
+- Babel 只负责语法转换，不进行类型检查，需要额外运行 TypeScript 类型检查工具（例如 `tsc --noEmit` 或 `fork-ts-checker-webpack-plugin`）来捕捉类型错误。
+- 适合更高效的转译流程，尤其是在大型项目中。
+- 
+
+
+
+```diff
+      {
+        test: /\.ts$/,
+        use: 
++       [
++         {
++           loader: 'babel-loader',
++           options: {
++             presets: ['@babel/preset-typescript']
++           }
++         }
++       ],
+        exclude: /node_modules/
+      },
+```
+
+
+
+### 选择
+
+- **只用 TypeScript 的项目：**
+  - 推荐使用 `ts-loader`，因为它完全遵循 TypeScript 的配置，且更适合处理 TypeScript 专属特性。
+- **TypeScript + Babel 的项目：**
+  - 推荐使用 `babel-loader`，并结合 Babel 的生态。如果需要类型检查，可以搭配 `fork-ts-checker-webpack-plugin` 或单独运行 `tsc`。
+- **大型项目：**
+  - 如果构建性能是关键因素，可以选择 `babel-loader` 进行快速语法转译，同时使用独立的类型检查流程（如 `tsc --noEmit`）。
+
+
+
+### 最佳实践
+
+如果需要在项目中结合两者的优势，可以这样配置：
+
+1. 使用 `babel-loader` 转译 TypeScript 代码。
+2. 使用 `fork-ts-checker-webpack-plugin` 或 `tsc --noEmit` 进行类型检查。
+
+例如：
+
+```js
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.tsx?$/,
+        use: 'babel-loader',
+        exclude: /node_modules/,
+      },
+    ],
+  },
+  plugins: [
+    new ForkTsCheckerWebpackPlugin(),
+  ],
+  resolve: {
+    extensions: ['.tsx', '.ts', '.js'],
+  },
+};
+```
+
+这样既能享受 Babel 的高性能和生态，又能确保 TypeScript 的类型安全。
+
+
+
 ## eslint
+
+- ESLint是一个流行的JavaScript代码检查工具，旨在帮助前端开发者在编写代码时自动检查代码风格(这个一般交给prettier去做)和语法错误。为了满足不同团队和项目的代码规范需求，ESLint生态中出现了许多基于不同代码规范的规则集合和插件
+- `eslint-config-airbnb` 是Airbnb提供的代码风格规则集。它的优点在于提供了一套完整的、可自定义的代码规范，旨在帮助开发者编写具有一致性和可读性的代码
+- `eslint-config-standard`遵循Standard.js代码风格规范，提供了最便捷的统一代码风格的方式。使用该规则集可以避免因代码风格不一致而引起的错误和混乱
+- `eslint-plugin-vue`和`eslint-plugin-react`插件来实现对SFC文件和React代码风格的检查
+- 针对TypeScript代码的检查，可以使用`@typescript-eslint/eslint-plugin`插件来检查代码风格和语法错误
+- `eslint-plugin-sonarjs`插件，该插件基于`Sonar`提供了代码质量检查工具，提供圈复杂度、代码重复率等检测功能
+
+
 
 ### 旧版配置
 
@@ -1492,6 +2215,204 @@ module.exports = {
   }
 };
 ```
+
+
+
+## MAP项目配置
+
+在 Webpack 中，当项目有多个模板 HTML 文件且每个模板 HTML 都对应一个入口模块时，需要使用多入口配置来构建。以下是典型的 Webpack 配置文件示例，适用于这样的场景：
+
+```js
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+const entries = {
+  index: './src/index.js',
+  about: './src/about.js',
+  contact: './src/contact.js',
+};
+
+module.exports = {
+  entry: entries,
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: '[name].bundle.js', // 输出的文件名对应入口名称
+    clean: true, // 清理旧文件  
+  },
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: 'babel-loader',
+      },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader'],
+      },
+      {
+        test: /\.(png|jpg|jpeg|gif|svg)$/,
+        type: 'asset/resource',
+      },
+    ],
+  },
+  plugins: [
+    ...Object.keys(entries).map((entryName) => 
+      new HtmlWebpackPlugin({
+        filename: `${entryName}.html`, // 生成的 HTML 文件名
+        template: `./src/templates/${entryName}.html`, // 模板路径
+        chunks: [entryName], // 指定入口文件    chunks 用于指定当前模板使用的入口模块，防止加载不相关的 JS 文件。
+      })
+    ),
+  ],
+  optimization: {
+    splitChunks: {
+      chunks: 'all', // 提取公共模块   配置 optimization.splitChunks 提取公共模块（如第三方库），减少重复代码。
+    },
+  },
+  devServer: {
+    static: path.resolve(__dirname, 'dist'),
+    open: true,
+    port: 8080,
+  },
+};
+
+```
+
+
+
+```text
+project/
+├── src/
+│   ├── index.js
+│   ├── about.js
+│   ├── contact.js
+│   ├── templates/
+│   │   ├── index.html
+│   │   ├── about.html
+│   │   └── contact.html
+│   ├── styles/
+│   │   ├── index.css
+│   │   ├── about.css
+│   │   └── contact.css
+├── dist/
+├── webpack.config.js
+├── package.json
+```
+
+
+
+`HtmlWebpackPlugin` 插件中的 `chunks` 选项的作用是指定当前生成的 HTML 文件中需要引入的 JavaScript 模块（即 Webpack 中的入口文件）。它提供了精确的控制，确保只包含与当前 HTML 文件相关的脚本，从而避免加载多余的文件。
+
+------
+
+### **`chunks` 选项的主要功能**
+
+1. **指定引入的脚本**:
+   - 当项目使用多入口配置时，每个入口文件可能会生成不同的 JavaScript 文件。通过 `chunks` 指定关联的入口文件，可以确保 HTML 文件只引入相关的 JS 文件。
+2. **优化加载性能**:
+   - 通过只加载所需的模块，减少不必要的脚本加载，提升页面性能。
+3. **避免冲突**:
+   - 当每个页面使用不同的模块时，避免引入错误或不需要的代码导致的冲突或错误。
+
+------
+
+### **`chunks` 的使用场景**
+
+#### 1. 多入口配置
+
+在多页面应用中，不同的 HTML 文件对应不同的入口模块。例如：
+
+- `index.html` 对应 `index.js`
+- `about.html` 对应 `about.js`
+- `contact.html` 对应 `contact.js`
+
+**配置示例**:
+
+```js
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+module.exports = {
+  entry: {
+    index: './src/index.js',
+    about: './src/about.js',
+    contact: './src/contact.js',
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      filename: 'index.html',
+      template: './src/templates/index.html',
+      chunks: ['index'], // 仅引入 index.js
+    }),
+    new HtmlWebpackPlugin({
+      filename: 'about.html',
+      template: './src/templates/about.html',
+      chunks: ['about'], // 仅引入 about.js
+    }),
+    new HtmlWebpackPlugin({
+      filename: 'contact.html',
+      template: './src/templates/contact.html',
+      chunks: ['contact'], // 仅引入 contact.js
+    }),
+  ],
+};
+```
+
+#### 2. 引入多个入口文件
+
+有时一个页面需要引入多个入口文件，可以在 `chunks` 中同时指定：
+
+**配置示例**:
+
+```js
+new HtmlWebpackPlugin({
+  filename: 'dashboard.html',
+  template: './src/templates/dashboard.html',
+  chunks: ['index', 'about'], // 同时引入 index.js 和 about.js
+});
+```
+
+------
+
+### **不使用 `chunks` 会发生什么？**
+
+如果不设置 `chunks`，`HtmlWebpackPlugin` 会默认引入所有的入口模块（即 `entry` 中的所有文件）。这可能导致以下问题：
+
+1. 加载多余脚本:
+   - 所有的入口文件都会被加载，可能包含不相关的代码，浪费资源。
+2. 潜在的冲突:
+   - 不同页面的脚本可能相互影响（如全局变量冲突）。
+
+------
+
+### **对比 `chunks` 和 `excludeChunks`**
+
+- **`chunks`**: 指定要包含的入口模块。
+- **`excludeChunks`**: 指定要排除的入口模块。
+
+**示例**:
+
+```js
+// 只引入指定模块
+new HtmlWebpackPlugin({
+  filename: 'index.html',
+  chunks: ['index'], // 仅引入 index.js
+});
+
+// 排除指定模块
+new HtmlWebpackPlugin({
+  filename: 'index.html',
+  excludeChunks: ['about', 'contact'], // 排除 about.js 和 contact.js
+});
+```
+
+------
+
+### 总结
+
+`chunks` 的作用是为每个生成的 HTML 文件精确指定需要加载的入口模块，避免引入不必要的脚本文件，提升加载性能和代码管理效率。合理使用 `chunks` 可以确保 Webpack 配置更灵活、更高效。
+
+
 
 
 
@@ -6112,6 +7033,58 @@ module.exports = {
     libraryTarget: 'var'
   }
 };
+```
+
+
+
+现代化的npm包都会打包输出多种模块化规范的文件
+
+webpack目前不支持打包成esmodule格式的库。
+
+```js
+const path = require('path');
+const {merge} = require('webpack-merge');
+
+const baseConfig = {
+    mode:'development',
+    devtool:false,
+    entry:'./src/index.js',
+    externals:[
+        //nodeExternals()  //排除所有的第三方模块，就是把node_modules里的模块全部设置为外部模块
+    ],
+    output:{
+        //library:'math',
+        //libraryExport:'add',
+        clean:true
+    },
+}
+
+module.exports = [
+    merge(baseConfig,{
+        output:{
+            filename:'[name]-window.js',
+            libraryTarget:'window'
+        }
+    }), 
+    merge(baseConfig,{
+        output:{
+            filename:'[name]-commonjs.js',
+            libraryTarget:'commonjs2'
+        }
+    }),  
+    merge(baseConfig,{
+        output:{
+            filename:'[name]-umd.js',
+            libraryTarget:'umd'
+        }
+    }), 
+    merge(baseConfig,{
+        output:{
+            filename:'[name]-amd.js',
+            libraryTarget:'amd'
+        }
+    }) 
+]
 ```
 
 

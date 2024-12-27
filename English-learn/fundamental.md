@@ -159,7 +159,7 @@ You are what you read.(你即你所读。)
 本书特点：
 
 1. 一般语法书教条式地罗列大量的所谓规则，不讲解背后的思维规律。
-2. 一般语法树还有许多看似例外的规则加重记忆理解负担，但其实这些例外本质也是有符合逻辑的思维规律，这样就避免的纯粹的对这些例外的背诵，而是辅助于理解记忆
+2. 一般语法书还有许多看似例外的规则加重记忆理解负担，但其实这些例外本质也是有符合逻辑的思维规律，这样就避免的纯粹的对这些例外的背诵，而是辅助于理解记忆
 3. 一般语法书严重忽视句子的上下文语境，给出的例句，只为说明规则，在学习一个语法知识点的时候，需要结合有上下文语境的情况辅助和加深理解，理解器背后的思维
 4. 一般语法书只是讲语法知识，而不重视真正的口语应用。
 
@@ -293,7 +293,7 @@ You are what you read.(你即你所读。)
 
 由此可见，**知道语法结构的形式并不一定就懂得语法结构所要表达的真正意义。**其实，这里的 have been coming 在英文里表示的是一个重复的活动，具体来说：==用短暂动词（如 come）的完成进行时（如 have been coming）来表示到目前为止的一段时间内重复发生的动作==。
 
-2. I have been coming to Beijing fourteen times.
+2. I have been coming to Beijing fourteen times*.
 
 说话人是想表达“我来北京有十四次了”这样的意思。这也不对。==因为现在完成进行时态在表示重复活动时， 不能说明具体的次数，比如这里的“十四次”==。这就属于知道 have been coming 形式（现在完成进行时态）和意义（表示重复活动），但并没有真正掌握其用法，即不知道如何恰当地使用完成进行时态来表达重复意义。==由此可见，知道语法结构的正确构造形式以及所能表达的意义，也并不一定就保证能够正确使用==。
 
@@ -305,7 +305,7 @@ You are what you read.(你即你所读。)
 
 扩展：
 
-在英语中，现在完成进行时（**have/has been + 动词的现在分词**）主要用于强调**动作的持续性**或**动作发生的频繁性**，但并不适合用来描述**具体的次数**。现在完成进行时更多关注的是动作的过程、时间长度或者某种持续的状态，而不是动作完成的次数。因此，在涉及具体次数时，使用现在完成进行时会导致不自然或语义不清晰的表达。
+现在完成进行时（**have/has been + 动词的现在分词**）主要用于强调**动作的持续性**或**动作发生的频繁性**，但并不适合用来描述**具体的次数**。现在完成进行时更多关注的是动作的过程、时间长度或者某种持续的状态，而不是动作完成的次数。因此，在涉及具体次数时，使用现在完成进行时会导致不自然或语义不清晰的表达。
 
 **原因分析：**
 
@@ -373,8 +373,6 @@ You are what you read.(你即你所读。)
 
 
 
-
-
 ## 英语和汉语思维
 
 例句：我已经结婚了。句子用英语如何表达？
@@ -396,8 +394,6 @@ It is interesting to listen to him.
 也就是说，在表层结构上，he 是做句子的主语（He is...），但在深层结构上，he 是作 listen to 的逻辑宾语（...listen to him）。这里不定式 to listen to 的逻辑主语是泛指大众，在句中没有明确给出，而只是隐含其中的。
 
 所以，如果读者只满足于看懂句子意思就行了，而不去真正理解英语的思维规律，那么英语水平是无法**真正提高**的。这就是为什么大量中国英语学习者的英语水平就停留在能看懂英文文章但是说不出、写不来的尴尬境地，究其原因，还是因为没有真正“懂英文”！
-
-
 
 
 
@@ -477,7 +473,7 @@ It is interesting to listen to him.
 
 ### 案例
 
-The eighth wonderof the world is the one who can remember the other seven wonders.
+The eighth wonder of the world is the one who can remember the other seven wonders.
 
 “世界最著名的七大奇迹”该如何翻译成英文。对于这个表达，中文里可以说得很灵活。比如：
 
@@ -610,7 +606,7 @@ The eighth wonderof the world is the one who can remember the other seven wonder
 
 名词短语的构造——==“左二右六”的定语规律==。
 
-名词短语是由名词与它的修饰语一起构成的。==名词的修饰语与名词 的位置关系不外乎两种：一是放在被修饰名词的前面，称之为前置定语；二是放在被修饰名词的后面，称之为后置定语。==
+名词短语是由名词与它的修饰语一起构成的。==名词的修饰语与名词的位置关系不外乎两种：一是放在被修饰名词的前面，称之为前置定语；二是放在被修饰名词的后面，称之为后置定语。==
 
 一般来讲，名词前面有两种修饰语。一是限定词，==用来限定名词所指的范围，对名词起泛指或特指、定量或不定量等的限定修饰作用。== 比如上文中的 these, three, a, the, my 和 that。二是形容词，==是用来表示名词的性质和特征的==。比如上文中的 red, close, new, best 和 small。
 
@@ -1805,12 +1801,12 @@ N1 + of + N2
 
 典型的限定词包括：
 
-1. 冠词：a，an，the
+1. **冠词**：a，an，the
 2. 基数词和序数词：one/first，two/second等
 3. 指示代词：this，that，these，those
 4. 物主代词：my，your，his，her，our和their
-5. 数量限定：a few，a little，much，many，a lot of，some，any，enough，several等
-6. 个体限定：ench，every，either，neither，both等
+5. **数量限定**：a few，a little，much，many，a lot of，some，any，enough，several等
+6. **个体限定**：ench，every，either，neither，both等
 7. 名词所属格：mary\`s，his father\`s
 
 冠词这一词性在汉语中是缺失的，但是却表现了英语的思维表达的特点。汉语中有量词来修饰一个名词。汉语中没有对应的冠词表达。
@@ -1841,19 +1837,15 @@ N1 + of + N2
 
 1. a：用在以辅音音素开头的名词前面
 2. an：用在以元音音素开头的名词前面
-3. the
+3. the，有两种不同的读音
 
 a/an是不定冠词，the是定冠词。
 
-> a boy
->
-> a student
+> a boy，a student
 >
 > 这里的［b］和［s］都是辅音，所以，用不定冠词a。
 >
-> a university
->
-> a unique person 
+> a university，a unique person 
 >
 > an unkind old lady
 >
@@ -2040,7 +2032,7 @@ a/an是不定冠词，the是定冠词。
 
 *The tiger* is becoming almost extinct.
 
- *Tigers* are becoming almost extinct. 
+*Tigers* are becoming almost extinct. 
 
 The Tiger is a dangerous animal.
 
@@ -3808,12 +3800,10 @@ They questioned both the last two boys.
 
 **观点形容词**：表述个人主观上对事物的看法的形容词。如：good，lovely，beautiful，handsome，comfortable等。
 
-**描述事实形容词**：用来描述事物本身固有特 征的形容词，是对事物进行客观上的表述，如事物的颜色（blue，yellow，dark，white）、事物 的形状（round，square）等。
+**描述事实形容词**：用来描述事物本身固有特征的形容词，是对事物进行客观上的表述，如事物的颜色（blue，yellow，dark，white）、事物的形状（round，square）等。
 
 - a beautiful white table
 - a good red apple
-
-
 
 由于事物客观上的属性可以有许多种，因此，描绘形容词又有以下进一步的分类。下表：
 
@@ -3825,7 +3815,7 @@ They questioned both the last two boys.
 - There was a large round wooden table in the room. 
 - The man was carrying a small black plastic bag.
 
-最靠近名词的形容词是表示事物的材料、质地的，因为它是与名词的关系最为密切的，因而必然要紧靠名词。另外，如果有表示“用途（purpose）”的修饰语，则其位 置是“材料＋用途＋名词”，即表示“用途”的修饰语要紧靠名词。
+最靠近名词的形容词是表示事物的材料、质地的，因为它是与名词的关系最为密切的，因而必然要紧靠名词。另外，如果有表示“用途（purpose）”的修饰语，则其位置是“材料＋用途＋名词”，即表示“用途”的修饰语要紧靠名词。
 
 - a crystal, drinking glass
 
@@ -3833,7 +3823,7 @@ They questioned both the last two boys.
 
 ### 后置修饰
 
-一般是形容词短语做定于才被放到名词后面。
+一般是**形容词短语**做定语才被放到名词后面。
 
 - a typical mistake
 - a mistake typical of beginners of English.     typical后面接有介词短语of beginners of English，构成形容词短语
@@ -3850,7 +3840,7 @@ They questioned both the last two boys.
 形容词短语的构成主要可以有两类
 
 - 一类是“形容词＋补足语”构成的形容词短语，即在一个形容词的后面接一个介词短语或一个非谓语动词短语作它的补足语。
-- 一类是多个形容词并列使用，从而也构成形容词短语。
+- 一类是多个形容词并列使用，从而构成形容词短语。
 
 
 
@@ -3868,11 +3858,11 @@ A campaign on the harsh terrain of a nation **as large as California** could be 
 
 有时还可以在形容词的后面接一个that从句来构成形容词短语。例句：If a diamond is heated without oxygen, it will turn to graphite, a form of carbon **so soft that it is used as a lubricant**. 
 
-在上面的例句中，构成形容词短语的中心形容词与其补足语都是紧密地连在 一起的。但有时候两者之间也可能会插入其他成分，因而造成形容词与其补足语被分隔。这种形 容词短语被分隔的情况往往会增加句子理解的难度，因为读者很可能看不到形容词与其补足语遥相呼应的语义联系。
+在上面的例句中，构成形容词短语的中心形容词与其补足语都是紧密地连在 一起的。但有时候两者之间也可能会插入其他成分，因而造成形容词与其补足语被分隔。这种形容词短语被分隔的情况往往会增加句子理解的难度，因为读者很可能看不到形容词与其补足语遥相呼应的语义联系。
 
 Vitamins are organic compounds necessary in small amounts in the diet for the normal growth and maintenance of life of animals, including man. 
 
-形容词necessary，它置于名词compounds的后面。由此可以判断，这里的necessary不应该是一个孤立的形容词（否则就要前置修饰compounds了），而应该与其后面的某个成分构成形容词短 语，所以要后置修饰名词compounds。那么现在的问题是，necessary是与后面的哪个成分构成语义上的呼应呢？知道necessary基 本用法的读者都应该知道，necessary通常与介词for构成搭配，所以整个句子的逻辑结构如下图所示：
+形容词necessary，它置于名词compounds的后面。由此可以判断，这里的necessary不应该是一个孤立的形容词（否则就要前置修饰compounds了），而应该与其后面的某个成分构成形容词短语，所以要后置修饰名词compounds。那么现在的问题是，necessary是与后面的哪个成分构成语义上的呼应呢？知道necessary基本用法的读者都应该知道，necessary通常与介词for构成搭配，所以整个句子的逻辑结构如下图所示：
 
 ![image-20240711210933786](D:\learn-notes\English-learn\images\image-20240711210933786.png)
 
@@ -3914,7 +3904,7 @@ Each person has his or her own purpose and distinct path, unique and separate fr
 
 ### 形容词的比较级和最高级
 
-一般来说，形容词（以及副词）具有原级、比较级和最高级这样的三个等级比较。
+一般，形容词（以及副词）具有原级、比较级和最高级三个等级比较。
 
 形容词的比较级和最高级有两种方式：
 
@@ -3962,7 +3952,7 @@ Each person has his or her own purpose and distinct path, unique and separate fr
 
 1. farther (farthest)/further (furthest)
 
-   这四个词都可以指实际的距离。不过，further/furthest可用于抽象意义，表示“进一步的，更 多的，更深入的”，常与抽象名词连用。例如： 
+   这四个词都可以指实际的距离。不过，further/furthest可用于抽象意义，表示“进一步的，更多的，更深入的”，常与抽象名词连用。例如： 
 
    - further discussion（继续讨论） 
    - further debate（继续争论） 
@@ -4037,7 +4027,7 @@ Each person has his or her own purpose and distinct path, unique and separate fr
 - unique（唯一的，独特的）
 - unanimous（意见一致的，无异 议的）
 
- 尽管这些词没有“等级差别”，但还是可以用下面一些表示“接近的”副词来修饰。比如： nearly, almost, the most closely和more nearly等等。比如：
+尽管这些词没有“等级差别”，但还是可以用下面一些表示“接近的”副词来修饰。比如： nearly, almost, the most closely和more nearly等等。比如：
 
 - nearly perfect（接近完美的）
 - almost fatal（几乎是致命的）
@@ -4276,14 +4266,14 @@ never与比较级连用，是在对这个比较级的词进行强调，意思也
 
 ### 形容词ed与ing
 
-一般都认为-ed形容词修饰“人”，而-ing形容词修饰“物”。其实不 然，关键还是要看表意，意思的表达最重要。
+一般都认为-ed形容词修饰“人”，而-ing形容词修饰“物”。其实不然，关键还是要看表意，意思的表达最重要。
 
 the interesting book    interesting表示“能够引起人们兴趣的书”，即“一本有趣的书”。
 
 the interested person    interested表示“这个人对某个事物感兴趣”，即“一个感兴趣的人”。
 
-- -ing形容词主要是用来**描述引起人某种感觉的事物**，因此，句子 的主语通常是事物或作定语修饰事物（用于修饰人的情况较少）；
-- -ed形容词主要是用来**描述人的感觉**，表示“人对事物产生某种感觉”，句子的主语通常是人或有情绪的动物，或用来修饰人或有情绪 的动物（一般不指事物）。
+- -ing形容词主要是用来**描述引起人某种感觉的事物**，因此，句子的主语通常是事物   或   作定语时修饰事物（用于修饰人的情况较少）；
+- -ed形容词主要是用来**描述人的感觉**，表示“**人对事物产生某种感觉**”，句子的主语通常是人或有情绪的动物，或用来做定语时修饰人或有情绪的动物（一般不指事物）。
 
 the exciting news   激动人心的消息
 
@@ -4307,10 +4297,10 @@ the annoying words   令人气愤的话
 
 **注意：可以用-ing形容词来修饰人，而用ed形容词来修饰事物。**
 
-对于-ing形容词修饰人，这比较常见。不过，出现这种用法时要注意理解句子的意思，否则就可能会出现误解。一般来说，用-ing形容词修饰人，是说明这个人能够引起的某种情绪。
+对于-ing形容词修饰人，出现这种用法时要注意理解句子的意思，否则就可能会出现误解。一般来说，用-ing形容词修饰人，是说明这个人能够引起的某种情绪。
 
-- a boring man   “一个让别人感到乏味的男子”，比如他缺乏幽默感、为人很古板 等。
-- a bored man  “一个对生活感到很乏味的男子”，比如他的生活不够精彩，太单 调、平淡。
+- a boring man   “一个让别人感到乏味的男子”，比如他缺乏幽默感、为人很古板等。
+- a bored man  “一个对生活感到很乏味的男子”，比如他的生活不够精彩，太单调、平淡。
 
 
 
@@ -4320,7 +4310,7 @@ the annoying words   令人气愤的话
 
 But my **diary** is good on nature: the first time I saw a fox in the garden in 1986, the first time I saw a fox in the street, the first time I saw fox cubs in the garden, all in **excited detail.**
 
-表面上看，excited用在了detail前面，因而它修饰了detail。但在真正的意义上，excited是 描写作者在写作当时的心境（The writer's describing her emotional state while writing.），所以 excited detail相当于汉语说“兴奋地描述了细节”，而不是“兴奋的细节”。这是一种英语表达的“经 济原则”（This is economy in writing.）。
+表面上看，excited用在了detail前面，因而它修饰了detail。但在真正的意义上，excited是 描写作者在写作当时的心境（The writer's describing her emotional state while writing.），所以 excited detail相当于汉语说“兴奋地描述了细节”，而不是“兴奋的细节”。这是一种英语表达的“经济原则”（This is economy in writing.）。
 
 
 
@@ -5762,7 +5752,7 @@ the exchange...based on their interpersonal ties，表示“建立在人际关�
 
 A. 过   B．了   C．着  D．的
 
-中文标志时态的手段非常有限，主要是用助词“着”、 “了”、“过”以及一些时间短语如“昨天”、“今天”和“明天”等等。比如说： 
+**中文标志时态的手段非常有限，主要是用助词“着”、 “了”、“过”以及一些时间短语如“昨天”、“今天”和“明天”等等。比如说：** 
 
 1. 他昨天走了。 
 2. 他今天走。 
@@ -5785,7 +5775,7 @@ A. 过   B．了   C．着  D．的
 
 ----
 
-时态（tense and aspect）在英语中反映的是两个不同的概念，即 tense（时）和aspect（态或体）。与时间相联系的“时”，以及与动作的内在结构相关的是“体”或“态”，这两方面组合在一起就构成了“时态”。
+时态（tense and aspect）在英语中需要关注两个不同的概念，即 tense（时）和aspect（体）。与时间相联系的“时”，以及与动作的内在特点相关的是“体”，这两方面组合在一起就构成了“时态”。
 
 - 时（tense）
 
@@ -5800,14 +5790,16 @@ A. 过   B．了   C．着  D．的
 
   用来规定动作完成的程度，反映说话人对事物的态度。说明有关动作内在结构特点方面的。
 
-  英文中动作方面的态有四种：
+  英文中动作方面的体有四种：
 
   - 简单体（simple）
   - 进行体（continuous）
   - 完成体（perfect）
   - 完成进行体（perfect continuous）
 
-当谈“时（tense）”的时候，关心的是这个动作发生的时间，即是在现在、过去还是将来发生的。当谈“态 （aspect）”的时候，关心的则是这个动作是固定不变的还是动态变化的（fixed or changing），这个动作是完成了的还是在延续的（complete or ongoing），这个动作持续的时间是很短还是很长（lasting for only a moment or for a long time）等。
+当谈“时（tense）”的时候，关心的是这个动作发生的时间，即是在现在、过去还是将来发生的。
+
+当谈“态 （aspect）”的时候，关心的则是这个动词表达的动作或者状态是固定不变的还是动态变化的（fixed or changing），这个动作是完成了的还是在延续的（complete or ongoing），这个动作持续的时间是很短还是很长（lasting for only a moment or for a long time）等。
 
 ![image-20240329201907099](D:\learn-notes\English-learn\images\image-20240329201907099.png)
 
@@ -5829,7 +5821,7 @@ A. 过   B．了   C．着  D．的
 4. prefect表示完成体
 5. continuous表示进行体
 
-时和核心动词是必不可少的，一个是表示动作发生时间的“时”，另一个是基础动词。这其实也 就是英语“一般时态”的基本构成。
+时和核心动词是必不可少的，一个是表示动作发生时间的“时”，另一个是基础动词。这其实也就是英语“一般时态”的基本构成。
 
 
 
@@ -5898,11 +5890,11 @@ A. 过   B．了   C．着  D．的
 
 
 
-重点理解动词的态的内涵，属于同一个态的动作本质上有着相通的特点，只是说话人的时间角度不同而已。
+重点理解动词的体的内涵，属于同一个体的动作本质上有着相通的特点，只是说话人的时间角度不同而已。
 
 动作规定方面的态和不同时间规定下的态的比较。
 
-英语中态的体现有表现在两个方面：
+英语中体的体现有表现在两个方面：
 
 1. 语法体：一般态，进行态和完成态
 2. 动词自身上（动词体）：动词词义本身固有的一些特点，英语把动词分为“状态”和“动作”（state and action），又把动作分为“短暂动作”和“延续动作”（punctual and durative）等。
@@ -5917,13 +5909,13 @@ A. 过   B．了   C．着  D．的
 
 ## 一般现在时态
 
-对一般现在时的一个误解，认为“一般现在时”就是表示“现在发生”的动作。有这个误解的原因很简单，因为“一般过去时”就是表示过去发生的动作，“一般将来时”表示将来发生的动作。其实，一般现在时态并非是表示现在发生的动作。
+对一般现在时的一个**误解**，认为“一般现在时”就是表示“现在发生”的动作。有这个误解的原因很简单，因为“一般过去时”就是表示过去发生的动作，“一般将来时”表示将来发生的动作。其实，一般现在时态并非是表示现在发生的动作。
 
-一般现在时（the present simple tense）的本质思维特征：表示从过去到现在直至将来的一段时间内发生的动作（action）或存在的状态（state）。这些动作或状态的发生不限于某个特定的时间，它们可发生于任何时间，包括现在、过去和将来，这一段时间到底有多长是不确定的。它可以是近乎无限长（如表示客观真理），也可以是人们生活中的一段时间（如人们的习惯活 动）。
+一般现在时（the present simple tense）的本质思维：表示从过去到现在直至将来的一段时间内发生的动作（action）或存在的状态（state）。这些动作或状态的发生不限于某个特定的时间，它们可发生于任何时间，包括现在、过去和将来，这一段时间到底有多长是不确定的。它可以是近乎无限长（如表示客观真理），也可以是人们生活中的一段时间（如人们的习惯活动）。
 
-一般现在时态通常被描述为有两种基本用法：
+**一般现在时态**通常被描述为有两种基本用法：
 
-1. 表示客观真理，
+1. 表示客观真理
 2. 表示习惯活动 
 
 （The Present Simple Tense is used to express a general truth or fact, or an action that occurs regularly or habitually.）。
@@ -5932,7 +5924,7 @@ A. 过   B．了   C．着  D．的
 
 #### 表示普遍的事实或真理
 
-表示不受时间限制的科学事实、客观真理、谚语格言，以及用于概括、结论、观点等。此时，这些动作或状态的发生不限于某个特定的时间，也即它们可发生于任何时间，包括现在、过去和将来。
+表示不受时间限制的科学事实、客观真理、谚语格言，以及用于**概括结论、观点**等。此时，这些动作或状态的发生不限于某个特定的时间，也即它们可发生于任何时间，包括现在、过去和将来。
 
 **科学常识**
 
@@ -5996,7 +5988,7 @@ Nothing and no one can destroy the Chinese people. They are relentless survivors
 
 用上述这些副词时，要注意以下几点：
 
-- 它在句子中的位置通常是：在be动词后、实义动词前。
+- **它在句子中的位置通常是：在be动词后、实义动词前。**
   - He is always late.
   - He always goes to school by bike.
 - 上述否定副词不能再与否定助动词（如don't等）连用
@@ -6016,7 +6008,7 @@ Nothing and no one can destroy the Chinese people. They are relentless survivors
 
 - I **have been swimming** 1,000 meters every afternoon.
 
-完成进行时是能够表示明 确的时间段概念的，这个时间段就是“从过去一直目前为止”。所以这句话要理解成“到目前为止，我是每天下午游1,000米”。
+完成进行时是能够表示明确的时间段概念的，这个时间段就是“从过去一直目前为止”。所以这句话要理解成“到目前为止，我是每天下午游1,000米”。
 
 在这里加上了“到目前为止”来对应翻译英文的语言标记have been doing 这一动词变形，来潜含一个较为明确的时间段。这句话的意思是，也许“我”打算以后改变一下游泳锻炼的计划，比如说“我”决定再游得更长些。
 
@@ -6049,7 +6041,7 @@ Nothing and no one can destroy the Chinese people. They are relentless survivors
 
 #### 一般现在时的其他用法
 
-**一般现在时表示正在发生的动作**
+##### 表示正在发生的动作
 
 在某些特定的场合，可以用一般现在时表示正在发生的动作。
 
@@ -6085,7 +6077,7 @@ Nothing and no one can destroy the Chinese people. They are relentless survivors
 
 
 
-**一般现在时表示将来发生的动作**
+##### 表示将来发生的动作
 
 在某些特定的场合，一般现在时态有时可表示将来发生的动作。
 
@@ -6096,7 +6088,7 @@ Nothing and no one can destroy the Chinese people. They are relentless survivors
    - I'll be glad if she comes over to visit me.
    - I'll give the book to him as soon as I see him.
 
-   上述从句中的动作come和see均是将在未来发生的，但要用一般现 在时表示将来。
+   上述从句中的动作come和see均是将在未来发生的，但要用一般现在时表示将来。
 
    不过若从句的动作含有“意愿”的意思，则从句中可用will。
 
@@ -6116,7 +6108,7 @@ Nothing and no one can destroy the Chinese people. They are relentless survivors
 
 
 
-**一般现在时表示过去发生的动作**
+##### 表示过去发生的动作
 
 表示死者的理论、著作等。因为这些理论、著作到现在仍有效；或表示一些名人名言。
 
@@ -6150,28 +6142,7 @@ Nothing and no one can destroy the Chinese people. They are relentless survivors
 
 
 
-
-
-时态就是和谓语直接相关，通过不同的助动词，情态动词和实义动词的组合表示不同的时态。
-
-- 一般现在时态
-- 一般过去时态
-- 一般将来时态
-
-一般现在时的错误的认知：认为一般现在时就是表示现在发生的动作，但并非如此。确切的说，一般现在时的思维特点是**表示从过去到现在直到将来的一段时间内发生的动作或者存在的状态**。即动作的发生或者状态的发生不限于某个特定的时间，它可以发生于任何时间，包括现在，过去和将来，这段时间具体有多长，我们也不知道，他可以无限长（如客观真理），也可以是人们生活中的一段时间（如人的习惯活动）。
-
-一般现在时的两种基本用法：
-
-1. 用来表示不受时间限制的科学事实，客观真理，谚语格言，以及用于概括、结论、观点等
-2. 表示人日常的生活习惯以及重复的活动
-
-**英语里表达立场和观点要用一般现在时**。
-
-
-
-
-
-我们一般所说的时态，在英语中反应为两个不同的方面：
+一般所说的时态，在英语中反应为两个不同的方面：
 
 1. tense——时，它于时间相联系
 2. aspect——体，与动作的内在结构相关
@@ -6407,63 +6378,11 @@ Nothing and no one can destroy the Chinese people. They are relentless survivors
 
 
 
-#### 时态
-
-是用来规定事物发生的时间的。在英文中主要有四种不同的时间标识： 
-
-1．现在时（present） 
-
-2．过去时（past） 
-
-3．将来时（future） 
-
-4．过去将来时（past future）
-
-
-
-#### 体态
-
-用来规定动作完成的程度，反映说话者对事物的态度的（有关动作内在结构特点方面的属性）。在英文中，这种动作方面的规定有四种： 
-
-1．简单体（simple，“零”体态） 
-
-2．进行体（continuous） 
-
-3．完成体（perfect） 
-
-4．完成进行体（perfect continuous）
-
-
-
-谈到“时（tense）”的时候，关心的是这个动作发生的时间，即是在现在、过去还是将来发生的。当谈到“体（aspect）”的时候，关心的则是这个动作是固定不变的还是动态变化的（fixed or changing），这个动作是完成了的还是在延续的（complete or ongoing），这个动作持续的时间是很短还是很长（lasting for only a moment or for a long time）等。
-
-
-
 #### 时态学习重点
 
-要理解每一种时态的构成形式，所表达的含义，以及相关的用法。
-
-关于时态的用法的讲解和学习，必须结合语境，给出具体的、真实的说话语境，这样才便于读者真正地理解一种时态所要表达的意义及用法。
 
 
-
-每一种时态都有它最基本、最稳定的中心意义。
-
-简单体的核心意义是，概念化整体事件，说话者不关心这些事件是否继续发展和变化。
-
-进行体表示不完整的或未完成的，其相关的事件或状态被看作是一个整体的某个部分，往往还有继续发展或变化的余地。
-
-- John lives in Beijing.   一般现在时
-
-  把“约翰住在北京”这个情况作为一个整体事件来 描述，不关注任何进一步发展和变化的可能。
-
-- John is living in Beijing.    现在进行时
-
-  表示约翰在北京的居住可能是暂时的，存在发生变化的可能。此时，约翰在北京的居住是整个过程中的某个片断，因为在搬到北京生活之前，他可能住在另外的某个地方，而且将来他也可能再次搬往其他地方。
-
-
-
-因为同一“体”的动作有着本质上相通的特点，区别只是说话人的“时间视角”不 同罢了。其次，在以“体”为逻辑主线的前提下，分析比较不同时间规定下的同一“体”的动作以及其他各种时态之间的区别 （如现在完成时态与一般过去时态的区别）。
+因为同一“体”的动作有着本质上相通的特点，区别只是说话人的“时间视角”不同罢了。其次，在以“体”为逻辑主线的前提下，分析比较不同时间规定下的同一“体”的动作以及其他各种时态之间的区别 （如现在完成时态与一般过去时态的区别）。
 
 这段话是在讲解如何理解英语中的**时态**和**体（aspect）**，特别是强调**体**的概念在时态学习中的重要性。可以分两步来理解这段话：
 
@@ -6612,15 +6531,7 @@ Nothing and no one can destroy the Chinese people. They are relentless survivors
 
 
 
-**学习时态，必须与谓语动词的特点结合起来，比如动作与状态 的区分、延续动作与短暂动作的区分，这些就是所谓的“动词体（lexical aspect）”。**
-
-
-
-
-
-
-
-
+**学习时态，必须与谓语动词的特点结合起来，比如动作与状态的区分、延续动作与短暂动作的区分，这些就是所谓的“动词体（lexical aspect）”。**
 
 
 
@@ -6646,9 +6557,9 @@ Nothing and no one can destroy the Chinese people. They are relentless survivors
 
 含义一：**过去发生的短暂动作或状态**
 
-常表示在过去时间所发生的动作或存在的状态，常和表示过去的特定的时间状语连用，或过去时间由上下文及说话的场合暗示出来（The Past Simple Tense is used to express a completed action which took place at a specified time in the past. The specified time is either stated or implied.）。这些时间状语有：yesterday，yesterday eventing, last night, the night before last, last year, last spring, three days/ months /years ago等。
+常表示在过去的某个特定的时间所发生的动作或存在的状态，常和表示过去的特定的时间状语连用，或过去时间由上下文及说话的场合暗示出来（The Past Simple Tense is used to express a completed action which took place at a specified time in the past. The specified time is either stated or implied.）。这些时间状语有：yesterday，yesterday eventing, last night, the night before last, last year, last spring, three days/ months /years ago等。
 
-> 注意，这些时间状语之前不需加介词，比如不能说：at last night *，in last year *或in three years ago *等。
+> **注意，这些时间状语之前不需加介词，比如不能说：at last night *，in last year *或in three years ago *等。**
 
 例句：表示过去发生的动作。
 
@@ -6740,7 +6651,7 @@ Nothing and no one can destroy the Chinese people. They are relentless survivors
 
 ### 一般过去时和现在完成时比较
 
-一般过去时和现在完成时用于“for＋时间段”的 区别
+一般过去时和现在完成时用于“for＋时间段”的区别
 
 误解：**认为一般过去时态不能与“for＋时间段”连用，认为“for＋时间段”只能与现在完成时态连用。**可能是因为熟悉现在完成时态可以表示一个延续的活动，常与“for＋时间段”连用，据此就错误地认为“for＋时间段”只能用于现在完成时态而不能用于一般过去时态。
 
@@ -7054,7 +6965,7 @@ B: So did I. But he seems to have recovered very quickly. He certainly doesn't s
 
    - 过去时态，就用动词过去式变形。
 
-   - 将来时态，即人们谈论将来要发生的事情时，事实上，是采取动词形式变化以外的其他方式来达到这一目的的。具体的方式非常多，比如使用情态动词will和be going to，比如使用现在进行时（be doing）表示 将来的动作，以及采用其他的句型结构，如be to do或者be about to do等。
+   - 将来时态，即人们谈论将来要发生的事情时，事实上，是采取动词形式变化以外的其他方式来达到这一目的的。具体的方式非常多，比如使用情态动词will和be going to，比如使用现在进行时（be doing）表示将来的动作，以及采用其他的句型结构，如be to do或者be about to do等。
 
      **英文中并不只是用will do表示将来，所以，并不能因为 will do可以表示将来的动作，就说将来时态的构成就是will do。同时will do也有可能并不是表示将来时，而是情态动词will的用法。**
 
@@ -7180,7 +7091,7 @@ will和be going to的区别：
 
 
 
-下面来讲解will 和 be going to 在表示意思上的不同。be going to表示“**计划或打算（plan or intention）**”，will表 示“**意愿（willingness）**”。
+下面来讲解will 和 be going to 在表示意思上的不同。be going to表示“**计划或打算（plan or intention）**”，will表示“**意愿（willingness）**”。
 
 对于be going to的用法，最熟悉的就是常用它来表示“计划或打算（a plan）”。此时，说话人在头脑里已经做出决定将来要做某件事，并且往往还含有已经为这一行动做了某些准备的意思。又因为只有人才能有主观的思维意识去对将来的行为做出“计划”，因此， be going to的这个用法主要是用于人称主语（person subject），而不可能用于非人称主语（non-person subject）。请看例句：
 
@@ -7212,7 +7123,291 @@ be going to在表示“预测”时，主语可能是人称，也可能是非人
 
 这里的be going to显然是表示“预测”，而不是表示“计划或打算”，因为不可能是“我打算赶 不上公共汽车。”
 
+- The traffic is terrible. We're going to be late. By the time we get to the airport, Bob's plane will already have arrived, and he'll be wondering where we are.
 
+  这里并不是说说话人打算或者计划迟到，而是根据客观事实推测自己将会迟到。
+
+总结一下：
+
+表示预测时，是说话人做出的预测，所以不管句子的主语是不是人都可以，因为不是主语做出的预测，说话人可以对别的什么物的情况做出预测。比如说It's going to rain时，不是天气it在做预测，而是说话人在做预测。
+
+上面例句中的... you are not going to make a very good impression. 是说话者（speaker）的预测，而不是句子的主语 you所做的预测，因而原句的意思不是说“你”不打算留下好印象，而 是“我认为”你可能不会留下好印象。
+
+
+
+表示打算时，却是句子的主语做出的打算（the subject's intention），比如上面的例句说...she's going to learn how to browse the Internet. 是表示she即my grandmother自己打算学习上网，而不是说话人的打算。
+
+通过上面的这个观察，也就解释了为什么在表示“预测”时，我们并不要求主语一定是人称，因为此时是暗含“说话人”在做“预测”的意思， 已经是“人”在做预测了，所以这时与句子的主语是否是人称无关。但是，在表示“打算”时，是句子的主语在做打算，因而此时句子的主语必须是人称。
+
+
+
+
+
+**be going to可以表示“决心”，具有强烈的感情色彩**
+
+当be going to的“打算”或“预测”意味进一步后，就可以解释成个人的“决心（great determination）”，具有强烈的感情色彩。
+
+- We're going to become the world's leading IT company.
+
+被霸凌的人说：
+
+- You're gonna be sorry! You're gonna be so sorry!
+
+  你一定会后悔的，我决饶不了你！
+
+
+
+
+
+**will表示“意愿”，一个当机立断的决定**
+
+前面讲的是will做预测的用法。 现在讲will做意愿的用法。
+
+当机立断（spontaneous decision）”，而不是事先计划好的（unplanned）。具体来说，说话人事先并不知道，而是在得知新的信息之后，在说话的时刻立即做出决断表 明他将去做某事，这是一个当机立断的决定。此时，只能用will来表达。
+
+- A: The telephone is ringing. 
+
+  B: I'll get it.
+
+  B要去接电话，既不是他预测要有电话打进来，也不是事先计划好要接这个电话。B是在 说话的此刻做出的“要去接电话”这个决定。B是在说“我愿意去接这个电话”。所以，不能说I'm going to get it. *一般人不可能“预测”到有人要打电话进来而早早地等在电话机旁“打算”接这个电话。
+
+
+
+- A: Oh, no! I've spilled coffee on my shirt. 
+
+  B: Just a minute. I'll get a damp cloth for you.
+
+  B不可能事先知道A会把衣服弄脏而“打算”给A拿湿布，所以不能说I am going to get a damp cloth for you. *B也不是在“预测”将来的事。
+
+
+
+若用“物”作主语则具有拟人的意味，此时说话人往往是在抱 怨，而且通常用否定形式的won't。
+
+- The closet door won't open. Will you try it?   这个储藏室的门就是打不开，你要试试看吗？
+- My car won't start. Will you give me a ride?   我的车子就是发动不了，我能搭你的车吗？
+
+
+
+will这种表示“意愿”的意义，若用于第二人称（you）的一般疑问句（Will you?）中，则可以用来提出“请求”。
+
+- A: Will you help me to mail these letters? 
+
+  B: I'll do it.
+
+  
+
+- A: Will you marry me? 
+
+  B: Of course I will.
+
+  
+
+- A: Will you be my girlfriend? 
+
+- B: Absolutely not. I'm in love with your brother.
+
+
+
+Paul won't come. 这句话该如何理解了？  是理解成Paul主观的不愿意来，还是说说话人预测Paul不会来了。这需要上下文提供的信息来确定。
+
+- Paul won't come, because he is too busy.
+- Paul won't come, because he doesn't want to.
+
+在例句1）中，will作为“推测”的用法，否定词not是重点否定主要的谓语动词come，相当于predict NOT to come。因此，例句1）可译成“我想保罗恐怕来不了，因为他太忙了”。在 例句2）中，will作为“意愿”的用法，否定词not是重点否定情态动词will，相当于NOT willing to come。因此，例句2）可译成“保罗不愿意来，因为他不想来。”
+
+由此可知，否定形式的won't在句中会有歧义。不过，一般来讲，我 们通常把won't do等同于refuse to do来理解，即表示“不愿意”，而用 won't be doing来表达说话人的预测。
+
+
+
+
+
+1. be going to表示说话人对未来行动的计划或打算，通常是经过事先考虑并含有已经为这一行动做了某些准备的意思。 
+2. will表示意愿，表示在说话的时刻立即做出决定将去做某事，事先并没有经过考虑，更没有为这一活动做出事先的准备。
+
+- Husband: There isn't any milk left in the fridge. 
+
+  Wife: I'll buy some after work.
+
+  用will，表明这是当机立断的决定，意指她丈夫先发现没有牛奶，告诉她之后，她才决定去买牛奶。
+
+  ![image-20241107114606305](D:\learn-notes\English-learn\images\image-20241107114606305.png)
+
+  
+
+- Husband: There isn't any milk left in the fridge. 
+
+  Wife: I'm going to buy some after work.
+
+  用am going to，表明这是预先计划好的决定。意指她先发现没有牛奶，并已经决定去买牛奶，然后她丈夫才发现。
+
+  ![image-20241107114619229](D:\learn-notes\English-learn\images\image-20241107114619229.png)
+
+
+
+下面的每一句话都含有“预先准备”的明显证据，故都不能用will代 替be going to：
+
+- I have bought a computer and I'm going to learn the computer science.
+- My wife has bought some wool and she is going to knit a sweater for me.
+
+
+
+下面每一句中的B都表示事先不知道，而是在说话的时刻做出的决 定，故都不能用be going to代替will：
+
+- A: Someone is knocking at the door. 
+
+  B: I'll go and open it.
+
+- A: The box is too heavy. 
+
+  B: I'll help you to carry it.
+
+- A: I've left my watch upstairs. 
+
+  B: I'll get it for you.
+
+
+
+
+
+#### 现在进行时表示将来
+
+现在进行时可以表示对最近的将来做出计划或安排（definite future plans）。
+
+下面的例句都是表示将来确定的安排，所以都要用现在进行时为妥：
+
+- A: The summer holidays **are coming** soon, Jack. What are your plans?
+
+  B: Well, Mike, I **am taking** my girlfriend to Qingdao. She is a beach person, you know.
+
+- I **am flying** to Beijing next Monday.
+
+- I **am taking** a makeup test tomorrow.
+
+- We **are meeting** the supplier on Tuesday.
+
+- A: We're sending our son to a holiday camp next week. 
+
+  B: Oh! Does he need a holiday? 
+
+  A: No, but we do!
+
+- A: I hear you're moving to London next week.       B: Yes, I have to because of my job.       A: Are you working for the same people?       B: Yes—my wife and our six kids!
+
+**用现在进行时表示将来的动作要注意以下几点：**
+
+1. 必须带有表示将来的时间状语
+
+   用现在进行时表示将来的动作，动作发生的时间必须指出或在前文中已经指出，否则就可能会造成现在进行动作与一般将来时动作相混淆。
+
+   - A: What are you doing next Sunday? B: I'm not going out. I'm staying at home.
+
+2. 必须是人称主语
+
+   现在进行时表将来的这种用法，通常是表示说话人已计划安排好的 活动，如果不是，则不能这样用。例如不能说：
+
+   - It's raining tomorrow. *
+
+3. 与一般现在时表示将来的区别
+
+   一般现在时要比现在进行时听起来更正式，个人主观色彩要**淡**些。请比较：
+
+   - I am leaving tonight.    进行时态表达的个人主观色彩要浓些，一般含有“我自己决定今晚走”的意味。
+
+   - I leave tonight.   一般时态更加客观，比如可能是“公司安排了我出差，给我安排的是今晚动身”。
+
+     所以说Our shop opens next week. 比Our shop is opening next week. 要 好，显得更正式。
+
+   如果是一系列预定的将来的安排，比如旅游行程安排，用进行时态显得较累赘，而用一般时态则较简洁。
+
+   - We leave Beijing at 9:00 tomorrow morning, arrive in Kunming around 12:00 and then we tour the World Horti-Expo Garden. 
+
+
+
+**用be going to表示计划与进行时态表示的计划区别**
+
+总的来说，be doing表达的将来计划要比be going to的计划更确定 （more definite）。请比较下面的例句：
+
+- I'm taking my holiday in April.      我四月份要休假了。
+- I'm going to take my holiday in April.    我打算四月份休假。
+
+在这个场景中，am taking表示比am going to take更确定的将来计划，可以这样来解释：在例句1）中，说话人已经得到公司批准的假期了（Approval has already been given.）或已经和旅行社订好了行程。所以，可以把它译成比较确定的汉语，比如“我四月份要休假了”。在例句2）中，说话人只是表达自己的一个打算或想法意图（intention），但目前并没有得到公司的准假，更没有和旅行社订好行程。这句话相当于汉语说“我打算四月份休假”，这就没有“我四月份要休假了”听起来确定。
+
+
+
+可以想象这样的一个场景：你在和公司老板商量你的年假安排，这时，你应该是以商量的口吻和老板说I'm going to take my holiday in April. 而不应该是很明确地、自作主张地告诉老板你已做出的决定I'm taking my holiday in April. 然而，你可以和你家人或朋友说I'm taking my holiday in April.
+
+
+
+一个更完整的语境：
+
+I'm going to take my holiday in April, although I have not yet had my boss's approval.   我打算在四月份休假，尽管我现在还没有得到老板的批准。
+
+上面这句话就要比这么说： I'm taking my holiday in April, although I have not had my boss's approval.（我四月份就要休假了，尽管老板还没有批准。）  听起来更为自然。后者有你非要和老板对着干的意思。
+
+
+
+
+
+- I'm flying to Shanghai next Monday. 
+- I'm going to fly to Shanghai next Monday.
+
+例句1）听起来比例句2）的计划更确定。比如在例句1）中，表示“我现已买好机 票”，“周一飞往上海”将是确定无疑的。而例句2）只是表明你将来的一个选择打算，比如你在 和航空公司订机票时，对方问你要什么时候的机票，你告诉对方说I'm going to fly to Shanghai next Monday. （我打算下周一飞往上海。）
+
+两种将来的表达之所以有上述确定程度（degree of certainty）方面 的差别，原因可能还在于这两个时态本身。进行时态be doing给人的感 觉是事情马上就要发生了，因而应该是确定无疑的；而be going to因为 有表示“将来预测”的意味，这就给它带来了不确定性。
+
+所以，be doing往往表示将来的活动是确定好的计划， 是你工作安排的一部分，已做出决定，并已写入你的时间安排表中了 （You use this tense if the action is part of a schedule or it's a definite plan. Use it when you have already made a decision, and have "put it in your diary".）相比较而言，be going to do更多的是表达一种不确定的未来计划，或者说是一种个人的意图或打算，不过这听起来要比hope to do和 would like to do要更为确定些（When we talk about things in the future that are not definite, we use "am going to＋verb". This is more certain than expressions like "hope to...", "might..." or "would like to...".）。综合上述， 用be doing谈将来的计划往往比be going to do更确定。
+
+
+
+
+
+#### 一般现在时表示将来
+
+
+
+
+
+
+
+
+
+#### 其他表示将来的句型结构
+
+##### be to do   
+
+表示已安排好要在将来发生的事，是比较正式的用法
+
+- They are to go on a strike on July 8th.
+- She is to be married next month. 
+- The Premier is to visit Australia next month. 
+
+
+
+表示强烈的命令，相当于must，should，如：父母对孩子、上 级对下级或法律条文中的规定等。
+
+- You are to finish your homework before you go to play. 
+- The form is to be filled out in ink and returned this week.
+- These tablets are not to be taken orally.
+- If he's to succeed in his new profession, he must try harder.
+
+
+
+##### be about to do
+
+用来表示即将发生的动作（比如通常在5分钟之内就会发 生），意思是“正要，马上就要”。
+
+- The train is about to leave.
+- Jack is holding a fly swatter and staring at a fly on the kitchen table. He is about to swat the fly.
+- Sally has her hand on the doorknob. She is about to open the door.
+
+
+
+##### be on the point/verge/brink/eve of doing
+
+这一结构与be about to do的意思差不多，但其动作发生的时间比be about to do还要快一些。
+
+- He was on the point of killing himself when she stepped into his room. 
+- The child was on the verge of laughing, but he held back. 
 
 
 
@@ -7240,7 +7435,7 @@ continuous tense
 
 **英文的进行时态并不总是表示正在发生的动作，它有更多其他的意义和用法。**
 
-进行时态因为往往强调在说话的时刻某活动正在发生，所以**常用进行时态表达生动、具体的场景**。而进行时态因为其表现生动，所以在口语中出现的频率远远高于书面语。
+进行时态因为往往强调在说话的时刻某活动正在发生，所以**常用进行时态表达生动、具体的场景**，所以在口语中出现的频率远远高于书面语。
 
 所以在讨论进行时态的意义和用法时，主要是通过大量的口语对话的例子来说明。以很多电影对白作为例子，因为电影里人物之间的对白就是生动的日常口语。
 
@@ -7250,9 +7445,7 @@ continuous tense
 
 ### 现在进行时的含义
 
-
-
-1. **说话时刻正在进行的动作（action happening exactly now）**
+#### 说话时刻正在进行的动作（action happening exactly now）
 
 在汉语表达里，也能找到进行时态的“语言标记（language mark）”——汉语通常采用语气助词“着”或词组“正在”等来表达。比如“他吃着饭了”与“他吃了饭”， 很容易理解前者是表示正在进行，而后者是表示完成的动作。
 
@@ -7274,17 +7467,19 @@ continuous tense
 
 Jenny: Hello? 
 
-Frank: Hi, Jenny. What are you doing? 
+Frank: Hi, Jenny. What **are** you **doing**?    现在进行时表示现在正在做什么？
 
-Jenny: Oh, hi, Frank. I'm doing my laundry. You? 
+Jenny: Oh, hi, Frank. I'm doing my laundry. You?   回答现在正在洗衣服
 
-Frank: I'm going to go look for an apartment downtown. 
+Frank: I'm going to go look for an apartment downtown.   be going to do 表示计划做的事
 
 Jenny: Really? You aren't content in the suburbs? 
 
-Frank: Well, this neighborhood **is** really **booming**. It's not really a suburb any more. 
+Frank: Well, this neighborhood **is** really **booming**. It's not really a suburb any more.   这里的现在进行时表示越来越的含义
 
 Jenny: Yeah, it **is** **getting** crowded. Where **are** you **looking** for an apartment? 
+
+前一个现在进行时也是表示越来越的含义，后一个现在进行时表示这段时间里，在持续进行的一个短暂性的活动
 
 Frank: Probably near the train station. I'd like to use public transportation to get around. 
 
@@ -7292,7 +7487,7 @@ Jenny: Hmm. I think you'll be hard pressed to find an affordable place there.
 
 Frank: Really? Is the area expensive? 
 
-Jenny: Yes. And I know while you' re not living in poverty, a college student still can't afford an apartment by the train station. 
+Jenny: Yes. And I know while you' **re** **not** **living** in poverty, a college student still can't afford an apartment by the train station.     这里的第一个进行时表示一个当前持续的一个状态，而不是表示正在进行的活动。
 
 Frank: Well, OK, thanks for the advice! 
 
@@ -7360,11 +7555,9 @@ Someone **is knocking** at the door. Can you answer it?
 
 
 
+#### 在目前一段时期内持续的一种暂时的情况（action happening around now）
 
-
-2. 在目前**一段时期内**持续的一种**暂时的情况**（action happening around now）
-
-表示现阶段正在持续的活动。这时进行时态表示的是一个一般性的活动， 在说话时刻这个动作并不一定正在发生（通常都不在发生），而是在目前一段时期内持续的一 种暂时的情况（The action may not be happening exactly now, but it is happening just before and just after now, and it is not permanent or habitual.）。
+表示现阶段正在持续的活动。这时进行时态表示的是一个一般性的活动， 在说话时刻这个动作并不一定正在发生（通常都不在发生），而是在目前一段时期内持续的一种相对暂时的情况（The action may not be happening exactly now, but it is happening just before and just after now, and it is not permanent or habitual.）。
 
 上面关于租房的一段话：
 
@@ -7412,9 +7605,9 @@ I am not teaching English this month. I am working on a special project.
 
 
 
-3. **用于表示“改变”的动词，强调“逐渐变化”的过程**
+#### 用于“改变”的动词时，强调“逐渐变化”的过程
 
-现在进行时若是用于表示“改变”的动词，则强调“逐渐变化”的过程。常见的表示“改变”的动词有：change, come, get, become, grow和 deteriorate（恶化）等。
+现在进行时若是用于“改变”的动词，则强调“逐渐变化”的过程。常见的表示“改变”的动词有：change, come, get, become, grow和 deteriorate（恶化）等。
 
 在“租房”的场景里，同样见到了这种句子：
 
@@ -7435,26 +7628,655 @@ Jenny: Yeah, it **is** **getting** crowded.
 
 
 
+#### 现在进行时在口语中用于强烈的感情色彩的表达
+
+Harry: You're a very attractive person. 
+
+Sally: Thank you. 
+
+Harry: Amanda never **said** how attractive you **were**. 
+
+Sally: Well, maybe she doesn't think I'm attractive. 
+
+Harry: I don't think it's a matter of opinion, empirically you are attractive. 
+
+Sally: Amanda is my friend. 
+
+Harry: So? 
+
+Sally: So you'**re** **going** with her. 
+
+Harry: So? 
+
+Sally: So you'**re coming** on to me!
+
+Harry: No, I wasn't.
+
+这里的are going表示 的动作显然不是正在发生的，而是现阶段在持续的活动（action happening around now），即哈 里现在正在和阿曼达交往。
+
+萨莉说的第二句So you're coming on to me. 中的are coming则表示 的是action happening exactly now，即此刻正在进行的动作。
+
+在日常的口语交际中，我们要表达自己的各种强烈的感情，比如生气、激动和兴奋等，往往会在说话的过程中频繁地使用**现在进行时**。这一用法其实与“现在正在进行的动作”有关，因为一般都是在正在进行的交互对话的过程中，用现在进行时来表达我们的各种内心情感的。**不过，此时说话人用进行时态，并非是要强调某个正在进行的动作，而是要表达自己强烈的情感**。
 
 
 
+Sally: We are just going to be friends, OK? 
+
+Harry: Great! Friends! It's the best thing. (On the road once more.) 
+
+Harry: You realize of course that we can never be friends. 
+
+Sally: Why not? 
+
+Harry: What I'**m saying** is... and this is not a come-on in any way, shape or form, is that men and women can't be friends because the sex part always gets in the way. 
+
+Sally: That's not true. I have a number of men friends and there's no sex involved. 
+
+Harry: No, you don't. 
+
+Sally: Yes, I do. 
+
+Harry: No, you don't. 
+
+Sally: Yes, I do. 
+
+Harry: You only think you do. 
+
+Sally: You'**re saying** I'**m having** sex with these men without my knowledge? 
+
+Harry: No, what I'**m saying** is they all want to have sex with you. 
+
+Sally: They do not. 
+
+Harry: Do, too. 
+
+Sally: They do not. 
+
+Harry: Do, too. 
+
+Sally: How do you know? 
+
+Harry: Because no man can be friends with a woman he finds attractive, he always wants to have sex with her. 
+
+Sally: So you**'re saying** that a man can be friends with a woman he finds unattractive. 
+
+Harry: Nuh, he pretty much wanna nail them, too. 
+
+Sally: What if they don't want to have sex with you? 
+
+Harry: Doesn't matter, because the sex thing is already out there so the friendship is ultimately doomed and that is the end of the story.
+
+这段对话中黑体部分句中的现在进行时态（如I'm saying...和you're saying I'm having...）并 不是为了说明动作在说话的时刻正在进行，而是为了强调两人在陈述和坚持自己的观点，具有强烈的感情色彩。
+
+
+
+催促别人时常这么说：What are we waiting for then? Let's get started.
+
+生气时可以这么说：I'm not having this conversation with you.  = I don't want to talk to you about this.
+
+表示说话人的怀疑和惊讶：
+
+- You're not asking me to marry you, are you?
+- You're not backing out of our date, are you? 
+
+
+
+- The bank **is** only **paying** me 3 percent interest on my money.
+- You are asking too much! 你的要求太过分了！
+- Why **are** you **getting** so upset just because I'm two minutes late? You're making this into a bigger deal than it is.
+
+
+
+#### 表示将来确定的安排
+
+现在进行时在口语中还经常用来表示将来的动作（action in the future），此时现在进行时是表示在说话之前就确定的、计划好的将来的安排（a firm plan or program before speaking. The decision and plan were made before speaking.）
+
+(Sally picks up the phone.) Sally: Hi, Harry. 
+
+Harry: Hello, hi, hi. I, I **didn't**... know... that you **were**... that you **were** there. What **are** you **doing**?    询问现在正在做什么
+
+Sally: I was just on my way out. 
+
+Harry: Where are you going? 
+
+Sally: What do you want, Harry? 
+
+Harry: Nothing, nothing. I... just called to say I'm sorry. 
+
+Sally: OK. (Long and awkward silence.) 
+
+Sally: I gotta go. 
+
+Harry: Wait a second, wait a, wait a second. What **are** you **doing** for New Year's Eve? **Are** you **going** to the Tyler's party? 'Cos I don't have a date, and if you don't have a date, we always said that if neither one of us had a date, we could be together for New Years. And we... could... you know.... why don't... 
+
+Sally: I can't do this any more, I am not your consolation prize. Goodbye. (Sally hangs up.)
+
+ What **are** you **doing** for New Year's Eve? **Are** you **going** to the Tyler's party? 中的进行时态are doing则不表示正在进行的动作，而是表示一个确定的、计划好的将来的活动，意思是“你除夕夜有何节目？有什么活动？”接下来的Are you going...这个进行时同样表示将来的动作，意思是“你要去参加聚会吗？”
+
+
+
+
+
+Harry: Hmm, I'm getting married.     哈里说I'm getting married. 并不是说自己正在结婚，而是说“我要结婚了”。这里的进行时 态表示的就是一个确定的、计划好的将来的活动。
+
+Sally: You are? 
+
+Harry: Umm hmm. 
+
+Sally: You are. 
+
+Harry: Hmm, yeah. 
+
+Sally: Who is she? 
+
+Harry: Helen Helson, she is a lawyer, she's keeping her name. 
+
+Sally: (Laughs.) You're getting married? 
+
+Harry: Yeah. 
+
+Sally: (Laughs some more.) 
+
+Harry: What's so funny about that?
+
+**需要说明的是，在我们用现在进行时态来谈将来确定的安排的时候，如果没有明确的上下文语境来表明将来时间的话，我们往往需要加上明确的表示将来时间的状语，如tomorrow, next year, in June和at Christmas等，以避免与正在进行的动作混淆。**
+
+- We're eating in a restaurant.
+
+这句话往往会被理解成正在发生的动作——“我们现在正在餐馆吃饭”。如果我们给出将来的时间状语，比如tonight，说成：We're eating in a restaurant tonight. We've already booked the table.  . （我们今晚要在餐馆吃饭，我们已经订了位置。）则是用进行时态表示的将来的动作。
+
+
+
+下列口语句子中的现在进行时态所表示的将来安排：
+
+补考 ：I am taking a makeup test tomorrow. 
+
+A: What are you doing on Saturday night? 
+
+B: I'm doing some shopping with Jane.
+
+
+
+be doing和be going to do都可以表示将来的计划，它们有何区别？
+
+现在进行时强调事先已经做好的安排，是比较确定 要发生的；而be going to着重表现说话者的计划和意图，并不是确定的安排。
+
+- Frank and Jenny are getting married? I didn't even know they were going together.
+
+  这里的进行时态are getting married表明结婚日期已确定。如果说： Frank and Jenny are going to get married. 则表示他们两人打算结婚，并没有确定将来具体的日期。
+
+- I'm staying at Beijing.    我会待在北京。
+- I'm going to stay at Beijing.     我打算待在北京。
+
+对于静态的动词和无生命的主语，不可能使用现在进行时来 表示将来。但可以用于be going to，这时表示预测。
+
+- The red car is belonging to me tomorrow. *
+- The red car is going to belong to me tomorrow.
+
+若是没有计划或安排可以保证相应的结果会出现，不能使**用现在进行时**
+
+We are winning the tennis match next weekend. *
+
+因为能否赢得比赛事先无法确定。但我们可以用be going to来表示 一个预测，因而可以说成： We are going to win the tennis match next weekend. 这里的be going to表示一个推测，该句的意思是： 我们下周会赢得那场网球比赛的。
+
+这句话还可以解释成：be going to表达一个“决心”，因此可以理解 成： 我们下周一定要赢得那场网球比赛。
+
+
+
+#### 与always等连用，表示多次重复，且含有感情色彩
+
+与 always, forever, continually和constantly等连用，表示多次重复的行为。 这种反复的行为可以是积极的、让人喜欢的事情。
+
+- Scott is very generous. He's always giving his friends gifts and inviting them out for meals.
+- Although Steve is a teacher, in a sense he is a student as well. He is always learning things from his students.
+
+但也往往表示让说话者厌烦、感觉不合情理或使人不愉快的事，即 通常具有负面的、消极的含义。
+
+- He's always pulling my leg. He likes joking me.
+- He's continually asking me for money.
+- My wife is forever looking for her keys.
+- He's always messing up the kitchen!
+- How come Joe is always groaning about things? 
+
+
+
+#### 总结
+
+1. 用法一：现在此刻正在进行的活动； 
+2. 用法二：现阶段在持续的活动； 
+3. 用法三：用于“变化”类的动词，表示现阶段逐渐变化的过程。这同用法二相近。
+4. 用法四：用于强烈的感情色彩的表达（这时并不与现在的时间有强的相关性）
+5. 用法五：表示将来确定的安排
+6. 用法六：与always等连用，表示多次重复，且含有感情色彩
+
+
+
+
+
+### 过去进行时
+
+#### 用来设置故事的背景
+
+在讲故事时，往往会用到过去进行时态was/were doing来设置故事发生的过去背景，因为进行时态往往表示一个在持续的活动场景，所以用它来铺垫故事的背景，往往会给读者一 种身临其境的感觉。（多见于文学作品中）
+
+- It **was getting** darker. The rain **was beating** on the windows. The wind **was rising**. A wood fire **was burning** on the hearth, and a cat **was sleeping** in front of it. A girl **was playing** the piano and **was singing** softly to herself. Suddenly, there **was** a knock on the door
+
+
+
+在日常生活的叙事中，更多的是把“过去进行时”和“一般过去时”配合使用。过去进行时通常表示一个历时较长的体现“背景”的动作或状态；而一般过去时则表示在此“背景”下发生的一个 短暂的动作或状态。
+
+表示在过去进行时的动作的持续期间，发生了另一个短暂动作。这两个动作之间用when或while连接。
+
+- I was walking along the street late last night when suddenly I heard footsteps behind me. Somebody was following me. I was frightened and I started to run.
+
+
+
+注意点：
+
+1. 动作长短的相对性及其与时态的关系，动作的长与短是相对的
+
+   - I was watching TV when the telephone rang.
+
+   - I was walking past the car when it exploded.
+
+   - I was cooking dinner last night when I cut my finger.
+
+   - I was telephoning Harry when she arrived. 
+
+     
+
+   - While I was cutting my finger,...  没有这样说的
+
+   
+
+2. 过去进行时与一般过去时的这种搭配使用主要由when 或while连接，但两者有以下区别：
+
+   - when的后面接短动作，用一般过去时，或者接长动作，用过去进行时
+   - while的后面只能接长动作，用过去进行时
+     - I was walking past the car when it exploded. 
+     - The car exploded when I was walking past it. 
+     - The car exploded while I was walking past it.
+
+
+
+- I was telephoning Harry when she arrived.
+- I telephoned Harry when she arrived.
+
+在例句1）中，telephone是一个延续动作，arrive是短暂动作。用进行时telephoning是表明 在“我”打电话的过程中，她到了，即先telephone，后arrive。在例句2）中，telephone和arrive都 用一般过去时，都变成了短暂动作。此时，是表明“我”打电话是发生在她回来之后，即先 arrive，后telephone。
+
+
+
+#### 描述一个过去的特定时刻正在发生的事情
+
+- I was discussing my thesis with my director at this time last night.
+
+
+
+- A: What were you doing at 10 o'clock last night? 
+- B: I was having dinner with my friends.
+
+
+
+- A: Where were you last night? 
+- B: I was reading in the library.
+
+
+
+- It was raining hard, but no one stopped working.
+
+
+
+A: Can I see your license and registration, please? 
+
+B: What's the matter, officer? Did I do something wrong? 
+
+A: You were speeding. 
+
+B: I was speeding? 
+
+A: You certainly were. Do you have any idea how fast you were going? 
+
+B: I'm not sure, but I think I was going about 35. 
+
+A: This street is in a 25-mile-per-hour speed zone, you know. 
+
+B: Is it? 
+
+A: In this state, the speed limit in residential area is 25 unless otherwise posted. Besides, there are signs all along this street. 
+
+B: I'm sorry, officer, I guess I didn't notice. I was thinking about my job interview. I'm on my way to it right now and I hadn't planned to come this way.
+
+
+
+
+
+#### 表示委婉的请求或提建议（口语）
+
+常用过去进行时来表示委婉的请求或提建议，这时并不表示过去时间的动作。这尤其适用于表示态度的动词，如 wonder，hope和think等，这些动词用过去进行时（was wondering）或现在进行时（is wondering），均表示现在的一种愿望或态度，给人一种探 询式的、犹豫不决的印象，因而显得很礼貌。
+
+- A: Excuse me, Prof. Davidson. But I **was hoping** to talk to you about my class project for economics. 
+
+  B: I have a class in a few minutes. Why don't you come and see me during office hours tomorrow?
+
+  
+
+- I **was wondering** if you'd like to lend me your car.
+
+- I was hoping that you'd like to lend me your car.
+
+- I was thinking that you'd like to lend me your car.
+
+
+
+
+
+- I hope to borrow your car.
+- I wonder if you can lend me your car.
+
+则由于比较直截了当地表达了自己的态度，因而显得欠礼貌。
+
+
+
+
+
+#### 两个过去同时在持续的动作（少见）
+
+若句中的两个动作 都是较长的动作，则两个动作都用过去进行时，表示两个过去同时在持 续的动作。此时我们分不出哪个动作先发生。
+
+- While I **was studying** in my dorm, my roommates **were talking** loudly with their friends
+- While I **was studying** last night, my wife **was watching** TV.
+
+都用的while。
+
+
+
+
+
+
+
+### 将来进行时
+
+在实际的口语交际中，常常会听到这种时态频繁出现。
+
+如果没有很好的掌握将来进行时的思维意义，很难在实际沟通交流中正确使用和理解别人用这种时态时想要表达的真正含义。
+
+比如如何理解下面这些句子的差异：
+
+- He won't come. 
+- He won't be coming.
+
+
+
+- How will you be paying for this?
+- How will you pay for this?
+
+
+
+#### 将来某一特定时刻正在持续的事
+
+想象自己或其他人在将来某一特定 时刻（at a particular time in future）正在做某事。
+
+- A: When do you leave for Hainan? 
+
+  B: Tomorrow. Just think, two days from now I **will be lying** on the beach in the sun. 
+
+  A: Sounds great!
+
+- Don't telephone me after eight tomorrow—I'll be having a meeting.
+
+- Wait until seven o'clock so that they won't still be eating.
+
+- He can't play golf next Sunday because he will be working.
+
+- Do you think you will still be working here in two years' time?
+
+
+
+#### 将来计划好的事(口语)
+
+常用will be doing来谈一个将来计划好的事情。
+
+- Professor Smith will be giving a lecture on American literature tomorrow evening.
+
+现在进行时态be doing也可以表示计划好的事。
+
+- Professor Smith is giving a lecture on American literature tomorrow evening.
+
+此时，两者的区别不是很大。因此，表示将来安排好的事情，两种 时态可以换用。
+
+- He is taking/will be taking a makeup test next week.
+- He isn't coming/won't be coming to the party.
+
+区别：
+
+1. 现在进行时只表示最近的将来；而将来进行时既可以表示最近 的将来，也可表示较远的将来。
+
+   - I am meeting him tomorrow. 我明天要见他。 
+   - I will be meeting him tomorrow/next year. 我明天／明年要见他。
+
+2. 现在进行时表示最近将来的动作时，必须有确定的表示将来的 时间状语；而将来进行时则没有这种限制。
+
+   - He's working in this room next Monday. 
+   - He'll be working in this room.
+
+   在例句1）中，如果没有表示将来的时间状语next Monday，则该句一般理解成正在进行的 活动，表示“他现正在这个房间里工作”。在例句2）中，虽然没有表示将来的时间状语，但依然 可以表示将来的活动。
+
+
+
+
+
+#### 表示背景动作——提供另外一个短动作发生的事件背景
+
+同过去进行时的用法类似，将来进行时可以表示 一个背景动作，来描述在这个背景动作下，将会发生的另外一个短暂动 作。
+
+- They probably will be watching TV when we get there.
+
+  主句的进行时表示动作较长，从句的现在时表示将来的 某一短动作。
+
+- Will your friends be waiting for you at the airport when you arrive?
+
+- What do you think she'll be doing when we get there?
+
+- If we don't hurry, the musicians will be playing by the time we arrive.
+
+
+
+
+
+#### 用在疑问句中，表示客气地询问
+
+许多美国电影和美国人口语中好像爱用进行时态，但动作又似乎并不是正在进行着，这样的表达有什么特别的意义吗？
+
+书店营业员George问Joe付款方式，用的是How will you be paying for this? Joe答Cash。为何不直接用How will you pay for this? 这是一种习惯还是一种思维？
+
+这一问题涉及将来进行时态（如will be paying）的意义及其与一般将来时态（如will pay））的区别。
+
+“将来进行时态（will be doing）”用来“礼貌地询问”，显得比一般将来时will do更委婉客气。这是因为will be doing常表示很客观地询问事实，并不想干涉对方的决定；而will do往往带有各种感情色彩，如请求、命令、指示、 质问甚或威胁等等。
+
+上述的will be paying就是表示一种客气的询问。店员乔治（George）当然应该 要很有礼貌地向顾客提出询问，所以在此场景中他选用了将来进行时 How will you be paying for this? 这一礼貌的询问句式。若他说How will you pay for this? 则显得比较生硬，不够礼貌，会让顾客感觉对方是在质 问自己。
+
+
+
+场景想象：
+
+当你在商店买完了东西正要付账时，但却发现自己的现金不够。于是你说要用银行卡结账，可是等你刷完卡输入密码后，发现密码不对， 虽然你连试多次，但密码还是不对；这时你又赶忙换个信用卡，可发现信用卡已经过期了；于是你又只好再翻遍全身的口袋，想凑足现金…… 这时，营业员可能就会一边不耐烦地瞪着你，一边抛出一句How will you pay for this? （这钱你到底想要怎么付？！）所以，我们看到，will be paying和will pay在语气上和礼貌程度上差别很大。
+
+**“酒店入住登记（check-in）”**
+
+Guest: Hello. My name is Tang. I've just arrived from the U. K. 
+
+Receptionist: Good morning, sir. Do you have a reservation?
+
+Guest: Yes. 
+
+Receptionist: Could you tell me your full name, please? 
+
+Guest: Jimmy Tang. 
+
+Receptionist: Thank you, Mr. Tang... Yes, we have your reservation. You reserved a standard single room, didn't you? 
+
+Guest: Yes, that's right. 
+
+Receptionist: How long **will you be staying**, Mr. Tang? 
+
+Guest: Just one night. I'll fly to America tomorrow. 
+
+Receptionist: I see. And how **will you be paying**? 
+
+Guest: With a traveler's check. Is that OK? 
+
+Receptionist: Yes, that's fine.
+
+
+
+
+
+Guest: Good evening. My name is Jennifer Thomson. I've just arrived from Canada. 
+
+Receptionist: Welcome to our hotel, Ms. Thomson. Are you on holiday? 
+
+Guest: No, on business. 
+
+Receptionist: I see, and how long **will you be staying**? 
+
+Guest: My reservation is for a week in a standard room. 
+
+Receptionist: Thank you, Ms. Thomson. And how **will you be paying**?
+
+Guest: By company credit card
+
+这种礼貌询问的表达方式不只是出现在公司与客户之间，它同样适用于陌生人之间的询问与关心。
+
+"A new play is coming to 'The Globe' soon," I said. "Will you be seeing it?"
+
+"No," she answered. 
+
+"Will you be spending your holidays abroad this year?" I asked. 
+
+"No," she answered. "Will you be staying in England?" I asked. 
+
+"No," she answered. 
+
+In despair, I asked her whether she was enjoying her dinner. 
+
+"Young man," she answered, "if you ate more and talked less, we would both enjoy our dinner!"
+
+
+
+比如，一 位演员在问及导演有关角色的分配时，他是这样礼貌地提问的：  Who will I be acting with?  这里他同样用了礼貌的提问形式will be acting，表示自己只是在客观地打听事实，而不是 自己要干涉导演的安排，因而这样询问显得委婉礼貌。
+
+
+
+
+
+Patrick was a particularly mean person. Instead of buying things he usually tried to borrow them. One Sunday he called at this next door neighbor's house and asked, "Will you be using your lawnmower this afternoon?" "Yes!" snapped his neighbor, determined not to give Patrick anything. "Great!" said Patrick. "Then can I borrow your golf clubs? You won't be using them if you're cutting your grass!"
+
+这里有两个将来进行时态，但意义不一样。第一个将来进行时态will you be using...是表示 礼貌地询问，第二个将来进行时态won't be using是表示将来进行的动作。
+
+
+
+1) When will you pay back the money?
+2) When will you be paying back the money?
+
+这里的两个例句因为用了不同的谓语形式来提问，因而给听话人完全不同的感觉。例句 1）用了will pay，语气显得比较强硬，似乎是在粗鲁地讨债，因此我们可以译成“你什么时候才 能还这钱啊？”相比较而言，例句2）用了will be paying，则显得较为圆滑，说话人暗示欠债还 钱是某种“当然”的事情，并且听起来语气委婉，不像will pay那么生硬，而是具有一种商量的口 吻。因此，我们可以译成“这钱你什么时候能还一下呢？”
+
+
+
+will do往往带有各种感情 色彩，比如表达“请求”，此时我们就得用will do，而一般不用will be doing。比如“你能借给我10块钱吗？”这句话，一般不说：Will you be lending me ten dollars?* 这里的will不是在客观地询问事实，而是表示一种请求。
+
+所以，如果我们是要客观地询问事实，宜用will be doing来提问； 而若是其他语气，比如请求或命令等，我们则要用will do来提问。再看下面这对句子： 
+
+1) Will you be staying in this evening?   今晚你不出去吧？
+2) Will you stay in this evening?    今晚你别出去了，好吗？   今晚你不要再出门了行不行？！
+
+
+
+
+
+#### 用来表示客观的将来，以避免与表示“意愿”的will do混淆
+
+will be doing用于 陈述句中所产生的一些特殊的语义效果。
+
+- A: It's already 10 o'clock. I guess Bob and Amy won't be coming to the party. 
+
+  B: They called at nine to say that they'd been held up.
+
+上面这个对话中的将来进行时态won't be coming并非像我们通常理解的那 样，表示“在将来某一特定的时刻正在做某事”，即并不是进行时态要表达的典型意义。也许有 读者会问：那为什么要用won't be coming这种较为复杂的形式呢？句中为什么不用更为简单的 谓语形式won't come呢？可不可以用won't come？两者有何区别？
+
+这里涉及情态动词will的意义和用法问题。我们知 道，will可以用来表示意愿（willingness）和意图（intention）等情态意义，所以will do往往表示 主观意愿，如will do有“蓄意为之”的含义，而won't do则有“不愿意为之”的含义。但将来进行时 态will be doing则是表示客观的将来时间，侧重于对将来事件的客观陈述，表示在正常情况下预 计要发生的事件，而不表达个人意图。总而言之，will be doing较客观，will do较主观，所以用will be doing来表示客观的将来时间，以避免与表示主观意愿的will do混淆。
+
+比如上面的对话中，说话人用won't be coming是想强调鲍勃和艾米可能是因为其他事情耽 误了而“来不了”这一客观事实，而不是主观意愿上的“不愿来”。下文紧接着就说明了他们来不 了的原因是they had been held up（他们有事耽误了）。如果说：Bob and Amy won't come to the party. 因为won't do的意思往往相当于refuse to do，表示“拒绝做，不愿意做”。所以，对于这句话 人们一般会理解为“鲍勃和艾米不愿意来参加聚会”。
+
+
+
+- Mary won't be paying this bill.     我想玛丽不会付账的。
+
+- Mary won't pay this bill.    玛丽不愿意付账，她拒绝付账。
+
+在例句1）中，用将来进行时表示说话人的一种猜测，而并非玛丽本人的意图，意思 是“我想玛丽不会付账的”，但事实上玛丽很可能会付。例句2）则表示玛丽本人的意图或意愿， 意思是“玛丽不愿意付账、她拒绝付账”，这样，玛丽就真的是不付钱了。
+
+
+
+- He won't resign.
+- He won't be resigning.
+
+例句1）相当于He refuses to resign. 表示“他拒绝辞职”。won't do一般的含义即指refuse to do。例句2）等于I guess he will not resign. 表示“我想他不会辞职”。
+
+
+
+#### 总结
+
+1. 想象自己或其他人在将来的某一特定时刻正在做某事；
+2. 表示计划好的事；
+3. 表示背景动作。提供另外一个短动作发生的事件背景。
+4. **用在疑问句中**，表示客气地询问
+5. 用来表示客观的将来，以避免与表示“意愿”的will do混淆
+
+
+
+### 进行时的思维特征
+
+在英语中，并不是所有的动词都可以与进行体连用（并不是所有的动词都有进行时态），比如要表达“是的，我现在懂了”，就不能说：Yes, I am understanding you now. *  这里的谓语动词understand就不能与进行时态搭配使用。
+
+有很多动词，比如wash，尽管可以与进行时态搭配使用，但却不能使用在某些句子表达中。不能说：Tom was washing three cars. *  可以说： Tom was washing cars.
+
+关于上述这两方面的问题，都与“体”有关。
 
 
 
 关注动词的两方面特性：
 
 1. 语法体方面的特性
-2. 动词自身含义方面的特性
+2. 动词自身含义方面的属性
+
+谈到“时”时，关心的是这个动作发生的时间，即是在现在、过去还是将来发生的。
+
+谈到“体”时，关心的则是这个动作是固定不变的还是动态变化的（fixed or changing）；这个动作是完成了的还是在延续的（complete or ongoing）；这个动作持续的时间是很短还是很长 （lasting for only a moment or for a long time）。
+
+动词自身含义方面的属性通过两个方面来表达：
+
+1. 语法体（grammatical aspect）
+2. 动词体 （lexical aspect）标示动词词义本身所固有的特点（the inherent properties of the verb's meaning）的。在这方面，英语把动词分为状态和动作（state and action），又把动作分为短暂动作和延续动作 （punctual and durative）等。
+
+二者的共同作用不仅影响到时态的正 确使用，同时也深刻地影响着对句子意思的理解。
+
+比如：Tom was washing three cars. *这个句子的误用是与进行体的核心意义有关的；Yes, I am understanding you now. *这个句子的误用则是与understand这个动词的特点有关。
 
 一个动词是否能够使用某种语法体，比如是否能使用进行时态，完成时态等，除了句子上下文的语境以外还要看动词自身的词汇方面的含义。
 
 对于进行时态的语法体，它一般有三个方面的含义：
 
-1. 事件的持续性（ongoing）
-2. 事件的短暂性（temporary）
-3. 事件的未完成性（incomplete）
+1. 事件的持续性（ongoing）：表示的是一个事件 或活动在某个特定的时间正在持续；
+2. 事件的短暂性（temporary）：表明事件的持续时间是有限 的。如果是无限的，即表达一个长期的、恒久的含义，那么就该用一般现在时态。
+3. 事件的未完成性（incomplete）：既然强调动作的持续性，那 么就表明这个动作还没有结束。
+
+当然具体的句子不必同时都包含这三个特点。
+
+总的来说，现在进行时用于描述在有限的时间内正在进行的动作，而一般现在时常与状态相联系。
 
 
+
+**不适于用进行体的情形**
 
 因为进行时态强调的是动作在一段时间里的持续性，因此这一活动必须时连续不断的，如果把动作分割开来，就违背了进行时态的核心意义——持续性。
 
@@ -7490,25 +8312,36 @@ Jenny: Yeah, it **is** **getting** crowded.
 
      I will knock three times if your door is closed.(正确)
 
+
+
+
+**进行时态与动词体**
+
+对于一般时态，不需要对动词词义本身的特点，即动词体，进行分析，因为一般动作是“零”体态的，所以其用法与“动词体”没有多大的关系。
+
+进行时态的使用与动词词义本身所固有的特点（the inherent properties of the verb's meaning）是密切相关的。比如它是表示动 作还是状态，是短暂动词还是延续动词等。比如understand就不能用进行时态，这个它本身词义的特点有关。
+
+对于动词的自身含义来说，可以把动词分为：**静态动词，动态动词（dynamic verb）：（短暂动词，延续动词）**。三种动词都可以用进行时态。
+
+1. **静态动词**
+
+   静态动词与变化无关，一般不能用于进行体。在词义方面表达的是一种稳定的状态，这种状况会或长或短地持续下去。而进行时态表达的是一种动作的有限时间内的持续，二者之间存在着基本的语义冲突。
+
+   静态动词分类：
+
+   1. 感官动词：smell，see，taste，fell
+   2. 心理知觉：know，believe，imagine，want，think，remember，forget，understand，mean，doubt
+   3. 所属关系：possess，have，lack，belong，owe
+   4. 情绪态度动词：like，love，envy，fear，mind，hate，dislike，need
+   5. 度量动词：equal，measure，weigh，cost
+   6. 互相关系：contain，entail，consist of
+   7. 描述动词：be，resemble，sound，seem，look
+
+   - We understand the questions. 
+   - And we know the answers.
+   - We like our English class.
+
    
-
-对于动词的自身含义来说，可以把动词分为：**静态动词，短暂动词，延续动词**。三种动词都可以用进行时态。
-
-1. **短暂动词**
-
-   短暂动词用进行时态表达一种反复，重复的含义
-
-   - He is nodding his head in agreement.
-   - Henry is kicking the soccer ball around the backyard.
-   - Someone is coughing.
-   - Joe is realizing his mistakes. (表示事件的开始)
-   - I am starting the car.（潜意思：感觉这车难发动，我正在努力的把它发动起来）
-
-   
-
-2. **静态动词**
-
-   一般来说，静态动词不能用于进行体。静态动词在词义方面表达的是一种稳定的状态，而进行时态表达的是一种动作的有限时间内的持续，二者之间存在着基本的语义冲突。
 
    - I am knowing the answer.(错误)
 
@@ -7520,7 +8353,7 @@ Jenny: Yeah, it **is** **getting** crowded.
 
    1. **施动与受动**
 
-      可以从句子的主语与谓语动作之间的关系，来判断某个静态动词用于某一特定意义时是否可以用进行时态。谓语动作是主语有意识地发出的，即句子的主语是施动者，此时谓语一般都可以 用进行时态。反之，如果主语并非有意识地发出谓语动作，而只是被动的接受者即受动者，此时谓语一般都不能用进行时态。
+      可以从句子的主语与谓语动作之间的关系，来判断某个静态动词用于某一特定意义时是否可以用进行时态。谓语动作是主语有意识地发出的，即句子的主语是施动者，此时谓语一般都可以用进行时态。反之，如果主语并非有意识地发出谓语动作，而只是被动的接受者即受动者，此时谓语一般都不能用进行时态。
 
       因为进行时态主要只用于有意识的动作。因此在英文中，一些表示无意识的、自发的动作（spontaneous action）的动词，如人们的心理活动（know，understand和 believe等）、感情状态（like，love和hate等）以及其他静态动词，均不能用于进行时态。
 
@@ -7538,13 +8371,159 @@ Jenny: Yeah, it **is** **getting** crowded.
 
       - I taste ginger in these spring rolls.   这里的主语是I，即人称主语，但I并不是施动者，因为这里的谓语taste并不是I“有意识”地发出的。这里的taste并不是表示“品尝”这个动作，而是表示“尝到……的味道”这样的状态。从整个句子的意思来看，“我”并不是有意识地“品尝”ginger（生姜），而是无意识地“尝到”了生姜的味道。所以，这里的主语I是一个受动者，因 此该句不能用进行时态说成：I am tasting ginger in these spring rolls. *
 
+      ![image-20241112115831646](D:\learn-notes\English-learn\images\image-20241112115831646.png)
+
       
 
+      ![image-20241112115855410](D:\learn-notes\English-learn\images\image-20241112115855410.png)
+
+      - He is smelling the chicken 
+      - And it smells nice. 
+      - I smell something burning in the kitchen.
+
+      在例句1）中，smell不是系动词，而是一个及物动词，表示“闻”的动作。此时句子的主语 he是施动者，即有意识地发出smell这个动作，所以可以用于进行时态。在例句2）中，smell是 系动词，表示“闻起来”，是一个状态。此时句子的主语it（指the chicken）并非施动者，即it并没 有发出smell这个动作，而是受动者，所以这里的taste不能用进行时态，即我们不能说It is smelling nice. *在例句3）中，smell不是系动词，而是一个及物动词，表示“闻到，嗅出”的结果， 是一个状态。此时句子的主语I不是施动者，即并非有意识地发出smell这个动作，而是被动地接 受了一个结果，所以不能用于进行时态，即我们不能说I am smelling something burning in the kitchen. *
+
+
+      ![image-20241112120037948](D:\learn-notes\English-learn\images\image-20241112120037948.png)
+    
+      - I am looking at the picture. 
+      - It looks beautiful. 
+      - I see the picture.
+
+
+​      
+
+​      
+
+      ![image-20241112120240293](D:\learn-notes\English-learn\images\image-20241112120240293.png)
+    
+      - I am listening to the music. 
+      - It sounds nice.
+      - I hear the music.
+
+   综上所述，表示人的五官感觉的动词可能有三方面含义： 一是系动词； 二是表示结果，此时表示的是一个状态，而不是主语有意识地发出 的动作； 三是表示动作的过程，此时是主语有意识的动作。
+
+   
+
+2. **短暂动词**
+
+   短暂动词往往表示一个不能持续的或持续时间极短的动作（acts which do not extend through time），往往与“时间点（point in time）”有联系。比如kick，hit和smash等。
+
+   - He kicked the ball.
+
+   - It hit the window.
+
+     
+
+   虽然短暂动词不具有延续性，或者说其延续性较差，这似乎与进行体的核心意义“动作有限的延续性”相矛盾。但是短暂动词可以与进行体连用，短暂动词用进行时态表达一种反复，重复的含义。
+
+   短暂动词通过其“重复”的意义来与进行 体的核心意义“延续”基本达成一致，即一系列类似持续动作的重复。
+
+   - He is nodding his head in agreement.   他不断地点头表示同意。
+   - Henry is kicking the soccer ball around the backyard.
+   - Someone is coughing.   有人在咳嗽。
+   - Joe is realizing his mistakes. (表示事件的开始)
+   - I am starting the car.（潜意思：感觉这车难发动，我正在努力的把它发动起来）
+
+   上面例句中的谓语动词nod，kick和cough都是典型的短暂动词，这 里用于进行时态表示的是重复动作，即不断地“点头”、“踢球”和“咳嗽”。
+
+   用于进行体的短暂动词也可以表示一个事件的开始。比如：
+
+   - Joe is realizing his mistakes. 乔开始意识到自己的错误。
+
+   或者有其他特殊的含义。比如：
+
+   - I am starting the car.
+
+   这里的短暂动词start用于进行体，我们要朝着动作“延续”性的方向来解释——这句话给人 的感觉是这辆汽车很难发动，说话人正试图努力地把它发动起来。
+
+   
+
+3. **延续动词**
+
+   延续动词表示一个可以持续的活动或过程 （activities or processes），用来描述一个可以延续的场景（describe situations that typically extend through time）。比如run，swim，walk， work，write，become，change，grow和learn等等。
+
+   
+
+   
+
+**延续状态、短暂动作与延续动作**
+
+短暂动词往往与一个场景的改变有联系，而延续动词则是与一个场景的维持不变相关。
+
+我们每天的生活中都要经历延续动作与 短暂动作的转换。比如每天要“上床睡觉”：
+
+- go to bed   一个短暂动作，表示一个状态的改变——人从床下到床上了。
+- fall asleep   一个短暂动作，表示一个状态的改变——人从醒着转为睡 着了。
+- sleep | be asleep  都是延续状态，是一个状态的维持——一直睡着的状态。
+- wake up    一个短暂动作，是一个状态的改变——人从睡着转为醒来。
+- be awake   一个延续状态，是一个状态的维持——人处在一直醒着的状 态。
+- get up  一个短暂动作，是一个状态的改变——人从床上转为床下。
+- be up   一个延续状态，是一个状态的延续——人一直在床下活动了。
+
+学习英语的时态，就必须对英语的状态与动作以及短暂动词与延续动词等的区分要非常敏感。
+
+在汉语里，在说出一个活动或事件时，一般是不考虑它是表示一个状态还是一个动作的，也不考虑这个动作是短暂的还是延续的。因为汉语远不像英语那样重视时间的精确表达。既然英语非常强调时间，而状态和动作以及短暂动作与延续动作， 在时间的持续性方面是有很大不同的，所以，英语语言自然要对这些概念进行细致的分辨，从而影响到句子时态的使用。
+
+- Time to get up. 
+
+  那么如何表示起床的“状态”？比如你妈妈叫你起床，其实你已经起来了，这时你说“我起来了，我已经起床了”，这就是一个状态表达。 要说成： 20 I'm up. 而不能说成： I get up *   在英文里说I get up. *这样的短句是没有意思的，因为无法找到 一个合适的语境来使用这个句子。
+
+  没有合适的使用语境的原因就在于， get up表示的是一个短暂动作，只能发生在某一时刻，而不能用于表示延续的状态。但是be up表示状态，就能很好地表示我“起床了”这样的延续状态。
+
+  除非get up加上时间状语，这样来表示一个习惯动作。
+
+  - I often get up very late on Sundays.
+
+    这里就是表示“起床”的动作在每个周日的某一时刻发生。所以，短 暂动作与时间点（point of time）联系得非常紧密，对时态的要求也敏感。
+
+  - It was Sunday. I never get up early on Sundays. I sometimes stay in bed until lunchtime. Last Sunday I got up very late.
+
+    这里的两个“起床”都是“动作表达”，所以都要用get up，并且，前 者表示日常规律，所以用现在时态get up；而后者表示过去的动作，所 以用一般过去时态got up。
 
 
 
+在汉语里常说“我来找某某人”，这里的“我来”该怎么说？此时，同样要注意状态与动作的区分。如果用状态表达，可以说成：
 
+- I am here to visit Mr. Zhang.
 
+  这里的am here就表示“我人现在在这里”的一个状态，所以用的是一般现在时态。
+
+   但是如果你用了动词come，就不能用一般现在时态说成： I come here to visit Mr. Zhang. *
+
+  因为你“来（come）”这个短暂动作在你说话时已经结束了，所以我 们要改用其他时态来表达。我们可以用一般过去时，说成：
+
+  - I came here to visit Mr. Zhang.
+
+    或者是现在完成时，说成：
+
+  - I've come here to visit Mr. Zhang.
+
+  这时，前台接待人员一般会问你：“你和他约好的吗？”这句话该如何表达？同样要考虑是用“状态”还是用“动作”，因为这关系到不同时态的使用。用“状态”表达，我们要用一般现在时态，说成： 
+
+  - Do you have an appointment with him? 
+
+    这里用的是静态动词have。若是用“动作”表达，则要用现在完成时态，说成： 
+
+  - Have you made an appointment with him? 
+
+    这里用的是动态动词make。 
+
+    从上述例句中的am here/have come以及do you have/have you made， 可以看出，“状态／动作”的区分与时态是如此的密切相关。这一区分同样影响着进行时态的使用。 
+
+    
+
+**延续动词与进行时态**
+
+延续动词与进行体连用最自然，因为进行体的核心意义是表示“动 作有限的延续性”，延续动词也是表示动作的延续性，因此二者在语义上非常吻合。
+
+- it looks like you are watching television.
+
+- so I thought you would be studying for it and maybe I can study with you.
+
+- What are you doing here?
+
+  这里的do，watch和study都是延续动词。
 
 
 

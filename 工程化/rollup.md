@@ -1226,7 +1226,7 @@ class Module {
       sourceType: 'module'
     });
     //存放本模块内导入了哪些变量 main.js中导入了name和age变量，对msg.js来说没有导入任何变量
-    this.imports = {};   // 格式是{ source:',/msg', importName:'name' }
+    this.imports = {};   // 格式是{ source:',/msg', importName }
     //存放本模块中导出了哪些变量 ，对于maing.js来说没有导出任何变量，msg.js导出了name和age两个变量
     this.exports = {};
     //存放本模块的顶级变量的定义语句是哪条
@@ -1359,7 +1359,6 @@ function analyse(ast, code, module) {
         module.imports[localName] = { source, importName };
       });
     } else if (statement.type === 'ExportNamedDeclaration') {
-      // 处理导出的变量
       const declaration = statement.declaration;
       if (declaration && declaration.type === 'VariableDeclaration') {
         const declarations = declaration.declarations;
@@ -1373,7 +1372,7 @@ function analyse(ast, code, module) {
     }
   });
   //开始第2轮循环 创建作用域链 ，递归遍历语法树
-  //需要知道本模块内用到了哪些变量，用到的变量留 下，没用到不管理了
+  //需要知道本模块内用到了哪些变量，用到的变量留下，没用到不管了
   //我还得知道这个变量是局部变量，还是全局变量
   //一上来创建顶级作用域
   let currentScope = new Scope({ name: '模块内的顶级作用域' });
@@ -1550,8 +1549,11 @@ package.json
 
 **插件**
 
-- [Rollup 插件](https://rollupjs.org/guide/en/#plugins-overview)是一个对象或者一个函数返回一个对象，该对象具有的属性或者方法（其实就是 rollup 的钩子函数）将在下面介绍。
+- [Rollup 插件](https://rollupjs.org/guide/en/#plugins-overview)是一个对象或者一个函数返回一个对象（对象的属性在rollup内部又分为： 属性，构建钩子，输出生成钩子等），该对象具有的属性或者方法（其实就是 rollup 的钩子函数）将在下面介绍。
+- 插件允许通过自定义 Rollup 的行为来扩展其功能，例如，在打包之前转换代码，或在 `node_modules` 文件夹中查找第三方模块。
 - [插件列表](https://github.com/rollup/awesome)
+
+![image-20241107174212470](D:\learn-notes\工程化\images\image-20241107174212470.png)
 
 **插件规范**
 
@@ -1561,26 +1563,142 @@ package.json
 - 如果合适的话，确保插件输出正确的`sourcemap`
 - 如果插件使用“虚拟模块”（例如，用于辅助功能），请在模块 ID 前面加上`\0`。这会阻止其他插件尝试处理它
 
-**插件对象属性**
+
+
+**插件函数返回的对象上的属性**
 
 - name，插件的名称，用于错误消息和警告，值为字符串。
+- version，插件的版本，用于插件间通信
 
 
 
-**build Hooks**
+**简单的插件示例：**
 
-- 回调函数，与构建过程交互
+以下插件将拦截对 `virtual-module` 的任何导入，而不访问文件系统。例如，如果希望在浏览器中使用 Rollup，这是必要的。甚至可以用来替换入口点，如示例所示。
+
+```js
+// @filename: rollup-plugin-my-example.js
+export default function myExample () {
+  return {
+    name: 'my-example', // this name will show up in logs and errors
+    resolveId ( source ) {
+      if (source === 'virtual-module') {
+        // this signals that Rollup should not ask other plugins or check
+        // the file system to find this id
+        return source;
+      }
+      return null; // other ids should be handled as usually
+    },
+    load ( id ) {
+      if (id === 'virtual-module') {
+        // the source code for "virtual-module"
+        return 'export default "This is virtual!"';
+      }
+      return null; // other ids should be handled as usually
+    }
+  };
+}
+
+// @filename: rollup.config.js
+import myExample from './rollup-plugin-my-example.js';
+export default ({
+  input: 'virtual-module', // resolved by our plugin
+  plugins: [myExample()],
+  output: [{
+    file: 'bundle.js',
+    format: 'es'
+  }]
+});
+```
+
+
+
+单个的钩子不仅可以是函数，也可以是对象。在这种情况下，实际的钩子函数（或 `banner`、`footer`、`intro`、`outro` 的值）必须指定为 `handler`。rollup针对各个hook，提供了额外的可选属性来改变钩子的执行：
+
+- order: "pre" | "post" | null
+
+  如果有几个插件实现了这个钩子，可以指定这个插件在其他插件之前运行（`"pre"`），之后运行（`"post"`），或按用户指定的位置运行（不指定值或 `null`）。
+
+  ```js
+  export default function resolveFirst() {
+      return {
+          name: 'resolve-first',
+          // resolveId 在这里就是一个对象，因为需要提供额外的数据
+          resolveId: {
+              order: 'pre',
+              handler(source) {
+                  if (source === 'external') {
+                      return { id: source, external: true };
+                  }
+                  return null;
+              }
+          }
+      };
+  }
+  
+  export default function resolveFirst() {
+      return {
+          name: 'resolve-first',
+          // resolveId 在这里就是一个函数
+          resolveId(source) {
+              if (source === 'external') {
+                  return { id: source, external: true };
+              }
+              return null;
+          }
+      };
+  }
+  ```
+
+- sequential: boolean
+
+  设置这个hook不与其他插件的同名钩子并行运行。只能用于并行钩子。使用此选项会使 Rollup 等待所有先前插件的结果，然后执行该插件的钩子，然后再并行运行剩余的插件。例如，当你有插件 A、B、C、D、E 都实现了同一个并行钩子，而中间的插件 C 设置了 `sequential: true`，那么 Rollup 会首先并行运行 A 和 B，然后单独运行 C，最后再并行运行 D 和 E。
+
+  当你需要在不同的 `writeBundle` 钩子中运行多个命令行工具，并且这些工具相互依赖时，这一点非常有用（注意，如果可能的话，建议在顺序执行的 `generateBundle` 钩子中添加或删除文件，因为这样更快，适用于纯内存构建，并允许其他内存构建插件看到这些文件）。你可以将此选项与 `order` 结合使用以进行额外的排序。
+
+  ```js
+  import path from 'node:path';
+  import { readdir } from 'node:fs/promises';
+  
+  export default function getFilesOnDisk() {
+  	return {
+  		name: 'getFilesOnDisk',
+  		writeBundle: {
+  			sequential: true,
+  			order: 'post',
+  			async handler({ dir }) {
+  				const topLevelFiles = await readdir(path.resolve(dir));
+  				console.log(topLevelFiles);
+  			}
+  		}
+  	};
+  }
+  ```
+
+  
+
+
+
+**Build Hooks**
+
+- 构建钩子集合是一个个的回调函数，目的是与构建过程交互
   - 钩子是在构建的不同阶段被调用的函数
   - 钩子可以影响构建的运行方式，提供关于构建的信息，或者在构建完成后修改构建
   - 有不同种类的钩子
-    - `async` 钩子可以返回解析为相同类型值的`Promise`；否则，钩子将被标记为`sync`（默认 async）
-    - `first` 如果有几个插件实现了这个钩子，钩子会按顺序运行，直到钩子返回一个`非null`或未定义的值，那其他插件的这个钩子函数将不再执行，而转而执行流程下的下一个钩子函数
+    - `async` 钩子可以返回`Promise`，但是这个promise的结果必须符合rollup的要求；如果不返回promise，钩子将被标记为`sync`（默认 async）
+    - `first` 如果有几个插件实现了这个钩子，钩子会按顺序运行，直到钩子返回一个非`null`或 `undefined`，那其他插件的这个钩子函数将不再执行，而转而执行流程下的下一个钩子函数
     - `sequential` 如果几个插件实现了这个钩子，那么它们都将按照指定的插件顺序运行。如果一个钩子是异步的，那么这种类型的后续钩子将等待当前钩子被解析
     - `parallel` 如果多个插件实现了这个钩子，那么它们都将按照指定的插件顺序运行。如果一个钩子是异步的，那么这类后续钩子将并行运行，而不是等待当前钩子
   - `Build Hooks`在构建阶段运行，该阶段由`rollup.rollup(inputOptions)`触发
   - 它们主要负责在`rollup`处理输入文件之前定位、提供和转换输入文件
   - 构建阶段的第一个钩子是`options`，最后一个钩子总是`buildEnd`
   - 如果出现生成错误，将在此之后调用`closeBundle`
+
+下图build阶段的hooks说明图：
+
+<img src="D:\learn-notes\工程化\images\image-20241107181623466.png" alt="image-20241107181623466" style="zoom:150%;" />
+
+
 
 plugins\rollup-plugin-build.js
 
@@ -1589,7 +1707,7 @@ function build(pluginOptions) {
     return {
         name: 'build', //插件的名字
         /**
-     *  acorn, acornInjectPlugins, cache, context, experimentalCacheExpiry, external, inlineDynamicImports, input, makeAbsoluteExternalsRelative, manualChunks, maxParallelFileOps, maxParallelFileReads, moduleContext, onwarn, perf, plugins, preserveEntrySignatures, preserveModules, preserveSymlinks, shimMissingExports, strictDeprecations, treeshake, watch
+     *inputOptions对象中的值必须是下面这些：acorn, acornInjectPlugins, cache, context, experimentalCacheExpiry, external, inlineDynamicImports, input, makeAbsoluteExternalsRelative, manualChunks, maxParallelFileOps, maxParallelFileReads, moduleContext, onwarn, perf, plugins, preserveEntrySignatures, preserveModules, preserveSymlinks, shimMissingExports, strictDeprecations, treeshake, watch
      */
         async options(inputOptions) {
             console.log('options');
@@ -1658,10 +1776,10 @@ export default {
   plugins: [
 +   build()
   ]
-}
+} 
 ```
 
-<img src="images\image-20240305171404398.png" alt="image-20240305171404398" style="zoom:200%;" />
+
 
 **钩子函数的调用时机问题：**
 
@@ -1688,33 +1806,35 @@ export default {
 
 - [big-list-of-options](https://rollupjs.org/guide/en/#big-list-of-options)
 
-| 字段          | 值                                      |      |
-| :------------ | :-------------------------------------- | ---- |
-| Type          | (options: InputOptions) => InputOptions | null |
-| Kind          | async, sequential（异步串行）           |      |
-| Previous Hook | 这是构建阶段的第一个钩子                |      |
-| Next Hook     | buildStart                              |      |
+| 字段          | 值                                              |      |
+| :------------ | :---------------------------------------------- | ---- |
+| Type          | (options: InputOptions) => InputOptions \| null | null |
+| Kind          | async, sequential（异步串行）                   |      |
+| Previous Hook | 这是构建阶段的第一个钩子                        |      |
+| Next Hook     | buildStart                                      |      |
 
-- 这个钩子是在Rollup读取并解析配置文件后、开始构建之前调用的。它允许插件修改或替换Rollup的选项。`options`钩子只会被调用一次，而不是对每个模块调用一次。它的主要用途是允许插件修改构建的初始选项。操作的必须是rollup预设好的那些字段
-- 返回`null`的话rollup不会替换任何内容
-- 如果需要阅读`options`，建议使用`buildStart`钩子，因为**options**钩子函数的InputOptions并不是最终的options对象
-- 这是唯一一个无法访问大多数插件上下文使用程序功能的钩子，因为它是在完全配置汇总之前运行的
+- 这个钩子是在Rollup读取并解析配置文件后、开始构建之前调用的。它允许插件修改或替换Rollup的选项(`rollup.rollup` 的选项对象)。`options`钩子只会被调用一次，而不是对每个模块调用一次。它的主要用途是允许插件修改构建的初始选项。操作（修改或者新增）的必须是rollup预设好的那些字段
+- 返回`null`的话rollup不会替换任何配置的内容
+- 如果需要阅读`options`，建议使用`buildStart`钩子，因为**options**钩子函数的InputOptions并不是最终的options对象， 因为`buildStart`钩子在所有 `options` 钩子的转换完成后可以访问选项
+- 与 `onLog` 钩子类似，这个钩子在 Rollup 完全配置之前运行，因此无法访问大多数插件上下文实用函数。唯一支持的属性是 `this.meta` 以及用于日志和错误处理的 `this.error`、`this.warn`、`this.info` 和 `this.debug`
+- 一般不使用这个hook
 
 
 
 #### buildStart
 
-| 字段          | 值                              |
-| :------------ | :------------------------------ |
-| Type          | (options: InputOptions) => void |
-| Kind          | async, parallel（并行）         |
-| Previous Hook | options                         |
-| Next Hook     | resolveId并行解析每个入口点     |
+| 字段          | 值                                                           |
+| :------------ | :----------------------------------------------------------- |
+| Type          | (options: InputOptions) => void  还有一种是在输出阶段的钩子函数接受的outputOptions |
+| Kind          | async, parallel（并行）                                      |
+| Previous Hook | options                                                      |
+| Next Hook     | resolveId并行解析每个入口点                                  |
 
-- 这个钩子在Rollup开始构建过程、解析模块之前被调用。它提供了一个时机来执行一些准备工作，比如验证插件的选项、初始化插件需要的资源等。`buildStart`钩子也是只被调用一次，它不会对每个模块都调用，因为它标志着构建过程的开始
+- 这个钩子在Rollup开始构建过程、解析模块之前被调用（在每次 `rollup.rollup` 构建时调用）。它提供了一个时机来执行一些准备工作，比如验证插件的选项、初始化插件需要的资源等。`buildStart`钩子也是只被调用一次，它不会对每个模块都调用，因为它标志着构建过程的开始
 - 每次`rollup.rollup build`都要调用此钩子
 - 当您需要访问传递给rollup的选项时，建议使用这个钩子
-- 因为它考虑了所有`options`钩子的转换，还包含未设置选项的正确默认值
+- 因为它考虑了所有`options`钩子的转换，还包含未设置选项的默认值
+- 这里的InputOptions是输入选项，不包含配置文件中的输出配置项，比如output配置项
 
 build\plugin-buildStart.js
 
@@ -1724,6 +1844,7 @@ export default function buildStart() {
     name: 'buildStart',
     buildStart(InputOptions) {
       console.log('buildStart', InputOptions);
+      // InputOptions是输入选项，不包含配置文件中的输出配置项，比如output配置项
     }
   };
 }
@@ -1735,10 +1856,36 @@ export default function buildStart() {
 
 | 字段          | 值                                                           |       |      |
 | :------------ | :----------------------------------------------------------- | ----- | ---- |
-| Type          | (source, importer) => string                                 | false | null |
+| Type          | ResolveIdHook                                                | false | null |
 | Kind          | async, first                                                 |       |      |
 | Previous Hook | `buildStart`(如果我们正在解析入口点)，`moduleParsed`（如果我们正在解析导入），或者作为`resolveDynamicImport`的后备方案。此外，这个钩子可以在构建阶段通过调用插件钩子触发。`emitFile`发出一个入口点，或在任何时候通过调用此。`resolve`可手动解析id |       |      |
 | Next Hook     | 如果解析的`id`尚未加载，则`load`，否则`buildEnd`             |       |      |
+
+```ts
+type ResolveIdHook = (
+	source: string,   // source：本模块的路径
+	importer: string | undefined,   // importer导入本模块的那个模块的路径
+	options: {
+		attributes: Record<string, string>;
+		custom?: { [plugin: string]: any };
+		isEntry: boolean;   // 本模块是否是入口模块
+	}
+) => ResolveIdResult;
+
+type ResolveIdResult = string | null | false | PartialResolvedId;
+
+interface PartialResolvedId {
+	id: string;
+	external?: boolean | 'absolute' | 'relative';
+	attributes?: Record<string, string> | null;
+	meta?: { [plugin: string]: any } | null;
+	moduleSideEffects?: boolean | 'no-treeshake' | null;
+	resolvedBy?: string | null;
+	syntheticNamedExports?: boolean | string | null;
+}
+```
+
+
 
 - 定义自定义解析器
 
@@ -1750,9 +1897,9 @@ export default function buildStart() {
 
 - `importer`是导入模块的完全解析id，对于上面的代码，也就是引入bar.js模块的当前模块的文件绝对路径
 
-- 在解析**入口**点时，`importer`通常是undefined
+- 在解析**入口**点时，`importer`通常是undefined，而source则是入口文件的绝对路径
 
-- 这里的一个例外是通过`this.emitFile`生成的入口点。在这里，您可以提供一个`importer`参数
+- 这里的一个例外是通过`this.emitFile`生成的入口点。在这里，您可以提供一个`importer`参数，rollup内部提供的工具函数this.emitFile
 
 - 对于这些情况，`isEntry`选项将告诉您，我们是否正在解析用户定义的入口点、发出的块，或者是否为此提供了`isEntry`参数。解析上下文函数
 
@@ -1772,68 +1919,127 @@ export default function buildStart() {
 
 build\plugin-polyfill.js
 
-自动插入polyfill，并将该polyfill包中的代码打包到输出文件中。
+针对每一个入口模块自动引入polyfill，并将该polyfill包中的代码打包到输出文件中。
+
+就是在入口模块中插入一行代码：import 'polyfill' ， 同时这个包的代码不会被tree-shaking掉。
 
 原理是通过代理模块实现的。
 
 ```js
-//在polyfill id前面加上\0，告诉其他插件不要尝试加载或转换它
-const POLYFILL_ID = '\0polyfill';
-const PROXY_SUFFIX = '?inject-polyfill-proxy';
-
-export default function injectPolyfillPlugin() {
+const PROXY_SUFFIX = "?inject-polyfill";
+const POLYFILL_ID = "\0polyfill"; //在polyfill id前面加上\0，告诉其他插件不要尝试加载或转换它
+function polyfill() {
   return {
-    name: 'inject-polyfill',
+    name: "inject-polyfill", //插件的名字
     async resolveId(source, importer, options) {
       if (source === POLYFILL_ID) {
-        //重要的是，对于polyfills，应始终考虑副作用
-        //否则，使用`treeshake.moduleSideEffects:false`可能会阻止包含polyfill
+        // 对于polyfills，应始终考虑副作用
+        // 否则，使用`treeshake.moduleSideEffects:false`可能会阻止包含polyfill，
+        // 就是说明这个被引入的模块包含副作用函数，不要被tree-shaking所去除掉
         return { id: POLYFILL_ID, moduleSideEffects: true };
       }
-        
+
       // options.isEntry为true表示该模块是入口模块
       if (options.isEntry) {
-        //确定实际的入口是什么。我们需要skipSelf来避免无限循环。
-        // this.resolve会调用各个插件中的resolveId钩子函数，而skipSelf为true表示跳过自己这个钩子函数，不然会死循环
-        const resolution = await this.resolve(source, importer, { skipSelf: true, ...options });
-        //如果它无法解决或是外部的，只需返回它，这样Rollup就可以显示错误
-        if (!resolution || resolution.external) return resolution;
-        //在代理的加载钩子中，我们需要知道入口是否有默认导出
-        //然而，在那里，我们不再有完整的“解析”对象，它可能包含来自其他插件的元数据，这些插件只在第一次加载时添加
+        //PluginContext.resolve将导入解析为模块ID（即文件名）
+        //查找模块块的ID或者说文件名或者说此模块的文件的绝对路径
+        // this.resolve会调用注册给rollup的所有插件中的resolveId钩子函数，而skipSelf为true表示跳过自己这个钩子函数，不然会死循环
+        const resolution = await this.resolve(source, importer, {
+          skipSelf: true,
+          ...options,
+        });
+        //如果此模块无法解析，或者是外部模块,要以直接返回，rollup会报错或进行external提示
+        if (!resolution || resolution.external) {
+          return resolution;
+        }
+        //加载模块内容
+        //1.读取模块内容 触发load钩子 2.转换模块内容 触发transform钩子 3.模块解析 ast 分析ast, moduleParsed
+        //因为我们想把这个模块设置为有副作用,不要实现tree shaking
+        //PluginContext.load的一个方法,内部会负责读取文件,
+        //1.读取文件 的时候会触发load这个钩子
+        //2.转换文件内容 触发transform这个钩子
+        //3.AST语法解析找import依赖  触发moduleParsed这个钩子
         //仅在第一次加载时添加。因此我们在这里触发加载。
         const moduleInfo = await this.load(resolution);
-        //我们需要确保即使对于treeshake来说，原始入口点的副作用也得到了考虑。moduleSideEffects:false。
-        //moduleSideEffects是ModuleInfo上的一个可写属性
+        //表示此模块有副作用,不要tree shaking
         moduleInfo.moduleSideEffects = true;
-        //重要的是，新入口不能以\0开头，并且与原始入口具有相同的目录，以免扰乱相对外部导入的生成
-        //此外，保留名称并在末尾添加一个“？查询”可以确保preserveModules将为该条目生成原始条目名称
+        //C:\\aproject\\webpack202208\\13.rollup\\src\\index.js?inject-polyfill
         return `${resolution.id}${PROXY_SUFFIX}`;
-          // return {id: `${resolution.id}${PROXY_SUFFIX}`}
       }
       return null;
     },
+    //这是插件时的一个钩子
     load(id) {
+      //读取模块的内容 默认行为是读硬盘上的文件
       if (id === POLYFILL_ID) {
         // 替换为实际的polyfill import '@babel/polyfill'
-        return "console.log('polyfill');";
+        return `console.log('例子代码')`;
       }
+      //如果是一个需要代理的入口,特殊 处理 下,生成一个中间的代理模块
       if (id.endsWith(PROXY_SUFFIX)) {
+        //C:\\aproject\\webpack202208\\13.rollup\\src\\index.js
         const entryId = id.slice(0, -PROXY_SUFFIX.length);
-        //我们知道ModuleInfo.hasDefaultExport是可靠的，因为我们在等待在resolveId中的this.load
-        // We know ModuleInfo.hasDefaultExport is reliable because we awaited this.load in resolveId
+
         const { hasDefaultExport } = this.getModuleInfo(entryId);
-        let code =
-          `import ${JSON.stringify(POLYFILL_ID)};` + `export * from ${JSON.stringify(entryId)};`;
+        let code = `
+            import ${JSON.stringify(POLYFILL_ID)};
+            import ${JSON.stringify(entryId)}
+        `;
         //命名空间重新导出不会重新导出默认值，因此我们需要在这里进行特殊处理
         if (hasDefaultExport) {
           code += `export { default } from ${JSON.stringify(entryId)};`;
         }
+        //如果钩子有返回值了,不去走后面的load钩子了,也不会读硬盘上的文件了 webpack loader pitch
         return code;
       }
       return null;
-    }
+    },
   };
 }
+/* 
+let plugins = [{
+  name: 'plugin1',
+  resolveId: (source, importer) => {
+    resolve()
+  }
+}, { resolveId: (source, importer) => 'yyy' }]
+function resolve(source, importer, options) {
+  //在resolve的过程 也会遍历所有的插件的resolveId方法
+  let resolution;
+  for (let i = 0; i < plugins.length; i++) {
+    if (options.skipSelf && plugins[i].name === 'plugin1') continue;
+    const resolveId = plugins[i].resolveId;
+    if (resolveId) {
+      resolution = resolveId(source, importer);
+      if (resolution) return resolution;
+    }
+  }
+  return { id: path.resolve(path.dirname(importer), source) };
+} */
+
+export default polyfill;
+
+/**
+ * resolveId 查找引入的模块的绝对路径
+ * entry  ./src/index.js
+ * 
+ * resolution
+  {
+    external: false,//是否是外部模块
+    id: 'C:\\aproject\\webpack202208\\13.rollup\\src\\index.js',//此模块的绝对路径
+    moduleSideEffects: true,//模块是否有副作用，有副作用的话禁 用tree shaking 
+  }
+
+  https://rollupjs.org/guide/en/#warning-treating-module-as-external-dependency
+check-is-array (imported by src/index.js)
+  默认情况下,rollup只认相对路径，不认识第三方模块。如果遇到第三方模块，会认为是外部依赖
+
+  webpack  
+  load=读取模块内容 
+  transform 转换模块内容 类似于webpack里的loader
+  moduleParsed 把内容转成AST并解析import依赖
+ */
+
 ```
 
 
@@ -1869,10 +2075,26 @@ export default function injectPolyfillPlugin() {
 
 | 字段          | 值                                                           |
 | :------------ | :----------------------------------------------------------- |
-| Type          | (code, id) => string                                         |
+| Type          | (code: string, id: string) => TransformResult                |
 | Kind          | async, sequential                                            |
 | Previous Hook | `load` 当前处理的文件的位置。如果使用了缓存，并且有该模块的缓存副本，那么如果插件为该钩子返回true，则应`shouldTransformCachedModule` |
 | Next Hook     | `moduleParsed` 一旦文件被处理和解析，模块就会被解析          |
+
+```ts
+type TransformResult = string | null | Partial<SourceDescription>;
+
+interface SourceDescription {
+	code: string;
+	map?: string | SourceMap;
+	ast?: ESTree.Program;
+	attributes?: { [key: string]: string } | null;
+	meta?: { [plugin: string]: any } | null;
+	moduleSideEffects?: boolean | 'no-treeshake' | null;
+	syntheticNamedExports?: boolean | string | null;
+}
+```
+
+
 
 - 可用于转换单个模块
 - 为了防止额外的解析开销，例如这个钩子已经使用了`this.parse`生成AST
@@ -1891,34 +2113,55 @@ plugins\rollup-plugin-babel.js：
 ```js
 import { createFilter } from 'rollup-pluginutils'
 import babel from '@babel/core'
+
 function plugin(pluginOptions = {}) {
   const defaultExtensions = ['.js', '.jsx']
   const { exclude, include, extensions = defaultExtensions } = pluginOptions;
   const extensionRegExp = new RegExp(`(${extensions.join('|')})$`)
+  // createFilter 工具方法，返回一个过滤器函数
   const userDefinedFilter = createFilter(include, exclude);
   const filter = id => extensionRegExp.test(id) && userDefinedFilter(id);
   return {
     name: 'babel',
-    async transform(code, filename) {
-      if (!filter(filename)) return null;
-      let result = await babel.transformAsync(code);
+    async transform(code, id) {
+        // 并不是所有的文件都需要babel去处理的，所以这里就是在过滤掉那些不需要转的文件类型
+      if (!filter(id)) return null;
+      let result = await babel.transformAsync(code, pluginOptions.babel);  // 将源代码转为抽象语法树等信息
       return result
     }
   }
 }
 export default plugin
+
+/* const userDefinedFilter = createFilter('./src', './src');
+const result = userDefinedFilter('./src');
+//exclude优先级更高
+console.log('result', result); */
 ```
 
 
 
 #### shouldTransformCachedModule
 
-| 字段               | 值                                                           |
-| :----------------- | :----------------------------------------------------------- |
-| Type               | ({id, code, ast, resoledSources, moduleSideEffects, syntheticNamedExports) => boolean |
-| Kind: async, first |                                                              |
-| Previous Hook      | `load` 加载缓存文件以将其代码与缓存版本进行比较的位置        |
-| Next Hook          | `moduleParsed` if no plugin returns true, otherwise `transform`. |
+| 字段          | 值                                                           |
+| :------------ | :----------------------------------------------------------- |
+| Type          | ShouldTransformCachedModuleHook                              |
+| Kind          | async, first                                                 |
+| Previous Hook | `load` 加载缓存文件以将其代码与缓存版本进行比较的位置        |
+| Next Hook     | `moduleParsed` if no plugin returns true, otherwise `transform`. |
+
+```ts
+type ShouldTransformCachedModuleHook = (options: {
+	ast: AstNode;
+	code: string;
+	id: string;
+	meta: { [plugin: string]: any };
+	moduleSideEffects: boolean | 'no-treeshake';
+	syntheticNamedExports: boolean | string;
+}) => boolean | NullValue;
+```
+
+
 
 - 如果使用了`Rollup`缓存（例如，在监视模式下或通过JavaScript API显式使用），如果在加载钩子之后，加载的代码与缓存副本的代码相同，则Rollup将跳过模块的转换钩子
 - 为了防止这种情况，丢弃缓存的副本，而是转换一个模块，插件可以实现这个钩子并返回true。
@@ -1937,4 +2180,284 @@ moduleParsed
 
 
 
-### 插件上下文对象this
+### 插件上下文对象
+
+Plugin Context（this）
+
+大多数钩子的上下文对象，其中一些常用的属性或者方法如下：
+
+#### this.resolve
+
+```ts
+type Resolve = (
+	source: string,
+	importer?: string,
+	options?: {
+		skipSelf?: boolean;
+		isEntry?: boolean;
+		attributes?: { [key: string]: string };
+		custom?: { [plugin: string]: any };
+	}
+) => ResolvedId;
+
+
+interface ResolvedId {
+	id: string; // the id of the imported module  本模块的结对路径
+	external: boolean | 'absolute'; // 是否是外部模块 is this module external, "absolute" means it will not be rendered as relative in the module
+	attributes: { [key: string]: string }; // import attributes for this import
+	meta: { [plugin: string]: any }; // custom module meta-data when resolving the module
+	moduleSideEffects: boolean | 'no-treeshake'; // are side effects of the module observed, is tree-shaking enabled 模块中的代码是否有副作用，以决定是否能tree-shaking
+	resolvedBy: string; // which plugin resolved this module, "rollup" if resolved by Rollup itself
+	syntheticNamedExports: boolean | string; // does the module allow importing non-existing named exports
+}
+```
+
+
+
+**自己模拟this.resolve工具方法**
+
+```js
+let plugins = [{
+  name: 'plugin1',
+  resolveId: (source, importer) => {
+    return 'xxx'
+  }
+}, { resolveId: (source, importer) => 'yyy' }]
+
+function resolve(source, importer, options) {
+  //在resolve的过程 也会遍历所有的插件(包括自己)的resolveId方法
+  let resolution;
+  for (let i = 0; i < plugins.length; i++) {
+    if (options.skipSelf && plugins[i].name === 'plugin1') continue;
+    const resolveId = plugins[i].resolveId;
+    if (resolveId) {
+      resolution = resolveId(source, importer);
+      if (resolution) return resolution;
+    }
+  }
+  return { id: path.resolve(path.dirname(importer), source) };
+}
+```
+
+
+
+
+
+`this.resolve` 方法在 Rollup 插件中用于解析导入路径到模块 ID（即文件名），并确定导入是否应被视为外部模块。这个方法非常有用，因为它允许插件在处理导入时进行自定义解析，从而实现更复杂的构建逻辑。
+
+**`this.resolve` 方法的用途**
+
+1. **解析导入路径**：
+   - `this.resolve` 可以将一个模块的导入路径解析为一个绝对路径或模块 ID。
+   - 这对于处理非标准的导入路径、别名、或动态导入非常有用。
+2. **确定外部模块**：
+   - `this.resolve` 可以返回一个对象，其中包含 `id` 和 `external` 属性。
+   - 如果 `external` 属性为 `true` 或 `"absolute"`，Rollup 会将该模块视为外部模块，不会将其包含在最终的打包结果中。
+3. **传递额外信息**：
+   - `this.resolve` 可以接受额外的参数，如 `isEntry`、`custom` 和 `attributes`，这些参数可以传递给处理解析请求的其他插件，以便它们可以根据这些信息做出决策。
+
+**方法签名**
+
+```js
+this.resolve(
+  source,          // 导入路径字符串
+  importer,        // 导入者的路径字符串（可选）
+  options,         // 选项对象（可选）
+  callback         // 回调函数（可选）
+)
+```
+
+**参数说明**
+
+- **source** (`string`)：要解析的导入路径。
+- **importer** (`string` | `undefined`)：导入者的路径。如果没有导入者，可以传入 `undefined`。
+- options (object | undefined)：可选的选项对象，包含以下属性：
+  - **isEntry** (`boolean`)：是否是入口模块。
+  - **custom** (`object`)：特定于插件的选项。
+  - **attributes** (`object`)：导入断言属性。
+- **callback** (`function` | `undefined`)：回调函数，用于异步解析。如果使用同步解析，可以省略。
+
+**返回值**
+
+- **Promise**：如果使用异步解析，返回一个 Promise，解析结果是一个对象。
+- **Object**：如果使用同步解析，直接返回一个对象。
+
+**解析结果对象**
+
+- **id** (`string`)：解析后的模块 ID。
+- **external** (`boolean` | `"absolute"`)：是否为外部模块。
+- **meta** (`object`)：附加的元数据信息。
+- **resolvedBy** (`string`)：解析该模块的插件名称。
+
+**示例**
+
+以下是一个简单的示例，展示了如何在插件中使用 `this.resolve` 方法：
+
+```js
+export default function myPlugin() {
+  return {
+    name: 'my-plugin',
+
+    resolveId(source, importer) {
+      // 同步解析
+      if (source === 'my-virtual-module') {
+        return {
+          id: '/path/to/my-virtual-module.js',
+          external: false,
+          meta: { type: 'virtual' }
+        };
+      }
+
+      // 异步解析
+      return this.resolve(source, importer, { isEntry: false, custom: { key: 'value' }, attributes: { type: 'json' } })
+        .then(result => {
+          if (result.id) {
+            // 进一步处理解析结果
+            return result;
+          }
+          return null; // 解析失败
+        });
+    }
+  };
+}
+```
+
+**总结**
+
+`this.resolve` 方法在 Rollup 插件中用于解析导入路径，并确定导入是否应被视为外部模块。它允许插件在处理导入时进行自定义解析，从而实现更复杂的构建逻辑。通过传递额外的选项和使用回调函数，可以实现同步和异步解析。
+
+
+
+#### 外部模块
+
+在 Rollup 构建过程中，**外部模块**是指那些不会被包含在最终打包输出中的模块。这些模块通常已经在用户的环境中可用，例如通过 `node_modules` 安装的第三方库，或者全局安装的模块，通过CDN引入。通过将模块标记为外部模块，Rollup 可以避免重复打包这些模块，从而减小最终输出文件的大小。
+
+**外部模块的标识**
+
+在 Rollup 中，可以通过以下几种方式将模块标记为外部模块：
+
+1. **配置文件中的 `external` 选项**：
+
+   - 在 Rollup 配置文件中，可以通过 `external` 选项指定哪些模块应该被视为外部模块。
+
+   - 例如：
+
+     ```js
+     export default {
+       input: 'src/index.js',
+       output: {
+         file: 'dist/bundle.js',
+         format: 'cjs'
+       },
+       external: ['lodash', 'moment']
+     };
+     ```
+
+   - 在这个例子中，`lodash` 和 `moment` 被标记为外部模块，不会被包含在最终的打包输出中。
+
+2. **插件中的 `resolveId` 钩子**：
+
+   - 在插件的 `resolveId` 钩子中，可以通过返回一个包含 `external` 属性的对象来标记模块为外部模块。
+
+   - 例如：
+
+     ```js
+     export default function myPlugin() {
+       return {
+         name: 'my-plugin',
+         resolveId(source, importer) {
+           if (source === 'some-external-library') {
+             return {
+               id: 'some-external-library',
+               external: true
+             };
+           }
+           return null;
+         }
+       };
+     }
+     ```
+
+   - 在这个例子中，`some-external-library` 被标记为外部模块。
+
+**外部模块的行为**
+
+1. **不包含在输出中**：
+   - 标记为外部模块的模块不会被包含在最终的打包输出中。Rollup 会生成一个引用这些外部模块的导入语句。
+2. **生成引用**：
+   - 在生成的输出文件中，外部模块会被引用，而不是被内联。例如，如果 `lodash` 被标记为外部模块，生成的输出文件中会有类似 `require('lodash')` 的语句。
+3. **环境依赖**：
+   - 由于外部模块不会被包含在输出中，因此在运行生成的代码时，这些外部模块必须已经在环境中可用。例如，如果使用 `npm` 或 `yarn` 安装了这些外部模块，它们会在 `node_modules` 中找到。
+
+**示例**
+
+假设你有一个项目，使用了 `lodash` 和 `moment` 这两个第三方库。你希望这些库不被包含在最终的打包输出中，而是通过 `node_modules` 加载。你可以在 Rollup 配置文件中这样做：
+
+```js
+import resolve from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
+
+export default {
+  input: 'src/index.js',
+  output: {
+    file: 'dist/bundle.js',
+    format: 'cjs'
+  },
+  external: ['lodash', 'moment'],
+  plugins: [
+    resolve(),
+    commonjs()
+  ]
+};
+```
+
+生成的输出文件可能会类似于：
+
+```js
+const _ = require('lodash');
+const moment = require('moment');
+
+function myFunction() {
+  console.log(_.capitalize('hello world'));
+  console.log(moment().format());
+}
+
+module.exports = myFunction;
+```
+
+在这个例子中，`lodash` 和 `moment` 被标记为外部模块，因此它们不会被包含在 `bundle.js` 中，而是通过 `require` 语句引用。
+
+**总结**
+
+**外部模块**是指那些不会被包含在最终打包输出中的模块。通过在 Rollup 配置文件中使用 `external` 选项或在插件的 `resolveId` 钩子中返回 `external` 属性，可以将模块标记为外部模块。这样做可以减小最终输出文件的大小，并确保外部模块在运行时已经存在于环境中。
+
+
+
+使用与 Rollup 相同的插件解析导入到模块 ID（即文件名），并确定导入是否应为外部模块。如果返回 `null`，表示 Rollup 或任何插件都无法解析该导入，但用户没有明确标记为外部模块。如果返回一个绝对的外部 ID，并且该 ID 在输出中应保持绝对路径（通过 `makeAbsoluteExternalsRelative` 选项或在 `resolveId` 钩子中显式选择），则 `external` 将为 `"absolute"` 而不是 `true`。
+
+默认情况下，`skipSelf` 为 `true`，因此在解析时会跳过调用 `this.resolve` 的插件的 `resolveId` 钩子。当其他插件在处理原始 `this.resolve` 调用时也在它们的 `resolveId` 钩子中调用 `this.resolve` 并且源和导入者完全相同时，原始插件的 `resolveId` 钩子也会被跳过。这里的理由是，插件已经表明它在此时不知道如何解析特定的源和导入者的组合。如果你不希望这种行为，可以将 `skipSelf` 设置为 `false` 并自行实现无限循环预防机制（如有必要）。
+
+你还可以通过 `custom` 选项传递特定于插件的选项，详见自定义解析器选项。
+
+你在这里传递的 `isEntry` 值将传递给处理此调用的 `resolveId` 钩子，否则如果有导入者将传递 `false`，如果没有导入者将传递 `true`。
+
+如果你传递一个对象作为 `attributes`，它将模拟解析带有断言的导入，例如 `attributes: {type: "json"}` 模拟解析 `import "foo" assert {type: "json"}`。这将传递给处理此调用的 `resolveId` 钩子，并最终可能成为返回对象的一部分。
+
+在从 `resolveId` 钩子中调用此函数时，你应该始终检查是否有必要传递 `isEntry`、`custom` 和 `attributes` 选项。
+
+`resolvedBy` 的值指的是哪个插件解析了此源。如果由 Rollup 自身解析，值将为 `"rollup"`。如果在插件的 `resolveId` 钩子中解析了此源，值将为插件的名称，除非它返回了一个显式的 `resolvedBy` 值。此标志仅用于调试和文档目的，不会被 Rollup 进一步处理。
+
+
+
+## Output Generation Hooks
+
+输出生成钩子可以提供关于生成的 bundle 的信息，并在构建完成后修改构建。它们的工作方式和类型与构建钩子相同，但会在每次调用 `bundle.generate(outputOptions)` 或 `bundle.write(outputOptions)` 时分别被调用。仅使用输出生成钩子的插件也可以通过输出选项传递，因此只会在特定的输出中运行。
+
+输出生成阶段的第一个钩子是 `outputOptions`，最后一个钩子取决于输出生成的方式：如果通过 `bundle.generate(...)` 成功生成，则是 `generateBundle`；如果通过 `bundle.write(...)` 成功生成，则是 `writeBundle`；如果在输出生成过程中发生错误，则是 `renderError`。
+
+此外，`closeBundle` 可以作为最后一个钩子被调用，但用户需要手动调用 `bundle.close()` 来触发它。
+
+![image-20241107183043333](D:\learn-notes\工程化\images\image-20241107183043333.png)
+
+![image-20241107183014525](D:\learn-notes\工程化\images\image-20241107183014525.png)
+
