@@ -1,4 +1,4 @@
-Vue3的项目管理系统
+Vue3项目管理系统
 
 - 项目搭建
 - 常见组件编写
@@ -15,7 +15,7 @@ Vue3项目的开发环境搭建
 - 从零到一配置项目所需要的内容
 - 组件动态加载配置
 - 样式编写
-- 文件夹规划
+- 项目文件夹规划
 - eslint和prettier
 
 
@@ -43,7 +43,7 @@ vue的版本是3.5
 
 ## **代码规范**
 
-**eslint**
+### **eslint**
 
 通过vite快速创建的一个项目默认情况下是不会配置和eslint相关的依赖和配置文件的，需要开发者自行引入并配置。
 
@@ -55,18 +55,18 @@ vscode中项目插件的安装推荐：当希望其他项目组的成员也能�
 }
 ```
 
-- npx eslint --init   然后通过问答的方式去选择如何使用eslint，选择后它会自动安装依赖和生产eslint的配置文件
-- 可以在项目的package.json中增加一个脚本项目，执行这个脚本让eslint根据配置文件去校验项目中的目标文件，以查看哪些不符合规范的文件的代码情况： "lint": "eslint"
+- `npx eslint --init`  然后通过问答的方式去选择如何使用eslint，选择后它会自动安装依赖和生产eslint的配置文件
+- 可以在项目的package.json中增加一个脚本命令，执行这个脚本让eslint根据配置文件去校验项目中的目标文件，以查看哪些不符合规范的文件的代码情况： `"lint": "eslint"`
 
-eslint也能做一些代码格式化相关的工作，只是一般不会用eslint作格式化，同时，eslint针对代码中存在问题的一些代码行，可以尽可能的进行修复，可以通过配置setting.json文件在保存项目文件时自动修复，也可以配置脚本命令，通过命令去找出项目所有存在问题的代码，并尝试修复：“lint:fix”:"eslint --fix --quiet"
+eslint也能做一些代码格式化相关的工作，只是一般不会用eslint作格式化，同时，eslint针对代码中存在问题的一些代码行，可以尽可能的进行修复，可以通过配置setting.json文件在保存项目文件时自动修复，也可以配置脚本命令，通过命令去找出项目所有存在问题的代码，并尝试修复：`“lint:fix”:"eslint --fix --quiet"` ，修复和忽略警告。
 
 eslint主要作代码规范校验并可以尝试修复。
 
 
 
-**prettier**
+### **prettier**
 
-prettier主要是格式化代码的。
+prettier主要是格式化代码的。比如每个语句最后是否有分号，是用双引号还是单引号之类的。
 
 - pnpm install prettier eslint-plugin-prettier eslint-config-prettier -D
 
@@ -81,7 +81,7 @@ prettier主要是格式化代码的。
 
 - **作用**：将 Prettier 的格式化功能集成到 ESLint 中作为一个规则。它使 ESLint 也能够检查 Prettier 的格式问题。
 - **工作原理**：当代码格式不符合 Prettier 的规则时，ESLint 将会报错。这使得 ESLint 可以同时处理**代码逻辑**和**代码格式**。
-- **用法**：你可以在 `.eslintrc` 配置文件中加入 `plugin:prettier/recommended` 来启用这个插件。
+- **用法**：可以在 `.eslintrc` 配置文件中加入 `plugin:prettier/recommended` 来启用这个插件。
 
 3. **eslint-config-prettier**
 
@@ -121,38 +121,64 @@ export default {
 
 解决prettier和eslint之间的规则冲突：
 
+eslint.config.js(eslint9版本的配置文件)
+
 ```js
 import globals from "globals"
-import pluginJs from "@eslint/js"
-import tseslint from "typescript-eslint"
-import pluginVue from "eslint-plugin-vue"
-import prettierRecommended from "eslint-plugin-prettier/recommended"  // +
+import pluginJs from "@eslint/js" // 校验js规范，推荐规范
+import tseslint from "typescript-eslint" // 推荐的ts规范
+import pluginVue from "eslint-plugin-vue" // 推荐的vue规范
+import prettierRecommended from "eslint-plugin-prettier/recommended"
 
 export default [
-  { files: ["**/*.{js,mjs,cjs,ts,vue}"] },
-  { languageOptions: { globals: { ...globals.browser, ...globals.node } } },
+  { files: ["**/*.{js,mjs,cjs,ts,vue}"] }, // 需要校验的文件位置和类型
+  {
+    // 源码中可以直接使用的一些全局变量
+    languageOptions: {
+      globals: {
+        // 浏览器中的全局变量，比如window
+        ...globals.browser,
+        // node中的全局变量，比如global
+        ...globals.node
+      }
+    }
+  },
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
   ...pluginVue.configs["flat/essential"],
+  // 校验vue中的ts代码
   {
     files: ["**/*.vue"],
     languageOptions: { parserOptions: { parser: tseslint.parser } }
   },
   {
+    // 需要eslint忽略的校验文件的类型
     ignores: [".css", "*.d.ts"],
+    // 自定义的校验规则
     rules: {
       "no-console": "warn",
-      semi: "error"
+      semi: "error",
+      "vue/multi-word-component-names": "off"
     }
   },
-  prettierRecommended   // +
+  // 使用prettier中的格式化规则覆盖eslint推荐的同名规则
+  prettierRecommended
 ]
+
 
 ```
 
 
 
-解决代码格式上面的冲突之后， 如果一个项目文件中有代码格式问题的话，还需要自己手动一行行的修改，为了能就格式方面的问题在保存文件的时候自动格式化文件，需要开启vscode编辑器自带的自动格式化后保存功能即可。
+解决代码格式上面的冲突之后， 如果一个项目文件中有代码格式问题的话，还需要自己手动一行行的修改，为了能就格式方面的问题在保存文件的时候自动格式化文件，需要开启vscode编辑器自带的自动格式化后保存功能即可。选择默认的格式化插件为prettier
+
+![image-20241121145452037](D:\learn-notes\vue\images\image-20241121145452037.png)
+
+同时在每次保存时，自动格式化一下：
+
+![image-20241121145554846](D:\learn-notes\vue\images\image-20241121145554846.png)
+
+
 
 
 
@@ -174,13 +200,15 @@ end_of_line = lf
 
 
 
-**代码提交管理**
+## **代码提交管理**
 
-如果在没做代码提交校验时，即使项目中有不符合规范的代码，当开发人员保存后，人就可以提交到git仓库中，影响代码规定。这时就希望在每个提交之前，先让git去自动执行一个eslint 脚本命令，之后通过校验后才能继续提交，没通过就不能提交。
+如果在没做代码提交校验时，即使项目中有不符合规范的代码，当开发人员保存后，仍旧可以提交到git仓库中，影响代码规范。这时就希望在每个提交之前，先让git去自动执行一个eslint 脚本命令，之后通过校验后才能继续提交，没通过就不能提交。
 
-给git添加勾子，husky提供了不同的勾子，每次提交前，提交后等等不同的节点都可以去执行一些自动化的任务（比如提交代码后的自动部署等）。
+给git添加勾子，husky提供了不同的勾子，每次提交前，提交后等不同的节点都可以去执行一些自动化的任务（比如提交代码后的自动部署等）。
 
-- pnpm install husky  lint-staged -D
+- `pnpm install husky  lint-staged -D`
+
+但是每次提交的时候并不需要针对所有文件都去进行一次校验，而只需要对有变化的文件进行校验，这时就需要借助lint-staged。
 
 
 
@@ -202,22 +230,41 @@ Husky 可以轻松设置和管理 Git 钩子，例如 `pre-commit`、`pre-push` 
    npx husky init
    ```
 
-3. **添加钩子**： 例如，添加一个 `pre-commit` 钩子，在每次提交之前运行 ESLint：
+3. **添加钩子**： 
+
+   方式一：例如，添加一个 `pre-commit` 钩子，在每次提交之前运行 lint-staged：
 
    ```bash
-   npx husky add .husky/pre-commit "npm test"
+   npx husky add .husky/pre-commit "npm run lint-staged"
    ```
 
-4. **配置文件示例**（在 `package.json` 或独立的配置文件中）：
+   此时的package.json文件中的内容如下：
 
    ```json
    {
-     "husky": {
-       "hooks": {
-         "pre-commit": "lint-staged",
-         "commit-msg": "commitlint --edit $1"
+       "lint-staged": {
+           "*.js": ["eslint --fix", "prettier --write"]
        }
-     }
+   }
+   ```
+
+   
+
+   方式二：
+
+   **配置文件示例**（在 `package.json` 或独立的配置文件中）：
+
+   ```json
+   {
+       "lint-staged": {
+           "*.js": ["eslint --fix", "prettier --write"]
+       },
+       "husky": {
+           "hooks": {
+               "pre-commit": "lint-staged",
+               "commit-msg": "commitlint --edit $1"
+           }
+       }
    }
    ```
 
@@ -286,7 +333,7 @@ npx husky add .husky/pre-commit
 
 **配置文件**
 
-也可以在 `package.json` 中直接配置 Husky 钩子，这种方式更加简洁和易于管理。例如：
+**也**可以在 `package.json` 中直接配置 Husky 钩子，这种方式更加简洁和易于管理。例如：
 
 ```
 {
@@ -342,7 +389,7 @@ npx husky add .husky/pre-commit
 
 假设你已经安装了 `lint-staged` 和 `ESLint`，并且希望在提交前自动格式化 JavaScript 文件并检查代码质量， `package.json` 可能看起来像这样：
 
-```
+```json
 {
   "name": "your-project",
   "version": "1.0.0",
@@ -401,7 +448,17 @@ npx husky add .husky/pre-commit
                "npx prettier --fix"
            ],
            "*.md": "npx prettier --write"
+       },
+       "husky": {
+           "hooks": {
+               // 在commit前，先执行lint-staged命令
+               // lint-staged会读取上面的配置想，针对不同类型的文件执行不同的命令行命令
+               "pre-commit": "lint-staged",
+               "pre-push": "npm test",
+               "post-merge": "npm install"
+           }
        }
+   
    }
    ```
 
@@ -423,7 +480,7 @@ npx husky add .husky/pre-commit
 
 
 
-**git提交说明规范**
+### **git提交说明规范**
 
 - pnpm install @commitlint/cli @commitlint/config-conventional -D
 
@@ -445,7 +502,7 @@ npx commitlint --edit $1
 
 
 
-### vue-router配置
+## vue-router配置
 
 项目中的试图组件一般放在src/views目录中。项目共享组件一般放在src/components中。
 
@@ -456,28 +513,164 @@ npx commitlint --edit $1
 index.ts:
 
 ```ts
+import { createRouter, createWebHistory } from "vue-router"
+import type { RouteRecordRaw } from "vue-router"
+import Layout from "@/layout/index.vue"
+
+export const routes: RouteRecordRaw[] = [
+  {
+    path: "/",
+    component: Layout,
+    redirect: "/dashboard",
+    children: [
+      {
+        path: "dashboard",
+        name: "dashboard",
+        component: () => import("@/views/dashboard/index.vue")
+      }
+    ]
+  }
+]
+
+const router = createRouter({
+  routes,
+  history: createWebHistory()
+})
+
+export default router
+
+```
+
+main.ts:
+
+```ts
+import { createApp } from "vue"
+import App from "./App.vue"
+import router from "./router"
+
+const app = createApp(App)
+app.use(router)
+app.mount("#app")
+```
+
+
+
+App.vue:
+
+```vue
+<script setup lang="ts"></script>
+
+<template>
+  <router-link to='/dashboard'>dashboard</router-link>
+  <router-view></router-view>
+</template>
+
+<style scoped></style>
 
 ```
 
 
 
-
-
-### pinia配置
+## pinia配置
 
 pinia和vuex的不同之处在于，pinia有多个store。所以项目中统一状态管理的文件夹一般放在src/stores目录中。
 
 - pnpm install pinia -S
 
+创建：
+
+![image-20241121161301760](D:\learn-notes\vue\images\image-20241121161301760.png)
+
+注册：
+
+![image-20241121161340112](D:\learn-notes\vue\images\image-20241121161340112.png)
+
+
+
+使用：
+
+不能解构，解构会导致响应式丧失。
+
+![image-20241121161523810](D:\learn-notes\vue\images\image-20241121161523810.png)
+
+
+
+## 路径别名
+
+有两个地方需要配置：
+
+1. vite编译打包项目时是被路径别名的配置
+
+   cite.config.js:
+
+   ```js
+   import { defineConfig } from "vite"
+   import path from "path"
+   import vue from "@vitejs/plugin-vue"
+   
+   // https://vite.dev/config/
+   export default defineConfig({
+     resolve: {
+       alias: [
+         {
+           find: "@",
+           replacement: path.resolve(__dirname, "src")
+         }
+       ]
+     },
+     plugins: [vue()]
+   })
+   ```
+
+   
+
+2. vscode编辑器中ts识别的路径别名，用于ctrl+左键跳转文件使用
+
+   tsconfig.json
+
+   ```json
+   {
+       "compilerOptions": {   
+           "baseUrl": ".",
+           "paths": {
+               "@/*": ["src/*"]
+           }
+       }
+   }
+   ```
+
+   
 
 
 
 
 
-
-### 引入组件库
+## 引入组件库
 
 - pnpm install element-plus -S
+
+全量引入element-plus库：
+
+main.ts
+
+```ts
+import { createApp } from "vue"
+import { createPinia } from "pinia"
+import ElementPlus from "element-plus"
+import App from "./App.vue"
+import router from "./router"
+import "element-plus/dist/index.css"
+
+const app = createApp(App)
+const pinia = createPinia()
+app.use(pinia)
+app.use(router)
+app.use(ElementPlus)
+app.mount("#app")
+
+```
+
+
 
 element-plus组件库是用ts编写的，组件库提供了一个类型文件，存放在element-plus包下面的global.d.ts中，如果希望项目中使用的element-plus中的组件时有类型提示，可以额外扩展ts的类型声明文件。通过`tsconfig.json` 文件中，`compilerOptions` 下的 `types` 补充element-plus的类型文件即可：
 
@@ -547,8 +740,8 @@ element-plus组件库是用ts编写的，组件库提供了一个类型文件，
 
    如果你不想加载任何全局类型声明，可以将 `types` 设置为空数组：
 
-   ```
-   json复制代码{
+   ```json
+   {
      "compilerOptions": {
        "types": []
      }
@@ -568,13 +761,152 @@ element-plus组件库是用ts编写的，组件库提供了一个类型文件，
 
 
 
+## 布局组件
 
 
-### 样式
+
+## 样式
 
 管理系统一般有两个独立的页面，登录页和管理系统内部页。
 
 布局组件：
 
 
+
+
+
+#### 扩展css变量
+
+开发者定义可复用的值，提高样式的可维护性和灵活性。
+
+1. **定义变量**
+
+CSS变量通常使用两条短横线作为前缀，并在`:root`或其他选择器中定义。例如：
+
+```css
+:root {
+  --main-color: #3498db;
+  --font-size: 16px;
+}
+```
+
+- `:root` 是 CSS 中的一个伪类，表示文档的根元素（通常是 `html`）。在 `:root` 中定义的变量可以全局使用。
+- `--main-color` 和 `--font-size` 是变量名，后面是它们的值。
+
+2. **使用变量**
+
+变量通过 `var()` 函数使用，语法如下：
+
+```css
+color: var(--main-color);
+font-size: var(--font-size);
+```
+
+- **基本用法**：`var(--变量名)`。
+
+- 带默认值：`var(--变量名, 默认值)`，如果变量未定义或值无效，使用默认值。例如：
+
+  ```css
+  color: var(--secondary-color, #ff0000);
+  ```
+
+**实际例子**
+
+```css
+:root {
+  --main-bg-color: #f0f0f0;
+  --main-text-color: #333;
+  --button-padding: 10px 20px;
+}
+
+body {
+  background-color: var(--main-bg-color);
+  color: var(--main-text-color);
+}
+
+button {
+  padding: var(--button-padding);
+  background-color: var(--main-text-color);
+  color: var(--main-bg-color);
+}
+```
+
+**CSS变量的优点**
+
+1. **可复用性**：减少重复定义的代码。
+
+2. **动态性**：变量的值可以根据上下文动态改变，例如通过 JavaScript 更新：
+
+   ```js
+   document.documentElement.style.setProperty('--main-color', '#ff5722');
+   ```
+
+3. **简化维护**：只需更改变量值即可影响所有使用该变量的地方。
+
+**注意事项**
+
+1. **浏览器支持**：CSS变量在现代浏览器中已被广泛支持，但在 IE 浏览器中不支持。
+2. **作用域**：CSS变量具有作用域，可以在特定的选择器中定义并使用，只对该选择器及其子元素生效。
+
+
+
+
+
+`:root` 是 CSS 中的一个伪类，它表示文档的根元素，通常是 HTML 文档中的 `<html>` 元素。它可以用来为整个文档定义全局的样式规则。
+
+**特性与作用**
+
+1. **全局作用范围**
+
+   - 使用 `:root` 伪类定义的样式通常适用于整个文档。
+   - 因为 `:root` 的优先级比直接选择 `html` 元素高，适合用来定义全局变量或样式。
+
+2. **常用于 CSS 自定义变量（CSS Variables）**
+   `:root` 是定义全局 CSS 变量的最佳位置，因为它的作用范围覆盖整个文档。例如：
+
+   ```css
+   :root {
+     --primary-color: #3498db;
+     --font-size: 16px;
+   }
+   
+   body {
+     color: var(--primary-color);
+     font-size: var(--font-size);
+   }
+   ```
+
+3. **与 HTML 元素的区别**
+   尽管在大多数情况下 `:root` 和 `html` 选择器表现一致，但 `:root` 是一个伪类，它的优先级比直接选择 `html` 要高。
+
+   ```css
+   html {
+     color: red;
+   }
+   
+   :root {
+     color: blue;
+   }
+   ```
+
+   在上述例子中，文档中的文本颜色会是蓝色，因为 `:root` 的样式覆盖了 `html` 的样式。
+
+4. **作用范围**
+   如果需要使用不同的作用域，可以在特定子元素上重新定义变量，这些变量会覆盖 `:root` 中的全局定义：
+
+   ```css
+   :root {
+     --main-bg-color: white;
+   }
+   
+   body {
+     background-color: var(--main-bg-color);
+   }
+   
+   section.dark-theme {
+     --main-bg-color: black;
+   }
+   ```
+
+   在 `section.dark-theme` 中，背景颜色会变为黑色，而其他地方依然是白色。
 
