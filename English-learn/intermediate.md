@@ -2695,6 +2695,693 @@ We'**ve had** many discussions with your leaders, and I'**ve reiterated** suppor
 
 
 
+
+
+## 完成进行时态
+
+- 基本构成
+- 基本意义
+- 以现在完成进行时态介绍用法
+- 延续性事件
+- 重复性事件
+- 与现在完成时态对比
+- 过去和将来完成进行时
+
+
+
+### 构成
+
+have been doing
+
+have的不同形式体现的是时间角度的不同。
+
+been doing 表示动作的体态。
+
+三种不同时态下的完成进行时的本质意义是相同的，只是动作发生的时间不同。
+
+
+
+### 完成进行时态的意义
+
+完成进行时由 完成时 和 进行时复合组成，所以完成进行时兼备 完成体 和 进行体的两种体态的意义。
+
+对于**现在**完成进行时而言，完成体赋予了它“始于现在之前”的概念，即表示一个动作或状态是从过去持续或重复到现在；
+
+进行体赋予它暂时的、不间断的**延续性**。
+
+结合这两者的特点，**现在**完成进行时的核心意义是表示：被描述的事件开始于现在之前，而且是有限地（不会无限期地）持续下去。简言之，完成进行时的核心含义是表示“有限的延续性”。
+
+
+
+### 延续事件
+
+现在完成进行时强调动作的持续性，表示一个到目前为止尚未完成的活动（an incomplete activity）。具体来说，它表示开始于过去的活动持续到现在，并且活动往往还没有结束，将继续持续下去。此时的完成进行时常与**for＋时间段、since＋时间点、all morning、all day、all week** 等这样的表示一段时间的时间状语连用，以**强调**在这一段期间内，某项 活动正在持续。
+
+学习英语例句：
+
+- I**'ve been studying** English for over ten years now, but I still can't speak it well.
+
+  表示从10年前开始学习英语，一直持续到目前说话的时候，并且还将继续持续下去。
+
+  
+
+努力学习后放松一下：
+
+A: I **have been studying** too much and need a change. So I'm just making plans to go away during January break. 
+
+这里没有像上句中的for over ten years那样的表示持续的时间状语，但从上下文的语境可以判断出“学习”这个活动是在持续。
+
+B: Really? Where are you going? 
+
+A: I'm planning to visit New Mexico. 
+
+B: My sister and I had the vacation there last year and we had a great time. 
+
+A: Did you get into Albuquerque? 
+
+B: Sure. Whenever we were skating.
+
+
+
+你**正在专心看书**，准备应考。这时你的朋友过来要你放松一 下，一起去看电影：
+
+A: You**'ve been studying** that one page for over an hour. 
+
+这里持续较短的时间状语for over an hour并不妨碍我们把“学习”理解为一个 持续的活动。
+
+B: Well, I'm being tested on it tomorrow. 
+
+A: Come to the movies with us. Everybody needs to take a break every once in a while. 
+
+B: I guess I might as well. I'**ve been studying** so long I can hardly concentrate.
+
+**study持续到说话的时刻**
+
+
+
+妈妈看到你**正在看电视**，不高兴地说：
+
+A: Hey, you're watching TV again. 
+
+B: I'**ve been studying** for the whole morning. I need to relax now.
+
+谓语have been studying采用了现在完成进行时态，但“学习”这个活动在说话时并没有在持续，而 是在说话之前的一段时间内持续进行。
+
+**study没有持续到说话的时刻，是在说话之前就结束了。**
+
+
+
+上面四组例句当中都有谓语动词have been studying，而且都是表示延续事件。
+
+从活动持续时间的长短不一。
+
+
+
+#### 细分
+
+同样是延续事件，细分起来，还是有很大的不同的。为此，**根据延续时间长短的不同，可以区分四种不同的延续事件**：
+
+- 长期在延续的一个一般性活动
+- 近期在延续的活动
+- 在说话时刻仍在延续的活动
+- 在说话时刻之前在延续的活动，或者说刚刚在延续但现在已结束的活动
+
+在讨论上述这四类延续事件的特点时，还要考察它们是更接近**现在完成时**还是更接近**现在进行时**，这样有助于真正地理解完成进行时的内涵。
+
+此外，完成进行时态对动词的延续性很敏感，所以还需要考虑动词本身具有的词汇含义包含的动作意义的延续性问题。
+
+
+
+#### 长期在延续的事件
+
+现在完成进行时**可以**表示从过去到现在的一个相当长的时期内在持续的一个一般性活动。
+
+说它们是“一般性活动”，是因为这些活动并不具有很强的“正在进行”的动作的意味， 或者说这些活动在说话的时刻一般并不正在持续进行。
+
+这些活动类似于一个持续的状态，更具有状态的意义，而没有多少动作的意义。
+
+所以，现 在完成进行时的这一表示 **长期在延续的事件** 的用法与“现在进行时态”的关系较远，而与“现在完成时态”的关系更近，完全类似于现在完成时所表达的“延续事件”的意义。
+
+例句：
+
+- I've been learning English for over ten years now.
+- I have been living here since 3 years ago.
+- I have been teaching in this school for 25 years.
+
+如果把上述句子的时态改成现在完成时态，也同样是正确的表达，而且意义上没有多大差别，所以可以这样说：
+
+- I've learned English for over ten years now.
+
+- I have lived here since 3 years ago.
+
+- I have taught in this school for 25 years.
+
+
+
+
+**现在完成进行时与现在完成时在表示“延续事件”方面的异同点**
+
+
+
+现在完成进行时往往表示**有限的延续性**，这是**进行体**赋予它的这个特点。而这里提到现在完成进行时表示长期在延续的事件，二者就有了语义上的冲突，这也就解释了为什么现在完成进行时的这一用法与现在进行时关系较远的原因。这一语义上的冲突其实也是在告诉我们：
+
+如果你要用现在完成进行时表达 **长期延续事件** 的意义，那么要注意选择谓语动词。
+
+并不是所有的动词用于现在完成进行时都能表示一个 长期在持续的事件。来看下面这个句子：
+
+- He has been repairing his car since 6:00 this morning.
+
+  这里的现在完成进行时has been repairing也是表示延续事件，但不是长期在延续的事件，而是一个“从早上6点到现在”短短几个小时的延续活动。整个句子的意思是“从早上6点到现在，他一直在修理他的车”，这个句子的言外之意就是，他现在仍然在修车，也就是说，在说话的时刻，repair的动作依然在进行。
+
+
+
+如果句子的谓语动词的动作意味很强，当它用现在完成进行时形式 结合 表达较长时间的状 语，产生言外之意是不同的。
+
+- He **has been repairing** cars **for almost 20 years**
+
+  当说“他修理汽车有将近20年了”，显然不是表示repair这个动作一直不间断地持续了将近20年，这里的has been repairing与表达较长时间的状语for almost 20 years连用时，就不能把它解释成一个长期延续的事件，而只能把它解释成“重复事件”，即在将近20年当中，他不断“重复”地修理汽车，言外之意，他是专门从事汽车维修工作的，修车是他的职业。而如果说“从早上6点到现在，他一直在修理他的车”，则并不能说明修车是他的职业，只是表示他一直在做的一项活动而已。
+
+
+
+像repair这样的表示单一具体动作的动词用作谓语时，若句子接有一个表示较短时间的状语，则表示延续的活动；但若句子接一个表示较长时间的状语，则表示一个重复的活动。
+
+像repair这样的动词虽然具有一定的延续性，但持续的时间不能太长，所以这类动词被称为**有限延续动词**。
+
+
+
+能够表示长期延续事件的谓语动词不能是那些动作意味很强的动词。像study，live，work，learn，teach和wait 并不能表达出某一具体的动作，它们近乎于一种状态的延续，这样的动词被称为**无限延续动词**。
+
+
+
+**总结**
+
+对于 **有限延续动词** ，当他用现在完成进行时的时候，如果要表达 **长期延续性的含义**，是办不到的，当 **有限延续动词** 的现在进行时态和 一个较长的时间状语连用时，表达的是一种重复的发生的含义。
+
+
+
+1. 有限延续动词的现在完成时态 + 长时间的时间状语   => 表示这个时间以来的重复事件
+
+2. 有限延续动词的现在完成时态 + 短时间的时间状语   => 表示这个短的时间依赖的一个短时间延续的动作
+
+3. 无限延续动词的现在完成时态 + 长时间的时间状语  => 其所接的时间状语不论长短，都能表示延续事件的意义
+
+4. 现在完成进行时在表示长期持续的事件时，其谓语动词必须是一些无限延续动词
+
+   
+
+实例：（都是表示延续事件）
+
+- He **has been working** on the puzzles for two hours. 
+- He **has been working** in the same job for 30 years. 
+
+
+
+
+
+### 近期在延续的事件
+
+Rose and John **have been dating** for a year. They really like each other. Recently, they **have been considering** getting married. They face a serious obstacle on the path to marriage, however. 
+
+两个完成进行时：have been dating和have been considering，但二者在持续的时间上不完全一样， 前者表示较长时间的持续活动，而后者表示近期在持续的活动（这句话中的recently一词也表明了这一点）。
+
+现在完成进行时除了可以表示一个长期持续的活动之外，还可用来表示最近一段时期内正在持续的一般性活动，
+
+- A: Has Cynthia been working hard on her term paper? 
+
+  B: Day in and day out.
+
+  根据B的回答Day in and day out.（天天如此忙着。）就可以知道，A的意思并不是在问Cynthia在说话的时刻是否一直在忙着写论文，而是问她近期是否在忙着写论文。
+
+从上面例句也可以看到，现在完成进行时的这一用法的语义重点，**不是关心某个活动在说话时是否正在进行，而是关心该活动在最近一段时期内是否在持续**。
+
+
+
+初级语法中讲到：现在进行时一样可以表示一个在近期持续的一般性活动。
+
+- Cynthia **is working** hard on her term paper **these days**.
+
+  时间状语these days就表明，该句的语义重点不在于辛西娅在说话的时刻是否在写论文，而是表 达她近期的一般性活动。
+
+**现在完成进行时表示“近期在延续的事件”这一用法与 现在进行时 的关系更密切。**
+
+对话场景：
+
+Jo: You look tired. What **have** you **been** **doing**?   最近都在忙什么？
+
+现在完成进行时have been doing表示的是近期在持续的一 般性活动，而不是表示刚刚在延续的活动，所以应理解成“你最近在忙什么”，而不是“你刚刚一直在忙什么”。
+
+Emily: I'**ve been burning** the midnight oil. **been writing** my mid-term essay.
+
+现在完成进行时have been burning同样也是表示在 近期持续的一般性活动，应理解成“我最近一直在挑灯夜战”。如果理解成刚刚在延续的活动，就是另外的意思了，即“我昨晚刚刚一夜没睡都在挑灯夜战”。但这从上下文来看是不通的。注意这里的burn the midnight oil是 英语的成语，是“挑灯夜战，开夜车”的意思。第三句Been writing my mid-term essay. 是一个省略句，相当于说 I've been writing my mid-term essay. 其中的现在完成进行时同样是表示近期在持续的一般性活动。
+
+Jo: Oh no! I feel sorry for you. I thought you'd finished it already!
+
+Emily: Yes, I did. But my teacher wasn't happy with it. She told me to do it all again!
+
+Jo: No way! Your teacher is mean.
+
+Emily: Well, I had to do it. Otherwise, she would have given me a low score.
+
+
+
+
+
+Nina: Do you have a sec? 
+
+Chandler: Ah, sure, Nina. What's up? 
+
+Nina: I don't know. For the past couple days, people have been avoiding me and giving me these really strange looks. 
+
+Chandler: Oh, well, ah...maybe that's because they're ah...jealous, of us.
+
+
+
+我最近一直在考虑：
+
+- I have been thinking about changing my job.
+
+- I've been flirting with the idea of changing my job, I probably won't.
+
+- I have been thinking it over.
+
+- I have been thinking about what you said and I've decided to take your advice.
+
+- I have been looking forward to meeting you.  久仰大名！
+
+  现在完成进行时have been looking显得相当正式，所以要注意使用的对象。如果对象不妥，这么说则显得有点虚伪和矫情。
+
+
+
+想要表达“我一直想干什么”或“我早就想干什么”， 可以说I have been wanting to do sth. 或I have been meaning to do sth.；
+
+如果要表达“一直想要什么”，可以说I have been wanting。
+
+-  I've been wanting a pair for ages.
+- I have been wanting to meet you for long
+
+现在完成进行时的这一表示近期在持续的事件的用法在大多数情况下是不带有持续时间状语的，不过也可以带有持续时间状语（如for the past couple days），都可以表示一个近期在持续的一般性活动。 另外要注意，这里的“近期”是一个相对概念，可能是近几天，也可能是近几个星期，甚至是近几个月。所以，这里所讨论的“近期”与“长期”并没有明确的界限，完全是根据实际生活经验来判断的。
+
+
+
+现在完成进行时表示“近期在延续的事件”的用法，与现在完成进行时表示“说话时刻仍在 延续的事件”的用法不同，因为前者关心某个活动在“最近一段时期内”是否在持续，而后者的语义重点是关心某个活动在“说话时”是否正在进行。
+
+
+
+
+
+
+
+### 在说话时刻仍在延续的事件
+
+现在完成进行时可以表示一个在说话之前就已经开始的延续的活动，并且这个活动在说话的时刻仍然在进行。
+
+A: You'**ve certainly been reading** that one page for a long time now. 
+
+B: Well, I'm being tested on it tomorrow.
+
+read的动作从过去开始并且持续到了现在说话的时刻，在说话的时刻A仍然在看书。
+
+
+
+
+
+I'**m staring** at this computer. I'**ve been staring** at this computer screen for hours and my eyes hurt.
+
+A: Hi, Tom. How is your chemistry paper going? 
+
+B: It's coming along. But I've been staring at this computer screen for hours and my eyes hurt. 
+
+A: Yeah. Doing that can make your eyes really dry and tired. You should take a break. 
+
+B: I can't. I have to get this paper written. It's due tomorrow
+
+现在完成进行时表示“说话时刻仍在延续的事件”这一用法与现在进行时很接近，比如上面这个例句中，可以同时使用现在进行时am staring和现在完成进行时have been staring。
+
+不过，现在进行时态**不能**接持续的时间状语（durational adverbials）， 而现在完成进行时往往都会接一个这样的状语。
+
+- I'm staring at this computer.   一般不能说：I'm staring at this computer for hours. *
+-  I've been staring at this computer screen for hours 
+- I'm trying to study. I've been trying to study for the last hour, but something always seems to interrupt me. I think I'd better go to the library
+- It began raining two hours ago and it's still raining. It has been raining for two hours.
+- It has been snowing all day. I wonder when it will stop.
+
+
+
+以上例句都表示一个活动由过去开始并且持续到现在的说话时刻， 而且还一直在持续。不过，可能由上下文告知，开始于过去的动作持续到现在为止不再继续。
+
+A: Come to the movies with us. Everybody needs to take a break every once in a while. 
+
+B: I guess I might as well. I've been studying so long I can hardly concentrate.
+
+
+
+Where have you been? I've been looking for you for the last half hour.
+
+I'm so sorry I'm late. Have you been waiting long? 
+
+
+
+
+
+### 在说话时刻之前在延续的事件（即刚刚在延续的事件）
+
+一个事件在说话时刻之前一直在延续，换句话说，就是刚刚在延续 但到说话时刻已经结束了（a recently finished activity）。
+
+- He returned home yesterday. He has been traveling.   他昨天回到家里了，在这之前他一直在外旅行来着。
+
+  这里前一句话明确说“他昨天回家了”，这就表明他的旅行到现在说话时刻已经结束了，所以has been traveling就是表示一个“刚刚在延续的事件”——刚刚结束旅行。
+
+
+
+- What have you been doing while I have been away?   我刚才不在的时候，你们一直在干什么？
+
+更多的时候，某个事件“刚刚在延续”并不会像上面这两个例 句这样明确地表达出来，而是通过上下文来表明这个事件是“刚刚在延 续”。
+
+- A: You look hot. 
+
+  B: Yes, I've been running
+
+现在完成进行时的这一表示“刚刚在延续的 事件”的用法往往是强调一个持续活动所带来的、现在清晰可见的后 果。简言之，就是表示刚刚停止、现在能看到结果的一个事件。通过这 个事件的清晰可见的后果可以表明该事件刚刚在延续。
+
+
+
+A: You do look cold. What happened? 
+
+B: I've been standing outside in Arctic temperatures for over an hour waiting for a bus.
+
+
+
+
+
+Your eyes are red. You've been crying?
+
+My throat is husky because I've been talking too much.  我现在嗓子沙哑的，因为一直说了太多的话了。
+
+现在完成进行时的这一用法往往都伴随有刚刚在延续的事件所带来的后果。在日常口语中，如果看到某一个现状或后果，就可以用现在完成进行时来推导出刚刚在持续的、与这个后 果有关的事件。
+
+Your friend is out of breath. You ask, "Have you been running?"
+
+You meet a friend in the street, whose face and hands are very dirty. You ask, "What have you been doing?"
+
+The little boy is dirty from head to foot because he has been playing in the mud.
+
+
+
+Why are your clothes so dirty? What have you been doing?
+
+
+
+Mother: Paul, have you been fighting again? You've lost your two front teeth. 
+
+Son: No, I haven't, Mom. They're in my pocket.
+
+
+
+偶尔，某个动作的明显后果并不是在句子的字面上能反映出来的， 而是体现在语言之外的现实世界中。比如巴菲特（Warren Buffett）的名言：
+
+- It's only when the tide goes out that you learn who's been swimming naked.  只有当潮水都已退去，你才能知道是谁刚刚在裸泳。
+
+
+
+现在完成进行时在表示“刚刚在延续的事件”时，一般不接持续的时间状语。若接持续的时间状语时，则往往表示一个延续至今的事件。
+
+1) Be careful! I've been painting the door!   小心，这门我刚刚刷完漆！
+2) I've been painting the door for half an hour.   这门我刷了有半个小时了。
+
+
+
+**歧义的情况**
+
+对于某个句子到底是“刚刚在延续”还是“一直在延 续”，需要结合上下文的具体语境来看。如果没有上下文，那么就可能 有歧义，也就是两种情况都可能存在。
+
+A: You do look cold. What happened? 
+
+B: I've been standing outside in Arctic temperatures for over an hour waiting for a bus.
+
+这里既然A问B“你怎么看起来这么冷”，就表明此时B没在等车，即等车的活动刚刚结束了。所以这里B的话里尽管带有一个持续的时间状语for over an hour，但它表示的是一个刚刚在延续的事件。可以译成： 在这样冷的天气里，我刚才一直站在外面等车等了一个多小时。
+
+如果B在说话的时刻依然在外面等车，他用这句话来抱怨他已经等得不耐烦了： I've been standing outside in Arctic temperatures for over an hour waiting for a bus. 此时可以把它译成： 在这样一个大冷天，我站在外面等车到现在都等了一个多小时了（可是车还没来）。
+
+
+
+I've been running for half an hour. 这句话既可以理解成“一直在延续”： 到现在为止我一直跑了有半小时了。 也可以理解成“刚刚在延续”： 刚才我跑步跑了半小时（所以为什么我现在满头大汗的）。 前者表明现在“我”还在跑步，这个活动并未结束；后者表明“我”现 在没有在跑步，这个活动已经结束。
+
+
+
+在没有上下文语境帮助排除的情况下，对于**带有**持续的时间状语的完成进行时的句子，一般会解释成“一直在延续”的事件。
+
+在没有上下文语境帮助排除的情况下，对于**没有**持续的时间状语的完成进行时的句子，一般会解释成“刚刚在延续”的事件。
+
+
+
+
+
+#### 完成进行时与完成时
+
+现在完成进行时可能表示的四种“延续事件”，现在完成时态也可以表示“延续事件”。
+
+比较的是完成进行时“刚刚在延续的事件”与完成时“单一事件”两者的区别。
+
+相同点：
+
+- 二者都表示一个事件在说话的时刻已经结束； 
+- 二者都伴随有现在清晰可见的后果； 
+- 二者都不接持续性的时间状语。不过，需要注意的是，现在完成进行时可以接持续的时间状语，但意思往往会不同；而现在完成时“单一事件”的用法是不能接持续的时间状语的。
+
+
+
+不同点：
+
+- 现在完成进行时强调活动本身的持续性（emphasis on duration）；现在完成时强调活动的结果，或者说强调活动的成果 （emphasis on achievement）。
+- 从谓语动词的延续性的角度来看，现在完成进行时的“刚刚 在延续的事件”的用法所采用的动词一定都是延续性动词，以表示一个 延续活动；现在完成时的“单一事件”的用法所采用的动词都是短暂动 词，或者用作表达短暂性的动词，不表示一个延续活动。所以，现在完 成进行时可以接持续的时间状语，但意思往往会不同；而现在完成 时“单一事件”的用法是不能接持续的时间状语的。这就证明二者在谓语 动词的延续性方面有差别。
+
+
+
+完成进行时的“延续”与完成时 的“延续”的区别。
+
+现在完成时和现在完成进行时都可以表示“延续事件”，主要考察在带有持续的时间状语或没有持续的时间状语时，两种时态的异同。
+
+我学习英文有10年了。 就可以用两种时态来表达如下：  
+
+- I have been learning English for ten years. 
+- I have learned English for ten years.
+
+我教书有25年了。 可以用两种时态来表达如下： 
+
+- I have been teaching for 25 years. 
+- I have taught for 25 years.
+
+也有这样一种观点，认为此时二者的细微区别在于：现在完成进行时会**强烈暗示**动作会继续持续下去；而现在完成时则往往**表示动作有可能**会持续下去。如上面的例句，很可能分别有以下的言外之意： 
+
+- I have been teaching for 25 years, and I can't imagine doing anything else. 我教书都教了25年了，我真想象不出还能干什么别的事情。 
+- I have taught for 25 years, so now it's time to think about doing something else. 我教书都教了25年了，现在是该考虑改行做别的事情的时候了。
+
+
+
+这种细微的区别在下面这个例子中也得到了印证： 
+
+- It is amazing that the Leaning Tower of Pisa________**for so long.** 
+
+  A．has stood B．has been standing C．stood 
+
+  分析备选答案中的三种时态填进去之后分别会产生何种含义。
+
+  首先，若是用一般过去时stood，则表示比萨斜塔现在已经倒掉，已成为历史，这显然不符合事实，所以可以排除C。
+
+  剩下的has stood和has been standing其实都是可以填入的。但笔者的美国朋友告诉笔者说，选has been standing表示比萨斜塔现在一定还是“巍然耸立”的，即到现在还依然 standing；而若是选has stood则可能表示比萨斜塔刚刚倒掉，然后我们回顾它的历史时说了这么一句话。
+
+**完成进行时比完成时更强调活动本身的持续性，这是进行时态赋予它的特点。**
+
+
+
+**不与持续的时间状语连用的区别：**
+
+在不带有时间状语时，现在完成时指的 是在过去某一时间完成了的动作（refer to a singular occurrence at an indefinite time in the past），现在完成进行时则表示一个正在持续的活 动（refer to an ongoing activity），活动还没有结束。
+
+
+
+### 重复事件
+
+
+
+
+
+
+
+### 完成时和完成进行时对比总结
+
+1. 完成进行时强调 **动作延续过程** 
+2. 完成时强调 **动作完成后的成果或者结果**
+
+完成进行时重在 **进行ongoing**，即动作的 **未完成incomplete**，强调 **动作持续的过程**
+
+完成时强调 **完成**， 即已经完成，强调的是 **成果或者结果**。
+
+
+
+
+
+## 虚拟语气
+
+英语中，语气通过谓语变形来表达，能表达说话者的**意图或态度**。
+
+语气分为三种：
+
+1. 陈述语气
+2. 祈使语气
+3. 虚拟语气
+
+
+
+**虚拟语气**：
+
+- 当说话者谈到**与自己的实际情况相反的情况**时，
+- 或者**主观想象某事有可能发生**时，
+- 或**建议、要求某事发生**时
+- 就需要借助虚拟语气来表达这些心态。
+
+
+
+- 对将来的可能情况进行虚拟假设，这个时候主句和从局的谓语的形式
+- 对现在的可能情况或者事实进行虚拟假设，这个时候主句和从局的谓语的形式
+- 对过去的事实进行虚拟假设，这个时候主句和从局的谓语的形式
+- 混合虚拟句、倒装虚拟句、跳层虚拟句
+- 名词从句中如何使用虚拟
+- 各种要求采用虚拟语气的句型结构
+
+
+
+If I **could rearrange** the alphabet, I **would put** U and I together.
+
+我们是不可能改变英文字母表的顺序的。既然是不能，那上面所作的就是一种与事实相反的情形。这只是表示说话者的一种主观愿望、假想和建议等，实际上并不能实现。 用语法术语表达就叫“虚拟语气”。  if引导的条件状语从句中谓语动词用的情态动词could + do，主句谓语动词采用would + do的形式。
+
+
+
+英文是怎样通过谓语动词的变形来传达这种虚拟假设。
+
+英语中的虚拟语气可以分为两大体系：
+
+- 一是表示**与事实相反的**或**假想的**情形，**通常由if引导**，叫做“非真实条件句（unreal conditional）”，或者叫“虚拟条件句”；
+- 一个是在名词从句中使用虚拟语气，表示建议、命令或要求等语气，这是一个完全不同于非真实条件句的虚拟的结构形式。
+
+虚拟语气的重点和难点都集中在虚拟条件句中。
+
+
+
+### 虚拟条件句
+
+虚拟条件句具有两种类型，并会对三种时间进行虚拟。
+
+类型：
+
+- 假设条件句 （hypothetical）
+
+  是表示一种假想的情形，表示说话者的一种主观愿望或态度等，实现的可能性不大或极小。
+
+- 事实相反句（counterfactual）
+
+  是表示与**现在或过去的某个事实**相反的情形。
+
+三种时间：对将来、现在和过去这三种时间的虚拟。
+
+将来时间：将来的情形还没有发生，因而不可能成为一个事实，即谈到将来的**一切**情形都不是一个事实。因此，对于将来事件的虚拟不可能以事实为基础，而只能是表达说话人的一个**设想或愿望**。所以，**对于将来的情况只能假设假设条件句，而不可能表达一个与事实相反的虚拟**。
+
+现在时间：对于现在的情形，既可能是事实，也可能是假设条件。 因此，假设条件句和事实相反句适用于谈现在的情况。
+
+过去时间：既然是过去了，那么谈到的一切情况都已既成事实，所以过去虚拟表达的是一个与过去事实相反的情形。
+
+
+
+If I **were to have** the time **tomorrow**, I **would help** him.
+
+对将来的情况进行假设，用虚拟，就表明说话人“我”认为自己明天有时间的可能性不大，所以言外之意是“我”可能帮不了他。这里用虚拟只是说明可能性不大（unlikely），而不是表达与事实相违背的不可能的情形（impossible）。
+
+If I **had** the time **now**, I **would** help him.
+
+对现在情况的假设，这里用虚拟也只是说明可能性不大（unlikely），而不是表达与事实相违背的不可能的情形（impossible）。比如“我”现在完全可以抛开一切事情不做而去帮他，所以可能性还是存在的。
+
+If I **were** you, I **would help** him.
+
+与现在的事实相反，因为“我”成为“你”是不可能发生的（impossible）情形，而不是可能性不大（unlikely）的情形了。
+
+If I **were** the President, I **would make** some changes.
+
+“我”现在不是“总统”，这是一个现在的事实，即这里是表示与现在事实相反的情形。
+
+If my grandfather **were** here now, he **would be** angry.
+
+“我爷爷”现在不在这里，这是一个现在的事实，即这里是表示与现在事实相反的情形。
+
+If I **had had** the time **yesterday**, I **would have** **helped** him.
+
+“我”昨天没有时间，这已成为一个确立的事实，不可更改。这里说“如果我昨天有时间的话”显然是与这 个过去的事实相违背的情形。
+
+
+
+**当你要谈论一种在将来或现在可能性不大的情形，但不是不可能（impossible）的情形，不是与客观事实相反就用假设条件句。**
+
+**事实相反句表达的是一种与现在或过去的事实相违背的情形，因此是不可能发生的，而不是可能性不大。 它适合谈现在或过去。**
+
+
+
+### 虚拟句的谓语变化
+
+重点是弄清楚在三种不同时间的情况下，虚拟句的主句和从句的谓语动词的复杂变形。
+
+现三种不同时间下的主、从句的谓语形式列表如下：
+
+| 对什么时间的情况进行虚拟 | 主句的谓语形式 Z                     | 从句的谓语形式 C           |
+| ------------------------ | ------------------------------------ | -------------------------- |
+| 将来 j                   | Zj:would（could,might） + do         | Cj:were to do \| should do |
+| 现在 x                   | Zx:would（could,might） + do         | Cx:did \| were             |
+| 过去 g                   | Zg:would（could,might） + have  done | Cg:had done \| had been    |
+
+- 汉语拼音字母Z表示主句，C表示从句；
+- 汉语拼音字母j表示将来时间，x表示现在时间，g表示过去时间；
+- Zj表示主句为将来虚拟，Zx表示主句为现在虚拟，Zg表示主句为过去虚拟；Cj表示从句为将 来虚拟，Cx表示从句为现在虚拟，Cg表示从句为过去虚拟。
+
+主从句的谓语可能会有以下四种不同的搭配组合
+
+1. 现在虚拟：ZxCx型（主现从现）：would do＋if...did，这里的主句和if引导的条件状语从句都是表示对现在的虚拟。
+2. 过去虚拟：ZgCg型（主过从过）：would have done＋if...had done，这里的主句和if引导的条件状语从句都是表示对过去的虚拟。
+3. 混合虚拟（一）: ZxCg型（主现从过）：would do＋if...had done，这里的主句是表示对现在的虚拟，而if引导的条件状语从句是表 示对过去的虚拟，即主句与从句所虚拟的时间不一致。(如果过去怎么怎么样了（从句），那么现在就是怎么怎么养的（主句）。)
+4. 混合虚拟（二）: ZgCx型（主过从现）：would have done＋ if...did，这里的主句是表示对过去的虚拟，而if引导的条件状语从句是表示对现在的虚拟，即主句与从句所虚拟的时间不一致。（早知现在怎么怎么样了（主句），那过去就不该或者该怎么怎么样（从句）。）
+
+
+
+虚拟语气使用建议：
+
+1. 是否虚拟：要敏感地把握对某一情形的阐述是否该用虚拟语气，即要意识到这一情形是表达一个真实的情况，还是一种与事实相反的或者只是自己设想的**假设**。
+
+   在汉语思维里，虚拟的表达是通过语境或者加上一些假设的引导词，比如：如果，来实现的，而不是通过动词的变形。
+
+2. 何时虚拟：想到了该用虚拟语气后，接下来就要判断对什么时候的情况进行虚拟——是对将来、现在和过去这三种时间中的哪个时间进行虚拟。
+
+3. 主句虚拟：接下来就是判断谁是主句，谁是从句。因为主句和从句的谓语形式是不同的， 所以，第三步和第四步是要同时考虑到的。判断出是主句的，就要采用主句的三种不同时间的谓语形式，实际上有两种，即表示将来和现在的 would do，以及表示过去的would have done。记住主句的这两种表达形式。
+
+4. 从句虚拟：判断出是从句的，就要采用从句的三种不同时间的谓语形式，即表示将来的were to do或should do，表示现在的过去时 did/were，表示过去的过去完成时had done/had been。记住从句的这三种表达形式。
+
+从以上的分析可知，虚拟语气因为要经历四步，而且要环环相扣，哪一步都不能掉链子的，否则就会用错。在口语交际中，要想在短短的1至2秒钟内快速地分析清楚上面的四步，这就需要熟练掌握虚拟语气！
+
+既使说“懂”虚拟语气，也主要停留在考试时能意识到该用虚拟语气，以及知道判断主从句的不同谓语形式，但是在口语表达中就全然“无暇”顾及虚拟语气了。所以，大概总结了一下中国学生对于虚拟语气的掌握过程，将其分为以下四个阶段：
+
+1. 混沌阶段：在这一阶段，**知道什么叫虚拟语气**，也大概了解主句和从句谓语的动词有各种复杂的变化，但就是记不准，头脑里对各种谓语形式模糊不清，比如不知道“过去从句”该用什么形式（had done）；“现在主句”该用什么形式（would do）；“将来从句”该用什么形式（were to do或should do）。各种复杂的谓语变形在头脑里是“一团浆糊”，拎不清。
+2. 考试阶段：在这一阶段，非常熟悉各种时间的虚拟谓语形式，在考试时也能灵活地判断选择，做对考试题。但是，如果脱离了考试这样的“提示语境”，还是想不起来该用虚拟语气。能达到这个阶段已经算是很优秀了，英语功底通常是非常好的，但这还不能说他们掌握了虚拟语气的思维。
+3. 写作阶段：在这一阶段，不仅能做对考试题，而且在语言输出（output）时，比如写作时，也能意识到何时该用何种虚拟语气。 这时，虚拟语气逐渐融入了思维，但还不是非常熟练，比如在即时的口语交际中，头脑可能还来不及反应出该用虚拟语气。笔者甚至还常见到有些大学的英语老师都还用不好，在他们的论文写作中也还出现该用虚拟而“忘记”用虚拟的情况。他们不是不知道虚拟语气，只不过虚拟语气尚没有真正融入他们的思维表达中。
+4. 口语阶段：在这一阶段，虚拟语气已完全成为我们思维表达的 一部分了，我们完全能自如地使用各种虚拟语气，真正达到native speaker的思维表达水平。这一阶段的英语学习者没有经过多年的潜心观察、细心体会、反复操练，是达不到的。
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## 单词部分
 
 turn down是一个**短语动词**。

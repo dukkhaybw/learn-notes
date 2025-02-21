@@ -1,5 +1,114 @@
 ## 前文
 
+前端知识体系：框架底层、工程化、算法、设计模式、编译原理
+
+页面=>工程化=>监控=>跨端
+
+
+
+前端框架的不同：目标都是为了帮助开发者高效地开发 Web 应用。
+
+- React 注重数据不可变、虚拟 DOM 和运行时；
+- Svelte 运行时非常轻量级，侧重在于编译时的优化；
+- Angular 则在抽象这个维度又走向一个极致，生来就是为了复杂项目；
+- Vue3 兼顾响应式、虚拟 DOM、运行时和编译优化。
+
+
+
+Vue3的优秀设计：
+
+- Composition 组合 API
+- 基于 Proxy 的响应式系统
+- 自定义渲染器
+
+
+
+
+
+Vue的optionsAPI
+
+```vue
+<template>
+	<input type='text' v-model="val" @keypress.enter="addToDo"/>
+	<ul>
+  	<li v-for="(item, index) in todoList" :key="index">{{item}}</li>
+  </ul>
+</template>
+
+<script>
+  export default {
+    data(){
+      return {
+        val:"",
+        todoList:['吃饭','睡觉']
+      }
+    },
+    methods:{
+      addToDo(){
+        this.todoList.push(this.val);
+        this.val = ""
+      }
+    }
+  }
+</script>
+```
+
+
+
+Vue的compositionAPI
+
+```vue
+<template>
+  <input type='text' v-model="val" @keypress.enter="addToDo"/>
+  <ul>
+    <li v-for="(item, index) in todoList" :key="index">{{item}}</li>
+   </ul>
+</template>
+
+<script>
+  import { ref,reactive } from 'vue'
+
+  export default {
+    setup(){
+      let val = ref('');
+      let todoList = reactive(['吃饭','睡觉']);
+      function addToDo(){
+        todoList.push(val.value);
+        val.value = '';
+      }
+      return { val,todoList,addToDo }
+    }
+  }
+</script>
+```
+
+
+
+
+
+```vue
+<template>
+  <input type='text' v-model="val" @keypress.enter="addToDo"/>
+  <ul>
+    <li v-for="(item, index) in todoList" :key="index">{{item}}</li>
+   </ul>
+</template>
+
+<script setup>
+  import { reactive } from 'vue';
+  const val = ref('');
+  let todoList = reactive(['吃饭','睡觉']);
+  function addToDo(){
+    todoList.push(val);
+    val = '';
+  }
+</script>
+```
+
+
+
+
+
 体系和系统化学习。
 
 写页面，工程化，监控，跨段，计算机专业知识（算法，编译原理，设计模式等）。
@@ -53,9 +162,7 @@ Vue3中的优秀设计：Composition 组合 API、基于 Proxy 的响应式系�
 
 第五部分：
 
-- 源码，了解设计思想和思路
-
-
+- Vue 的发展历程，为什么 Vue 是现在这个样⼦，参考 React 和 Svelte 的设计和及其原理。了解完设计思想和思路后，拆分 Vue 的源码包，最终实现⼀个 mini 版的 Vue 
 
 
 
@@ -63,7 +170,7 @@ Vue3中的优秀设计：Composition 组合 API、基于 Proxy 的响应式系�
 
 目的：
 
-- 把握到 Vue 在前端框架中的地位和定位
+- 把握 Vue 在前端框架中的地位和定位
 - 为什么选择学习Vue框架，优势和它的价值
 
 
@@ -73,8 +180,13 @@ Vue3中的优秀设计：Composition 组合 API、基于 Proxy 的响应式系�
 1. 整个 90 年代，受限于网速，网页都是静态页，显示单一，前端的工作大部分都只是让美工来切图和写 HTML+CSS，代码都是所有内容写在一起，还没有明确的前端工程师的工种。
 
 2. 后来，后端越来越复杂，开始分层，代码也从揉在一起发展到 Model，View 和 Controller，分别负责不同的功能（后端 MVC 模式），JSP 和 Smarty技术实现页面和数据的动态渲染，这种模式下的任何数据更新，都需要刷新整个页面，并且在带宽不足的年代，这样做会耗费加载网页的时间。
-3. 04年，Google在Gmail中引入Ajax技术，用户可以在不刷新页面的情况下进行复杂的交互，开启Web2.0，前端工程师开始出现。
+
+   这个时代的网页主要还是以显示数据和简单的特效为主，比如当时众多的门户网站，也都没有太多的用户交互，主要就是显示后端存储的新闻。
+
+3. 04年，Google在Gmail中引入Ajax技术，用户可以在不刷新页面的情况下进行复杂的交互，从此前端不再受限于后端的模板，开启Web2.0，前端工程师开始出现。
+
 4. Ajax诞生后，依然有浏览器的混战和兼容性问题（比如绑定事件不同的浏览器就要写不同的代码），随后到了jQuery时代，不再过多担心兼容性问题。
+
 5. 09 年 AngularJS 和 Node.js开启前端MVVM 模式 和 前端工程化  ，前端框架的开始
 
 
@@ -91,17 +203,53 @@ Vue 1：
 
 - 响应式，初始化时，Watcher 监听数据的每个属性，数据发生变化时，就能精确地知道数据的哪个属性key变了，去针对性修改对应的 DOM 。
 
-![image-20221002172819795](D:\学习笔记\vue\images\image-20221002172819795.png)
+![image-20221002172819795](.\images\image-20221002172819795.png)
+
+在上图中，左边是实际的网页内容，在网页中使用{{}}渲染一个变量，Vue 1 就会在内容里保存一个监听器监控这个变量，称之为 Watcher，数据有变化，watcher 会收到通知去更新网页。
+
+
 
 React：
 
 - 在页面初始化的时候，在浏览器 DOM 之上，生成一个虚拟 DOM，即用一个 JavaScript 对象来描述整个 DOM 树，通过虚拟 DOM 计算出变化的数据，去进行精确的修改，提高了性能，同时还借助一个用js对象（JSON）来描述网页的工具，让虚拟 DOM 这个技术脱离了 Web 的限制。因为积累了这么多优势，虚拟 DOM 在小程序，客户端等跨端领域得到应用。
 
+```jsx
+<div id = "app">
+    <p class = "item">Item1</p>
+    <div class = "item">Item2</div>
+</div>
+```
+
+
+
+```json
+{
+  tag: "div",
+  attrs: {
+    id: "app"
+  },
+  children: [
+    {
+      tag: "p",
+      attrs: { className: "item" },
+      children: ["Item1"]
+    },
+    {
+      tag: "div",
+      attrs: { className: "item" },
+      children: ["Item2"]
+    }
+  ]
+}
+```
+
+这个对象完整地描述了 DOM 的树形结构，这样数据有变化的时候，我们生成一份新的虚拟 DOM 数据，然后再对之前的虚拟 DOM 进行计算，算出需要修改的 DOM，再去页面进行操作。
+
 
 
 > 浏览器操作 DOM一直都很耗性能，而虚拟 DOM 的 Diff 的逻辑，又能够确保尽可能少的操作 DOM，这也是虚拟 DOM 驱动的框架性能一直比较优秀的原因之一。
 
-![image-20221002173634149](D:\学习笔记\vue\images\image-20221002173634149.png)
+![image-20221002173634149](images\image-20221002173634149.png)
 
 
 
@@ -120,15 +268,15 @@ Vue 和 React 在数据发生变化后，在通知页面更新的方式上有明
 
 - React 为了突破性能瓶颈，借鉴了操作系统**时间分片**的概念，引入了 Fiber 架构。通俗来说，就是把整个虚拟 DOM 树微观化，变成链表，然后利用浏览器的空闲时间计算 Diff。一旦浏览器有需求，可以把没计算完的任务放在一旁，把主进程控制权还给浏览器，等待浏览器下次空闲。（这种架构虽然没有减少运算量，但是巧妙地利用空闲实现计算，解决了卡顿的问题。）
 
-  ![image-20221002174101286](D:\学习笔记\vue\images\image-20221002174101286.png)
+  ![image-20221002174101286](images\image-20221002174101286.png)
 
-  > 在上图中，左侧是一个树形结构，树形结构的 Diff 很难中断；
+  > 在上图中，左侧是一个树形结构，树形结构的 Diff 没法中断；
   >
   > 右侧是把树形结构改造成了链表，遍历严格地按照子元素 -> 兄弟元素 -> 父元素的逻辑，随时可以中断和恢复 Diff 的计算过程。
 
 
 
-![image-20221002174229436](D:\学习笔记\vue\images\image-20221002174229436.png)
+![image-20221002174229436](images\image-20221002174229436.png)
 
 
 
@@ -136,7 +284,7 @@ Vue 和 React 在数据发生变化后，在通知页面更新的方式上有明
 
 
 
-**响应式数据是主动推送变化，虚拟 DOM 是被动计算数据的 Diff，被 Vue 2 很好地融合在一起，采用的方式就是组件级别的划分。**
+**响应式数据是主动推送变化，虚拟 DOM 是被动计算数据的 Diff，被 Vue 2 很好地融合在一起，==采用的方式就是组件级别的划分==。**
 
 **对于 Vue 2 来说，组件之间的变化，可以通过响应式来通知更新。组件内部的数据变化，则通过虚拟 DOM 去更新页面。这样就把响应式的监听器，控制在了组件级别，而虚拟 DOM 的量级，也控制在了组件的大小。**——这就体现了Vue的中庸之道。
 
@@ -145,27 +293,27 @@ Vue 和 React 在数据发生变化后，在通知页面更新的方式上有明
 
 
 
-下图左边就是一个个的组件，组件内部是没有 Watcher 监听器的，而是通过虚拟 DOM 来更新，每个组件对应一个监听器，大大减小了监听器的数量。
+下图左边就是一个个的组件，组件内部是没有  Watcher 监听器的，而是通过虚拟 DOM 来更新，每个组件对应一个监听器，大大减小了监听器的数量。
 
-![image-20221002175631289](D:\学习笔记\vue\images\image-20221002175631289.png)
+![image-20221002175631289](images\image-20221002175631289.png)
 
 
 
 除了响应式和虚拟 DOM ，Vue 和 React 还有一些理念和路线的不同，在模板的书写上，也走出了 template 和 JSX 两个路线。
 
-![image-20221002175802184](D:\学习笔记\vue\images\image-20221002175802184.png)
+![image-20221002175802184](images\image-20221002175802184.png)
 
-React 的世界里只有 JSX，最终 JSX 都会在 Compiler 那一层，也就是工程化那里编译成 JS 来执行，所以 React 最终拥有了全部 JS 的动态性，这也导致了 React 的 API 一直很少，只有 state、hooks、Component 几个概念，主要都是 JavaScript 本身的语法和特性。
+React 的 JSX 都会在 Compiler 那一层，也就是工程化那里编译成 JS ，所以 React 最终拥有了全部 JS 的动态性，这也导致了 React 的 API 一直很少，只有 state、hooks、Component 几个概念，主要都是 JavaScript 本身的语法和特性。
 
 
 
-而 Vue 的世界默认是 template，也就是语法是限定死的，比如 v-if 和 v-for 等语法。有了这些写法的规矩后，我们可以在上线前做很多优化。**Vue 3 很优秀的一个点，就是在虚拟 DOM 的静态标记上做到了极致，让静态的部分越过虚拟 DOM 的计算，真正做到了按需更新，很好的提高了性能。**
+而 Vue 默认是 template，也就是语法是限定死的，比如 v-if 和 v-for 等语法。有了这些写法的规矩后，可以在上线前做很多优化。**Vue 3 很优秀的一个点，就是在虚拟 DOM 的静态标记上做到了极致，让静态的部分越过虚拟 DOM 的计算，真正做到了按需更新，很好的提高了性能。**
 
 
 
 在模板的书写上，除了 Vue 和 React 走出的 template 和 JSX 两个路线，还出现了 Svelte 这种框架，没有虚拟 DOM 的库，直接把模板编译成原生 DOM，几乎没有 Runtime，所有的逻辑都在 Compiler 层优化，算是另外一个极致。
 
-![image-20221002180156602](D:\学习笔记\vue\images\image-20221002180156602.png)
+![image-20221002180156602](images\image-20221002180156602.png)
 
 
 
@@ -274,7 +422,7 @@ const App = {
 6. methods配置项
 7. 条件渲染
 
-![img](https://static001.geekbang.org/resource/image/3c/72/3c8ddf81d6b478069d6b1dec7b605572.gif?wh=542x325)
+![img](http://static001.geekbang.org/resource/image/3c/72/3c8ddf81d6b478069d6b1dec7b605572.gif?wh=542x325)
 
 ## 新特性
 
@@ -283,15 +431,20 @@ Vue 2 是一个响应式驱动的、内置虚拟 DOM、组件化、用在浏览�
 Vue2的不足：
 
 - 从开发维护的角度看，Vue 2 是使用 Flow.js 来做类型校验。但现在 Flow.js 已经停止维护了，整个社区都在全面使用 TypeScript 来构建基础库。
+
 - 从社区的二次开发难度来看，Vue 2 内部运行时，是直接调用浏览器 API ，这样就会在 Vue 2 的跨端方案中带来问题，要么直接进入 Vue 源码中，和 Vue 一起维护；要么是直接改为复制一份全部 Vue 的代码，把浏览器 API 换成客户端或者小程序的。比如 mpvue 就是这么做的，但是 Vue 后续的更新就很难享受到。
+
 - **Vue 2 响应式并不是真正意义上的代理，而是基于 Object.defineProperty() 实现的（defineProperty 对不存在的属性无法拦截，对数组的操作一般不会改变数组的指向，只能对数组原型方法进行拦截来实现部分功能，对数组长度的修改等操作无法实现拦截，所以Vue2提供了额外的 $set 等 API）。**对某个属性进行拦截，所以有很多缺陷，比如：删除数据就无法监听，需要 $delete 等 API 辅助才能监听到。
-- **Option API 在组织代码较多组件的时候不易维护。**
+
+  defineProperty API 并不是代理，而是对某个属性进行拦截，所以有很多缺陷。
+
+- **Option API 在组织代码较多组件的时候不易维护。**对于大的组件，新增或者修改一个功能，就需要不停地在 data，methods 里跳转写代码，上下反复横跳。
 
 
 
 ### Vue3新特性
 
-Vue 3 继承了 Vue 2 具有的响应式、虚拟 DOM，组件化等所有优秀的特点，并且全部重新设计，解决了Vue2的不足。
+Vue 3 继承了 Vue 2 的响应式、虚拟 DOM，组件化等所有优秀的特点，并且全部重新设计，解决了Vue2的不足。
 
 1. RFC 机制
 
@@ -309,7 +462,7 @@ Vue 3 继承了 Vue 2 具有的响应式、虚拟 DOM，组件化等所有优秀
 
    Vue 2 内部所有的模块都是揉在一起，不易扩展。Vue3使用monorepo管理方式，将响应式模块、编译模块和运行时模块全部独立（拆包）。
 
-   ![image-20221003090801972](D:\学习笔记\vue\images\image-20221003090801972.png)
+   ![image-20221003090801972](images\image-20221003090801972.png)
 
 4. 全部模块使用 TypeScript 重构
 
@@ -395,7 +548,7 @@ Vue 3 继承了 Vue 2 具有的响应式、虚拟 DOM，组件化等所有优秀
 
    Composition API对代码组织的表现：每一个功能模块的代码颜色一样，左边是 Options API，一个功能的代码零散的分布在 data，methods 等配置内，维护起来很麻烦，而右边的 Compositon API 就不一样了，每个功能模块都在一起维护。
 
-   ![image-20221003092000895](D:\学习笔记\vue\images\image-20221003092000895.png)
+   ![image-20221003092000895](images\image-20221003092000895.png)
 
    还可以将Composition API中相同颜色块的代码单独抽离为一个函数然后在其他地方复用。
 
@@ -407,18 +560,20 @@ Vue 3 继承了 Vue 2 具有的响应式、虚拟 DOM，组件化等所有优秀
    - Suspense: 异步组件，更方便开发有异步请求的组件。
 
 7. 工程化工具 Vite
-   按照现在的趋势看，使用率超过 Webpack 也是早晚的事。Vite 主要提升的是开发的体验，Webpack 等工程化工具的原理，就是根据你的 import 依赖逻辑，形成一个依赖图，然后调用对应的处理工具，把整个项目打包后，放在内存里再启动调试。
+   Vite 主要提升的是开发的体验，Webpack 等工程化工具的原理，就是根据你的 import 依赖逻辑，形成一个依赖图，然后调用对应的处理工具，把整个项目打包后，放在内存里再启动调试。
 
-   由于要预打包，所以复杂项目的开发，启动调试环境需要的时间很长。Vite在调试环境下，不需要全部预打包，只是把你首页依赖的文件，依次通过网络请求去获取，整个开发体验得到巨大提升，做到了复杂项目的秒级调试和热更新。
+   由于要预打包，所以复杂项目的开发，启动调试环境需要的时间很长。
+
+   Vite在调试环境下，不需要全部预打包，只是把你首页依赖的文件，依次通过网络请求去获取，整个开发体验得到巨大提升，做到了复杂项目的秒级调试和热更新。
 
    Webpack 的工作原理，Webpack 要把所有路由的依赖打包后，才能开始调试：
 
-   ![image-20221003092615743](D:\学习笔记\vue\images\image-20221003092615743.png)
+   ![image-20221003092615743](images\image-20221003092615743.png)
 
    
-
+   
    Vite 的工作原理，一开始就可以准备联调，然后根据首页的依赖模块，再去按需加载，这样启动调试所需要的资源会大大减少。
-   ![image-20221003092701618](D:\学习笔记\vue\images\image-20221003092701618.png)
+   ![image-20221003092701618](images\image-20221003092701618.png)
 
 
 
@@ -441,7 +596,7 @@ Vue 3 继承了 Vue 2 具有的响应式、虚拟 DOM，组件化等所有优秀
 1. 新项目直接使用Vue3 + Vite
 2. 老项目项想要体验Vue3的特性，可以使用Vue2.7的版本，Vue 2.7 会移植 Vue 3 的一些新特性，让你在 Vue 2 的生态中，也能享受 Vue 3 的部分新特性。Vue 2 项目中就可以基于 @vue/composition-api 插件，使用 Composition API 语法，Vue 2 会直接内置这个插件，在 Vue 2 中默认也可以用 Compositon 来组合代码。
 
-![image-20221003164942922](D:\学习笔记\vue\images\image-20221003164942922.png)
+![image-20221003164942922](images\image-20221003164942922.png)
 
 
 
@@ -548,14 +703,5 @@ module.exports = {
 
 
 
-## 搭建Vue3项目
-
-- 项目搭建
-- Composition API
-- 响应式
-- 组件化
-- 动画
-
-### 安装和构建开发环境
 
 

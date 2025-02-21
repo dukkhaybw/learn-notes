@@ -1,9 +1,3 @@
----
-title: CSS 问题
----
-
-本章节是[前端开发者面试问题 - CSS 部分](https://github.com/h5bp/Front-end-Developer-Interview-Questions/blob/master/src/questions/css-questions.md)的参考答案。 欢迎提出 PR 进行建议和指正！
-
 ## 目录
 
 - [CSS 选择器的优先级是如何计算的？](#css-选择器的优先级是如何计算的)
@@ -38,9 +32,11 @@ title: CSS 问题
 - [你有没有使用过视网膜分辨率的图形？当中使用什么技术？](#你有没有使用过视网膜分辨率的图形当中使用什么技术)
 - [什么情况下，用`translate()`而不用绝对定位？什么时候，情况相反。](#什么情况下用translate而不用绝对定位什么时候情况相反)
 
+
+
 ### CSS 选择器的优先级是如何计算的？
 
-浏览器通过优先级规则，判断元素展示哪些样式。优先级通过 4 个维度指标确定，我们假定以`a、b、c、d`命名，分别代表以下含义：
+浏览器通过优先级规则，判断元素展示哪些样式。优先级通过 4 个维度确定，假定以`a、b、c、d`命名，分别代表以下含义：
 
 1. `a`表示是否使用内联样式（inline style）。如果使用，`a`为 1，否则为 0。
 2. `b`表示 ID 选择器的数量。
@@ -58,7 +54,7 @@ title: CSS 问题
 - https://www.smashingmagazine.com/2007/07/css-specificity-things-you-should-know/
 - https://www.sitepoint.com/web-foundations/specificity/
 
-[[↑] 回到顶部](#目录)
+
 
 ### 重置（resetting）CSS 和 标准化（normalizing）CSS 的区别是什么？你会选择哪种方式，为什么？
 
@@ -71,15 +67,15 @@ title: CSS 问题
 
 - https://stackoverflow.com/questions/6887336/what-is-the-difference-between-normalize-css-and-reset-css
 
-[[↑] 回到顶部](#目录)
 
-### 请阐述`Float`定位的工作原理。
+
+### `Float`定位的工作原理
 
 浮动（float）是 CSS 定位属性。浮动元素从网页的正常流动中移出，但是保持了部分的流动性，会影响其他元素的定位（比如文字会围绕着浮动元素）。这一点与绝对定位不同，绝对定位的元素完全从文档流中脱离。
 
 CSS 的`clear`属性通过使用`left`、`right`、`both`，让该元素向下移动（清除浮动）到浮动元素下面。
 
-如果父元素只包含浮动元素，那么该父元素的高度将塌缩为 0。我们可以通过清除（clear）从浮动元素后到父元素关闭前之间的浮动来修复这个问题。
+如果父元素只包含浮动元素，那么该父元素的高度将塌缩为 0。可以通过清除（clear）从浮动元素后到父元素关闭前之间的浮动来修复这个问题。
 
 有一种 hack 的方法，是自定义一个`.clearfix`类，利用伪元素选择器`::after`清除浮动。[另外还有一些方法](https://css-tricks.com/all-about-floats/#article-header-id-4)，比如添加空的`<div></div>`和设置浮动元素父元素的`overflow`属性。与这些方法不同的是，`clearfix`方法，只需要给父元素添加一个类，定义如下：
 
@@ -97,7 +93,7 @@ CSS 的`clear`属性通过使用`left`、`right`、`both`，让该元素向下�
 
 - https://css-tricks.com/all-about-floats/
 
-[[↑] 回到顶部](#目录)
+  
 
 ### 请阐述`z-index`属性，并说明如何形成层叠上下文（stacking context）。
 
@@ -115,7 +111,7 @@ CSS 中的`z-index`属性控制重叠元素的垂直叠加顺序。`z-index`只�
 - https://philipwalton.com/articles/what-no-one-told-you-about-z-index/
 - https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Positioning/Understanding_z_index/The_stacking_context
 
-[[↑] 回到顶部](#目录)
+
 
 ### 请阐述块格式化上下文（Block Formatting Context）及其工作原理。
 
@@ -137,7 +133,7 @@ CSS 中的`z-index`属性控制重叠元素的垂直叠加顺序。`z-index`只�
 - https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Block_formatting_context
 - https://www.sitepoint.com/understanding-block-formatting-contexts-in-css/
 
-[[↑] 回到顶部](#目录)
+
 
 ### 有哪些清除浮动的技术，都适用哪些情况？
 
@@ -145,9 +141,9 @@ CSS 中的`z-index`属性控制重叠元素的垂直叠加顺序。`z-index`只�
 - Clearfix 方法：上文使用`.clearfix`类已经提到。
 - `overflow: auto`或`overflow: hidden`方法：上文已经提到。
 
-在大型项目中，我会使用 Clearfix 方法，在需要的地方使用`.clearfix`。设置`overflow: hidden`的方法可能使其子元素显示不完整，当子元素的高度大于父元素时。
+在大型项目中，会使用 Clearfix 方法，在需要的地方使用`.clearfix`。设置`overflow: hidden`的方法可能使其子元素显示不完整，当子元素的高度大于父元素时。
 
-[[↑] 回到顶部](#目录)
+
 
 ### 请解释什么是精灵图（css sprites），以及如何实现？
 
@@ -168,7 +164,7 @@ CSS 中的`z-index`属性控制重叠元素的垂直叠加顺序。`z-index`只�
 
 - https://css-tricks.com/css-sprites/
 
-[[↑] 回到顶部](#目录)
+  
 
 ### 如何解决不同浏览器的样式兼容性问题？
 
@@ -177,7 +173,7 @@ CSS 中的`z-index`属性控制重叠元素的垂直叠加顺序。`z-index`只�
 - 使用 `autoprefixer` 自动生成 CSS 属性前缀。
 - 使用 Reset CSS 或 Normalize.css。
 
-[[↑] 回到顶部](#目录)
+
 
 ### 如何为功能受限的浏览器提供页面？ 使用什么样的技术和流程？
 
@@ -187,7 +183,7 @@ CSS 中的`z-index`属性控制重叠元素的垂直叠加顺序。`z-index`只�
 - 使用 `autoprefixer` 自动生成 CSS 属性前缀。
 - 使用 [Modernizr](https://modernizr.com/)进行特性检测。
 
-[[↑] 回到顶部](#目录)
+
 
 ### 有什么不同的方式可以隐藏内容（使其仅适用于屏幕阅读器）？
 
@@ -303,13 +299,13 @@ CSS 中的`z-index`属性控制重叠元素的垂直叠加顺序。`z-index`只�
 - 我通过`node-sass`使用 Sass，它用 C ++ 编写的 LibSass 绑定。在 Node 版本切换时，我必须经常重新编译。
 - Less 中，变量名称以`@`作为前缀，容易与 CSS 关键字混淆，如`@media`、`@import`和`@font-face`。
 
-[[↑] 回到顶部](#目录)
+
 
 ### 如何实现一个使用非标准字体的网页设计？
 
 使用`@font-face`并为不同的`font-weight`定义`font-family`。
 
-[[↑] 回到顶部](#目录)
+
 
 ### 解释浏览器如何确定哪些元素与 CSS 选择器匹配。
 
@@ -430,13 +426,9 @@ Grid 创建基于栅格的布局，是迄今为止最直观的方法（最好是
 
 - https://philipwalton.github.io/solved-by-flexbox/
 
-[[↑] 回到顶部](#目录)
+
 
 ### 请解释在编写网站时，响应式与移动优先的区别。
-
-TODO
-
-[[↑] 回到顶部](#目录)
 
 ### 响应式设计与自适应设计有何不同？
 
@@ -485,3 +477,138 @@ TODO
 - https://neal.codes/blog/front-end-interview-css-questions
 - https://quizlet.com/28293152/front-end-interview-questions-css-flash-cards/
 - http://peterdoes.it/2015/12/03/a-personal-exercise-front-end-job-interview-questions-and-my-answers-all/
+
+
+
+
+
+
+
+### 流式布局
+
+流式布局（Fluid Layout）是一种通过**百分比单位**定义元素尺寸的布局方式，使页面能够根据浏览器窗口或容器尺寸的变化**动态调整布局**，从而实现多屏幕适配。其核心目标是让内容在不同屏幕尺寸下保持相对合理的展示效果。
+
+#### **流式布局的特点**
+
+1. **百分比单位**：元素的宽度通常使用百分比（如 `width: 80%;`）而非固定像素值（如 `width: 1200px;`）。
+2. **动态适应**：页面内容会随着浏览器窗口的缩放自动伸缩，避免水平滚动条的出现。
+3. **容器驱动**：元素尺寸依赖于父容器或视口（viewport）的大小。
+4. **与固定布局对比**：固定布局（Fixed Layout）使用像素单位，布局尺寸固定，而流式布局更灵活。
+
+**实现流式布局**
+
+1. **百分比宽度**：
+
+   ```css
+   .container {
+     width: 90%; /* 容器宽度占视口的90% */
+     margin: 0 auto; /* 居中 */
+   }
+   .column {
+     width: 30%; /* 子元素占容器的30% */
+     float: left;
+   }
+   ```
+
+2. **限制最大/最小宽度**：
+
+   ```css
+   .container {
+     max-width: 1200px; /* 最大宽度限制，避免在大屏幕上过度拉伸 */
+     min-width: 320px;   /* 最小宽度限制，避免在小屏幕上挤压 */
+   }
+   ```
+
+3. **盒模型优化**：
+   使用 `box-sizing: border-box`，确保内边距（padding）和边框（border）不破坏百分比计算：
+
+   ```css
+   * {
+     box-sizing: border-box;
+   }
+   ```
+
+4. **媒体查询（补充）**：
+   流式布局常与响应式设计结合，通过媒体查询（Media Queries）进一步优化不同屏幕下的细节：
+
+   ```css
+   @media (max-width: 768px) {
+     .column {
+       width: 100%; /* 小屏幕下占满整行 */
+     }
+   }
+   ```
+
+------
+
+**流式布局 vs. 其他布局方式**
+
+| **类型**       | **单位**    | **特点**                              | **适用场景**         |
+| :------------- | :---------- | :------------------------------------ | :------------------- |
+| **固定布局**   | 像素（px）  | 尺寸固定，不随视口变化                | 传统桌面端页面       |
+| **流式布局**   | 百分比（%） | 动态调整宽度，高度通常固定            | 多屏幕适配的基础方案 |
+| **响应式布局** | 混合单位    | 结合流式布局 + 媒体查询 + 弹性盒/网格 | 复杂多设备适配       |
+| **弹性布局**   | Flex/Grid   | 基于容器空间自动分配子元素位置和尺寸  | 组件级或局部动态布局 |
+
+------
+
+### **流式布局的优缺点**
+
+**优点**：
+
+- 适配不同屏幕宽度，减少水平滚动问题。
+- 实现简单，适合内容型网站（如新闻、博客）。
+
+**缺点**：
+
+- **高度通常固定，垂直空间可能未被充分利用。**
+- 内容过度拉伸可能导致阅读体验下降（如长文本行）。
+- 复杂布局难以仅通过百分比实现，需结合其他技术（如 Flexbox、Grid）。
+
+------
+
+
+
+**应用场景**
+
+1. **新闻/博客网站**：以文字内容为主，流式布局可确保文本行宽适应屏幕。
+2. **早期响应式设计**：作为响应式设计的基础，结合媒体查询实现断点优化。
+3. **移动端优先**：在小屏幕下自然扩展，再通过媒体查询增强大屏幕体验。
+
+------
+
+
+
+**简单的两栏流式布局**
+
+```html
+<div class="container">
+  <div class="main-content">主内容（70%）</div>
+  <div class="sidebar">侧边栏（30%）</div>
+</div>
+```
+
+运行 HTML
+
+```css
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.main-content {
+  width: 70%;
+  float: left;
+}
+.sidebar {
+  width: 30%;
+  float: left;
+}
+/* 清除浮动 */
+.container::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+```
+

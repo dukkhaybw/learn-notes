@@ -3,7 +3,7 @@
 大纲：
 
 - 搭建 TypeScript 开发环境。
-- 掌握 TypeScript 的基础、联合和交叉类型
+- 掌握 TypeScript 的基础类型、联合和交叉类型
 - 类型断言及其作用和用法。
 - TypeScript 中函数、类中的类型声明方式。
 - 掌握类型别名、接口的作用和定义。
@@ -103,7 +103,7 @@ export default {
       tsconfig: path.resolve(__dirname, "tsconfig.json"),
     }),
     serve({
-      openPage: "/public/index.html",
+      openPage: "/public/index.html",  // script标签的src属性指向的是'/dist/bundle.js
       port: "3000",
     }),
   ],
@@ -116,14 +116,36 @@ export default {
 
 ```json
 {
-    "scripts": {
-        "start": "rollup -c -w"
-    },
-    "type":"module"
+  "scripts": {
+    "start": "rollup -c -w"
+  },
+  "type":"module"
 }
 ```
 
+tsconfig.json中module改为ESNext。
 
+
+
+在vscode中可以针对typescript进行编辑器设置，比如使用对ts进行格式化，缩进，提示等。 	
+
+![image-20250210142449885](D:\learn-notes\js\images\image-20250210142449885.png)
+
+
+
+
+
+ts中类型分类：
+
+1. 内置类型，node_modules/typescript/lib就是一系列内置的类型声明，
+2. 内置的基础类型
+3. 内置的高级类型
+4. 第三方库提供类型
+5. 自定义类型
+
+
+
+在ts文件中，默认每个文件都是在全局下的，如果要避免不同文件下类型的重复定义或者冲突，需要开启文件的模块化，在文件中增加一句export {} 就标识这是一个开启了模块的ts文件。就能起到隔离的效果。
 
 
 
@@ -139,7 +161,7 @@ export default {
   let name: string = "Alice";
   ```
 
-- **`String`**：这是 JavaScript 中的内置对象类型，它是一个对象类型，表示一个字符串对象。`String` 是 `string` 类型的**包装类**，它提供了方法和属性来操作字符串。例如，使用 `new String("hello")` 会创建一个 `String` 对象，而不是一个原始的字符串值。
+- **`String`**：这是 JavaScript 中的**内置对象类型**，它是一个对象类型，表示一个字符串对象。`String` 是 `string` 类型的**包装类**，它提供了方法和属性来操作字符串。例如，使用 `new String("hello")` 会创建一个 `String` 对象，而不是一个原始的字符串值。
 
   ```ts
   let nameObj: String = new String("Alice");
@@ -186,13 +208,19 @@ console.log(primitiveNum === objectNum);  // false, 原始类型与对象类型�
 结论：
 
 - **原始类型**（`string` 和 `number`）是最常用的类型，它们用于存储实际的值。
+
 - **包装类型**（`String` 和 `Number`）是对象类型，它们用于提供字符串和数字的额外方法和功能，但一般不需要使用，因为它们会引入不必要的复杂性和性能开销。
+
 - 在 TypeScript 和 JavaScript 中，通常推荐使用原始类型 `string` 和 `number`，而不需要使用 `String` 和 `Number`。
+
+  
+
+TypeScript允许将基本类型的值赋给对应的包装对象类型的变量。这是因为JavaScript会自动将基本类型的值转换为对应的包装对象实例。
 
 ```ts
 let a: string = "123";
 let b: String = "456";
-let d: String = new String("789"); 
+let d: String = new String("789");   // 这是合法的，因为字符串字面量会被隐式地转换为String对象
 
 let c: string = new String("789"); // 不能将类型“String”分配给类型“string”。
 ```

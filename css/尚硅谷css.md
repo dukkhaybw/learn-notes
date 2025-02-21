@@ -59,6 +59,8 @@ body{
 - 默认值：auto
 - 百分比单位： 设置以包含块元素的 padding 以内的区域的高度的百分比计的上边位置。可使用负值。
 
+
+
 ## 百分比单位参照
 
 width 的默认值不是 0，而是 auto，当单位为百分比时，参照包含块的 content 区域的宽度。
@@ -66,6 +68,8 @@ width 的默认值不是 0，而是 auto，当单位为百分比时，参照包�
 height 的默认值不是 0，也不是 auto，而是由内容撑开，当单位为百分比时，参照包含块的 content 区域的高度。
 
 margin 与 padding 的默认值为 0，不是 auto，当单位为百分比时，都参照包含块的的 content 区域的宽度。
+
+
 
 ## css 引入方式：
 
@@ -118,6 +122,8 @@ margin 与 padding 的默认值为 0，不是 auto，当单位为百分比时，
   >
   > **6.书写位置不同**
 
+
+
 ### 属性选择器
 
 ```
@@ -161,7 +167,7 @@ input[title|='str']{ //选出含有该属性且属性值以str开头或者str-�
 1.未点击过的  :link
 2.点击过的   :visited
 3.点击的瞬间  :active
-4.鼠标经过  :hover
+4.鼠标经过   :hover
 
 根标签选择器：
 :root{
@@ -184,6 +190,8 @@ input[title|='str']{ //选出含有该属性且属性值以str开头或者str-�
 
 fixed 定位参照真正的视口定位，视口的左上角为 left：0 和 top：0。fixed 定位不支持在 ie6 中使用。但是可以在 html、body 和视口三合一的情况下，通过 position：absolute 来模拟实现 fixed 布局。
 
+
+
 ## 字体大小问题
 
 在 chrome 中字体默认大小为 16px，最小为 12px，小于 12px 的数自动变为 12px，但是设置 font-size：0 时，可以让字体不可见。字体设为负数时，自动变为 16px。
@@ -194,13 +202,15 @@ Box 是 CSS 布局的对象和基本单位（即一个页面是由很多个 Box 
 
 行内盒子：display 属性为 inline，inline-block，inline-table 的元素，参与 inline formatting context（IFC）
 
+
+
 ## Formatting context
 
 Formatting context 它是**页面中的一块渲染区域，并且有一套渲染规则**，它决定了其子元素将如何定位，以及和其他元素的关系和相互作用。最常见的 Formatting context 有 Block fomatting context（简称 BFC）Inline formatting context（简称 IFC）。
 
 ## Block Formatting Context（块级 格式化 环境）
 
-BFC 是一个独立的渲染区域，只有 Block-level box 参与，它规定了**内部的**(不包括自己）Block-levelBox 如何布局，并且与这个区域外部毫不相干。某个元素自己开启 BFC 后，将不再受父元素的 BFC 规则的约束，同时自己内部的块级元素都将收到 BFC 的约束。
+BFC 是一个独立的渲染区域，只有 Block-level box 参与，它规定了**内部的**(不包括自己）Block-levelBox 如何布局，并且与这个区域外部毫不相干。某个元素自己开启 BFC 后，将不再受父元素的 BFC 规则的约束，同时自己内部的块级元素都将受到 BFC 的约束。
 
 BFC 中块级元素的布局规则：
 
@@ -217,6 +227,8 @@ BFC 中块级元素的布局规则：
 - position 为 absolute 或 fixed
 - overflow 不为 visible
 - display 为 inline-block，table-cell，table-caption，flex，inline-flex
+
+
 
 ## 盒子模型
 
@@ -368,7 +380,11 @@ CSS 盒模型的组成：外边距（margin）+ 边框（border）+ 内边距（
 实现响应式布局能力
 
 - 将屏幕默认分为了 12 等份的宽度，在给元素设置宽度时，以列为单位进行设置。而具体占几列是通过类名来实现的
-- 框架将屏幕的大小定义了 4 中尺寸，通过 bootstrap 一系列的栅格类去控制元素在不同的屏幕尺寸下所占的列数 ![image-20210802000500137](..\typora-user-images\image-20210802000500137.png)
+
+- 框架将屏幕的大小定义了 4 中尺寸，通过 bootstrap 一系列的栅格类去控制元素在不同的屏幕尺寸下所占的列数 
+
+  ![image-20210802000500137](..\typora-user-images\image-20210802000500137.png)
+
 - 列偏移
 
 ## css 属性的书写顺序

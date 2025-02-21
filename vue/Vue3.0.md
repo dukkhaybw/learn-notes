@@ -18,11 +18,11 @@ vue3.4源码和之前源码的变化对比；使用时注意事项和技巧。
 
 
 
-## 设计理念(基于vue2)
+## 设计理念
 
-1. 声明式框架，命令式代码被封装到Vuejs内部。
+1. 声明式框架，命令式代码被封装到Vuejs内部
 
-   > 声明式代码更加简单，不需要关注实现，按照要求填代码就可以 ，按照框架的要求在特定的部分写代码实现业务逻辑。
+   > 声明式代码用起来简单，不需要关注实现 ，按照框架的要求在特定的部分写代码实现业务逻辑。
    >
    > ```js
    > - 命令式编程：
@@ -42,7 +42,7 @@ vue3.4源码和之前源码的变化对比；使用时注意事项和技巧。
 
    vue3可以写声明式代码，也可以写命令式的代码（自己定义响应式数据，自己去组合各个API）。关于真实的DOM元素的操作是交给Vue的底层去处理。 
 
-2. 虚拟DOM。
+2. 虚拟DOM
 
    - 传统更新页面，每次数据更新都拼接一个完整的字符串innerHTML全部重新渲染；
    - 添加虚拟DOM后，操作真实DOM之前，可以比较新旧虚拟节点（DOM DIFF算法），找到变化再进行更新。
@@ -52,8 +52,8 @@ vue3.4源码和之前源码的变化对比；使用时注意事项和技巧。
 
    ```js
    const vnode = {
-       __v_isVNode: true,
-       __v_skip: true,
+       __v_isVNode: true,  // 表明这是一个 VNode 对象，作为一个标识属性
+       __v_skip: true, // 用于优化机制，跳过某些不必要的检查。
        type,
        props,
        key: props && normalizeKey(props),
@@ -72,30 +72,16 @@ vue3.4源码和之前源码的变化对比；使用时注意事项和技巧。
 
    > `vnode` 对象中各属性的含义及其可能的值：
    >
-   > 1. `__v_isVNode`
-   >
-   > - **含义**: 表明这是一个 VNode 对象，作为一个标识属性。
-   > - **类型**: `boolean`
-   > - **值**: 总是 `true`。
-   >
-   > ------
-   >
-   > 2. `__v_skip`
-   >
-   > - **含义**: 用于优化机制，跳过某些不必要的检查。
-   > - **类型**: `boolean`
-   > - **值**: 通常是 `true`。
-   >
    > ------
    >
    > 3. `type`
-   >
+   > 
    > - **含义**: 表示 VNode 的类型，定义了这个节点要渲染的内容。
-   > - 类型:
+   >- 类型:
    >   - 可以是字符串（HTML 标签名，如 `'div'`）
-   >   - 对象（组件定义对象）
+   >  - 对象（组件定义对象）
    >   - Symbol（特殊类型，比如 `Fragment`, `Text`, `Comment` 等）
-   > - 值:
+   >- 值:
    >   - HTML 标签名：如 `'div'`, `'span'`
    >   - 组件定义对象：如 `{ render: () => {}, props: {} }`
    >   - 特殊标志符：如 `Symbol('Fragment')`, `Symbol('Text')`
@@ -109,108 +95,108 @@ vue3.4源码和之前源码的变化对比；使用时注意事项和技巧。
    > - 值:
    >   - 如果存在，通常是一个普通对象，键值对表示属性名和属性值。
    >   - 如果没有任何属性，则可能为 `null`。
-   >
+   > 
    > ------
-   >
+   > 
    > 5. `key`
    >
    > - **含义**: 节点的唯一标识，用于在 `diff` 算法中优化节点的复用。
-   > - **类型**: 任意类型（通常是字符串或数字）
+   >- **类型**: 任意类型（通常是字符串或数字）
    > - 值:
-   >   - 从 `props` 中提取（通过 `normalizeKey`），如果未指定，则为 `undefined`。
-   >
+   >  - 从 `props` 中提取（通过 `normalizeKey`），如果未指定，则为 `undefined`。
+   > 
    > ------
-   >
+   > 
    > 6. `ref`
-   >
-   > - **含义**: 引用，用于在组件中访问 DOM 元素或子组件实例。
+   > 
+   >- **含义**: 引用，用于在组件中访问 DOM 元素或子组件实例。
    > - 类型:
-   >   - `string`
+   >  - `string`
    >   - `function`
-   >   - `object`
+   >  - `object`
    > - **值**: 从 `props` 中提取（通过 `normalizeRef`）。
-   >
+   > 
    > ------
-   >
-   > 7. `children`
-   >
-   > - **含义**: VNode 的子节点。
+   > 
+   >7. `children`
+   > 
+   >- **含义**: VNode 的子节点。
    > - 类型:
-   >   - `string`（文本节点）
+   >  - `string`（文本节点）
    >   - `Array<VNode>`（多个子节点）
    >   - `null`（无子节点）
    > - 值:
    >   - 文本节点：如 `'Hello, world!'`
    >   - 子节点数组：如 `[vnode1, vnode2]`
-   >
-   > ------
-   >
-   > 8. `component`
-   >
-   > - **含义**: 如果 VNode 是组件类型，此处保存组件实例；否则为 `null`。
+   > 
+   >------
+   > 
+   >8. `component`
+   > 
+   >- **含义**: 如果 VNode 是组件类型，此处保存组件实例；否则为 `null`。
    > - 类型:
    >   - 组件实例对象
    >   - `null`
    > - 值:
    >   - 初始值为 `null`，在挂载阶段后填充。
-   >
+   > 
    > ------
-   >
-   > 9. `el`
-   >
-   > - **含义**: 挂载的 DOM 元素（即真实 DOM）。
+   > 
+   >9. `el`
+   > 
+   >- **含义**: 挂载的 DOM 元素（即真实 DOM）。
    > - 类型:
-   >   - DOM 元素对象
+   >  - DOM 元素对象
    >   - `null`
    > - 值:
    >   - 初始值为 `null`，挂载后指向对应的 DOM 元素。
-   >
+   > 
    > ------
-   >
-   > 10. `patchFlag`
-   >
-   > - **含义**: 优化标志，用于指示 VNode 更新的类型，以便优化渲染。
+   > 
+   >10. `patchFlag`
+   > 
+   >- **含义**: 优化标志，用于指示 VNode 更新的类型，以便优化渲染。
    > - **类型**: `number | undefined`
-   > - 值:
+   >- 值:
    >   - `undefined`：无优化标志。
    >   - 特定数字：标识不同的优化类型（比如属性变化、子节点变化等）。
-   >
+   > 
    > ------
-   >
+   > 
    > 11. `dynamicProps`
    >
    > - **含义**: 动态属性的数组，仅在 `patchFlag` 指示动态属性存在时使用。
-   > - **类型**: `Array<string> | null`
+   >- **类型**: `Array<string> | null`
    > - 值:
-   >   - 包含动态属性名的数组
+   >  - 包含动态属性名的数组
    >   - 或者 `null`。
-   >
+   > 
    > ------
-   >
+   > 
    > 12. `dynamicChildren`
    >
    > - **含义**: 动态子节点列表，仅用于优化渲染。
-   > - **类型**: `Array<VNode> | null`
+   >- **类型**: `Array<VNode> | null`
    > - 值:
-   >   - 包含动态子节点的数组
+   >  - 包含动态子节点的数组
    >   - 或者 `null`。
-   >
+   > 
    > ------
-   >
+   > 
    > 13. `appContext`
    >
    > - **含义**: 当前应用的上下文对象，通常用于提供依赖注入等功能。
-   > - 类型:
+   >- 类型:
    >   - 应用上下文对象
-   >   - `null`
+   >  - `null`
    > - 值:
    >   - 在组件初始化时关联对应的上下文对象
    >   - 默认为 `null`。
-
-   先将源代码变为用于生成虚拟DOM的函数（h函数，createVNode函数），函数在浏览器中执行后得到虚拟DOM树，再解析渲染虚拟DOM为真实DOM插入到页面中，引入虚拟DOM的好处是在更新的时候使用虚拟DOM树进行diff比较，最小化更新。
-
+   
+   先将源代码（工程化项目中的vue文件中的模板代码）变为用于生成虚拟DOM的函数（h函数，createVNode函数），函数在浏览器中执行后得到虚拟DOM树，再解析渲染虚拟DOM为真实DOM插入到页面中，引入虚拟DOM的好处是在更新的时候使用虚拟DOM树进行diff比较，最小化更新。
+   
    同时虚拟DOM可以更好的跨平台，服务端渲染时，将模板字符串转为html字符串，单元测试中使用虚拟DOM，canvas绘图也可以借助虚拟DOM标识canvas元素。
-
+   
 3. 区分编译时和运行时
 
    在编写代码时，直接手写虚拟DOM树对象来描述页面UI是很繁琐的。一般都是通过编写.vue文件模板来开发项目，在打包编译时，将模板直接编译为js函数调用，含有函数调用的文件被发送到浏览器后，在浏览执行后返回虚拟DOM。
@@ -221,7 +207,7 @@ vue3.4源码和之前源码的变化对比；使用时注意事项和技巧。
 
    
 
-   不在代码交给浏览器运行的时候，去解析模板，生成函数调用（这样性能不够好，需要浏览器执行的时候，现场解析模板得到对应js函数调用），而是将这一步提前在项目编译打包的这个工程化的阶段去处理，生产的代码就是直接的js函数调用代码，再交给浏览器后，浏览器就直接调用执行这些函数，得到虚拟DOM，再生产真实DOM并挂在到页面上。
+   在代码交给浏览器运行的时候，去解析模板，生成函数调用（这样性能不够好，需要浏览器执行的时候，现场解析模板得到对应js函数调用），好的做法是将这一步提前在项目编译打包的这个工程化的阶段去处理，生产的代码就是直接的js函数调用代码，再交给浏览器后，浏览器就直接调用执行这些函数，得到虚拟DOM，再生产真实DOM并挂在到页面上。
 
    模板=>js函数调用代码的生成：这一步交给编译时库在编译打包阶段提前处理。
 
@@ -233,7 +219,7 @@ vue3.4源码和之前源码的变化对比；使用时注意事项和技巧。
 
 - Vue3.0更注重模块上的拆分，在2.0中无法单独使用部分模块。需要引入完整的Vuejs(例如只想使用使用响应式部分，但是需要引入完整的Vuejs)， Vue3中的模块之间耦合度低，模块可以独立使用。 **拆分模块**
 - Vue2中很多方法挂载到了实例中导致没有使用也会被打包（还有很多内置组件也是一样）。Vue3重写方法后， 通过构建工具Tree-shaking机制实现按需引入，减少用户打包后体积。vue2中的optionsAPI中没有用到的属性与方法都会一并被打包，而Vue3中的组合式api能解决这个问题。 **组合式API**
-- Vue3的核心部分根据虚拟DOM和开发者提供的一些列渲染方法执行渲染工作，其中Vue3又将和具体环境相关的渲染方法单独抽离，允许自定义渲染器，扩展能力强。以前需要改写Vue源码改造渲染方式。 **扩展更方便**
+- Vue3的核心部分根据虚拟DOM和开发者提供的一些列渲染方法执行渲染工作，其中Vue3又将和具体环境相关的渲染方法单独抽离，允许**自定义渲染器**，扩展能力强。以前需要改写Vue源码改造渲染方式。 **扩展更方便**
 
 
 
@@ -245,7 +231,7 @@ vue3.4源码和之前源码的变化对比；使用时注意事项和技巧。
 
 - vue3中是由一个个的独立的模块组成，所以vue3.0 的源码采用 monorepo 方式进行管理（将多个项目的代码存储到同一个仓库中），将包拆到不同的 package 目录中，多个包本身相互独立，有自己的功能逻辑，单元测试又方便管理，可以独立打包发布等。vue2.0 整个项目的框架包含了许多包，这些包都在一个仓库下进行管理（一个项目就一个仓库），但项目复杂时或追求扩展的时候，很难进行。
 - vue3.0 的性能优化大幅提高，支持 tree-shaking（依靠函数式的 api 实现）， vue3.0 中主要就是在写函数；在 vue2.0 中写的代码都是写在一个配置对象（options API）中的，这个对象中哪些属性需要，哪些代码需要都是无法被 vue2.0 判断的，自然没有 tree-shaking 一说，并且Vue2中很多方法（$nextTick）挂载到了实例中导致没有使用也会被打包（一些组件(transition组件)也一样）
-- Vue3允许自定义渲染器，扩展能力强。不会发生以前的事情，改写Vue源码改造渲染方式。 
+- Vue3允许自定义渲染器，扩展能力强。以前要改写Vue源码改造渲染方式。 
 - vu2.0 写起来有时很被动，必须按照框架的规则在特定部分写特定代码，写代码不够灵活，反复横跳
 - vue3.0 的源码体积优化，移除了部分 api，比如 filter 过滤器，实例的\$on,\$off,\$onec 和内联模块
 
@@ -1828,7 +1814,213 @@ export function createVNode(type, props, children = null) {
 
 
 
-## 组件
+## 组件渲染
+
+Vue中的组件本质是一个对象，在工程化项目开发中编写的一个个的.vue的文件会被编译打包为一个js对象，这个对象上有开发者编写的数据，render函数（模板），方法等。optionsAPI的写法中，render函数中的this指向的是基于组件创建的实例对象。
+
+Vue3中不再是通过new 组件类来产生组件的虚拟DOM对象对应的组件实例对象了。因为new的性能不够高。而是通过工厂函数的方式创建实例对象的。
+
+```js
+const VueComponent = {
+  data() {
+    return { name: "aaa", age: 18 };
+  },
+  render(proxy) {
+    setTimeout(() => {
+      this.age++;
+      this.age++;
+    }, 1000);
+    // this == 组件的实例  内部不会通过类来产生实例了
+    return h(Fragment, [
+      h(Text, "my name is " + this.name),
+      h("a", this.age),
+    ]);
+  },
+};
+
+// 组件两个js对象组成  h(VueComponent)  =>产生的是组件对应的vnode 
+// render函数返回的虚拟节点，这个虚拟节点才是最终要渲染的内容  => subTree
+render(h(VueComponent, { a: 1, b: 2, name: "ccc", age: 20 }), app);
+```
+
+
+
+源码中要识别组件，为此，内部对组件进行了标识，在将组件作为h函数的第一个参数时，h函数会创建组件对应虚拟DOM对象，其中虚拟DOM对象的shapeFlag属性就能标识该虚拟DOM对应的是一个标签元素还是组件对象对应的。
+
+
+
+在Vue的工程化项目中，开发者编写的`.vue`文件被称为单文件组件（Single File Components, SFC）。这些文件包含了模板（template）、脚本（script）、样式（style）三个主要部分，每个部分负责不同的功能。通过构建工具如Vue CLI、Vite等以及Webpack、Rollup等打包工具，这些`.vue`文件会被编译成标准的JavaScript代码，并与依赖一起打包输出为浏览器可执行的形式。
+
+**编译过程**
+
+1. **`<template>` 部分**：会被编译为渲染函数（render function），这个函数用于生成虚拟 DOM。
+2. **`<script>` 部分**：会被编译为普通的 JavaScript 代码，通常是 ES Module 格式。
+3. **`<style>` 部分**：会被编译为 CSS，并可能通过 PostCSS 进行处理，最终可能会被提取到单独的 CSS 文件中，或者通过 JavaScript 动态注入到页面中。
+
+下面以一个简单的例子来说明这个过程：
+
+假设有一个简单的 `.vue` 文件：
+
+```vue
+<template>
+  <div class="example">
+    <h1>{{ message }}</h1>
+    <button @click="increment">Click me</button>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      message: 'Hello, Vue!',
+      count: 0
+    };
+  },
+  methods: {
+    increment() {
+      this.count++;
+      this.message = `You clicked ${this.count} times`;
+    }
+  }
+};
+</script>
+
+<style scoped>
+.example {
+  color: blue;
+}
+</style>
+```
+
+**编译后的代码**
+
+经过 Vue 的构建工具编译后，这个 `.vue` 文件可能会被转换为类似以下的 JavaScript 代码：
+
+```js
+// 编译后的 <template> 部分
+function render() {
+  with (this) {
+    return _c('div', { staticClass: "example" }, [
+      _c('h1', [_v(_s(message))]),
+      _c('button', { on: { click: increment } }, [_v("Click me")])
+    ]);
+  }
+}
+
+// 编译后的 <script> 部分
+export default {
+  data() {
+    return {
+      message: 'Hello, Vue!',
+      count: 0
+    };
+  },
+  methods: {
+    increment() {
+      this.count++;
+      this.message = `You clicked ${this.count} times`;
+    }
+  },
+  render // 将渲染函数挂载到组件上
+};
+
+// 编译后的 <style> 部分
+// 这部分通常会被提取到单独的 CSS 文件中，或者通过 JavaScript 动态注入
+const css = `.example { color: blue; }`;
+// 动态注入样式
+if (typeof document !== 'undefined') {
+  const style = document.createElement('style');
+  style.type = 'text/css';
+  style.appendChild(document.createTextNode(css));
+  document.head.appendChild(style);
+}
+```
+
+**解释**
+
+1. **`render` 函数**：这是由 `<template>` 编译生成的渲染函数，`_c` 是 Vue 内部用于创建虚拟 DOM 节点的函数，`_v` 是创建文本节点的函数，`_s` 是将变量转换为字符串的函数。
+2. **`<script>` 部分**：编译后的 JavaScript 代码与原始的 `<script>` 部分几乎一致，只是多了一个 `render` 函数的挂载。
+3. **`<style>` 部分**：编译后的 CSS 代码可能会被提取到单独的 CSS 文件中，或者通过 JavaScript 动态注入到页面中。
+
+**打包输出**
+
+最终，这些编译后的代码会被打包工具（如 Webpack 或 Vite）打包成一个或多个 JavaScript 文件（可能还会有单独的 CSS 文件），并在浏览器中执行。
+
+
+
+一个包含了组件导入和使用的示例结果：
+
+```js
+// 1. Vue 运行时和组件渲染相关的工具函数
+import { createApp, defineComponent, h } from 'vue';
+
+// 2. Example 组件的编译结果
+const Example = defineComponent({
+  data() {
+    return {
+      message: 'Hello, Vue!',
+      count: 0,
+    };
+  },
+  methods: {
+    increment() {
+      this.count++;
+      this.message = `You clicked ${this.count} times`;
+    },
+  },
+  render() {
+    return h('div', { class: 'example' }, [
+      h('h1', this.message),
+      h('button', { onClick: this.increment }, 'Click me'),
+    ]);
+  },
+});
+
+// 3. App 组件的编译结果
+const App = defineComponent({
+  components: {
+    Example,
+  },
+  render() {
+    return h('div', { id: 'app' }, [h(Example)]);
+  },
+});
+
+// 4. 动态注入样式
+const styles = `
+.example { color: blue; }
+#app { font-family: Avenir, Helvetica, Arial, sans-serif; text-align: center; margin-top: 60px; }
+`;
+if (typeof document !== 'undefined') {
+  const style = document.createElement('style');
+  style.type = 'text/css';
+  style.appendChild(document.createTextNode(styles));
+  document.head.appendChild(style);
+}
+
+// 5. 创建 Vue 应用并挂载到 DOM
+const app = createApp(App);
+app.mount('#app');
+```
+
+**关键点解释**
+
+1. **`defineComponent`**：
+   - Vue 3 中使用 `defineComponent` 来定义组件。
+   - `Example` 和 `App` 组件都被转换为 `defineComponent` 的形式。
+2. **`h` 函数**：
+   - `h` 是 Vue 的渲染函数，用于创建虚拟 DOM 节点。
+   - 在 `render` 函数中，`h` 替代了之前的 `_c`、`_v` 等内部函数。
+3. **样式注入**：
+   - 如果配置了提取 CSS 文件，样式会被提取到 `app.[hash].css` 中。
+   - 如果没有提取，样式会通过 JavaScript 动态注入到页面中。
+4. **应用挂载**：
+   - 使用 `createApp` 创建 Vue 应用实例，并将 `App` 组件挂载到 `#app` DOM 节点上。
+
+
+
+
 
 组件的特点、渲染、特性、插槽、事件、props、更新等。
 
@@ -1926,6 +2118,137 @@ setup函数中返回的对象，如果时ref，在源码的内部会使用proxyR
 
 
 
+
+
+
+
+## 插槽slot
+
+定义组件模板:
+
+```vue
+<template>
+  <slot name="header"></slot>
+  <slot></slot>
+  <slot name="footer"></slot>
+</template>
+```
+
+编译后的结果：
+
+```js
+import { renderSlot as _renderSlot, openBlock as _openBlock, createElementBlock as _createElementBlock } from "vue"
+
+export function render(_ctx, _cache, $props, $setup, $data, $options) {
+  return (_openBlock(), _createElementBlock("template", null, [
+    _renderSlot(_ctx.$slots, "header"),
+    _renderSlot(_ctx.$slots, "default"),
+    _renderSlot(_ctx.$slots, "footer")
+  ]))
+}
+
+// Check the console for the AST
+```
+
+
+
+
+
+
+
+使用组件时，为组件提供模板：
+
+```vue
+<template>
+  <ChildComponent>
+    <template #header>
+      <h1>这里是头部内容</h1>
+    </template>
+    <p>默认插槽的内容</p>
+    <template #footer>
+      <p>这里是底部内容</p>
+    </template>
+  </ChildComponent>
+</templat
+```
+
+
+
+```js
+import { createElementVNode as _createElementVNode, resolveComponent as _resolveComponent, withCtx as _withCtx, createVNode as _createVNode, openBlock as _openBlock, createElementBlock as _createElementBlock } from "vue"
+
+export function render(_ctx, _cache, $props, $setup, $data, $options) {
+  const _component_ChildComponent = _resolveComponent("ChildComponent")
+
+  return (_openBlock(), _createElementBlock("template", null, [
+    _createVNode(_component_ChildComponent, null, {
+      header: _withCtx(() => [
+        _createElementVNode("h1", null, "这里是头部内容")
+      ]),
+      footer: _withCtx(() => [
+        _createElementVNode("p", null, "这里是底部内容")
+      ]),
+      default: _withCtx(() => [
+        _createElementVNode("p", null, "默认插槽的内容")
+      ], undefined, true),
+      _: 1 /* STABLE */
+    })
+  ]))
+}
+
+// Check the console for the AST
+```
+
+
+
+
+
+## 模板编译优化
+
+之前实现的diff算法有缺陷，是一个深度优先的递归**同级**比较。但是一些完全静态的子DOM树分支并不需要再去进行多余的递归比较，因为他们的内容是完全静态稳定的。
+
+```vue
+<div>
+  <p>hello</p>
+  <span :class='active'>{{name}}</span>
+</div>
+```
+
+比如上面的p标签就是完全没有必要在数据更新的时候再进行比较，只比较span标签的内容即可。
+
+为此，vue在模板编译阶段对静态的和动态的节点通过虚拟DOM上的patchFlag属性进行了区别。
+
+**vue单文件组件模板**->模板编译-> **模板组件对应的渲染函数**->浏览器中执行->**对应的虚拟DOM树对象**->vue的runtime-dom渲染库->**生成真实的DOM元素并挂载到页面上**。
+
+模板编译后生成的渲染函数：
+
+```js
+import { createElementVNode as _createElementVNode, toDisplayString as _toDisplayString, normalizeClass as _normalizeClass, openBlock as _openBlock, createElementBlock as _createElementBlock } from "vue"
+
+export function render(_ctx, _cache, $props, $setup, $data, $options) {
+  return (_openBlock(), _createElementBlock("div", null, [
+    _createElementVNode("p", null, "hello"),
+    _createElementVNode("span", {
+      class: _normalizeClass(_ctx.active)
+    }, _toDisplayString(_ctx.name), 3 /* TEXT, CLASS */)
+  ]))
+}
+
+// Check the console for the AST
+```
+
+其中的 1 /* TEXT */就是编译阶段针对有动态内容的元素生成的patchFlag，有多种patchFlag值。
+
+_openBlock这个方法创建的数组会被用来收集他的后代元素中的所有的包含动态信息的元素节点，而忽略层级关系。
+
+在编写Vue3时，直接采用jsx或者h的写法来编写模板，这是没法进行编译优化的。
+
+
+
+虚拟DOM元素上有一个dynamicChildren和dynamicProps属性。
+
+
+
 ## 面试
 
 ### 对Vue的理解
@@ -2011,4 +2334,8 @@ const VueComponent = {
     },
 };
 ```
+
+
+
+
 

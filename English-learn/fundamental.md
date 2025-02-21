@@ -2,11 +2,85 @@
 
 故事：
 
-There are these two young fish swimming along and they happen to meet an older fish swimming the other way, who nods at them and says , "Morning,boys.How is the water?"
+There are these two young fish swimming along and they happen to meet an older fish swimming the other way, who nods at them and says , "Morning,boys. How is the water?"
+
+扩展：
+
+> fish：单复数同形，或者fishes。
+>
+> 某些动词和介词有固定的搭配方式。对于动词 "swim"（游泳），通常直接跟方向名词或副词，而不加介词。例如：
+>
+> - He is swimming away.
+> - The fish are swimming towards the surface.
+> - Turn the other way to see the beautiful sunset.
+>
+> 介词 **"on"** 通常表示附着、表面或位置，与**静态的状态或动作**有关。例如：
+>
+> - "on the road"（在路上）
+> - "on the way"（在路途上）
+>
+> 如果说 **"on the other way"**，听起来更像是指“在另一条路上”或“附着在另一种方式上”，而不适合描述一个动态的动作（如游泳）。
 
 他们不知道大鱼在说什么，所以他们继续游着，没有回答。
 
 And the two young fish swim on for a bit, and then eventually one of them looks over at the other and goes,"What the thell is water?"
+
+扩展：
+
+> 在句子 **"The two young fish swim on for a bit."** 中，**"on"** 的使用是为了强调动作的**持续性**或**继续进行**。这是动词短语中常见的一种用法，表示**继续做某件事**。
+>
+> **"on"** 表示“继续”或“持续地向前”。这种用法常见于动词后，表示动作没有中断，继续进行。例如：
+>
+> - "He walked on."（他继续走。）
+> - "They talked on for hours."（他们谈了好几个小时。）
+>
+> 因此，**"swim on"** 表达的是“继续游”的意思，而不仅仅是“游”。
+>
+> **"on"** 通常与表示动作的动词搭配，用于突出动作的持续性或延续性。这种用法在很多场景下都很常见：
+>
+> - "Move on."（继续前进。）
+>
+> - "Carry on."（继续做。）
+>
+> - "Read on."（继续读下去。）
+>
+>   
+>
+> **"look at"** 是最常见且固定的搭配，而 **"look over"** 和 **"look over at"** 都是常见的搭配，但它们的含义和使用方式稍有不同。
+>
+> 1. **"look at"** — 固定搭配
+>
+> **"Look at"** 是最标准、最常见的固定搭配，意思是“看某人/某物”或“注视”。这是一个直接的动作描述，表示你**将视线集中在某个对象**上。它通常用于表示一种明确的关注或观察。
+>
+> - 例如：
+>   - "She looked at the painting."（她看着画。）
+>   - "Look at that!"（看那个！）
+>
+> 2. **"look over"** — 固定搭配（但含义不同）
+>
+> **"Look over"** 这个搭配通常表示**检查、浏览或快速查看**，它并不直接指向某人或某物，而是指对某事物进行**快速的或粗略的检查**。这个短语强调的是动作的方式——**看得不仔细，或者仅仅是浏览而已**。
+>
+> - 例如：
+>   - "She looked over the document."（她浏览了这份文件。）
+>   - "He looked over the room."（他扫视了一下房间。）
+>
+> 在某些情况下，**"look over"** 还可以表示**环视**某个地方。
+>
+> 3. **"look over at"** — 两个搭配的结合
+>
+> 当 **"look over"** 和 **"at"** 连用时，通常表示“**朝某个方向瞥过去**”或“**看向**”某个特定的人或物。这里的 **"over"** 增加了一种**转移视线的感觉**，而 **"at"** 则明确表示视线的**目标**。
+>
+> **"Look over at"** 组合在一起，形成了一个有特定情境含义的表达，通常表示稍微瞥一眼某人或某物的动作，或是某人朝某个方向看去。
+>
+> - 例如：
+>   - "She looked over at him and smiled."（她朝他看了一眼，微笑。）
+>   - "The dog looked over at the bone."（狗看向了骨头。）
+>
+> 总结：
+>
+> - **"Look at"** 是最常见的固定搭配，表示直接的“看”或“注视”。
+> - **"Look over"** 是另一种常见的搭配，表示“快速查看”或“环视”。
+> - **"Look over at"** 结合了这两个搭配，表示**看向某个地方或人**，通常强调动作的轻微性或方向性。
 
 对于语言也是如此：1. 水，就是母语环境; 鱼，就是母语人士。
 
@@ -117,7 +191,7 @@ A.了     B.过    C.着    D.的
 
 because引导的从句作主语:
 
-There is a big difference between activity and accomplishment. Just because you are doing something doesn’t mean you are getting anywhere.One must evaluate one’s activity in order to have accomplishment.(忙碌并不意味着就一定会有成果，二者之间有很大不同。只是因为你在不停地忙碌并不意味着就有成果。因此，人们必须认真审视自己的忙碌，看能否取得成果。) 
+There is a big difference between activity and accomplishment. Just because you are doing something doesn’t mean you are getting anywhere. One must evaluate one’s activity in order to have accomplishment.(忙碌并不意味着就一定会有成果，二者之间有很大不同。只是因为你在不停地忙碌并不意味着就有成果。因此，人们必须认真审视自己的忙碌，看能否取得成果。) 
 
 
 
@@ -159,13 +233,13 @@ You are what you read.(你即你所读。)
 本书特点：
 
 1. 一般语法书教条式地罗列大量的所谓规则，不讲解背后的思维规律。
-2. 一般语法书还有许多看似例外的规则加重记忆理解负担，但其实这些例外本质也是有符合逻辑的思维规律，这样就避免的纯粹的对这些例外的背诵，而是辅助于理解记忆
+2. 一般语法书还有许多看似例外的规则加重记忆负担，但其实这些例外本质也是有符合逻辑的思维规律，这样就避免的纯粹的对这些例外的背诵，而是辅助于理解记忆
 3. 一般语法书严重忽视句子的上下文语境，给出的例句，只为说明规则，在学习一个语法知识点的时候，需要结合有上下文语境的情况辅助和加深理解，理解器背后的思维
-4. 一般语法书只是讲语法知识，而不重视真正的口语应用。
+4. 一般语法书只是讲语法知识，而不重视真正的口语应用和创造性的学习英语。
 
 
 
-对于学习英语，如果只是死记单词，而没有训练出良好的英语思维，那么学到的不过是英文这种文本（text），而不是作为思想表达工具的英语语言 （language）。
+语言作为思维的载体，语言表达本质上是一种思维的表达，对于学习英语，如果只是死记单词，而没有训练出良好的英语思维，那么学到的不过是英文这种文本（text），而不是作为思想表达工具的英语语言 （language）。
 
 因为没有掌握英语思维，所以在面对相对专业的文章时，甚至会不知道它在说什么，它的潜意思是什么，同时更无法在日常交流中使用英语进行交流。
 
@@ -217,42 +291,42 @@ You are what you read.(你即你所读。)
 
 
 
-扩展：
+**扩展**：
 
-第一次提到的单数可数名词前面用不定冠词 a 或 an，这一名词再次出现则要用定冠词 the在英语中的理解。
-
-1. **第一次提到的单数可数名词前使用不定冠词 `a` 或 `an`**：
-   - 当你第一次提到某个名词时，听众或读者还不清楚你具体指的是哪个事物，因此你需要使用不定冠词来表示“一个”的概念，而不指代具体的某一个。例如：
-     - "I saw **a** dog in the park." 这里的 "a dog" 指的是某一只没有被明确指代的狗。
-2. **再次提到该名词时使用定冠词 `the`**：
-   - 当你再次提到这个事物时，听众或读者已经知道你说的是什么（因为它之前已经被提到），因此你需要用定冠词 `the` 来表示这个特定的事物。例如：
-     - "The dog was very friendly." 这里的 "the dog" 指的是之前提到的那只特定的狗，听众知道是哪只。
-
-**理解关键**：
-
-- 不定冠词 `a/an` 用于介绍新的或不特定的事物。
-- 定冠词 `the` 用于指代已经明确的、特定的事物。
-
-**类似的中文现象**
-
-在中文中没有像英文那样明确的冠词系统，但可以通过上下文来表达类似的概念。中文中也会有从不明确到明确的表达变化，以下是类似的现象：
-
-1. **第一次提到某个事物时通常比较笼统、模糊**：
-   - 例如："我在公园看到**一只狗**。" 这里的 "一只狗" 类似于英语中的 "a dog"，听众并不知道这只狗的具体身份或是哪一只。
-2. **再次提到这个事物时，会用更加具体的描述**：
-   - 例如："那只狗很可爱。" 这里的 "那只狗" 类似于英语中的 "the dog"，因为这时已经是明确提到之前的那只狗。
-
-**举个中文例子：**
-
-1. 第一次提到：
-   - "今天早上，我在路上碰到**一个人**。" 这里的 "一个人" 没有特别说明是哪一个，和不定冠词 `a person` 的概念相似。
-2. 再次提到：
-   - "那个**人**告诉我，他要去超市。" 这里的 "那个人" 表示你之前提到的那个具体的人，类似于 `the person`。
-
-**总结**
-
-- 英文中的不定冠词 `a/an` 和定冠词 `the` 主要是用来区分提到事物的模糊性和具体性。
-- 在中文中虽然没有冠词系统，但通过类似的词汇（如“一个”、“那”、“这”）以及上下文来传达不确定性和确定性，体现出类似的逻辑。
+> 第一次提到的单数可数名词前面用不定冠词 a 或 an，这一名词再次出现则要用定冠词 the在英语中的理解。
+>
+> 1. **第一次提到的单数可数名词前使用不定冠词 `a` 或 `an`**：
+>    - 当你第一次提到某个名词时，听众或读者还不清楚你具体指的是哪个事物，因此你需要使用不定冠词来表示“一个”的概念，而不指代具体的某一个。例如：
+>      - "I saw **a** dog in the park." 这里的 "a dog" 指的是某一只没有被明确指代的狗。
+> 2. **再次提到该名词时使用定冠词 `the`**：
+>    - 当你再次提到这个事物时，听众或读者已经知道你说的是什么（因为它之前已经被提到），因此你需要用定冠词 `the` 来表示这个特定的事物。例如：
+>      - "The dog was very friendly." 这里的 "the dog" 指的是之前提到的那只特定的狗，听众知道是哪只。
+>
+> **理解关键**：
+>
+> - 不定冠词 `a/an` 用于介绍新的或不特定的事物。
+> - 定冠词 `the` 用于指代已经明确的、特定的事物。
+>
+> **类似的中文现象**
+>
+> 在中文中没有像英文那样明确的冠词系统，但可以通过上下文来表达类似的概念。中文中也会有从不明确到明确的表达变化，以下是类似的现象：
+>
+> 1. **第一次提到某个事物时通常比较笼统、模糊**：
+>    - 例如："我在公园看到**一只狗**。" 这里的 "一只狗" 类似于英语中的 "a dog"，听众并不知道这只狗的具体身份或是哪一只。
+> 2. **再次提到这个事物时，会用更加具体的描述**：
+>    - 例如："那只狗很可爱。" 这里的 "那只狗" 类似于英语中的 "the dog"，因为这时已经是明确提到之前的那只狗。
+>
+> **举个中文例子：**
+>
+> 1. 第一次提到：
+>    - "今天早上，我在路上碰到**一个人**。" 这里的 "一个人" 没有特别说明是哪一个，和不定冠词 `a person` 的概念相似。
+> 2. 再次提到：
+>    - "那个**人**告诉我，他要去超市。" 这里的 "那个人" 表示你之前提到的那个具体的人，类似于 `the person`。
+>
+> **总结**
+>
+> - 英文中的不定冠词 `a/an` 和定冠词 `the` 主要是用来区分提到事物的模糊性和具体性。
+> - 在中文中虽然没有冠词系统，但通过类似的词汇（如“一个”、“那”、“这”）以及上下文来传达不确定性和确定性，体现出类似的逻辑。
 
 
 
@@ -305,29 +379,29 @@ You are what you read.(你即你所读。)
 
 扩展：
 
-现在完成进行时（**have/has been + 动词的现在分词**）主要用于强调**动作的持续性**或**动作发生的频繁性**，但并不适合用来描述**具体的次数**。现在完成进行时更多关注的是动作的过程、时间长度或者某种持续的状态，而不是动作完成的次数。因此，在涉及具体次数时，使用现在完成进行时会导致不自然或语义不清晰的表达。
-
-**原因分析：**
-
-1. **现在完成进行时的重点是动作的持续性或发生的频率**：
-   - 现在完成进行时强调的是某个动作从过去某一时间点开始，持续进行到现在，**可能**还会继续。这种时态的重点是动作是否还在进行或发生的频率，而不是具体的次数。
-   - 比如：*I have been visiting Beijing a lot lately.* 这里并不强调具体的次数，而是在表达动作的持续或多次重复发生。
-2. **现在完成时适合表示具体次数**：
-   - 当你想说明具体次数时，应该使用**现在完成时**（**have/has + 过去分词**），因为现在完成时侧重于动作发生的次数或结果，而不关心动作是如何发生的。
-   - 比如：*I have visited Beijing fourteen times.* 这里的 `have visited` 明确表达了动作的完成和发生的具体次数。
-
-**例子对比：**
-
-- **现在完成进行时（不能用具体次数）**：
-  - ❌ *I have been coming to Beijing fourteen times.* —— 不合适，因为现在完成进行时强调的是动作的**持续性**或**频率**，而不是具体次数。
-  - ✔ *I have been coming to Beijing frequently over the past few years.* —— 正确，因为这里没有涉及具体次数，而是强调了**频繁的动作**。
-- **现在完成时（可以用具体次数）**：
-  - ✔ *I have visited Beijing fourteen times.* —— 正确，明确表示了具体的动作次数，且动作已经完成。
-
-**为什么不能用现在完成进行时表达具体次数？**
-
-- **时态的侧重点不同**：现在完成进行时侧重于动作的持续性或重复性，适合用于表达动作正在进行或频繁发生，但不关心具体的次数。
-- **逻辑不合**：当你明确提到具体的次数时，逻辑上是说明你已经完成了这个动作的某个阶段（比如去过北京十四次），因此更适合用现在完成时这种强调动作完成或结果的时态，而不是强调过程的现在完成进行时。
+> 现在完成进行时（**have/has been + 动词的现在分词**）主要用于强调**动作的持续性**或**动作发生的频繁性**，但并不适合用来描述**具体的次数**。现在完成进行时更多关注的是动作的过程、时间长度或者某种持续的状态，而不是动作完成的次数。因此，在涉及具体次数时，使用现在完成进行时会导致不自然或语义不清晰的表达。
+>
+> **原因分析：**
+>
+> 1. **现在完成进行时的重点是动作的持续性或发生的频率**：
+>    - 现在完成进行时强调的是某个动作从过去某一时间点开始，持续进行到现在，**可能**还会继续。这种时态的重点是动作是否还在进行或发生的频率，而不是具体的次数。
+>    - 比如：*I have been visiting Beijing a lot lately.* 这里并不强调具体的次数，而是在表达动作的持续或多次重复发生。
+> 2. **现在完成时适合表示具体次数**：
+>    - 当你想说明具体次数时，应该使用**现在完成时**（**have/has + 过去分词**），因为现在完成时侧重于动作发生的次数或结果，而不关心动作是如何发生的。
+>    - 比如：*I have visited Beijing fourteen times.* 这里的 `have visited` 明确表达了动作的完成和发生的具体次数。
+>
+> **例子对比：**
+>
+> - **现在完成进行时（不能用具体次数）**：
+>   - ❌ *I have been coming to Beijing fourteen times.* —— 不合适，因为现在完成进行时强调的是动作的**持续性**或**频率**，而不是具体次数。
+>   - ✔ *I have been coming to Beijing frequently over the past few years.* —— 正确，因为这里没有涉及具体次数，而是强调了**频繁的动作**。
+> - **现在完成时（可以用具体次数）**：
+>   - ✔ *I have visited Beijing fourteen times.* —— 正确，明确表示了具体的动作次数，且动作已经完成。
+>
+> **为什么不能用现在完成进行时表达具体次数？**
+>
+> - **时态的侧重点不同**：现在完成进行时侧重于动作的持续性或重复性，适合用于表达动作正在进行或频繁发生，但不关心具体的次数。
+> - **逻辑不合**：当你明确提到具体的次数时，逻辑上是说明你已经完成了这个动作的某个阶段（比如去过北京十四次），因此更适合用现在完成时这种强调动作完成或结果的时态，而不是强调过程的现在完成进行时。
 
 
 
@@ -365,7 +439,7 @@ You are what you read.(你即你所读。)
 
 上面的that was fun被用在了溜冰活动结束之后，而不是在活动进行过程中（此时要说成that is fun）。在上面这个对话语境中，大多数国人可能会说that is fun。由此看到，如果不是提供这样完整的对话语境，读者就很难真正会恰当使用that was fun。
 
-所以，在学习语法时，不仅要能够构造出形式正确、能够表达意义的句子，更要关注这个句子所能使用的语境。传统的语法书和语法教学在这方面做得相当不够，他们提供例句主要是为解释某条语法规则服务的，而句子背后的使用语境没有展现给学生。规则下面罗列的例句都是僵化的、脱离了语境的死文字。
+所以，在学习语法时，不仅要能够构造出形式正确、能够表达意义的句子，更要关注这个句子所能使用的语境。传统的语法书和语法教学在这方面做得相当不够，他们提供例句主要是为解释某条语法规则，而句子背后的使用语境没有展现给学生。规则下面罗列的例句都是僵化的、脱离了语境的死文字。
 
 **去分析、解释为什么英语本族语者要“这样”说（what native speakers of English actually do say and why）**
 
@@ -387,7 +461,7 @@ You are what you read.(你即你所读。)
 
 He is interesting to listen to
 
-是要表达什么意思呢？一定有读者这么理解： 他对听别人讲话很感兴趣。 这么理解就错了。其实这句话意思是： 听他讲话很有趣。 不能正确理解这个句子的一个根本原因是没有真正理解这个句子的 如下“深层结构”：
+是要表达什么意思呢？一定有读者这么理解： 他对听别人讲话很感兴趣。 这么理解就错了。其实这句话意思是： 听他讲话很有趣。 不能正确理解这个句子的一个根本原因是没有真正理解这个句子的如下“深层结构”：
 
 It is interesting to listen to him.
 
@@ -399,7 +473,7 @@ It is interesting to listen to him.
 
 ## 学习建议
 
-学习语法知识本身不是目的，目的是通过对语法知识的学习，用于进行语言交流，讲语法知识转为听说读写的能力。
+学习语法知识本身不是目的，目的是通过对语法知识的学习，用于进行语言交流，将语法知识转为听说读写的能力。
 
 建议：
 
@@ -433,7 +507,7 @@ It is interesting to listen to him.
 
 - 帮助读者分析和构造复杂的长难句（应对各种国内外考试的阅读与写作）
 - 非谓语动词（不定式，动名词和分词）
-- 三大从句和san大非谓语动词联系和转换
+- 三大从句和三大非谓语动词联系和转换
 
 
 
@@ -448,6 +522,68 @@ It is interesting to listen to him.
 每章最后都会有总结，包括章节学习思路，重点难点和学习时间的安排建议，用于参考。
 
 每学习完一节的内容后就先停下来，思考看自己是否真的理解本节的内容，通过练习进行测试，不要一口气读完每章所有内容而不做练习。
+
+
+
+
+
+## 单词
+
+
+
+**orient** ：/ ˈɔːrient /
+
+*v.*朝向，面对，使熟悉，帮助适应
+
+*adj.*<文>东方的，东方国家的；
+
+n. the countries of Asia
+
+
+
+**perspective** : / pəˈspektɪv /
+
+*n.*（观察问题的）视角；（几何）透视关系，投影比例；洞察力，判断力
+
+*adj.*透视的
+
+
+
+
+
+**fundamental**： / ˌfʌndəˈment(ə)l /
+
+- *adj.*根本的，基本的；必需的，必不可少的；不能再分的
+- *n.*基本原理；基音，基频
+
+
+
+
+
+**rollerblade** : / ˈrəʊləbleɪd /
+
+- *n.*直排轮滑；滚轴溜冰；滑旱冰
+- *vi.*滑旱冰
+
+
+
+**pyramid**：/ ˈpɪrəmɪd /
+
+*n.*金字塔；金字塔形的物体（或一堆东西）；角锥体，棱锥体；
+
+*v.*把……堆成尖塔（或角锥）形；在（小投资）上获得丰厚的收益；渐增，上涨；
+
+
+
+**temple**：/ ˈtemp(ə)l /
+
+*n.*庙宇，寺院；太阳穴，鬓角；犹太教堂；教堂，礼拜堂
+
+
+
+**short-term**：/ ˌʃɔːt ˈtɜːm /
+
+*adj.*短期的
 
 
 
@@ -575,10 +711,12 @@ The eighth wonder of the world is the one who can remember the other seven wonde
 
 
 
+the stars are yellow so that they will stand out brightly against the red ground.
+
 扩展：
 
 1. **so that**：
-   - **"so that"** 是一个引导目的状语从句的连接词，表示动作的目的或结果。这类从句用于说明前面的主句所发生的动作是为了达到某个目的或结果。
+   - **"so that"** 是一个引导**目的状语从句的连接词**，表示动作的目的或结果。这类从句用于说明前面的主句所发生的动作是为了达到某个目的或结果。
    - 在这个句子中，**"so that"** 引导的从句解释了为什么星星是黄色的：为了让它们在红色的地面上更醒目。
 2. **they will stand out brightly against the red ground**：
    - 这是一个完整的主谓结构。
@@ -620,8 +758,6 @@ The eighth wonder of the world is the one who can remember the other seven wonde
 
 ![image-20221208131908907](./images/image-20221208131908907.png)
 
-在英语里，名词的定语要么在名词的前面， 要么在名词的后面。
-
 左置的定语只有两个：==限定词和形容词==，且可能存在多个限定词或者形容词
 
 > the American national flag：限定词＋形容词＋形容词＋名词
@@ -630,7 +766,7 @@ The eighth wonder of the world is the one who can remember the other seven wonde
 
 ==左置的两个定语的位置关系非常明确和严格：必须是限定词在形容词的左边，结构是：限定词＋形容词 ＋名词。==
 
-==英语和汉语的一 个基本差别就是名词修饰语即**定语**的位置差异。汉语的定语一律是在名词的前面，而英语的定语有在名词前面的，也有在名词后面的，更多的定语是置于被修饰名词的后面，构成后置定语。所以，在**语言学** 上，**汉语被称作是“中心词（head）在后”的语言（head-last language）；英语被称作是“中心词在前”的语言（head-first language）**。==
+==英语和汉语的一个基本差别就是名词修饰语即**定语**的位置差异。汉语的定语一律是在名词的前面，而英语的定语有在名词前面的，也有在名词后面的，更多的定语是置于被修饰名词的后面，构成后置定语。所以，在**语言学** 上，**汉语被称作是“中心词（head）在后”的语言（head-last language）；英语被称作是“中心词在前”的语言（head-first language）**。==
 
 
 
@@ -638,7 +774,7 @@ The eighth wonder of the world is the one who can remember the other seven wonde
 
 扩展：
 
-在英语的**名词短语**中，**限定词**和**形容词**可以出现多个，但它们在句中的排列顺序和功能有所不同。
+在**名词短语**中，**限定词**和**形容词**可以出现多个，但它们在句中的排列顺序和功能有所不同。
 
 1. **限定词（Determiners）**：
 
@@ -731,7 +867,7 @@ The eighth wonder of the world is the one who can remember the other seven wonde
 
 6. 什么时候要用 of 属格？
 
-英语里的可数名词与不可数名词，在汉语思维里是不把名词作这一区分的。这一区分涉及了思维上的差异，而这种思维在我们汉语语言里是天然缺失的。因此，学了很多年英语的中国人，通常还是搞不清楚某个名词是可数还是不可数，因而造成大量的表达错误。比如在说话或写作中，常常“忘记”在复数名词后面加-s，或者搞不清楚某个名词的后面该不该加 s。
+英语里的可数名词与不可数名词，在汉语思维里是不把名词作这一区分的。这一区分涉及了思维上的差异，而这种思维在汉语里是天然缺失的。因此，学了很多年英语的中国人，通常还是搞不清楚某个名词是可数还是不可数，因而造成大量的表达错误。比如在说话或写作中，常常“忘记”在复数名词后面加-s，或者搞不清楚某个名词的后面该不该加 s。
 
 从思维的高度来说，可数名词与不可数名词这一区分反映了中国人与英语的 native speakers 在看待客观外界事物时所持的两种不同的世界观：**国人的脑子里想到某个名词时，不关注它是可数或不可数；但在 native speakers 的脑子里，每个名词都有可数与不可数之分**，因而对事物的理解是不一样的。
 
@@ -946,6 +1082,8 @@ TOEFL考试中的句子：
 
 
 **可数的名词如何转化成不可数的名词**
+
+**本质还是一个单词在表达不同的意思时，可数性存在变化。**
 
 比如对于room这个词，表示“房间”，此时是可数名词。但是若作为“空间，余地”来理解时，则是一个抽象概念而转化成为一个不可数名词。
 
@@ -1230,7 +1368,7 @@ We are not *boyfriend* and *girlfriend*.   这里的boyfriend和girlfriend同样
 
 3. **“the＋形容词”——表示一类人的复数名词**
 
-   在英文中，“the＋形容词”表示一类人，此时当作复数名词，作主语时，谓语要用复数。
+   “the＋形容词”表示一类人，此时当作复数名词，作主语时，谓语要用复数。
 
    *The rich are* becoming richer. 富人变得更富。
 
@@ -1500,7 +1638,7 @@ German不是一个合成词，所以其复数形式是在词尾直接加-s， �
 
 **构成**
 
-名词所有格“'s”主要用来表示有生命的名词的所 属关系。所以它通常用在姓名、人称、不定代词、集体名词和高等动物 等这样的名词后面。
+名词所有格“'s”主要用来表示有生命的名词的所属关系。所以它通常用在姓名、人称、不定代词、集体名词和高等动物等这样的名词后面。
 
 
 
@@ -1512,7 +1650,7 @@ German不是一个合成词，所以其复数形式是在词尾直接加-s， �
 
 名词后面该如何添加“'s”：
 
-1. 单数名词的所有格，在词尾加“'s”
+1. 单数名词（不管是否以s结尾，actress`s）的所有格，在词尾加“'s”
 2. 对于复数名词的所有格的构成，要分下面两种情况：
    - 不以-s或-es结尾的特殊变化的复数名词，在词尾加“'s”。
    - 以-s结尾的复数名词，在词尾加“'”构成所有格。
@@ -1958,7 +2096,7 @@ a/an是不定冠词，the是定冠词。
 >
 > I love *the cheese*.   我喜欢这种（口味的）奶酪
 
-最简单的泛指概念就是不可数名词所表示的泛指，它不像可数名词表示泛指时那样的变多变。不过，这里有个前提就是首先要能区 分一个名词是不可数还是可数。这就不只是冠词用法的问题了，而是涉及名词的用法了。
+最简单的泛指概念就是不可数名词所表示的泛指，它不像可数名词表示泛指时那样的多变。不过，这里有个前提就是首先要能区 分一个名词是不可数还是可数。这就不只是冠词用法的问题了，而是涉及名词的用法了。
 
 
 
@@ -2004,7 +2142,7 @@ a/an是不定冠词，the是定冠词。
 
    Chinese是单复数同形的名词，这里的the Chinese是表示复数的概念，这从谓语动词are可以看出来。但这里的the Chinese表示的是“整个中国人或中华民族”，即是一个泛指的概念。 
 
-    当然不是所有的国籍名词都可以这样用，比如我们不能说the German are...*。这样用的国籍名词只限于以-ese, -sh和-ch结尾的词，具体的包括：
+   当然不是所有的国籍名词都可以这样用，比如我们不能说the German are...*。这样用的国籍名词只限于以-ese, -sh和-ch结尾的词，具体的包括：
 
    - 以-ese结尾的国籍名词：Chinese, Japanese
    - 以-sh结尾的国籍名词：British, Cornish, Danish, English, Irish, Spanish, Turkish, Welsh
@@ -3205,7 +3343,7 @@ the prison使我们想到的是某一个特定的监狱，强调的是具体的�
 
 - 数量限定词
 - 个体限定词
-- 有关限定词用法
+- 限定词的其他用法
 
 在这些限定词的用法也必须以名词的可数性为基础，名词分为不可数名词、单数名词和复数名词， 在此基础上选择限定词的搭配。
 
@@ -3235,15 +3373,20 @@ the prison使我们想到的是某一个特定的监狱，强调的是具体的�
 
 
 
+a few more minutes /  a little more time
+
+
+
 ### some/any
 
-some和any均可以与不可数名词及**可数名词复数**连用，表示“一些”。 some一般用在肯定句中，而any一般用在否定句中。
+some和any均可以与**不可数名词**及**可数名词复数**连用，表示“一些”。 some一般用在肯定句中，而any一般用在否定句中。
 
-- Clint is busy. He always has some work to do. But John is lazy. He never does any work.
-- Last night I was very hungry and I wanted some food to eat. But now I am not hungry and I don't want any food to eat. 
-- I need some medicine to cure my cough.
-- I want to buy some computer books.
-- I don't have any friends here.
+- He always has **some work** to do. 
+- He **never** does **any work**.
+- Last night I was very hungry and I wanted **some food** to eat. But now I am not hungry and I **don't** want **any food** to eat. 
+- I need **some medicine** to cure my cough.
+- I want to buy **some computer books**.
+- I don't have **any friends** here.
 
 在疑问句中，多数情况下用any，但是在表示期待一个正面的回答或要鼓励对方说“是”时，要在疑问句中用some。
 
@@ -3251,9 +3394,9 @@ some和any均可以与不可数名词及**可数名词复数**连用，表示“
 - Would you like to give me some advice?
 - Can I have some more wine?
 
+
+
 some和any还可以与单数名词搭配，此时均有特殊的含义和用法。
-
-
 
 **特殊用法一：any与单数名词搭配**
 
@@ -3264,14 +3407,14 @@ any + 单数名词，它的意思是“无论哪一个，任何一个”，此�
 
 **特殊用法二：some与单数名词搭配**
 
-some + 单数可数名词，意思表示不确定的“某一个”。
+some + 单数可数名词，意思表示不确定的“某个”。
 
-- Of the many ways of getting to prison, Soapy thought the best was to eat a big meal at *some good restaurant* and then told the manager that he didn't have money to pay.
-- A mirage is an atmospheric optical illusion of *some object*.
-- *Some person* at the gate is asking to see you. 
-- I always just hoped that I'd meet *some nice friendly girl*, like the look of her, hope the look of me didn't make her physically sick, then pop the question and, um, settle down and be happy. It worked for my parents
+- Of the many ways of getting to prison, Soapy thought the best was to eat a big meal at ***some** **good** **restaurant*** and then told the manager that he didn't have money to pay.
+- A mirage is an atmospheric optical illusion of ***some** **object***.
+- ***Some** **person*** at the gate is asking to see you. 
+- I always just hoped that I'd meet ***some nice friendly girl***, like the look of her, hope the look of me didn't make her physically sick, then pop the question and, um, settle down and be happy. It worked for my parents
 
-注意：some的这一特殊用法可表示强烈的感情色彩，它往往暗示缺乏兴趣，甚至是 蔑视的态度。
+注意：some的这一特殊用法可表示强烈的感情色彩，它往往暗示缺乏兴趣，甚至是蔑视的态度。
 
 - I don't want to spend my life in **some lonely little village.** 我可不想把自己的一生消磨在一个偏僻的小山 村里。
 - A: Two buttons have been off my new jacket.  我那件新夹克已经掉了两粒扣子了。    B: Some bargain.   什么破烂货！
@@ -3292,7 +3435,7 @@ some + number + nouns（大约number数量的xxx）。some在限定复数名词�
 
 ### each/every
 
-个体限定词 each和every的后面都只能接单数可数名词。every/each boy，而 不说：every/each boys *。
+个体限定词 each和every的后面都只能接单数可数名词。every/each boy，而不说：every/each boys *。
 
 如果他们修饰限定的名词短语作主语，句子的谓语动词要用单数。
 
@@ -7427,15 +7570,15 @@ continuous tense
 
 
 
-进行时构成：be（不是系动词而是助动词） + doing。通过be动词的不同变形来表示不同时间下（现在，过去，将来）的进行时态和不同的主语人称和单复数。
+进行时构成：be（不是系动词而是助动词） + doing。通过be动词的不同变形来表示不同时间下（现在，过去，将来）的进行时态 和 不同的主语人称和单复数。
 
 ![image-20240916152508161](D:\learn-notes\English-learn\images\image-20240916152508161.png)
 
 将来进行时的be动词没有人称和数的变化。
 
-**英文的进行时态并不总是表示正在发生的动作，它有更多其他的意义和用法。**
+**英文的进行时态并不总是表示某个时间段或者时间点正在发生的动作，它有更多其他的意义和用法。**
 
-进行时态因为往往强调在说话的时刻某活动正在发生，所以**常用进行时态表达生动、具体的场景**，所以在口语中出现的频率远远高于书面语。
+进行时态因为往往强调在某个时刻某活动正在发生，所以**常用进行时态表达生动、具体的场景**，所以在口语中出现的频率远远高于书面语。
 
 所以在讨论进行时态的意义和用法时，主要是通过大量的口语对话的例子来说明。以很多电影对白作为例子，因为电影里人物之间的对白就是生动的日常口语。
 
@@ -7447,15 +7590,15 @@ continuous tense
 
 #### 说话时刻正在进行的动作（action happening exactly now）
 
-在汉语表达里，也能找到进行时态的“语言标记（language mark）”——汉语通常采用语气助词“着”或词组“正在”等来表达。比如“他吃着饭了”与“他吃了饭”， 很容易理解前者是表示正在进行，而后者是表示完成的动作。
+在汉语表达里，也能找到进行时态的“语言标记（language mark）”——汉语通常采用语气助词“着”或词组“正在”等来表达进行时。比如“他吃着饭了”与“他吃了饭”， 前者是表示正在进行，而后者是表示完成的动作。
 
-还可以进一步添加具体的时间，如“他正在吃着饭”表示**现在进行**的动作，而“他当时在吃着饭”表示**过去进行**的动作。这很像英文里的进行时态的构成和意义，比如“正在”相当于英文里表示现在时间的is，“着”相当于 doing，然后结合具体动词“吃（have）”，于是便有了He is having dinner. 这样的句子。同理，“当 时在”相当于英文里表示过去时间的was，于是便有了He was having dinner. 
+还可以进一步添加具体的时间，如“他正在吃着饭”表示**现在进行**的动作，而“他当时正在吃着饭”表示**过去进行**的动作。这很像英文里的进行时态的构成和意义，比如“正在”相当于英文里表示现在时间的is，“着”相当于 doing，然后结合具体动词“吃（have）”，于是便有了He is having dinner. 这样的句子。同理，“当时在”相当于英文里表示过去时间的was，于是便有了He was having dinner. 
 
-进行时态最典型的一个意义——表示正在发生的动作。**进行时是强调在某个特定的（现在、过去或将来）时间点，某项活动正在发生。** 比如：
+进行时态最典型的**一个（不是唯一）**意义——表示正在发生的动作。**进行时是强调在某个特定的（现在、过去或将来）时间点，某项活动正在发生。** 比如：
 
-- I am watching CCTV news right now.
-- I am watching CCTV news when he arrived yesterday.
-- I am watching CCTV news at 7:15pm tomoroow.
+- I am watching CCTV news **right now**.
+- I am watching CCTV news **when he arrived yesterday**.
+- I will be watching CCTV news **at 7:15pm tomoroow**.
 
 进行时态往往和某一特定的时间点连用，来表示某一个活动在该时刻正在进行，比如上文中的right now和7:15等。
 
@@ -7463,11 +7606,17 @@ continuous tense
 
 
 
+进行时态表示在特定的时刻正在发生的活动，这个意义在中英文中都有。
+
+同时英语中的进行时态还有更多其他的含义可以表达。
+
+
+
 对话示例：（apartment hunting，租房）
 
 Jenny: Hello? 
 
-Frank: Hi, Jenny. What **are** you **doing**?    现在进行时表示现在正在做什么？
+Frank: Hi, Jenny. What **are** you **doing**?    表示现在正在做什么？
 
 Jenny: Oh, hi, Frank. I'm doing my laundry. You?   回答现在正在洗衣服
 
@@ -8529,9 +8678,9 @@ will be doing用于 陈述句中所产生的一些特殊的语义效果。
 
 ## 单词部分
 
-fundamental:
+**fundamental**:
 
-- *adj.*根本的，基本的；必需的，必不可少的；不能再分的
+- *adj.*基本的；必需的，必不可少的；不能再分的
 - *n.*基本原理；基音，**基频**
 
 
@@ -8564,3 +8713,14 @@ Someone who is **eligible** **to** do something is qualified or able to do it, f
 
 - *adj.*符合条件的，合格的；（婚姻）合适的，合意的   
 - *n.*合格者，适任者
+
+
+
+
+
+**imprisonment**
+
+- putting someone in prison or in jail as lawful punishment
+- the act of confining someone in a prison (or as if in a prison)
+
+*n.*监禁，关押

@@ -1,12 +1,12 @@
-HTML5 引入了的标签和属性的目的：
+HTML5 引入的标签和属性的目的：
 
 1. 支持更多的多媒体内容
-2. 更好的表单控制，
-3. 更具语义化的文档结构。
+2. 更好的表单控制
+3. 更具语义化的文档结构
+
+
 
 下面是一些新增标签和属性：
-
-
 
 - **`<article>`**：定义独立的、自成一体的内容。例如，博客帖子、新闻文章或用户评论。
 
@@ -15,6 +15,8 @@ HTML5 引入了的标签和属性的目的：
 - **`<footer>`**：定义文档或部分的页脚。
 
 - **`<header>`**：定义文档或部分的页眉。
+
+- `<main>`：呈现文档的 [`body`](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/body) 或应用的主体部分。主体部分由与文档直接相关，或者扩展于文档的中心主题、应用的主要功能部分的内容组成。
 
 - **`<nav>`**：定义导航链接的部分。
 
@@ -38,11 +40,13 @@ HTML5 引入了的标签和属性的目的：
   
   ```
 
-  ![image-20240307195820157](C:\Users\dukkha\Desktop\learn-notes\css\images\image-20240307195820157.png)
+  ![image-20240307195820157](images\image-20240307195820157.png)
 
 - **`<time>`**：表示日期/时间，可用于确保机器可读的日期/时间发布。
 
 - **`<mark>`**：用于表示文本中的突出显示部分。
+
+  
 
 ### 新增的表单控制和相关属性
 
@@ -51,10 +55,12 @@ HTML5 引入了的标签和属性的目的：
 - **`<meter>`**：表示标量测量或已知范围内的标量值（如磁盘使用情况）。
 - **`<output>`**：表示不同类型的输出，如脚本的输出。
 
+
+
 ### 新增的全局属性
 
 - **`contenteditable`**：指定元素内容是否可编辑。
-- **`data-\*`**：允许我们给元素添加自定义数据属性。
+- **`data-\*`**：给元素添加自定义数据属性。
 - **`hidden`**：表示一个元素现在相关或不相关，应该被隐藏。
 - **`spellcheck`**：指定元素的拼写或语法是否应该被检查。
 
@@ -120,9 +126,9 @@ web标准包含哪些方面：
 
     ```html
     <div>
-    	<p>
-            <span>hello</span>
-        </p>
+      <p>
+        <span>hello</span>
+      </p>
     </div>
     ```
 
@@ -130,9 +136,9 @@ web标准包含哪些方面：
 
     ```html
     <span>
-        <p>
-            world
-        </p>
+      <p>
+        world
+      </p>
     </span>
     ```
 
@@ -140,12 +146,12 @@ web标准包含哪些方面：
 
     ```html
     <div>
-    	<p>
-            <span>hello</span>
-        </p>
-        <p>
-            <span>hello</span>
-        </p>
+      <p>
+        <span>hello</span>
+      </p>
+      <p>
+        <span>hello</span>
+      </p>
     </div>
     ```
 
@@ -155,17 +161,17 @@ html文件的骨架结构(每个html都有)：
 ```html
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>title</title>
-    </head>
-    
-    <body>
+  <head>
+    <title>title</title>
+  </head>
 
-    </body>
+  <body>
+
+  </body>
 </html>
 ```
 
-![image-20240122220442444](C:\Users\dukkha\Desktop\learn-notes\css\images\image-20240122220442444.png)
+![image-20240122220442444](images\image-20240122220442444.png)
 
 - `<!DOCTYPE html> `**文档类型声明标签**，告诉浏览器当前html文件使用的是哪个版本的HTML规范来编写页面的，声明为 HTML5 文档，位置固定为html文件的第一行，本身不是一个html标签
 - `<html> `元素是 HTML 页面的**根元素**，常见的标签属性是lang='en | zh-CN | 等'，能给浏览器一个提示说明本html文件是什么语言的页面，只是一个提示作用，具体页面是什么语言并不由这个字段确定
@@ -175,13 +181,13 @@ html文件的骨架结构(每个html都有)：
 
  只有` <body> `区域的内容才会在浏览器中显示。
 
-<img src="C:\Users\dukkha\Desktop\learn-notes\css\images\image-20240122220836591.png" alt="image-20240122220836591" style="zoom:150%;" />
+<img src="images\image-20240122220836591.png" alt="image-20240122220836591" style="zoom:150%;" />
 
 
 
 ### html常用标签
 
-每个标签都存在一定的语义，作用。每种标签都会默认有一些列自己的css样式。根据语义，在合适的地方使用合适的标签（语义化），清晰页面的结构。
+每个标签都存在一定的语义，作用。每种标签都会默认有一些自己的css样式。根据语义，在合适的地方使用合适的标签（语义化），清晰页面的结构。
 
 1. 标题标签
 
@@ -209,11 +215,11 @@ html文件的骨架结构(每个html都有)：
 
    
 
-   ![image-20240123213116767](C:\Users\dukkha\Desktop\learn-notes\css\images\image-20240123213116767.png)
+   ![image-20240123213116767](images\image-20240123213116767.png)
 
 5. div标签
 
-   div标签是一个常用的**块级元素**容器，它没有特定的语义含义，可以用于组织和分组其他HTML元素。div标签通常可以包含其他块级元素和行内元素。
+   div标签是**块级元素**容器，它没有特定的语义，可以用于组织和分组其他HTML元素。div标签通常可以包含其他块级元素和行内元素。
 
    以下是可以放置在`<div>`标签中的一些常见的其他标签：
 
@@ -228,7 +234,7 @@ html文件的骨架结构(每个html都有)：
 
 6. span标签
 
-   `<span>`标签是一个用于包裹**文本**或**行内元素**的容器标签，它本身并**不具有任何特定的语义含义**。由于`<span>`是一个行内元素，它通常不能包含块级元素，因为块级元素会独占一行。
+   `<span>`标签是一个用于包裹**文本**或**行内元素**的容器标签，它本身并**不具有任何特定的语义**。由于`<span>`是一个行内元素，它通常不能包含块级元素，因为块级元素会独占一行。
 
    以下是一些通常**不能**放置在`<span>`标签中的其他标签：
 
@@ -319,7 +325,7 @@ html文件的骨架结构(每个html都有)：
 
 在文件系统中，相对路径和绝对路径是用于定位和描述文件或目录位置的两种方式。
 
-1. **相对路径（Relative Path）**：相对路径是相对于当前工作目录或当前需要引用其他文件的当前文件所在位置的路径。它指定了从当前位置出发到达目标文件或目录的路径。相对路径不以根目录为起点，而是以当前位置为基准进行定位。
+1. **相对路径（Relative Path）**：相对路径是相对于当前工作目录 或 相对于需要引用其他文件的当前文件所在位置的路径。它指定了从当前位置出发到达目标文件或目录的路径。相对路径不以根目录为起点，而是以当前位置为基准进行定位。
 
 举个例子，假设当前位置是在一个名为`documents`的目录下，想指向该目录下的一个名为`report.txt`的文件。相对路径可以使用当前位置的引用作为起点，如：
 
@@ -374,7 +380,7 @@ method：`_self`  |  `_blank`
 
 3. 空链接，href属性的值为#
 
-4. 下载链接，href属性的值指向一个具体的文件
+4. 下载链接，href属性的值指向一个具体的二进制文件
 
 5. 锚点链接，在同一个页面中，快速定位到指定的位置
 
@@ -498,50 +504,50 @@ HTML 表格还支持合并单元格和跨行/跨列的操作，以及其他样�
 ```html
 <!DOCTYPE html> 
 <html lang="en">
-    <head>    
-        <meta charset="UTF-8" /> 
-        <title>网页标题</title>
-        <base target="_blank"/>
-    </head>
-    <body>
-        <!-- 表格标签 -->
-        <table border="1" width="500" height="200" align="left" cellpadding="10" cellspacing="0">
-            <!-- 表格标题标签 -->
-            <caption>表格标题</caption>
-            <!-- 表格行标签 -->
-            <tr>
-                <!-- 表格表头单元格标签 -->
-                <th>姓名</th>
-                <th>年龄</th>
-            </tr>
-            <tr>
-                <!-- 表格普通单元格标签 -->
-                <td>Tom</td>
-                <td>18</td>
-            </tr>
-            <tr>
-                <!-- 表格普通单元格标签 -->
-                <td>Jerry</td>
-                <td>16</td>
-            </tr>
-        </table>
-    </body>
+  <head>    
+    <meta charset="UTF-8" /> 
+    <title>网页标题</title>
+    <base target="_blank"/>
+  </head>
+  <body>
+    <!-- 表格标签 -->
+    <table border="1" width="500" height="200" align="left" cellpadding="10" cellspacing="0">
+      <!-- 表格标题标签 -->
+      <caption>表格标题</caption>
+      <!-- 表格行标签 -->
+      <tr>
+        <!-- 表格表头单元格标签 -->
+        <th>姓名</th>
+        <th>年龄</th>
+      </tr>
+      <tr>
+        <!-- 表格普通单元格标签 -->
+        <td>Tom</td>
+        <td>18</td>
+      </tr>
+      <tr>
+        <!-- 表格普通单元格标签 -->
+        <td>Jerry</td>
+        <td>16</td>
+      </tr>
+    </table>
+  </body>
 </html>
 ```
 
 **显示效果 :**
 
-![image-20240125221429240](C:\Users\dukkha\Desktop\learn-notes\css\images\image-20240125221429240.png)
+![image-20240125221429240](images\image-20240125221429240.png)
 
 **跨行合并单元格**
 
 想要合并的效果：
 
-![image-20240125221551181](C:\Users\dukkha\Desktop\learn-notes\css\images\image-20240125221551181.png)
+![image-20240125221551181](images\image-20240125221551181.png)
 
 合并步骤 :
 
-- 首先 , 该合并是 跨行合并 , 要在 <td> 标签中 使用 rowspan 属性 ;
+- 首先 , 该合并是 跨行合并 , 要在` <td> `标签中 使用 rowspan 属性 ;
 - 然后 , 找到 目标单元格 , 是要合并单元格的最上方的单元格 , 显示 18 文本的单元格 是目标单元格 ;
 - 最后 , 删除多余的单元格 , 第三排 显示 16 文本的单元格要删除 ;
 
@@ -572,7 +578,7 @@ HTML 表格还支持合并单元格和跨行/跨列的操作，以及其他样�
 
 ```
 
-![image-20240125221704243](C:\Users\dukkha\Desktop\learn-notes\css\images\image-20240125221704243.png)
+![image-20240125221704243](images\image-20240125221704243.png)
 
 列的合并类似。
 
@@ -599,7 +605,7 @@ HTML 表格还支持合并单元格和跨行/跨列的操作，以及其他样�
 </ul>
 ```
 
-![image-20240125224023150](C:\Users\dukkha\Desktop\learn-notes\css\images\image-20240125224023150.png)
+![image-20240125224023150](images\image-20240125224023150.png)
 
 ```html
 <ul type="circle">
@@ -609,7 +615,7 @@ HTML 表格还支持合并单元格和跨行/跨列的操作，以及其他样�
 </ul>
 ```
 
-![image-20240125224355347](C:\Users\dukkha\Desktop\learn-notes\css\images\image-20240125224355347.png)
+![image-20240125224355347](images\image-20240125224355347.png)
 
 
 
@@ -618,40 +624,40 @@ HTML 表格还支持合并单元格和跨行/跨列的操作，以及其他样�
 ```html
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Document</title>
-        <style>
-            .a{
-                /* list-style-type:square; */
-                list-style-image: url(images/xiao.gif);
-            }
-            .b{
-                list-style-type: circle;
-            }
-        </style>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+      .a{
+        /* list-style-type:square; */
+        list-style-image: url(images/xiao.gif);
+      }
+      .b{
+        list-style-type: circle;
+      }
+    </style>
 
-    </head>
-    <body>
+  </head>
+  <body>
 
-        <ul > 
-            <li>星期日</li>
-            <li class="a">星期一</li>
-            <li>星期二</li>
-            <li class="b">星期三</li>
-            <li class="a">星期四</li>
-            <li>星期五</li>
-            <li class="b">星期六</li>
-        </ul>
+    <ul > 
+      <li>星期日</li>
+      <li class="a">星期一</li>
+      <li>星期二</li>
+      <li class="b">星期三</li>
+      <li class="a">星期四</li>
+      <li>星期五</li>
+      <li class="b">星期六</li>
+    </ul>
 
-    </body>
+  </body>
 
 </html>
 
 ```
 
-![image-20240125224550550](C:\Users\dukkha\Desktop\learn-notes\css\images\image-20240125224550550.png)
+![image-20240125224550550](images\image-20240125224550550.png)
 
 序列表前的符号也可以是自己的图片（不过图片应该小一点，这样才能够显示出来）。list-style-image属性就是用来引入自己的图片的当作无序表前面的标识符，不过后面跟写固定格式url（），括号里面写自己的图片的地址。
 
@@ -677,7 +683,7 @@ HTML 表格还支持合并单元格和跨行/跨列的操作，以及其他样�
 
 采用 Flex 布局的元素，称为 Flex 容器（flex container），简称"容器"。它的所有子元素自动成为容器成员，称为 Flex 项目（flex item），简称"项目"。
 
-<img src="C:\Users\dukkha\Desktop\learn-notes\css\images\image-20240307211042215.png" alt="image-20240307211042215" style="zoom:200%;" />
+<img src="images\image-20240307211042215.png" alt="image-20240307211042215" style="zoom:200%;" />
 
 容器上的属性：
 
@@ -688,7 +694,7 @@ HTML 表格还支持合并单元格和跨行/跨列的操作，以及其他样�
   }
   ```
 
-  ![image-20240307211224811](C:\Users\dukkha\Desktop\learn-notes\css\images\image-20240307211224811.png)
+  ![image-20240307211224811](images\image-20240307211224811.png)
 
   - `row`（默认值）：主轴为水平方向，起点在左端。
   - `row-reverse`：主轴为水平方向，起点在右端。

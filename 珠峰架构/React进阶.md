@@ -4585,7 +4585,7 @@ Flux 并不是一个具体的框架，它是一套由 Facebook 技术团队提�
 
 这 4 个部分之间的协作将通过下图所示的**工作流**规则来完成配合：
 
-![image-20240213090424163](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240213090424163.png)
+![image-20240213090424163](images\image-20240213090424163.png)
 
 图中所有的箭头都是单向的，这也正是 Flux 架构最核心的一个特点——**单向数据流**
 
@@ -4601,11 +4601,11 @@ Flux 的核心特征是单向数据流，单向数据流有什么好处？
 
 双向数据流最为典型的代表就是**前端场景下的 MVC 架构**，该架构的示意图如下图所示：
 
-![image-20240213090622413](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240213090622413.png)
+![image-20240213090622413](images\image-20240213090622413.png)
 
 除了允许用户通过 View 层交互来触发流程以外，MVC 架构还有另外一种形式，即允许用户通过直接触发 `Controller`逻辑来触发流程，这种模式下的架构关系如下图所示：
 
-![image-20240213090657461](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240213090657461.png)
+![image-20240213090657461](images\image-20240213090657461.png)
 
 在 MVC 应用中，会涉及这 3 个部分：
 
@@ -4617,11 +4617,11 @@ Flux 的核心特征是单向数据流，单向数据流有什么好处？
 
 事实上，在许多服务端的 MVC 应用中，数据流确实能够保持单向。但是在前端场景下，实际的 MVC 应用要复杂不少，前端应用/框架往往出于交互的需要，允许 View 和 Model 直接通信。此时的架构关系就会变成下图这样：
 
-![image-20240213090849438](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240213090849438.png)
+![image-20240213090849438](images\image-20240213090849438.png)
 
 这就允许了双向数据流的存在。当业务复杂度较高时，数据流会变得非常混乱，出现类似下图这种情况：
 
-![image-20240213090937520](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240213090937520.png)
+![image-20240213090937520](images\image-20240213090937520.png)
 
 图中的示例只有一个 `Controller`，但考虑到一个应用中还可能存在多个 `Controller`，实际的情况应该比上图还要复杂得多。
 
@@ -4629,7 +4629,7 @@ Flux 的核心特征是单向数据流，单向数据流有什么好处？
 
 而Flux架构的数据流模式：
 
-![image-20240213090424163](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240213090424163.png)
+![image-20240213090424163](images\image-20240213090424163.png)
 
 **Flux最核心的地方在于严格的单向数据流，在单向数据流下，状态的变化是可预测的。**如果 store中的数据发生了变化，那么有且仅有一个原因，那就是由 Dispatcher派发 Action来触发的。这样一来，就从根本上避免了混乱的数据关系，使整个流程变得清晰简单。
 
@@ -4639,8 +4639,9 @@ Flux 架构一般在复杂的项目中才会体现出它的优势和必要性。
 
 
 
-
 ### Redux要素
+
+Redux是js状态容器，它提供可预测的状态管理。
 
 Redux 在实现层面并没有按照 Flux 架构思想（比如 Flux 中允许多个 Store 存在，而 Redux 中只有一个 Store 等），但 Redux 在设计思想上确实和 Flux 一致的。
 
@@ -4658,7 +4659,7 @@ Redux 主要由 3 部分组成：Store、Reducer 和 Action。
 
 ### Redux工作流
 
-![image-20240213092019670](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240213092019670.png)
+![image-20240213092019670](images\image-20240213092019670.png)
 
 在 Redux 的整个工作过程中，数据流是严格单向的。如果想对数据进行修改，只有一种途径：派发 Action。Action 会被 Reducer 读取，Reducer 将根据 Action 内容的不同执行不同的计算逻辑，最终生成新的 state（状态），这个新的 state 会更新到 Store 对象里，进而驱动视图层面作出对应的改变。
 
@@ -4670,7 +4671,7 @@ Redux 主要由 3 部分组成：Store、Reducer 和 Action。
 
 Redux 的源码文件夹结构，如下图所示：
 
-![image-20240213092257721](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240213092257721.png)
+![image-20240213092257721](images\image-20240213092257721.png)
 
 
 
@@ -4709,7 +4710,6 @@ const store = createStore(
     reducer,
     initial_state,
     applyMiddleware(middleware1, middleware2, ...)
- 
 );
 ```
 
@@ -4725,142 +4725,142 @@ createStore 方法可以接收以下 3 个入参：
 
 ```js
 function createStore(reducer, preloadedState, enhancer) {
-    // 这里处理的是没有设定初始状态的情况，也就是第一个参数和第二个参数都传 function 的情况
-    if (typeof preloadedState === 'function' && typeof enhancer === 'undefined') {
-        // 此时第二个参数会被认为是 enhancer（中间件）
-        enhancer = preloadedState;
-        preloadedState = undefined;
+  // 这里处理的是没有设定初始状态的情况，也就是第一个参数和第二个参数都传 function 的情况
+  if (typeof preloadedState === 'function' && typeof enhancer === 'undefined') {
+    // 此时第二个参数会被认为是 enhancer（中间件）
+    enhancer = preloadedState;
+    preloadedState = undefined;
+  }
+
+  // 当 enhancer 不为空时，便会将 createStore 作为参数传入到 enhancer 中
+  if (typeof enhancer !== 'undefined') {
+    return enhancer(createStore)(reducer, preloadedState);
+  }
+  // 记录当前的 reducer，因为 replaceReducer 会修改 reducer 的内容
+  let currentReducer = reducer;
+  // 记录当前的 state
+  let currentState = preloadedState;
+  // 声明 listeners 数组，这个数组用于记录在 subscribe 中订阅的事件
+  let currentListeners = [];
+  // nextListeners 是 currentListeners 的快照
+  let nextListeners = currentListeners;
+  // 该变量用于记录当前是否正在进行 dispatch
+  let isDispatching = false
+
+  // 该方法用于确认快照是 currentListeners 的副本，而不是 currentListeners 本身
+  function ensureCanMutateNextListeners() {
+    if (nextListeners === currentListeners) {
+      nextListeners = currentListeners.slice();
+    }
+  }
+
+  // 我们通过调用 getState 来获取当前的状态
+  function getState() {
+    return currentState;
+  }
+
+  // subscribe 订阅方法，它将会定义 dispatch 最后执行的 listeners 数组的内容
+  function subscribe(listener) {
+    // 校验 listener 的类型
+    if (typeof listener !== 'function') {
+      throw new Error('Expected the listener to be a function.')
     }
 
-    // 当 enhancer 不为空时，便会将 createStore 作为参数传入到 enhancer 中
-    if (typeof enhancer !== 'undefined') {
-        return enhancer(createStore)(reducer, preloadedState);
-    }
-    // 记录当前的 reducer，因为 replaceReducer 会修改 reducer 的内容
-    let currentReducer = reducer;
-    // 记录当前的 state
-    let currentState = preloadedState;
-    // 声明 listeners 数组，这个数组用于记录在 subscribe 中订阅的事件
-    let currentListeners = [];
-    // nextListeners 是 currentListeners 的快照
-    let nextListeners = currentListeners;
-    // 该变量用于记录当前是否正在进行 dispatch
-    let isDispatching = false
-
-    // 该方法用于确认快照是 currentListeners 的副本，而不是 currentListeners 本身
-    function ensureCanMutateNextListeners() {
-        if (nextListeners === currentListeners) {
-            nextListeners = currentListeners.slice();
-        }
+    // 禁止在 reducer 中调用 subscribe
+    if (isDispatching) {
+      throw new Error('....')
     }
 
-    // 我们通过调用 getState 来获取当前的状态
-    function getState() {
-        return currentState;
+    // 该变量用于防止调用多次 unsubscribe 函数
+    let isSubscribed = true;
+    // 确保 nextListeners 与 currentListeners 不指向同一个引用
+    ensureCanMutateNextListeners(); 
+    // 注册监听函数
+    nextListeners.push(listener); 
+
+    // 返回取消订阅当前 listener 的方法
+    return function unsubscribe() {
+      if (!isSubscribed) {
+        return;
+      }
+      isSubscribed = false;
+      ensureCanMutateNextListeners();
+      const index = nextListeners.indexOf(listener);
+      // 将当前的 listener 从 nextListeners 数组中删除 
+      nextListeners.splice(index, 1);
+    };
+  }
+
+  // 定义 dispatch 方法，用于派发 action 
+  function dispatch(action) {
+    // 校验 action 的数据格式是否合法
+    if (!isPlainObject(action)) {
+      throw new Error(
+        'Actions must be plain objects. ' +
+        'Use custom middleware for async actions.'
+      )
     }
 
-    // subscribe 订阅方法，它将会定义 dispatch 最后执行的 listeners 数组的内容
-    function subscribe(listener) {
-        // 校验 listener 的类型
-        if (typeof listener !== 'function') {
-            throw new Error('Expected the listener to be a function.')
-        }
-
-        // 禁止在 reducer 中调用 subscribe
-        if (isDispatching) {
-            throw new Error('....')
-        }
-
-        // 该变量用于防止调用多次 unsubscribe 函数
-        let isSubscribed = true;
-        // 确保 nextListeners 与 currentListeners 不指向同一个引用
-        ensureCanMutateNextListeners(); 
-        // 注册监听函数
-        nextListeners.push(listener); 
-
-        // 返回取消订阅当前 listener 的方法
-        return function unsubscribe() {
-            if (!isSubscribed) {
-                return;
-            }
-            isSubscribed = false;
-            ensureCanMutateNextListeners();
-            const index = nextListeners.indexOf(listener);
-            // 将当前的 listener 从 nextListeners 数组中删除 
-            nextListeners.splice(index, 1);
-        };
+    // 约束 action 中必须有 type 属性作为 action 的唯一标识 
+    if (typeof action.type === 'undefined') {
+      throw new Error(
+        'Actions may not have an undefined "type" property. ' +
+        'Have you misspelled a constant?'
+      )
     }
 
-    // 定义 dispatch 方法，用于派发 action 
-    function dispatch(action) {
-        // 校验 action 的数据格式是否合法
-        if (!isPlainObject(action)) {
-            throw new Error(
-                'Actions must be plain objects. ' +
-                'Use custom middleware for async actions.'
-            )
-        }
-
-        // 约束 action 中必须有 type 属性作为 action 的唯一标识 
-        if (typeof action.type === 'undefined') {
-            throw new Error(
-                'Actions may not have an undefined "type" property. ' +
-                'Have you misspelled a constant?'
-            )
-        }
-
-        // 若当前已经位于 dispatch 的流程中，则不允许再度发起 dispatch（禁止套娃）
-        if (isDispatching) {
-            throw new Error('Reducers may not dispatch actions.')
-        }
-
-        try {
-            // 执行 reducer 前，先"上锁"，标记当前已经存在 dispatch 执行流程
-            isDispatching = true
-            // 调用 reducer，计算新的 state 
-            currentState = currentReducer(currentState, action)
-        } finally {
-            // 执行结束后，把"锁"打开，允许再次进行 dispatch 
-            isDispatching = false
-        }
-
-        // 触发订阅
-        const listeners = (currentListeners = nextListeners);
-        for (let i = 0; i < listeners.length; i++) {
-            const listener = listeners[i];
-            listener();
-        }
-        return action;
+    // 若当前已经位于 dispatch 的流程中，则不允许再度发起 dispatch（禁止套娃）
+    if (isDispatching) {
+      throw new Error('Reducers may not dispatch actions.')
     }
 
-    // replaceReducer 可以更改当前的 reducer
-    function replaceReducer(nextReducer) {
-        currentReducer = nextReducer;
-        dispatch({ type: ActionTypes.REPLACE });
-        return store;
+    try {
+      // 执行 reducer 前，先"上锁"，标记当前已经存在 dispatch 执行流程
+      isDispatching = true
+      // 调用 reducer，计算新的 state 
+      currentState = currentReducer(currentState, action)
+    } finally {
+      // 执行结束后，把"锁"打开，允许再次进行 dispatch 
+      isDispatching = false
     }
-    // 初始化 state，当派发一个 type 为 ActionTypes.INIT 的 action，每个 reducer 都会返回
-    // 它的初始值
-    dispatch({ type: ActionTypes.INIT });
 
-    // observable 方法可以忽略，它在 redux 内部使用，开发者一般不会直接接触
-    function observable() {
-        // observable 方法的实现
+    // 触发订阅
+    const listeners = (currentListeners = nextListeners);
+    for (let i = 0; i < listeners.length; i++) {
+      const listener = listeners[i];
+      listener();
     }
-    // 将定义的方法包裹在 store 对象里返回
-    return {
-        dispatch,
-        subscribe,
-        getState,
-        replaceReducer,
-        [$$observable]: observable
-    }
+    return action;
+  }
+
+  // replaceReducer 可以更改当前的 reducer
+  function replaceReducer(nextReducer) {
+    currentReducer = nextReducer;
+    dispatch({ type: ActionTypes.REPLACE });
+    return store;
+  }
+  // 初始化 state，当派发一个 type 为 ActionTypes.INIT 的 action，每个 reducer 都会返回
+  // 它的初始值
+  dispatch({ type: ActionTypes.INIT });
+
+  // observable 方法可以忽略，它在 redux 内部使用，开发者一般不会直接接触
+  function observable() {
+    // observable 方法的实现
+  }
+  // 将定义的方法包裹在 store 对象里返回
+  return {
+    dispatch,
+    subscribe,
+    getState,
+    replaceReducer,
+    [$$observable]: observable
+  }
 }
 ```
 
 createStore 内部逻辑大图：
 
-<img src="C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240213093555040.png" alt="image-20240213093555040" style="zoom:150%;" />
+<img src="images\image-20240213093555040.png" alt="image-20240213093555040" style="zoom:150%;" />
 
 在 createStore 导出的方法中，与 Redux 主流程强相关的，同时也是平时使用中最常打交道的几个方法，分别是：
 
@@ -4876,51 +4876,51 @@ subscribe 和 dispatch 则分别代表了 Redux 独有的“**发布-订阅**”
 
 #### dispatch
 
-![image-20240213101108649](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240213101108649.png)
+![image-20240213101108649](images\image-20240213101108649.png)
 
 ```js
 function dispatch(action) {
- 
-    // 校验 action 的数据格式是否合法
-    if (!isPlainObject(action)) {
-        throw new Error(
-            'Actions must be plain objects. ' +
-            'Use custom middleware for async actions.'
-        )
-    }
- 
-    // 约束 action 中必须有 type 属性作为 action 的唯一标识 
-    if (typeof action.type === 'undefined') {
-        throw new Error(
-            'Actions may not have an undefined "type" property. ' +
-            'Have you misspelled a constant?'
-        )
- 
-    }
- 
-    // 若当前已经位于 dispatch 的流程中，则不允许再度发起 dispatch（禁止套娃）
-    if (isDispatching) {
-        throw new Error('Reducers may not dispatch actions.')
-    }
- 
-    try {
-        // 执行 reducer 前，先"上锁"，标记当前已经存在 dispatch 执行流程
-        isDispatching = true
-        // 调用 reducer，计算新的 state
-        currentState = currentReducer(currentState, action)
-    } finally {
-        // 执行结束后，把"锁"打开，允许再次进行 dispatch
-        isDispatching = false
- 
-    }
-    // 触发订阅
-    const listeners = (currentListeners = nextListeners);
-    for (let i = 0; i < listeners.length; i++) {
-        const listener = listeners[i];
-        listener();
-    }
-    return action;
- 
+
+  // 校验 action 的数据格式是否合法
+  if (!isPlainObject(action)) {
+    throw new Error(
+      'Actions must be plain objects. ' +
+      'Use custom middleware for async actions.'
+    )
+  }
+
+  // 约束 action 中必须有 type 属性作为 action 的唯一标识 
+  if (typeof action.type === 'undefined') {
+    throw new Error(
+      'Actions may not have an undefined "type" property. ' +
+      'Have you misspelled a constant?'
+    )
+
+  }
+
+  // 若当前已经位于 dispatch 的流程中，则不允许再度发起 dispatch（禁止套娃）
+  if (isDispatching) {
+    throw new Error('Reducers may not dispatch actions.')
+  }
+
+  try {
+    // 执行 reducer 前，先"上锁"，标记当前已经存在 dispatch 执行流程
+    isDispatching = true
+    // 调用 reducer，计算新的 state
+    currentState = currentReducer(currentState, action)
+  } finally {
+    // 执行结束后，把"锁"打开，允许再次进行 dispatch
+    isDispatching = false
+
+  }
+  // 触发订阅
+  const listeners = (currentListeners = nextListeners);
+  for (let i = 0; i < listeners.length; i++) {
+    const listener = listeners[i];
+    listener();
+  }
+  return action;
+
 }
 ```
 
@@ -4940,7 +4940,7 @@ try {
 
 reducer 的本质是 store的更新规则，它指定了应用状态如何根据action进行变化并发送到 store。这段代码中调用 reducer，传入 currentState和 action，对应的正是 action → reducer → store 这个过程：
 
-![image-20240213101552522](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240213101552522.png)
+![image-20240213101552522](images\image-20240213101552522.png)
 
 
 
@@ -4979,7 +4979,7 @@ for (let i = 0; i < listeners.length; i++) {
 
 **Redux 中的“发布-订阅”模式**
 
-中执行的 listeners数组从订阅中来，而执行订阅需要调用 subscribe。在实际的开发中，subscribe并不是一个严格必要的方法，只有在需要监听状态的变化时，才会调用 subscribe。
+dispatch中执行的 listeners数组从订阅中来，而执行订阅需要调用 subscribe。在实际的开发中，subscribe并不是一个严格必要的方法，只有在需要监听状态的变化时，才会调用 subscribe。
 
 subscribe接收一个 Function类型的 listener作为入参，它的返回内容恰恰就是这个 listener对应的解绑函数。示例代码：
 
@@ -5036,7 +5036,7 @@ function subscribe(listener) {
 
 结合这段源码，可以将 subscribe的工作流程提取如下：
 
-![image-20240213102951972](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240213102951972.png)
+![image-20240213102951972](images\image-20240213102951972.png)
 
 这个工作流中对 ensureCanMutateNextListeners的调用。结合前面整体源码的分析，ensureCanMutateNextListeners的作用就是确保 nextListeners不会和 currentListener指向同一个引用。 那么为什么要这样做呢？这里就引出了之前提出的关于 subscribe的第二个问题：为什么会有 currentListeners 和 nextListeners 两个 listeners 数组？
 

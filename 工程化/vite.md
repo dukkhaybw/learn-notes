@@ -1,5 +1,134 @@
 # Vite
 
+新一代前端构建打包工具，提高开发阶段的体验。
+
+组成：
+
+1. 一个开发服务器，它基于 [原生 ES 模块](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules) 提供了 [丰富的内建功能](https://vitejs.cn/vite3-cn/guide/features.html)，如极快的[模块热更新（HMR）](https://vitejs.cn/vite3-cn/guide/features.html#hot-module-replacement)。
+2. 一套构建指令，它使用 [Rollup](https://rollupjs.org/) 打包代码，预设了配置的，可输出生产环境的优化过的静态资源。
+
+“打包” : 使用工具抓取、处理并将源码模块串联成可以在浏览器中运行的文件。
+
+
+
+打包工具的发展：
+
+ES模块化在浏览器原生支持前后的开发方式变化
+
+在ES模块得到原生支持之前，JavaScript没有原生的模块系统，开发者必须依赖其他方法实现模块化，比如CommonJS或AMD，或者使用IIFE来避免全局污染。后来，打包工具比如Webpack、Browserify、Rollup出现了，它们可以把这些模块打包成一个文件，解决依赖管理和浏览器兼容性问题。
+
+ES模块之前，可能用CommonJS的require和module.exports，或者AMD的define，但浏览器不支持这些，所以必须用工具转译和打包。
+
+在浏览器支持ES模块化之后，可以直接用import和export，实现项目的开发，但可能无法对源代码进行一系列的优化，比如打包压缩，tree-shaking，代码分割等。
+
+为什么打包工具在浏览器支持ES模块之后仍然有用，因为完全只使用es模块化来开发项目，没法做项目优化等方面的工作，比如性能优化、兼容旧浏览器、处理非JS资源等。所以即使支持ES模块，打包工具仍有其价值，但可以简化配置。
+
+原生 ESM 由于嵌套导入会导致额外的网络往返，在生产环境中发布未打包的 ESM 仍然效率低下（即使使用 HTTP/2）。为了在生产环境中获得最佳的加载性能，最好还是将代码进行 tree-shaking、懒加载和 chunk 分割（以获得更好的缓存），还是需要打包工具的。
+
+
+
+
+
+**浏览器不支持 ES 模块时期的开发：**
+
+```js
+// math.js
+function add(a, b) { return a + b }
+function subtract(a, b) { return a - b }
+
+// 通过立即执行函数隔离作用域
+var MathUtils = (function() {
+  return {
+    add: add,
+    subtract: subtract
+  };
+})();
+
+// app.js
+var result = MathUtils.add(1, 2);
+console.log(result);
+
+// 需要手动管理依赖顺序
+<script src="math.js"></script>
+<script src="app.js"></script>
+```
+
+或者使用commonjs模块化规范 + require的Polyfill进行开发。
+
+```js
+// math.js
+exports.add = (a, b) => a + b;
+exports.subtract = (a, b) => a - b;
+
+// app.js
+const math = require('./math.js');
+console.log(math.add(1, 2));
+```
+
+
+
+**浏览器支持 ES 模块后:**
+
+```js
+<!-- 直接使用 type="module" -->
+<script type="module">
+  // math.js
+  export function add(a, b) { return a + b }
+  export function subtract(a, b) { return a - b }
+</script>
+
+<!-- 或更好的方式：拆分文件 -->
+<!-- index.html -->
+<script type="module" src="app.js"></script>
+
+// math.js
+export function add(a, b) { return a + b }
+
+// app.js
+import { add } from './math.js';
+console.log(add(1, 2)); // 3
+```
+
+
+
+
+
+使用webpack做打包工具的不足：
+
+当开始构建越来越大型的应用时，需要处理的 JavaScript 代码量也快速增长。基于 JavaScript 开发的打包工具webpack就会开始遇到性能瓶颈：通常需要很长时间才能启动开发服务器，即使使用模块热替换（HMR），文件修改后的效果也需要几秒钟才能在浏览器中反映出来。影响开发者的开发效率和幸福感。
+
+当冷启动开发服务器时，webpack必须优先抓取并构建整个应用，然后才能提供服务。
+
+
+
+Vite 通过在一开始将应用中的模块区分为 **依赖** 和 **源码** 两类，改进了开发服务器启动时间。
+
+- **依赖** 大多为在开发时不会变动的纯 JavaScript。一些较大的依赖（例如有上百个模块的组件库）处理的代价也很高。依赖也通常会存在多种模块化格式（例如 ESM 或者 CommonJS）。
+
+  Vite 将使用 [esbuild](https://esbuild.github.io/) [预构建依赖](https://vitejs.cn/vite3-cn/guide/dep-pre-bundling.html)
+
+- **源码** 通常包含一些并非直接是 JavaScript 的文件，需要转换（例如 JSX，CSS 或者 Vue/Svelte 组件），时常会被编辑。同时，并不是所有的源码都需要同时被加载（例如基于路由拆分的代码模块）。
+
+Vite 以 [原生 ESM](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules) 方式提供源码。让浏览器接管了打包程序的部分工作：Vite 只需要在浏览器**请求源码时进行转换并按需提供源码**。根据情景动态导入代码，即只在当前屏幕上实际使用时才会被处理。
+
+
+
+webpack的打包原理：
+
+![image-20250216125835556](D:\learn-notes\工程化\images\image-20250216125835556.png)
+
+基于es模块化的vite打包原理：
+
+![image-20250216125859501](D:\learn-notes\工程化\images\image-20250216125859501.png)
+
+
+
+
+
+----
+
+
+
 - 简单使用
 - 工作原理
 - 具体实现
@@ -394,6 +523,93 @@ vite的特点：
 1. 对ts，less，scss，jsx等开箱即用
 1. 打包构建使用的是rollup，所以可以复用rollup插件
 1. 支持ts语法提示
+
+
+
+
+
+扩展：
+
+> **裸模块**
+>
+> 裸模块（bare module）在JavaScript模块系统中指的是那些没有指定相对或绝对路径的模块导入，而是直接使用模块名称的导入方式。比如`import React from 'react'`中的`'react'`就是一个裸模块，因为它没有以`./`或`/`开头，也没有使用文件扩展名。
+>
+> 为什么在浏览器中直接使用裸模块会报错。
+>
+> 裸模块在不同环境下的处理方式。比如在Node.js中，裸模块会被解析到`node_modules`目录，而浏览器本身不支持这种解析，需要依靠打包工具如Webpack、Vite等来处理。
+>
+> 如何正确使用裸模块，或者遇到问题时的解决方法。比如在Vite项目中配置别名，或者使用特定的插件来处理CommonJS模块。
+>
+> 
+>
+> **JavaScript 中的裸模块（Bare Module）** 是指 **没有明确路径或协议前缀的模块导入标识符**，通常直接使用包名引用第三方依赖。这种写法常见于 Node.js 和现代前端工具链（如 Webpack、Vite 等）中，但浏览器原生 ES 模块并不直接支持裸模块。
+>
+> ```js
+> // 裸模块写法（直接使用包名）
+> import React from 'react';                // ✅ 工具链支持
+> import { debounce } from 'lodash-es';     // ✅ 工具链支持
+> 
+> // 非裸模块写法（明确路径或协议）
+> import utils from './utils.js';           // 相对路径
+> import data from '/src/data.json';       // 绝对路径
+> import pkg from 'https://cdn.com/pkg.js'; // URL 协议
+> ```
+>
+> 
+>
+> 浏览器原生 ES 模块 **无法直接解析裸模块**：
+>
+> ```html
+> <!-- 浏览器中直接使用会报错 -->
+> <script type="module">
+>   import React from 'react'; // ❌ 报错：找不到模块
+> </script>
+> ```
+>
+> 浏览器要求所有模块路径必须是 **完整 URL** 或 **相对/绝对路径**。
+>
+>
+> Node.js 能解析裸模块，是因为它会自动搜索 `node_modules` 目录：
+>
+> ```js
+> // Node.js 中有效（CommonJS）
+> const fs = require('fs');           // 核心模块
+> const React = require('react');     // node_modules 中的模块
+> ```
+>
+>
+> 现代构建工具（Webpack、Vite、Rollup 等）会将裸模块转换为浏览器可识别的路径：
+>
+> ```js
+> import { foo } from 'my-dep';
+> 
+> // 转换为真实路径
+> import { foo } from '/node_modules/my-dep/lib/index.js';
+> ```
+>
+> 
+
+### 功能
+
+1. **NPM 依赖解析和预构建**
+
+   原生 ES 导入不支持这样的裸模块导入：`import { someMethod } from 'my-dep'`
+
+   上面的代码会在浏览器中抛出一个错误。Vite 将会检测到所有被加载的源文件中的此类裸模块导入，并执行以下操作:
+
+   1. [预构建](https://vitejs.cn/vite3-cn/guide/dep-pre-bundling.html) 提高页面加载速度较少http请求次数，并将 CommonJS / UMD 转换为 ESM 格式。预构建这一步由 [esbuild](http://esbuild.github.io/) 执行，快。
+   2. 重写导入语句为合法的 URL，例如 `/node_modules/.vite/deps/my-dep.js?v=f3sf2ebd` 以便浏览器能够正确导入它们。
+   3. Vite 通过 HTTP 头来缓存请求得到的依赖
+
+2. **模块热替换**
+
+   Vite 提供了一套原生 ESM 的 [HMR API](https://vitejs.cn/vite3-cn/guide/api-hmr.html)。 具有 HMR 功能的框架可以利用该 API 提供即时、准确的更新，而无需重新加载页面或清除应用程序状态。
+
+3. **对TypeScript支持良好**
+
+   默认支持`.ts` 文件，Vite 仅执行 `.ts` 文件的转译工作，并 **不** 执行任何类型检查。
+
+
 
 
 
