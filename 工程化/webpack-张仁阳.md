@@ -1,6 +1,6 @@
 # 前端工程化
 
-- webpoack使用、原理和优化
+- webpack使用、原理和优化
 - rollup使用和手写实现
 - vite3的实现
 
@@ -10,7 +10,7 @@
 
 webpack 是一个JS应用程序的静态文件打包工具。
 
-在 webpack 中会将各种文件都看作一个模块，且模块之间可能相互依赖。webpack 打包所有的这些资源文件编译为一些前端环境(浏览器环境)能识别的一些文件（静态资源），比如 js，css，png 等。
+在 webpack 中会将各种类型的文件都看作一个模块，且模块之间可能相互依赖。webpack 打包所有的这些资源文件并编译为一些前端环境(浏览器环境)能识别的一些文件（静态资源），比如 js，css，png 等。
 
 ```shell
 npm init -y
@@ -18,7 +18,7 @@ npm install webpack webpack-cli --save-dev
 ```
 
 - webpack：核心包
-- webpack-cli：命令行工具，主要是在执行 webpack 命令时，解析命令行中设置的一些列参数，加载 webpack 配置文件（默认 webpack.config.js），同时它提供了一组命令和选项，用于配置Webpack的构建过程并调用webpack核心包中的方法进行构建打包。通过webpack-cli，可以在命令行中指定Webpack的配置文件、执行不同的构建模式（如开发模式或生产模式）、观察文件变化并自动重新构建等。
+- webpack-cli：命令行工具，主要是在执行 webpack 命令时，解析命令行中设置的一系列参数（一组命令和选项），加载 webpack 配置文件（默认 webpack.config.js），用于配置Webpack的构建过程并调用webpack核心包中的方法进行构建打包。通过webpack-cli，可以在命令行中指定Webpack的配置文件、执行不同的构建模式（如开发模式或生产模式）、观察文件变化并自动重新构建等。
 
 在命令行中输入 `webpack` 并附带一些选项时，Webpack CLI会执行以下步骤来处理命令：
 
@@ -83,8 +83,6 @@ export const mul =(num1,num2)=>{
 
   报错信息如下： 
 
-  
-
   ```
   PS C:\Users\dukkha\Desktop\webpack202208\test> cd ..
   PS C:\Users\dukkha\Desktop\webpack202208> npx webpack --config .\test\webpack.config.js
@@ -98,7 +96,7 @@ export const mul =(num1,num2)=>{
     using description file: C:\Users\dukkha\package.json (relative path: ./Desktop/webpack202208)
       Field 'browser' doesn't contain a valid alias configuration
   ```
-
+  
   
 
 ```js
@@ -144,6 +142,8 @@ entry:(context, environment) => {
 
 - **`context`**: Webpack 的上下文路径，通常是配置中的 `context` 字段值。如果没有显式设置 `context`，默认是 Webpack 配置文件所在的目录。
 - **`environment`**: 一个对象，包含 Webpack CLI 或构建脚本中传递的 `mode` 和其他环境变量。
+
+
 
 ## output
 
@@ -235,7 +235,7 @@ module.exports = {
 
 - `oneOf` 是 `module.rules` 中的一个属性，值是一个规则数组。
 - Webpack 会按顺序遍历数组中的规则，遇到第一个匹配的规则后就停止继续匹配。
-- 如果没有匹配任何规则，Webpack 会抛出错误，除非你提供了默认的处理方式。
+- 如果没有匹配任何规则，Webpack 会抛出错误，除非提供了默认的处理方式。
 
 以下是一个典型的 Webpack 配置，使用 `oneOf` 优化规则匹配：
 
@@ -1127,11 +1127,11 @@ webpackRequire.f.j = (chunkId, promises) => {
 
 css-loader：处理 CSS 中的 `url` 与 `@import`，并将其视为模块引入，此处是通过 postcss 来解析处理。`css-loader` 的原理就是借助postcss，用 `postcss-value-parser` 解析 CSS 为 AST，并将 CSS 中的 `url()` 与 `@import` 解析为模块。
 
-将 CSS 文件中的样式代码转换成 JavaScript 对象，并在 JavaScript 中导出，以便于其他 Loader 或插件进行处理。
+将 CSS 文件中的样式代码转换成 JavaScript 对象，并以commonjs写法导出，以便于其他 Loader 或插件进行处理。
 
-style-loader：使用 DOM API 加载 CSS 资源，由于 CSS 需要在 JS 资源加载完后通过动态创建style标签，容易出现页面抖动，性能低且对于 SSR 不友好。由于性能需要，在线上通常需要单独加载 CSS 资源，这要求打包器能够将 CSS 打包，此时需要借助于 [mini-css-extract-plugin(opens in a new tab)](https://github.com/webpack-contrib/mini-css-extract-plugin) 将 CSS 单独抽离出来。
 
-style-loader将 CSS 样式注入到 Webpack 打包后的 JavaScript 文件中，使得页面能够正确显示样式。它会将 CSS 样式代码插入到页面的 `style` 标签中，或以内联样式的方式插入到 `head` 标签中
+
+style-loader：使用 DOM API 加载 CSS 资源，使得 CSS 需要在 JS 资源加载完后通过执行js动态创建style标签，容易出现页面抖动，性能低且对于 SSR 不友好。由于性能需要，在线上通常需要单独加载 CSS 资源，这要求打包器能够将 CSS 打包，此时需要借助于 [mini-css-extract-plugin(opens in a new tab)](https://github.com/webpack-contrib/mini-css-extract-plugin) 将 CSS 单独抽离出来。
 
 ```js
 {
@@ -1157,7 +1157,7 @@ style-loader将 CSS 样式注入到 Webpack 打包后的 JavaScript 文件中，
 
 css-loader 在 css 文件中默认支持 **~ 符号**表示 node_modules 文件路径，不需要用户去配置。
 
-- @是 webpack 设置的路径别名在，在 webpack 配置文件中设置以后，也可以在 css 中使用
+- @是 webpack 设置的路径别名，在 webpack 配置文件中设置以后，也可以在 css 中使用
 - Starting with version 4.0.0, absolute paths are parsed based on the server root
 - To import assets from a node modules path (include resolve.modules) and for alias, prefix it with a ~
 
@@ -1223,7 +1223,7 @@ PostCSS 是一个独立的工具，可以脱离 webpack 单独使用（postcss-c
 - `PostCSS` 将 CSS 解析成 AST（抽象语法树），然后使用插件对 AST 进行处理，最后将处理后的 AST 转换为 CSS 代码
 - [autoprefixer](https://github.com/postcss/autoprefixer) 是 PostCSS 的一个插件，它可以根据指定的浏览器版本自动添加所需的浏览器前缀。通过使用 autoprefixer，我们可以避免手动添加浏览器前缀的麻烦，同时也可以确保项目在各个浏览器中正确地显示
 - [postcss-preset-env](https://github.com/csstools/postcss-preset-env) 是 PostCSS 的一个插件集合，它可以使用未来的 CSS 语法，而不需要等待浏览器支持。postcss-preset-env 包含了一些常用的 CSS 预处理器的语法，如 Sass 和 Less，以及一些未来的 CSS 语法，如 CSS Grid、CSS Variables 等
-- [postcss-less](https://github.com/shellscape/postcss-less) 是 PostCSS 的一个插件，它可以让我们使用 Less 预处理器的语法，从而可以更方便地编写 CSS 代码。通过使用 postcss-less，我们可以在 Webpack 构建项目时自动将 Less 代码转换为标准的 CSS 代码
+- [postcss-less](https://github.com/shellscape/postcss-less) 是 PostCSS 的一个插件，它可以让我们使用 Less 预处理器的语法，从而可以更方便地编写 CSS 代码。通过使用 postcss-less，可以在 Webpack 构建项目时自动将 Less 代码转换为标准的 CSS 代码
 
 
 
@@ -1442,16 +1442,16 @@ import png from './assets/images/logo.png?time=2022-8-21';
 {
   test: /\.(jpe?g|png|svg|gif)$/,
   use: [
-          {
-              loader: "url-loader",
-              options: {
-                  name: "[name]-[hash:6].[ext]",
-                  esModule: false,
-                  limit: 100 * 1024
-              }
-          }
+      {
+        loader: "url-loader",
+        options: {
+          name: "[name]-[hash:6].[ext]",
+          esModule: false,
+          limit: 100 * 1024
+        }
+      }
    ],
-   type: "javascript/auto"
+  type: "javascript/auto"
 }
   ```
 
@@ -1601,13 +1601,15 @@ document.body.appendChild(image);
 
 ![image-20241226180902970](D:\learn-notes\工程化\images\image-20241226180902970.png)
 
+
+
 ## JS 兼容性处理
 
-- Babel 默认只转换新的最新 ES 语法,比如箭头函数
+- Babel 默认只转换新的 ES 语法，比如箭头函数
 
 让 babel 能转换其他新语法需要借助包或者 babel 插件
 
-- [babel-loader](https://www.npmjs.com/package/babel-loader)使用 Babel 和 webpack 转译 JavaScript 文件,用来读取加载项目源码中的 js 文件
+- [babel-loader](https://www.npmjs.com/package/babel-loader)使用 Babel 和 webpack 转译 JavaScript 文件，用来读取加载项目源码中的 js 文件
 - [@babel/core](https://www.npmjs.com/package/@babel/core)Babel 编译的核心包,babel-loader 读取的源码传给@babel/core，由@babel/core 将源码转为 AST 语法树，但是它不知道怎么转为代码，它需要将不同的 ast 部分转发给不同插件或者预设取处理
 - [@babel/preset-env](https://www.babeljs.cn/docs/babel-preset-env) 是 Babel 的一个预设，用于自动检测目标环境并根据需要转换 JavaScript 代码
 - [@babel/preset-react](https://www.npmjs.com/package/@babel/preset-react) React 插件的 Babel 预设
@@ -1679,7 +1681,7 @@ loose：true 表示可以以 obj.xxx 的方式给对象添加属性，为 false 
 
 - Babel默认只转换新的Javascript语法，而不转换新的API，比如
   - Iterator, Generator, Set, Maps, Proxy, Reflect,Symbol,Promise 等全局对象
-  - 在全局对象上的方法,比如说ES6在Array对象上新增了`Array.find`方法，Babel就不会转码这个方法
+  - 在全局对象上的方法，比如说ES6在Array对象上新增了`Array.find`方法，Babel就不会转码这个方法
 - 如果想让这个方法运行，必须使用 `babel-polyfill`来转换等
 - Babel 7.4之后不再推荐使用@babel/polyfill
 - babel v7 推荐使用@babel/preset-env代替以往的诸多polyfill方案
@@ -1920,25 +1922,25 @@ console.log(gen());
 
   ```json
   {
-      "presets": [
-          [
-              "@babel/preset-env",
-              {
-                  "useBuiltIns": "usage",
-                  "corejs": 3
-              }
-          ]
-      ],
-      "plugins": [
-          [
-              "@babel/plugin-transform-runtime",
-              {
-                  corejs: false,
-                  helpers: true,
-                  regenerator: true
-              }
-          ]
+    "presets": [
+      [
+        "@babel/preset-env",
+        {
+          "useBuiltIns": "usage",
+          "corejs": 3
+        }
       ]
+    ],
+    "plugins": [
+      [
+        "@babel/plugin-transform-runtime",
+        {
+          corejs: false,
+          helpers: true,
+          regenerator: true
+        }
+      ]
+    ]
   }
   ```
 
@@ -1949,21 +1951,21 @@ console.log(gen());
 
 ```json
 {
-    "presets": [
-        [
-            "@babel/preset-env"
-        ]
-    ],
-    "plugins": [
-        [
-            "@babel/plugin-transform-runtime",
-            {
-                "corejs": {
-                    "version": 3
-                }
-            }
-        ]
+  "presets": [
+    [
+      "@babel/preset-env"
     ]
+  ],
+  "plugins": [
+    [
+      "@babel/plugin-transform-runtime",
+      {
+        "corejs": {
+          "version": 3
+        }
+      }
+    ]
+  ]
 }
 ```
 
@@ -3199,7 +3201,7 @@ estraverse.traverse(ast, {
   }
 });
 
-const result = escodegen.generate(AST);
+const result = escodegen.generate(ast);
 console.log(result); // 重新生成代码
 ```
 
@@ -3381,7 +3383,7 @@ console.log(person.lastName); // 输出: "Smith"
 
 ```js
 const core = require('@babel/core');
-const types = require('@babel/zzztypes');
+const types = require('@babel/types');
 
 const arrowFunctionPlugin = require('@babel/plugin-transform-arrow-functions').default;
 
@@ -4174,7 +4176,7 @@ console.log('entry1', title);
 
 ### loader
 
-webpack 的 loder 的本质就是一个 JavaScript 函数，用于转换或者翻译 webpack 不能识别 的模块转为 js 或者 json 模块。
+webpack 的 loder 的本质就是一个 JavaScript 函数，用于转换或者翻译 webpack 不能识别的模块转为 js 或者 json 模块。
 
 webpack.config.js:
 
@@ -4588,7 +4590,7 @@ module.exports = {
       return path.replace(/\\/g, '/');
     }
     
-    class Compilation {
+    class Compilat阿斯顿ion {
       constructor(options, compiler) {
         this.options = options;
         this.compiler = compiler;
@@ -4597,6 +4599,7 @@ module.exports = {
         this.assets = {}; // key是文件名,值是文件内容
         this.files = []; // 代表本次打包出来的文件
         this.fileDependencies = new Set(); // 本次编译依赖的文件或者说模块
+        // 这个对象上也有很多的hook
       }
     
       build(callback) {
@@ -5001,7 +5004,7 @@ runLoaders({
 
 - loader 根据返回值可以分为两种，一种是返回 js 代码（一个 module 的代码，含有类似 module.export 语句）的 loader，还有不能作为最左边 loader 的其他 loader
 
-- 有时候想把两个第一种（都返回一个符合规范的JS代码的loader） loader chain 起来，比如 style-loader!css-loader! 问题是 css-loader 的返回值是一串 js 代码，如果按正常方式写 style-loader 的参数就是一串代码串，为了解决这种问题，我们需要在 style-loader 里执行 require(css-loader!resources)
+- 有时候想把两个第一种（都返回一个符合commonjs规范的JS代码的loader） loader chain 起来，比如 style-loader!css-loader! 问题是 css-loader 的返回值是一串 js 代码，如果按正常方式写 style-loader 的参数就是一串代码串，为了解决这种问题，就需要在 style-loader 里执行 require(css-loader!resources)
 
   
 
@@ -5011,7 +5014,7 @@ runLoaders({
 
 1. **条件性跳过后续的loader**：如果你的loader可以根据某些条件（例如，资源的路径、查询参数、或者项目的配置）决定不需要执行后续的loader，你可以在`pitch`方法中根据这些条件返回一个结果，从而跳过后续的loader处理。
 2. **避免不必要的处理**：当确定某些资源不需要经过复杂的转换或处理时，通过`pitch`方法直接返回结果可以减少不必要的计算和处理时间，优化构建性能。
-3. **资源替换或代理**：在某些场景下，你可能需要基于开发环境和生产环境来替换资源或者提供资源的代理版本。通过`pitch`方法，可以根据环境或配置条件动态决定使用哪个版本的资源。
+3. **资源替换或代理**：在某些场景下，可能需要基于开发环境和生产环境来替换资源或者提供资源的代理版本。通过`pitch`方法，可以根据环境或配置条件动态决定使用哪个版本的资源。
 4. **提前处理共享数据**：如果你的loader需要在实际处理资源之前预处理一些数据，或者需要在loader链中的不同loader之间共享数据，可以使用`pitch`方法的`data`参数来实现。这样，你可以在`pitch`阶段计算或准备数据，并在实际的loader处理函数中使用这些数据。
 5. **插入额外的资源或代码片段**：在处理某个资源之前，如果需要向模块注入额外的代码片段或依赖，`pitch`方法提供了一个机会来实现这一点。通过在`pitch`阶段动态修改请求或添加额外的资源，可以灵活地控制资源的处理过程。
 6. **性能优化**：对于一些重的处理过程，如果可以通过简单的检查来预先判断结果，那么在`pitch`方法中提前返回这个结果可以避免后续不必要的处理，从而达到性能优化的目的。
@@ -5046,8 +5049,6 @@ pitch 与 loader 本身方法的执行顺序图
 > 4. `context`：表示Loader的上下文对象。它是一个对象，包含了与当前模块相关的一些信息，如当前模块的绝对路径、请求路径等。
 >
 > 这些参数可以帮助Loader在处理模块时进行更精细的控制和决策。通过分析和操作这些参数，Loader可以根据需要修改模块请求的顺序、路径等，以满足特定的需求。
-
-
 
 
 
@@ -5139,42 +5140,43 @@ webpack.config.js:
 ```js
 const babel = require('@babel/core');
 const path = require('path');
+
 function loader(source, inputAst, inputSourceMap) {
 
-    // 在loader里，this是一个称为loaderContext的对象，上面有很多方法可以使用,其中就包括getOptions
-    // 需要把loader的执行从同步变成异步
-    const callback = this.async();
-    let options = this.getOptions();
+  // 在loader里，this是一个称为loaderContext的对象，上面有很多方法可以使用,其中就包括getOptions
+  // 需要把loader的执行从同步变成异步
+  const callback = this.async();
+  let options = this.getOptions();
 
-    // 检查是否存在AST，如果存在，则直接使用，否则将source作为转译输入
-    if (!inputAst) {
-        // 没有提供AST，回退到使用source代码
-        let babelOptions = {
-            ...options,
-            ast: true,
-            sourceMaps: true,
-            inputSourceMap
-        };
+  // 检查是否存在AST，如果存在，则直接使用，否则将source作为转译输入
+  if (!inputAst) {
+    // 没有提供AST，回退到使用source代码
+    let babelOptions = {
+      ...options,
+      ast: true,
+      sourceMaps: true,
+      inputSourceMap
+    };
 
-        babel.transformAsync(source, babelOptions).then(({ code, map, ast }) => {
-            // 在loader执行完成后才让调用callback表示本loader已经完成了
-            callback(null, code, map, ast);
-        }).catch(err => callback(err));
-    } else {
-        // 直接使用提供的AST进行转译
-        let babelOptions = {
-            ...options,
-            ast: true,
-            sourceMaps: true,
-            inputSourceMap
-        };
+    babel.transformAsync(source, babelOptions).then(({ code, map, ast }) => {
+      // 在loader执行完成后才让调用callback表示本loader已经完成了
+      callback(null, code, map, ast);
+    }).catch(err => callback(err));
+  } else {
+    // 直接使用提供的AST进行转译
+    let babelOptions = {
+      ...options,
+      ast: true,
+      sourceMaps: true,
+      inputSourceMap
+    };
 
-        // 使用transformFromAstAsync直接转换AST
-        babel.transformFromAstAsync(inputAst, source, babelOptions).then(({ code, map, ast }) => {
-            // 在loader执行完成后才让调用callback表示本loader已经完成了
-            callback(null, code, map, ast);
-        }).catch(err => callback(err));
-    }
+    // 使用transformFromAstAsync直接转换AST
+    babel.transformFromAstAsync(inputAst, source, babelOptions).then(({ code, map, ast }) => {
+      // 在loader执行完成后才让调用callback表示本loader已经完成了
+      callback(null, code, map, ast);
+    }).catch(err => callback(err));
+  }
 }
 module.exports = loader;
 
@@ -5211,19 +5213,19 @@ loader函数接收三个参数：`source`（源代码文本），`inputAst`（�
 
 扩展：
 
-在 Webpack 的 loader 链中，如果多个 loader 都使用了 Babel 进行代码转换，理论上你可以通过共享 Babel 生成的 AST（抽象语法树）来提高性能，避免重复的解析步骤。**Babel 本身是支持 AST 的输入和输出的**，这意味着前一个 loader 可以生成 AST，而后一个 loader 可以直接复用这个 AST，而不必重新解析代码。
+在 Webpack 的 loader 链中，如果多个 loader 都使用了 Babel 进行代码转换，理论上可以通过共享 Babel 生成的 AST（抽象语法树）来提高性能，避免重复的解析步骤。**Babel 本身是支持 AST 的输入和输出的**，这意味着前一个 loader 可以生成 AST，而后一个 loader 可以直接复用这个 AST，而不必重新解析代码。
 
-不过，Webpack 本身并不自动处理 AST 的传递，**你需要手动实现 AST 在 loader 之间的共享**。这是一个稍微复杂的场景，需要在每个 loader 中显式地处理 AST 的输入和输出。
+不过，Webpack 本身并不自动处理 AST 的传递，**你需要手动实现 AST 在 loader 之间的共享**。需要在每个 loader 中显式地处理 AST 的输入和输出。
 
 **如何共享 Babel 的 AST？**
 
-1. **前一个 loader 输出 AST**： 使用 Babel 处理时，你可以让第一个 loader 输出 AST，而不是最终的代码。
+1. **前一个 loader 输出 AST**： 使用 Babel 处理时，可以让第一个 loader 输出 AST，而不是最终的代码。
 
 2. **后一个 loader 复用 AST**： 后续的 loader 可以直接接受 AST 作为输入，而不需要再次解析源码。
 
 **实现步骤**
 
-假设你有两个使用 Babel 的 loader，并希望它们共享 AST。你可以通过在 Webpack 的 loader 中传递 AST 来实现。
+假设有两个使用 Babel 的 loader，并希望它们共享 AST。可以通过在 Webpack 的 loader 中传递 AST 来实现。
 
 1. 自定义 `babel-loader` 来输出 AST
 
@@ -5348,7 +5350,7 @@ loader函数接收三个参数：`source`（源代码文本），`inputAst`（�
 - 在资源被实际处理之前，修改或添加必要的预处理步骤。
 - 在不同loader之间共享数据。
 
-通过使用`pitch`函数，你可以在资源加载和转换过程中添加更多的控制逻辑，使得资源的处理更加灵活和高效。
+通过使用`pitch`函数，可以在资源加载和转换过程中添加更多的控制逻辑，使得资源的处理更加灵活和高效。
 
 
 
@@ -5508,9 +5510,11 @@ runLoaders(
 );
 ```
 
+
+
 **loader 的运行流程**
 
-![img](https://static.zhufengpeixun.com/loaderflow1_1661312752787.jpg)
+![img](http://static.zhufengpeixun.com/loaderflow1_1661312752787.jpg)
 
 **实现**
 
@@ -5539,7 +5543,7 @@ function createLoaderObject(loaderAbsPath) {
     normal,
     pitch,
     raw,
-    data: {}, //每个loader都有一个自已的自定久对象，可以有用来保存和传递数据
+    data: {}, //每个loader都有一个自已的自定对象，可以有用来保存和传递数据
     pitchExecuted: false, //表示此loader的pitch已经执行过了
     normalExecuted: false //表示此loader的normal函数已经执行过了
   };
@@ -5610,12 +5614,14 @@ function processResource(processOptions, loaderContext, pitchingCallback) {
     iterateNormalLoaders(processOptions, loaderContext, [resourceBuffer], pitchingCallback);
   });
 }
+
 function iteratePitchingLoaders(processOptions, loaderContext, pitchingCallback) {
   if (loaderContext.loaderIndex >= loaderContext.loaders.length) {
     return processResource(processOptions, loaderContext, pitchingCallback);
   }
   //获取当前索引对应的loader对象
   let currentLoader = loaderContext.loaders[loaderContext.loaderIndex];
+
   if (currentLoader.pitchExecuted) {
     loaderContext.loaderIndex++;
     return iteratePitchingLoaders(processOptions, loaderContext, pitchingCallback);
@@ -5627,6 +5633,7 @@ function iteratePitchingLoaders(processOptions, loaderContext, pitchingCallback)
   if (!fn) {
     return iteratePitchingLoaders(processOptions, loaderContext, pitchingCallback);
   }
+
   runSyncOrAsync(
     fn,
     loaderContext,
@@ -5642,25 +5649,6 @@ function iteratePitchingLoaders(processOptions, loaderContext, pitchingCallback)
     }
   );
 }
-
-/*
-runLoaders(
-  {
-    resource, //要处理的资源文件
-    loaders, //资源文件需要经过发些loader的处理
-    context: { age: 18, author: 'zhufeng' },
-    readResource: fs.readFile //读文件用哪个方法
-  },
-  (err, result) => {
-    //finalCallback
-    console.log(err);
-    console.log(result.result[0].toString()); //转换后的结果
-    //转换前源文件的内容
-    console.log(result.resourceBuffer);
-    console.log(result.resourceBuffer ? result.resourceBuffer.toString() : null);
-  }
-);
-*/
 
 function runLoaders(options, finalCallback) {
   //resource要处理的资源，或者说要编译的模块路径
@@ -7005,6 +6993,22 @@ console.log(moment().format('MMMM Do YYYY, h:mm:ss a'));
 
 ## webpack 构建库
 
+- webpack的配置文件中的output对象中的library选项允许将模块导出的内容作为库（library）暴露给外部使用
+- `library`属性用于指定库的名称，可以是一个字符串或者一个对象。如果是一个字符串，则将其作为全局变量暴露给浏览器环境。如果是一个对象，则可以在对象中指定library的名称和导出方式等相关选项
+- `libraryExport`属性用于指定要导出的内容，可以是一个字符串、一个字符串数组或者一个对象。如果是一个字符串，则将该字符串指定的导出内容暴露给外部使用。如果是一个字符串数组，则将数组中指定的导出内容暴露给外部使用。如果是一个对象，则可以在对象中指定要导出的内容和导出方式等相关选项
+- libraryTarget属性用于指定库的导出方式，可以是以下值之一：
+  - `var`：将库导出为一个变量，该变量在全局作用域下可用
+  - `assign`：将库导出为一个变量，该变量在全局作用域下可用，但可以被其他库或模块覆盖
+  - `this`：将库导出为一个变量，该变量在this对象下可用
+  - `window`：将库导出为一个变量，该变量在window对象下可用（仅在浏览器环境下有效）
+  - `global`：将库导出为一个变量，该变量在global对象下可用（仅在Node.js环境下有效）
+  - `commonjs`：将库导出为一个CommonJS模块，该模块在Node.js环境下可用
+  - `commonjs2`：将库导出为一个CommonJS2模块，该模块在Node.js环境下可用
+  - `amd`：将库导出为一个AMD模块，该模块在浏览器环境下可用
+  - `umd`：将库导出为一个UMD模块，该模块既可在浏览器环境下，也可在Node.js环境下使用
+
+
+
 - [output librarytarget](https://webpack.js.org/configuration/output/#outputlibrarytarget)
 - 在使用 webpack 编写自己开发的库给别人使用时，需要配置这个字段中的值
 - 当用 Webpack 去构建一个可以被其他模块导入使用的库时需要用到
@@ -7086,6 +7090,34 @@ module.exports = [
     }) 
 ]
 ```
+
+
+
+
+
+**externals**
+
+一般编写一个库的时候，自己的项目中并不要打包第三方依赖到自己最后打包的文件中，而是在package.json中通过同等依赖配置项来进行设置。在用户安装了自己的包之后，直接使用用户项目环境中安装的同等依赖包。
+
+- `externals`选项用于指定哪些模块应该被视为外部模块，不应该被打包进输出的bundle中
+- externals选项可以是一个对象、一个字符串、一个正则表达式或者一个函数
+  - 如果是一个字符串，则表示要排除的模块名称
+  - 如果是一个正则表达式，则表示要排除的模块名称与该正则表达式匹配的所有模块。
+  - 如果是一个函数，则在函数中可以自定义判断哪些模块应该被排除在打包之外，需要返回一个布尔值来表示是否排除该模块
+- 如果是一个对象，该对象的键表示要排除的模块名称，值表示在哪种环境下使用该模块。可以指定`commonjs`、`commonjs2`、`amd`或者`root`等选项来指定在不同的环境下使用该模块时的名称
+
+![image-20241227191314855](D:\learn-notes\工程化\images\image-20241227191314855.png)
+
+如果依赖了很多第三方模块，可以使用webpack-node-externals插件即可。
+
+```json
+externals: [
+    nodeExternals()
+],
+```
+
+- `webpack-node-externals`是一个npm包，它可以帮助排除Node.js应用程序中不需要打包的第三方模块。与webpack的externals选项类似，webpack-node-externals也可以将指定的模块排除在webpack打包之外，从而减小输出的bundle体积，提高应用程序的加载速度
+- `nodeExternals`函数将返回一个排除所有`node_modules`中的模块的externals对象。这样，所有的`node_modules`中的模块都将被排除在webpack打包之外
 
 
 

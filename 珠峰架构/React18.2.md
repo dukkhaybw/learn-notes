@@ -1,6 +1,10 @@
 ##  React18.2
 
-##  第一节
+学完React15再学习React18，这样学习的坡度会下降不少，因为React核心逻辑变化不大，但React15以后因为性能考虑引入许多数据结构与算法，解决性能问题，上手难度较大。
+
+最能体现 React 核心思想的是 Reac 的 16 版本，React17 中引入的 fiber 和 React18 加入的调度优先级和并发执行都是优化方案。本质的功能逻辑没有引入。所以对于初学者，首先学习 React 的核心思想，然后再发现它的提问，然后看后来版本的优化策略。
+
+
 
 1. React是什么？
 
@@ -47,11 +51,11 @@
 
 jsx 是一种 JavaScript 的语法扩展，**它充分具备 JavaScript 的能力**。将组件的**数据，结构和样式**写在一起。
 
-- JSX 是一种语法糖,最终会通过[babeljs](https://www.babeljs.cn/repl) 中的 plugin-transform-react-jsx 这个插件在 webpack 编译转译成`React.createElement`的调用语法（原生 js 语法）
+- JSX 是一种语法糖，最终会通过[babeljs](https://www.babeljs.cn/repl) 中的 plugin-transform-react-jsx 这个插件在 webpack 编译转译成`React.createElement`的调用（原生 js 语法）
 
-- `React.createElement`函数执行后会返回一个 React 元素（虚拟 DOM），即一个普通的 js 对象
+- `React.createElement`函数执行后会返回一个 **React 元素（虚拟 DOM）**，即一个普通的 js 对象
 
-- **React 元素**事实上是普通的 JS 对象，用来描述在屏幕上看到的内容
+- **React 元素**事实上是普通的 JS 对象，用来描述真实UI的树对象
 
 - `ReactDOM`中的 render 方法用于将 React.createElement()方法创建的虚拟 DOM（JS 对象）转化为真实的 DOM 并渲染到页面指定的 DOM 中
 
@@ -63,7 +67,7 @@ react-dom的commit阶段会渲染React元素（虚拟DOM）到页面上。
 
 JSX的编译和后续执行：
 
-![img](https://static.zhufengpeixun.com/virutaldom_1664073330011.jpg)
+![img](http://static.zhufengpeixun.com/virutaldom_1664073330011.jpg)
 
 React项目运行的两个环节：
 
@@ -104,7 +108,7 @@ jsxDEV函数在浏览器中调用后生成的结构
 
 
 
-一个虚拟DOM节点的children属性，可能是一个字符串，数字，对象或者数组，其中数组的中的每一项元素可以是前面3中的某一种。有一点需要注意，上面编写的jsx都是直接使用的原生的标签，如h1,span等，所以它们生成的jsxDEV函数调用的第一个参数都是字符串的'h1'或者'span'等。 **如果编写的是一个函数组件，如下代码：**
+一个虚拟DOM节点的children属性，可能是一个**字符串，数字，对象或者数组**，其中数组的中的每一项元素可以是前面3中的某一种。有一点需要注意，上面编写的jsx都是直接使用的原生的标签，如h1,span等，所以它们生成的jsxDEV函数调用的第一个参数都是字符串的'h1'或者'span'等。 **如果编写的是一个函数组件，如下代码：**
 
 ```jsx
 function FunctionComponent(){
@@ -154,11 +158,9 @@ var element = /*#__PURE__*/React.createElement(FunctionComponent, {
 
 
 
-
-
 ### jsxDEV函数参数
 
-在 React 17 以后，React 引入了新的 JSX 转换机制。在打包编译的时候，生成包括一个名为 `jsxDEV` 的函数，用于在js环境执行后返回reacr元素。这个函数是由 Babel 或 TypeScript 等工具在编译 JSX 时生成的。
+在 React 17 以后引入了新的 JSX 转换机制。在打包编译的时候，生成包括一个名为 `jsxDEV` 的函数，用于在js环境执行后返回react元素。这个函数是由 Babel 或 TypeScript 等工具在编译 JSX 时生成的。
 
 
 
@@ -234,16 +236,14 @@ _jsxDEV(
 
 #### jsxDEV的第一个参数type可能有哪些类型的值
 
-在 React 的 `jsxDEV` 函数中，第一个参数 `type` 指的是要创建的 React 元素的类型。这个参数可以有多种类型的值，具体如下：
+第一个参数 `type` 指的是要创建的 React 元素的类型。这个参数可以有多种类型的值，具体如下：
 
 ##### 1. 字符串
 
 如果 `type` 是一个字符串，它表示一个标准的 HTML 元素。例如：
 
 - `"div"`
-- `"span"`
 - `"input"`
-- `"button"`
 
 ```jsx
 // JSX
@@ -301,7 +301,7 @@ _jsxDEV(MyComponent, { message: "Hello, World!" }, void 0, false, { fileName: "<
   <div>Second element</div>
 </>
 
-// 编译后
+// 编译后  
 _jsxDEV(React.Fragment, { children: [_jsxDEV("div", { children: "First element" }, void 0, false, { fileName: "<file-path>", lineNumber: 2, columnNumber: 3 }, this), _jsxDEV("div", { children: "Second element" }, void 0, false, { fileName: "<file-path>", lineNumber: 3, columnNumber: 3 }, this)] }, void 0, false, { fileName: "<file-path>", lineNumber: 1, columnNumber: 1 }, this);
 ```
 
@@ -526,6 +526,8 @@ export default App;
 import { createRoot } from "react-dom/client";
 // React18中，createRoot表示创建一个并发版本的Root（根）
 
+
+// element就是一个React元素，本质是一个带有层级结构的js对象，作用是描述真实dom的信息
 const element = (
   <h1>
     hello<span style={{ color: 'red' }}>world</span>
@@ -540,15 +542,15 @@ root.render(element)
 
 createRoot函数接受真实的DOM节点，然后去创建整个项目的根。根本质就是一个类（ReactDOMRoot）的对象实例，该对象实例上有一个属性（_internalRoot），该属性的值是的FiberRootNode，FiberRootNode对象上有一个属性containerInfo属性的值就是createRoot接受的真实DOM节点。如下图：
 
-![img](https://static.zhufengpeixun.com/ReactDOMRoot_1664038441123.png)
+![img](http://static.zhufengpeixun.com/ReactDOMRoot_1664038441123.png)
 
 
 
 ![image-20240908114010982](D:\learn-notes\珠峰架构\images\image-20240908114010982.png)
 
-![image-20240117103732125](C:\Users\dukkha\Desktop\learn-notes\珠峰架构\images\image-20240117103732125.png)
+![image-20240117103732125](images\image-20240117103732125.png)
 
-![img](https://static.zhufengpeixun.com/FiberRootNode_1664074436254.jpg)
+![img](http://static.zhufengpeixun.com/FiberRootNode_1664074436254.jpg)
 
 简单来说FiberRootNode = containerInfo,它的本质就是一个真实的容器DOM节点 `div#root`，其实就是一个真实的DOM，只是稍微包装了一下，后面会指向根Fiber，而这个根Fiber就是整个Fiber树的根节点，根Fiber的真实DOM节点就指向FiberRootNode——整个项目的根。
 
@@ -691,9 +693,9 @@ fiber定义（fiber是什么）：
 
 ### 树遍历
 
-深度优先和广度优先遍历
+深度优先和广度优先遍历 
 
-![img](https://static.zhufengpeixun.com/dfs_he_bfs1_1644891966511.jpg)
+![img](http://static.zhufengpeixun.com/dfs_he_bfs1_1644891966511.jpg)
 
 
 
@@ -777,17 +779,17 @@ bfs(root)
 ### 链表
 
 1. 单向链表
-   ![img](https://static.zhufengpeixun.com/dan_xiang_lian_biao_1644749400974.jpg)
+   ![img](http://static.zhufengpeixun.com/dan_xiang_lian_biao_1644749400974.jpg)
 2. 双向链表
-   ![img](https://static.zhufengpeixun.com/shuang_xiang_lian_biao_1644749407158.jpg)
+   ![img](http://static.zhufengpeixun.com/shuang_xiang_lian_biao_1644749407158.jpg)
 3. 循环链表
-   ![img](https://static.zhufengpeixun.com/xun_huan_lian_biao_1644749414532.jpg)
+   ![img](http://static.zhufengpeixun.com/xun_huan_lian_biao_1644749414532.jpg)
 
 
 
 带有一个指针的循环链表：
 
-![img](https://static.zhufengpeixun.com/queuepending_1644750048819.png)
+![img](http://static.zhufengpeixun.com/queuepending_1644750048819.png)
 
 **React中的更新队列就是一个循环链表结构。**
 
@@ -1071,7 +1073,7 @@ React的优化：**如果一个虚拟DOM节点只有一个字节点，且子节�
 
 Fiber树是根据虚拟DOM树来生成的，所以大体结构一样。只是虚拟DOM是对象结构，而Fiber树是链表结构。
 
-![img](https://static.zhufengpeixun.com/FiberRootNode_1664074436254.jpg)
+![img](http://static.zhufengpeixun.com/FiberRootNode_1664074436254.jpg)
 
 上图中的current属性其实就是current树，就是表示当前浏览器渲染好的页面结构的Fiber树。根Fiber节点的stateNode属性就是简单包装过的真实DOM节点。
 
@@ -1187,7 +1189,7 @@ Fiber树有两棵：
 
 2. workInProgress树
 
-![img](https://static.zhufengpeixun.com/di_gui_gou_jian_fiber_shu_1664076989593.jpg)
+![img](http://static.zhufengpeixun.com/di_gui_gou_jian_fiber_shu_1664076989593.jpg)
 
 
 
@@ -1320,7 +1322,7 @@ react中的更新优先级是通过赛道来实现的，将更新赛道以32位�
 
 ### 构建workinProgress树
 
-![img](https://static.zhufengpeixun.com/renderFiber1_1664076149659.jpg)
+![img](http://static.zhufengpeixun.com/renderFiber1_1664076149659.jpg)
 
 
 
@@ -2421,6 +2423,1346 @@ port2.postMessage("发送给port1");
 在react的任务调度中，除了根据优先即来调度任务以外，还会给每个任务设置一个截至时间，在截至时间没有过期之前，一旦有更高优先级的任务出现时，首先会优先执行他们；当一个低优先级的任务的截至时间到的时候，即使有高优先级的任务加入，也会优先考虑那些截至时间已经到的任务。
 
 
+
+
+
+## 生命周期函数
+
+React15的生命周期函数。
+
+**挂载阶段：**
+
+- constructor
+- UNSAFE_componentWillMount
+- render
+- componentDidMount
+
+```js
+function mountClassComponent(vdom) {
+    const { type: ClassComponent, props, ref } = vdom;
+    
+    var defaultProps = ClassComponent.defaultProps;
+    var resolvedProps = { ...defaultProps, ...props }
+    
+    const classInstance = new ClassComponent(resolvedProps);//class ClassComponent
+    if(ClassComponent.contextType){
+        classInstance.context = ClassComponent.contextType._currentValue;
+    }
+    //让虚拟DOM的classInstance属性指向此类的实例
+    vdom.classInstance = classInstance;
+    if (ref) ref.current = classInstance;
+    
+    // 生命周期函数UNSAFE_componentWillMount
+    if (classInstance.UNSAFE_componentWillMount) {
+        classInstance.UNSAFE_componentWillMount();
+    }
+    
+    // 然后是render这个生命周期函数执行
+    const renderVdom = classInstance.render();
+    
+    if(!renderVdom) return null;
+    //在获取render的渲染结果后把此结果放到classInstance.oldRenderVdom进行暂存
+    classInstance.oldRenderVdom = renderVdom;
+    const dom = createDOM(renderVdom);
+    
+    // componentDidMount生命周期函数是在虚拟DOM生成的真实DOM插入页面后才触发
+    if (classInstance.componentDidMount) {
+        //把componentDidMount方法暂存到真实dom对象上
+        dom.componentDidMount = classInstance.componentDidMount.bind(classInstance);
+    }
+    
+    
+    return dom;
+}
+```
+
+
+
+componentDidMount生命周期函数的真正触发地：
+
+````js
+function mount(vdom, container) {
+    //传进去虚拟DOM，返回真实DOM
+    const newDOM = createDOM(vdom);
+    if(newDOM){
+        container.appendChild(newDOM);
+        if (newDOM.componentDidMount) {
+            newDOM.componentDidMount()
+        }
+    }
+}
+````
+
+
+
+更新阶段
+
+组件自身状态变化时触发的更新：
+
+- shouldComponentUpdate
+- UNSAFE_componentWillUpdate
+- render
+- componentDidUpdate
+
+
+
+```js
+function shouldUpdate(classInstance,nextProps,nextState){
+    //是否要更新
+    let willUpdate = true;
+    //如果有shouldComponentUpdate方法，并且返回值为false的话
+    if(classInstance.shouldComponentUpdate && (!classInstance.shouldComponentUpdate(
+      nextProps,
+      nextState
+    ))){
+      willUpdate=false
+    }
+    //如果要更新，并且存在组件将要更新的方法
+    if(willUpdate && classInstance.UNSAFE_componentWillUpdate){
+      classInstance.UNSAFE_componentWillUpdate();
+    }
+    //不管最终要不要更新页面上的组件，都会把新的状态传送给classInstance.state  *****
+    classInstance.state = nextState;
+    if(nextProps){
+      classInstance.props = nextProps;
+    }
+    //让组件强制更新
+    if(willUpdate)
+      classInstance.forceUpdate();
+}
+```
+
+
+
+```js
+export class Component{
+    //给类Component添加了一个静态属性 isReactComponent=true
+    static isReactComponent = true
+    constructor(props){
+        this.props = props;
+        this.state = {};
+        //每个类会有一个更新器的实例
+        this.updater = new Updater(this);
+    }
+    setState(partialState,callback){
+        this.updater.addState(partialState,callback);
+    }
+    forceUpdate(){
+       let oldRenderVdom = this.oldRenderVdom;
+       const oldDOM = findDOM(oldRenderVdom);
+       //根据新的状态计算新的虚拟DOM
+       let newRenderVdom = this.render();
+       compareTwoVdom(oldDOM.parentNode,oldRenderVdom,newRenderVdom);
+       this.oldRenderVdom=newRenderVdom;
+       this.updater.flushCallbacks();
+        
+        // 触发componentDidUpdate
+       if(this.componentDidUpdate){
+        this.componentDidUpdate(this.props,this.state);
+       }
+    }
+}
+```
+
+
+
+
+
+父组件传递的属性变化时组件自身触发的更新：
+
+- componentWillReceiveProps
+- shouldComponentUpdate
+- UNSAFE_componentWillUpdate
+- render
+- componentDidUpdate
+
+
+
+
+
+---
+
+涉及父子组件的完整的生命周期函数.
+
+永远是先走父组件的render函数，然后才执行子组件中的生命周期函数。
+
+```jsx
+import React from './react';
+import ReactDOM from './react-dom/client';
+class Counter extends React.Component{
+  //定义的默认属性
+  static defaultProps = {
+    name:'zhufeng'
+  }
+  constructor(props){
+    super(props);//setup props 设置属性
+    this.state = {number:0};//设置状态
+    console.log('Counter 1.constructor');
+  }
+  UNSAFE_componentWillMount(){
+    console.log('Counter 2.componentWillMount');
+  }
+  handleClick = ()=>{
+    this.setState({number:this.state.number+1});
+  }
+  shouldComponentUpdate(nextProps,nextState){
+    console.log(`Counter 5.shouldComponentUpdate`);
+    return nextState.number%2===0;//如果是偶数就为true,就更新，如果为奇数就不更新
+  }
+  UNSAFE_componentWillUpdate(){
+    //组件将要更新
+    console.log(`Counter 6.componentWillUpdate`);
+  }
+  componentDidUpdate(){
+    console.log(`Counter 7.componentDidUpdate`);
+  }
+  render(){
+    console.log('Counter 3.render');
+    return (
+     <div id={`counter${this.state.number}`}>
+        <p>{this.state.number}</p>
+        {
+          this.state.number === 4?null:<FunctionCounter count={this.state.number}/>
+        }
+        <button onClick={this.handleClick}>+</button>
+     </div>
+    )
+  }
+  componentDidMount(){
+    console.log('Counter 4.componentDidMount');
+  }
+}
+function FunctionCounter(props){
+  return (
+    <div>{props.count}</div>
+  )
+}
+class ChildCounter extends React.Component{
+  UNSAFE_componentWillReceiveProps(newProps){
+    console.log('ChildCounter 4.componentWillReceiveProps');
+  }
+  UNSAFE_componentWillMount(){
+    console.log('ChildCounter 1.componentWillMount');
+  }
+  shouldComponentUpdate(nextProps,nextState){
+    console.log(`ChildCounter 5.shouldComponentUpdate`);
+    return nextProps.count%3===0;//如果父组件传过来的count值是3的倍数就更新，否则不更新
+  }
+  render(){
+    console.log('ChildCounter 2.render');
+    return (
+      <div>{this.props.count}</div>
+    )
+  }
+  componentDidMount(){
+    console.log('ChildCounter 3.componentDidMount');
+  }
+  componentWillUnmount(){
+    console.log('ChildCounter 6.componentWillUnmount');
+  }
+}
+
+const DOMRoot = ReactDOM.createRoot(
+  document.getElementById('root')
+);
+let element = <Counter age={16}/>
+DOMRoot.render(element);
+
+/**
+Counter 1.constructor
+Counter 2.componentWillMount
+Counter 3.render
+ChildCounter 1.UNSAFE_componentWillMount
+ChildCounter 2.render
+ChildCounter 3.componentDidMount
+Counter 4.componentDidMount
+
+number=1
+Counter 5.shouldComponentUpdate
+
+number=2
+Counter 5.shouldComponentUpdate
+Counter 6.componentWillUpdate
+Counter 3.render
+ChildCounter 4.componentWillReceiveProps
+ChildCounter 5.shouldComponentUpdate
+Counter 7.componentDidUpdate
+
+number=3
+Counter 5.shouldComponentUpdate
+
+number=4
+Counter 5.shouldComponentUpdate
+Counter 6.componentWillUpdate
+Counter 3.render
+ChildCounter 6.componentWillUnmount
+Counter 7.componentDidUpdate
+
+number=5
+Counter 5.shouldComponentUpdate
+
+number=6
+Counter 5.shouldComponentUpdate
+Counter 6.componentWillUpdate
+Counter 3.render
+ChildCounter 1.UNSAFE_componentWillMount
+ChildCounter 2.render
+ChildCounter 3.componentDidMount
+Counter 7.componentDidUpdate
+ */
+```
+
+
+
+
+
+
+
+
+
+初始化阶段 ：设置组件的属性和状态（constructor）
+
+挂载阶段：componentWillMount=>render=>componentDidMount
+
+更新阶段：
+
+- prop 改变：componentWillReceiveProps=>shouldComponentUpdate=>ComponentWillUpdate=>render=>componentDidUpdate
+- state 改变：shouldComponentUpdate=>ComponentWillUpdate=>render=>componentDidUpdate
+
+卸载阶段：componentWillUnmount
+
+```jsx
+import React from './react';
+import ReactDOM from './react-dom';
+class Counter extends React.Component {
+  static defaultProps = {
+    // defaultProps是规定死的
+    name: 'zhufeng' //定义默认属性
+  };
+
+  constructor(props) {
+    super(props);
+    this.state = { number: 0 };
+    console.log('Counter 1.constructor');
+  }
+
+  componentWillMount() {
+    console.log('Counter 2.componentWillMount');
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    console.log('Counter 5.shouldComponentUpdate');
+    return nextState.number % 2 === 0; //偶数才更新
+  }
+
+  componentWillUpdate() {
+    console.log('Counter 6.componentWillUpdate');
+  }
+
+  handleClick = () => {
+    debugger;
+    this.setState({ number: this.state.number + 1 });
+  };
+
+  render() {
+    console.log('Counter 3.render');
+    return (
+      <div>
+        <p>{this.state.number}</p>
+        {this.state.number === 4 ? null : <ChildCounter count={this.state.number} />}
+        <button onClick={this.handleClick}>+</button>
+        {null}
+      </div>
+    );
+  }
+
+  componentDidUpdate() {
+    console.log('Counter 7.componentDidUpdate');
+  }
+
+  componentDidMount() {
+    console.log('Counter 4.componentDidMount');
+  }
+}
+
+class ChildCounter extends React.Component {
+  componentWillUnmount() {
+    console.log('ChildCounter 8.componentWillUnmount');
+  }
+  componentWillReceiveProps(newProps) {
+    console.log('ChildCounter 4.componentWillReceiveProps');
+  }
+  componentWillMount() {
+    console.log('ChildCounter 1.componentWillMount');
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    console.log('ChildCounter 5.shouldComponentUpdate');
+
+    return nextProps.count % 3 === 0;
+  }
+  componentWillUpdate() {
+    console.log('ChildCounter 6.componentWillUpdate');
+  }
+  render() {
+    console.log('ChildCounter 2.render');
+    return <div>{this.props.count}</div>;
+  }
+  componentDidUpdate() {
+    console.log('ChildCounter 7.componentDidUpdate');
+  }
+  componentDidMount() {
+    console.log('ChildCounter 3.componentDidMount');
+  }
+}
+ReactDOM.render(<Counter />, document.getElementById('root'));
+```
+
+```js
+function mountClassComponent(vdom) {
+  let { type: ClassComponent, props, ref } = vdom;
+  let classInstance = new ClassComponent(props);
+
+  vdom.classInstance = classInstance;
+  if (ref) ref.current = classInstance;
+  if (classInstance.componentWillMount) classInstance.componentWillMount();
+  let renderVdom = classInstance.render();
+  if (!renderVdom) return null;
+  //先缓存一次渲染出来的虚拟DOM，放置在组件实例上
+  classInstance.oldRenderVdom = renderVdom;
+  let dom = createDOM(renderVdom);
+  if (classInstance.componentDidMount) classInstance.componentDidMount();
+  return dom;
+}
+```
+
+```js
+function shouldUpdate(classInstance, nextProps, nextState) {
+  let willUpdate = true;
+  if (
+    classInstance.shouldComponentUpdate &&
+    !classInstance.shouldComponentUpdate(nextProps, nextState)
+  ) {
+    willUpdate = false;
+  }
+  if (willUpdate && classInstance.componentWillUpdate) {
+    classInstance.componentWillUpdate();
+  }
+  if (nextProps) {
+    classInstance.props = nextProps;
+  }
+  //不管shouldComponentUpdate返回true还是false,当前组件的state都会更新
+  classInstance.state = nextState;
+  //只不过当willUpdate为true的时候，才会真正去更新界面
+  if (willUpdate) classInstance.forceUpdate();
+}
+```
+
+```js
+export class Component {
+  static isReactComponent = true;
+  constructor(props) {
+    this.props = props;
+    this.state = {};
+    //每个类组件的实例都配有一个自己的Updater更新器
+    this.updater = new Updater(this);
+  }
+  setState(partialState) {
+    this.updater.addState(partialState);
+  }
+  forceUpdate() {
+    //类组件更新的时候，也是从根节点开始dom-diff的
+    let oldRenderVdom = this.oldRenderVdom;
+    //获取老的虚拟DOM获取老的真实DOM
+    let oldDOM = findDOM(oldRenderVdom); //div#counter
+    let newRenderVdom = this.render(); //渲染出新的虚拟DOM
+    compareTwoVdom(oldDOM.parentNode, oldRenderVdom, newRenderVdom);
+    this.oldRenderVdom = newRenderVdom;
+    if (this.componentDidUpdate) {
+      this.componentDidUpdate(this.props, this.state);
+    }
+  }
+}
+```
+
+含有子组件的生命周期函数的调用顺序：
+
+初次挂载：父组件的 constructor=>父组件的 componentWillMount=>父组件的 render => 子组件的 constructor=>子组件的 componentWillMount=>子组件的 render =>子组件的 componentDidMount=>父组件的 componentDidMount
+
+父组件的状态更新：父组件的 shouldComponentUpdate=>父组件的 componentWillUpdate=>父组件的 render =>子组件的 componentWillReceiveProps=>子组件的 shouldComponentUpdate=>子组件的 componentWillUpdate=>子组件的 render =>子组件的 componentDidUpdate=>父组件的 componentDidUpdate
+
+
+
+
+
+## 类组件
+
+![lei_zu_jian_xuan_ran_1626352042061](https://upload-markdown-images.oss-cn-beijing.aliyuncs.com/lei_zu_jian_xuan_ran_1626352042061.jpg)
+
+类组件的渲染是根据属性创建类的实例，并调用实例的 render 方法返回一个 React 元素。
+
+类组件虽然在 ES6 写法是以类关键字定义的，但是经过 babel 转义后，也是函数。那 React 源码中是如何区分一个组件是函数组件还是类组件的了？方法就是，在编写类组件时会继承 React.Component 类，该类上有一个静态属性 isReactComponent = new Symbol('React-ClassComponent')
+
+---
+
+**类组件状态更新**
+
+在类组件中调用this.setState方法可以部分更新组件自身的state，并且默认是异步更新state的，同时可以在用一个函数中多次调用this.setState方法，这些方法都会被添加到类组件实例对象的更新器的pendingState数组中，最后统一更新。（每个类组件中实例对象上都有一个更新器对象）
+
+
+
+---
+
+## 批量更新
+
+- State 的更新会被合并，当开发者调用 setState() 的时候，React 会把开发者提供的对象以当前的 state 为基础合并为一个对象然后进行更新
+- State 的更新可能是异步的（事件处理函数中，生命周期函数中）
+  - 出于**减少更新次数，提高性能**，React 可能会把多个 setState() 调用合并成一个调用
+  - 因为 this.props 和 this.state 可能会异步更新，所以不要依赖他们的值来更新下一个状态
+  - 可以让 setState() 接收一个函数而不是一个对象。这个函数用上一个 state 作为第一个参数
+
+```jsx
+import React from "./react";
+import ReactDOM from "./react-dom";
+class Counter extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = { number: 0 };
+    }
+    handleClick = () => {
++       this.setState({ number: this.state.number + 1 });
++       console.log(this.state);
++       this.setState({ number: this.state.number + 1 });
++       console.log(this.state);
++       setTimeout(()=>{
++           this.setState({ number: this.state.number + 1 });
++           console.log(this.state);
++           this.setState({ number: this.state.number + 1 });
++           console.log(this.state);
++       });
+    }
+    render() {
+        return (
+            <div>
+                <p>{this.props.title}</p>
+                <p>number:{this.state.number}</p>
+                <button onClick={this.handleClick}>+</button>
+            </div>
+        )
+    }
+}
+ReactDOM.render(<Counter title="计数器" />, document.getElementById("root"));
+
+// 0 0 2 3
+```
+
+只要是 React 能够管理的方法，setState 都是批量的。
+
+**状态更新和视图更新都是批量的**。开启批量更新，执行事件函数，关闭批量更新，当在 setTimeout 执行时，已经是下一个事件环，并且脱离了之前的执行上下文，所以表现为同步。
+
+React17 及以前设计如此。因为在 React 中控制批量更新是使用一个标记变量——isBatchingUpdate，它为 true 就是批量更新，为 false 就是非批量更新。在上面个的代码中，在事件函数执行前，将 isBatchingUpdate 改为 true，当该函数执行结束后，isBatchingUpdate 变为 false。在 setTimeout 中是在新的事件环中执行的宏任务，该宏任务脱离之前的上下文环境，执行定时器中的回调函数时 isBatchingUpdate 变量已经变为 false 了，所以就是非批量的了。
+
+**在 React18 以后，在定时器中也是批量更新的了，因为实现原理不同了，之前靠标记变量，React18 靠更新优先级来合并。**
+
+```jsx
+handleClick = ()=>{
+  this.setState({number:this.state.number+1})
+  consoloe.log(this.state.number)
+  this.setState({number:this.state.number+1})
+  consoloe.log(this.state.number)
+  setTimeout(()=>{
+    this.setState({number:this.state.number+1})
+    consoloe.log(this.state.number)
+    this.setState({number:this.state.number+1})
+    consoloe.log(this.state.number)
+  })
+}
+
+// 在React18以前，打印的是0 0 1 1
+```
+
+
+
+在定时器中调用 this.setState 函数时，状态更新和视图跟新都的次数一一对应。
+
+```js
+export let updateQueue = {
+  isBathingUpdate: false,//是否是批量更新,如果为true就批量的异步的，如果是false非批量的，同步的
+  updaters: new Set(),
+  batchUpdate() {
+    updateQueue.isBathingUpdate = false;
+    for (let updater of updateQueue.updaters) {
+      updater.updateComponent();
+    }
+    updateQueue.updaters.clear();
+  }
+}
+
+
+setState(partialState) {
+    this.updater.addState(partialState);
+}
+
+// Updater:
+addState(partialState) {
+    this.pendingStates.push(partialState);
+    this.emitUpdate();
+}
+
+emitUpdate() {
+    if (updateQueue.isBathingUpdate) {//如果是批量
+        updateQueue.updaters.add(this); //就把当前的updater添加到set里保存
+    } else {
+        this.updateComponent(); //直接更新
+    }
+}
+
+
+updateComponent() {
+    const { nextProps, classInstance, pendingStates } = this;
+    if (nextProps || pendingStates.length > 0) {
+        //表示有将要进行的更新
+        shouldUpdate(classInstance, nextProps, this.getState());
+    }
+}
+getState() {
+    const { classInstance, pendingStates } = this;
+    let { state } = classInstance; //获取 类的实例的老状态
+    pendingStates.forEach((nextState) => {
+        state = { ...state, ...nextState };
+    });
+    pendingStates.length = 0;
+    return state;
+}
+
+
+// ----------- 事件代理和劫持（在执行之前将isBathingUpdate置为true）   合成事件（合成多个代理）
+function updateProps(dom, oldProps = {}, newProps = {}) {
+  for (let key in newProps) {
+    if (key === 'children') {
+      continue;
+    } else if (key === 'style') {
+      let styleObj = newProps[key];
+      for (let attr in styleObj) {
+        dom.style[attr] = styleObj[attr];
+      }
+    } else if (/^on[A-Z].*/.test(key)) {
+      //dom[key.toLowerCase()] = newProps[key];
+      addEvent(dom, key.toLowerCase(), newProps[key]);
+    } else {
+      //虚拟DOM属性一般来刚好和dom的属性相同的，都是驼峰命名 className
+      //dom.className = 'title' setAttribute();
+      dom[key] = newProps[key];
+    }
+  }
+}
+
+/**
+ * 给DOM节点绑定事件，
+ * @param {*} dom 真实的DOM节点 button
+ * @param {*} eventType 事件类型 onclick
+ * @param {*} handler 原始的事件处理函数 handleClick
+ */
+export function addEvent(dom, eventType, handler) {
+  let store = dom.store || (dom.store = {});//保证DOM节点有一个自定义的属性对象
+  store[eventType] = handler;//store.onclick=handler 把处理函数保存到真实DOM节点上
+  if (!document[eventType])
+    document[eventType] = dispatchEvent;//document.onclick  = dispatchEvent
+}
+
+
+/**
+ * 合成事件
+ * 1.屏蔽浏览器的差异 类似于jquery的功能
+ * @param {*} event 真实的事件对象
+ */
+function dispatchEvent(event) {
+  updateQueue.isBathingUpdate = true;//在事件函数执行前，让批量更新标志设置为true
+  let { target, type } = event;//target=button真实DOM,type事件类型click
+  let syntheticEvent = createSyntheticEvent(event);
+  //target指的是事件源，点谁就是谁.它在冒泡的过程是不是变的
+  //currentTarget代表当前的DOM元素
+
+    // 模拟事件冒泡机制
+  let currentTarget = target;
+  while (currentTarget) {
+    syntheticEvent.currentTarget = currentTarget;
+    let eventType = `on${type}`;//onclick
+    const { store } = currentTarget;
+    let handler = store && store[eventType];
+    handler && handler(syntheticEvent);
+    if (syntheticEvent.isPropagationStopped) {
+      break;
+    }
+    currentTarget = currentTarget.parentNode;
+  }
+  updateQueue.batchUpdate();
+}
+
+
+function createSyntheticEvent(nativeEvent) {
+  let syntheticEvent = {};
+  for (let key in nativeEvent) {
+    let value = nativeEvent[key];
+    if (typeof value === 'function') value = value.bind(nativeEvent);
+    syntheticEvent[key] = value;
+  }
+  syntheticEvent.nativeEvent = nativeEvent;
+  syntheticEvent.isDefaultPrevented = false;//是否已经阻止了默认事件
+  syntheticEvent.preventDefault = preventDefault;
+  syntheticEvent.isPropagationStopped = false;//是否已经阻止了默认事件
+  syntheticEvent.stopPropagation = stopPropagation;
+  return syntheticEvent;
+}
+
+function preventDefault() {
+  this.isDefaultPrevented = true;
+  const event = this.nativeEvent;
+  if (event.preventDefault) {
+    event.preventDefault();
+  } else {
+    event.returnValue = false;
+  }
+}
+
+function stopPropagation() {
+  this.isPropagationStopped = true;
+  const event = this.nativeEvent;
+  if (event.stopPropagation) {
+    event.stopPropagation();
+  } else {
+    event.cancelBubble = true;
+  }
+}
+```
+
+## 合成事件
+
+批量更新是需要合成事件配合的。 合成事件就是在绑定的原有事件的基础上扩展一些自己的逻辑，为了能扩展就需要对事件进行代理，合成多个代理。
+
+```js
+import { updateQueue } from './Component';
+/**
+ * 给DOM节点绑定事件，
+ * @param {*} dom 真实的DOM节点 button
+ * @param {*} eventType 事件类型 onclick
+ * @param {*} handler 原始的事件处理函数 handleClick
+ */
+export function addEvent(dom, eventType, handler) {
+  let store = dom.store || (dom.store = {}); //保证DOM节点有一个自定义的属性对象
+  store[eventType] = handler; //store.onclick=handler 把处理函数保存到真实DOM节点上
+  if (!document[eventType]) document[eventType] = dispatchEvent; //document.onclick  = dispatchEvent
+
+  //  上面的代码可以看出，事件对应的代码都代理绑定到了document文档对象中了
+}
+/**
+ * 合成事件
+ * 1.屏蔽浏览器的差异 类似于jquery的功能
+ * @param {*} event 真实的事件对象
+ */
+function dispatchEvent(event) {
+  updateQueue.isBathingUpdate = true; //在事件函数执行前，让批量更新标志设置为true
+  let { target, type } = event; //target=button真实DOM,type事件类型click
+  let syntheticEvent = createSyntheticEvent(event);
+  //target指的是事件源，点谁就是谁.它在冒泡的过程是不是变的
+  //currentTarget代表当前的DOM元素
+  let currentTarget = target;
+
+  // 模拟事件冒泡
+  while (currentTarget) {
+    syntheticEvent.currentTarget = currentTarget;
+    let eventType = `on${type}`; //onclick
+    const { store } = currentTarget;
+    let handler = store && store[eventType];
+    handler && handler(syntheticEvent); // syntheticEvent合成事件对象
+    // 阻止事件冒泡
+    if (syntheticEvent.isPropagationStopped) {
+      break;
+    }
+    currentTarget = currentTarget.parentNode;
+  }
+  updateQueue.batchUpdate();
+}
+
+function createSyntheticEvent(nativeEvent) {
+  let syntheticEvent = {};
+  for (let key in nativeEvent) {
+    let value = nativeEvent[key];
+    if (typeof value === 'function') value = value.bind(nativeEvent);
+    syntheticEvent[key] = value;
+  }
+  syntheticEvent.nativeEvent = nativeEvent;
+  syntheticEvent.isDefaultPrevented = false; //是否已经阻止了默认事件
+  syntheticEvent.preventDefault = preventDefault;
+  syntheticEvent.isPropagationStopped = false; //是否已经阻止了默认事件
+  syntheticEvent.stopPropagation = stopPropagation;
+  return syntheticEvent;
+}
+
+function preventDefault() {
+  this.isDefaultPrevented = true;
+  const event = this.nativeEvent;
+  if (event.preventDefault) {
+    event.preventDefault();
+  } else {
+    event.returnValue = false;
+  }
+}
+
+function stopPropagation() {
+  this.isPropagationStopped = true;
+  const event = this.nativeEvent;
+  if (event.stopPropagation) {
+    event.stopPropagation();
+  } else {
+    event.cancelBubble = true;
+  }
+}
+```
+
+在同一个函数中调用的 this.setState 方法，在异步的情况下都会往一个数组中去追加，之后统一在一个方法中进行合并。
+
+```js
+class Updater {
+  constructor(classInstance) {
+    this.classInstance = classInstance;
+    this.pendingStates = [];
+  }
+  addState(partialState) {
+    this.pendingStates.push(partialState);
+    this.emitUpdate();
+  }
+  //
+  emitUpdate(nextProps) {
+    this.nextProps = nextProps;
+    if (updateQueue.isBathingUpdate) {
+      //如果是批量
+      updateQueue.updaters.add(this); //就把当前的updater添加到set里保存
+    } else {
+      this.updateComponent(); //直接更新
+    }
+  }
+  updateComponent() {
+    const { nextProps, classInstance, pendingStates } = this;
+    if (nextProps || pendingStates.length > 0) {
+      //表示有将要进行的更新
+      shouldUpdate(classInstance, nextProps, this.getState());
+    }
+  }
+
+  // 这里对this.setState中的数组中的每一项进行合并
+  getState() {
+    const { classInstance, pendingStates } = this;
+    let { state } = classInstance; //获取 类的实例的老状态
+    pendingStates.forEach((nextState) => {
+      state = { ...state, ...nextState };
+    });
+    pendingStates.length = 0;
+    return state;
+  }
+}
+```
+
+React 中 onClick 中的事件是发生在事件冒泡阶段的，如果要注册事件捕获阶段的事件则需要使用 onClickCapture 事件。
+
+在 React 的 jsx 语法中，看似是给对应的 dom 元素绑定的事件，实际上全部都是代理到了 document 文档对象中了。
+
+在 React17 以前是绑定在 codument 对象上的，在 React17 及以后是绑定在了 root 根节点上了。
+
+合成事件的目的：
+
+1. 实现批量更新
+2. 抹平浏览器之间的差异
+
+
+
+实现批量更新的关键是React定义了一个全局变量updateQueue，其中右isBatchingUpdate属性表示是否开启批量更新，默认是false，非批量同步更新。
+
+```js
+export const updateQueue = {
+    isBatchingUpdate:false,  // 是否批量异步更新，默认不批量且同步
+    updaters:new Set(), // 存放每个类组件实例对象上的updater实例对象
+    batchUpdate(){
+        updateQueue.isBatchingUpdate = false
+        for(const updater of updateQueue.updaters){
+            updater.updateComponent()
+        }
+        updateQueue.updaters.clear()
+    }
+}
+```
+
+
+
+在触发某个元素的事件处理函数时，会先将updateQueue的isBatchingUpdate设置为true，然后调用this.setState后，将被加入队列数组中，同时将updater添加到updateQueue的batchUpdate中。事件处理函数中的代码执行完后，再将batchUpdate的isBatchingUpdate置为false，然后执行updateQueue的batchUpdate，进行组件更新。这都是在本轮宏任务队列中完成的，一旦本轮代码中开启了异步的this.setState，则会在下一轮isBatchingUpdate为false的情况下执行，所以就会是同步的。
+
+至于修改updateQueue的isBatchingUpdate的值的代码和调用updateQueue的batchUpdate都是在React源码中通过合成事件来统一处理的。
+
+```js
+document[eventType] = dispatchEvent
+
+function dispatchEvent(event){
+    const {target,type} = event;
+    let eventType = `on${type}`
+    let {store} = target
+    let handler = store&&store[eventType]
+    // 批量更新
+    updateQueue.isBatchingUpdate = true 
+    handler&&handler()
+    updateQueue.batchUpdate() 
+}
+```
+
+
+
+----
+
+
+
+**合成事件**
+
+根据原生的事件对象（event）创建合成事件对象。
+
+- 实现兼容性处理（阻止默认行为，阻止冒泡等）
+
+```js
+function dispatchEvent(event){
+    const {target,type} = event;
+    let eventType = `on${type}`
+    let {store} = target
+    let handler = store&&store[eventType]
+    // 批量更新
+    updateQueue.isBatchingUpdate = true 
+    let syntheticEvent = createSynctheticEvent(event)  // 创建合成事件对象
+    handler&&handler(syntheticEvent)
+    updateQueue.batchUpdate() 
+}
+
+function createSynctheticEvent(nativeEvent){
+    let syntheticEvent = {}
+    for(let key in nativeEvent){
+        let value = nativeEvent[key]
+        if(typeof value ==='function') value = value.bind(nativeEvent)
+        syntheticEvent[key] = value
+    }
+    syntheticEvent.nativeEvent = nativeEvent
+    // 兼容性处理
+    syntheticEvent.isDefaultPrevented = false
+    syntheticEvent.preventDefault = preventDefault
+    
+    syntheticEvent.isPropagationStopped = false
+    syntheticEvent.stopPropagation = stopPropagation
+}
+
+function preventDefault(){
+    this.isDefaultPrevented = true
+    const nativeEvent = this.nativeEvent
+    if(nativeEvent.preventDefault){
+        nativeEvent.preventDefault()
+    }else{
+        nativeEvent.returnValue = false
+    }
+}
+
+function stopPropagation(){
+    this.isPropagationStopped = true
+    const nativeEvent = this.nativeEvent
+    if(nativeEvent.stopPropagation){
+        nativeEvent.stopPropagation()
+    }else{
+        nativeEvent.cancelBubble = false
+    }
+}
+```
+
+
+
+---
+
+**模拟捕获和冒泡**
+
+模拟捕获阶段，需要实现通过数组来确定好捕获的路径。
+
+````js
+export function addEvent(dom,eventType,handler){
+    //判断dom元素上有没有store属性，如果有直接返回，如果没能则赋值为空对象然后返回
+    let store = dom.store ||(dom.store = {});
+    //向store中存放属性和值，属性是事件类型onclick 值是一个事件函数函数
+    //onClick  onClickCapture
+    store[eventType.toLowerCase()]= handler;
+    const eventName = eventType.toLowerCase();
+  /*   if(!document[eventName]){
+        document[eventName] =dispatchEvent;
+    } */
+    const name = eventName.replace(/Capture$/,'').slice(2);
+    if(!document[name]){
+        //其实在React17 前后此逻辑是有改变的
+        //在React17以前是不合理的，此方法只在冒泡阶段执行，并且直接模拟捕获和冒泡二个流程
+        //此event是浏览器传进来的
+        document.addEventListener(eventName.slice(2).toLowerCase(),(event)=>{
+            dispatchEvent(event,true);
+        },true);
+        document.addEventListener(eventName.slice(2).toLowerCase(),(event)=>{
+            dispatchEvent(event,false);
+        },false);
+        document[name]=true;
+    } 
+}
+
+function dispatchEvent(event,isCapture){ 
+    //target事件源  type是件名称 
+    const {target,type} = event;
+    let eventType = `on${type}`;//onclick
+    let eventTypeCapture = `on${type}capture`;//onclick
+    let syntheticEvent= createSyntheticEvent(event);
+    updateQueue.isBatchingUpdate=true;
+    //为了跟源码一样，我们需要自己手工再次模拟捕获和冒泡的全过程
+    let targetStack = [];
+    let currentTarget=target;//button
+    while(currentTarget){
+        targetStack.push(currentTarget);//button div#counter div#root document
+        currentTarget=currentTarget.parentNode;
+    }
+    //处理捕获阶段
+    if(isCapture){
+        for(let i=targetStack.length-1;i>=0;i--){
+            const currentTarget = targetStack[i];
+            let {store} = currentTarget;
+            let handler = store&&store[eventTypeCapture];
+            handler&&handler(syntheticEvent);
+        }
+    }else{
+        //处理冒泡阶段
+        for(let i=0;i<targetStack.length;i++){
+            const currentTarget = targetStack[i];
+            let {store} = currentTarget;
+            let handler = store&&store[eventType];
+            handler&&handler(syntheticEvent);
+            // 调用阻止冒泡后将停止循环
+            if(syntheticEvent.isPropagationStopped){
+                break;
+            }
+        }
+    }
+    updateQueue.batchUpdate();
+}
+````
+
+
+
+因为是React自身模拟的事件捕获和冒泡，所以走的并不是原生的捕获和冒泡。导致系统中会有两套捕获和冒泡。如果一个元素即通过React绑定了事件，也通过原生的document.getElementById获得元素后添加元素事件，这时就会存在触发时机上的不同，会先走原生的捕获和冒泡。
+
+ 	
+
+### Ref
+
+通过ref可以获取到根据虚拟DOM生成的真实DOM，或者获取类组件对应的组件实例对象；不能直接为函数组件绑定ref，因为函数组件没有实例，给函数组件配置ref需要使用高阶组件React.forwardRef将函数组件包裹，然后使用该包裹后的组件。一般为函数组件绑定ref是为了获取函数组件中jsx部分的某个原生元素。
+
+为普通的html元素配置ref：
+
+```js
+function createRef(){
+  return {
+    current:null
+  }
+}
+
+
+function createDOM(vdom) {
+  const { type, props, ref } = vdom;
+  let dom;
+  if (type && type.$$typeof === REACT_MEMO) {
+    return mountMemoComponent(vdom);
+  }else if (type && type.$$typeof === REACT_CONTEXT) {
+    return mountConsumerComponent(vdom);
+  }else if (type && type.$$typeof === REACT_PROVIDER) {
+    return mountProviderComponent(vdom);
+  }
+  else if (type && type.$$typeof === REACT_FORWARD_REF_TYPE) {
+    return mountForwardComponent(vdom);
+  } else if (type === REACT_TEXT) {
+    dom = document.createTextNode(props);
+  } else if (typeof type == 'function') {
+    if (type.isReactComponent) {
+      return mountClassComponent(vdom);
+    } else {
+      return mountFunctionComponent(vdom);
+    }
+  } else {
+    dom = document.createElement(type);
+  }
+  if (typeof props === 'object') {
+    updateProps(dom, {}, props);
+    if (props.children) {
+      if (typeof props.children === 'object' && props.children.type) {
+        props.children.mountIndex = 0;
+        mount(props.children, dom);
+      } else if (Array.isArray(props.children)) {
+        reconcileChildren(props.children, dom);
+      }
+    }
+  }
+  vdom.dom = dom;
+  //如果此虚拟DOM上有ref属性，则把ref.current的值赋成真实DOM
+  if (ref) ref.current = dom; 
+  return dom;
+}
+
+```
+
+
+
+为类组件配置ref
+
+```js
+function mountClassComponent(vdom) {
+    const { type: ClassComponent, props, ref } = vdom;
+
+    const classInstance = new ClassComponent(props);//class ClassComponent
+    if (ref) ref.current = classInstance;
+    const renderVdom = classInstance.render();
+    if(!renderVdom) return null;
+    //在获取render的渲染结果后把此结果放到classInstance.oldRenderVdom进行暂存
+    classInstance.oldRenderVdom = renderVdom;
+    return createDOM(renderVdom);
+}
+```
+
+
+
+
+
+为函数组件配置ref
+
+```jsx
+function TextInput(props,forwardRef){
+  return <input ref={forwardRef}/>
+}
+
+const ForwardTextInput = React.forwardRef(TextInput);
+
+class Form extends React.Component{
+  constructor(props){
+    super(props);
+    this.ref = React.createRef();
+  }
+  render(){
+    return ( 
+      <div>
+        <ForwardTextInput ref={this.ref}/>
+        <button>获得焦点</button>
+      </div>
+    )
+  }
+}
+```
+
+babel转换后的结果：
+
+```js
+function TextInput(props, forwardRef) {
+  return React.createElement("input", {
+    ref: forwardRef
+  });
+}
+const ForwardTextInput = React.forwardRef(TextInput);
+class Form extends React.Component {
+  constructor(props) {
+    super(props);
+    this.ref = React.createRef();
+  }
+  render() {
+    return React.createElement("div", null, React.createElement(ForwardTextInput, {
+      ref: this.ref
+    }),React.createElement("button", null, "\u83B7\u5F97\u7126\u70B9"));
+  }
+}
+```
+
+
+
+ForwardInputText组件对应的虚拟DOM格式：
+
+```json
+{
+    $$typeof:React_ELEMENT,
+    type:{
+        $$typeof:Symbol(react.forward.ref),
+        render:f TextInput(props,forwardRef),
+        //...
+    },
+	props:{},
+	ref:this.ref
+	key:null
+}
+```
+
+
+
+<img src="D:\learn-notes\珠峰架构\images\image-20230620173821964.png" alt="image-20230620173821964" style="zoom:200%;" />
+
+
+
+```js
+//其实函数组件本质上就是render方法，就是接收属性，返回react元素
+function forwardRef(render){
+   return {
+     $$typeof:REACT_FORWARD_REF_TYPE,
+     render// 其实就是原来的函数组件那个函数
+   }
+}
+```
+
+
+
+
+
+```js
+function createDOM(vdom) {
+    const { type, props, ref } = vdom;
+    let dom;
+    if (type && type.$$typeof === REACT_FORWARD_REF_TYPE) {
+        return mountForwardComponent(vdom);
+    }
+    //在根据虚拟DOM创建真实DOM成功后，就可以建立关系
+    vdom.dom = dom;
+    //如果此虚拟DOM上有ref属性，则把ref.current的值赋成真实DOM
+    if (ref) ref.current = dom;
+    return dom;
+}
+
+
+function mountForwardComponent(vdom) {
+    const { type, props, ref } = vdom;
+    //type.render=就是TextInput
+    const renderVdom = type.render(props, ref);
+    if(!renderVdom) return null;
+    vdom.oldRenderVdom = renderVdom;
+    return createDOM(renderVdom);
+}
+```
+
+
+
+
+
+
+
+如果直接将 ref 绑定到函数组件内部的真实 dom 元素上时，用户获取到该真实元素后可以进行许多意想不到的操作，如果开发者想限制用户只能进行指定的操作，则可以将穿透的 ref 的 current 属性指向一个对象，对象中提供开发者想要暴露出去的指定操作。
+
+```jsx
+// ------------------------高级用法f
+function Username(props, ref) {
+  let usernameRef = React.createRef();
+  ref.current = {
+    focus: () => {
+      usernameRef.current.focus();
+    }
+  };
+  return <input ref={usernameRef} />;
+}
+
+const ForwardUsername = React.forwardRef(Username);
+console.log(ForwardUsername);
+class Form extends React.Component {
+  constructor(props) {
+    super(props);
+    this.usernameRef = React.createRef();
+  }
+  getFocus = () => {
+    this.usernameRef.current.focus();
+    //this.usernameRef.current.remove();
+  };
+  render() {
+    return (
+      <div>
+        <ForwardUsername ref={this.usernameRef} />
+        <button onClick={this.getFocus}>获得焦点</button>
+      </div>
+    );
+  }
+}
+ReactDOM.render(<Form />, document.getElementById('root'));
+```
+
+
+
+
+
+## 微型ReactDOM
+
+```js
+import { REAVT_TEXT } from '.utils.js';
+
+function render(vdom, contanier) {
+  mount(vdom, contanier);
+}
+
+function mount(vdom, contanier) {
+  let newDom = createDOM(vdom);
+  container.appendChild(newDom);
+}
+
+function createDOM(vdom) {
+  let { type, props } = vdom;
+  let dom;
+  if (type === REACT_TEXT) {
+    // 文本元素
+    dom = document.createTextNode(props);
+  } else {
+    // 对应元素节点,元素节点可能有对应的元素属性
+    dom = document.createElement(type);
+    if (props) {
+      updateProps(dom, {}, props);
+      if (typeof props.children === 'object' && props.children.type) {
+        // 一个元素子节点 ,递归创建
+        mount(props.children, dom);
+      } else if (Array.isArray(props.children)) {
+        // 子元素是多个元素组成的数组
+        reconcileChildren(props.children, dom);
+      }
+    }
+  }
+  return dom;
+}
+
+// 专门处理元素属性的方法
+function updateProps(dom, oldProps = {}, newProps = {}) {
+  // 先处理新的属性
+  for (let key in newProps) {
+    if (key === 'children') {
+      continue; // 对于元素的后代元素不在这里处理
+    } else if (key == 'style') {
+      let styleObj = newProps[key];
+      for (let attr in styleObj) {
+        dom.style[attr] = styleObj[attr];
+      }
+    } else {
+      // 虚拟DOM的属性一般来说刚好和DOM的属性相同，都是驼峰命名className
+      dom[key] = newProps[key];
+    }
+  }
+
+  // 处理老属性
+  for (let key in oldProps) {
+    if (!newProps.hasOwnProperty(key)) {
+      // 新属性中没有老属性中对应的字段，则删除
+      dom[key] = null;
+    }
+  }
+}
+
+function reconcileChildren(children, parentDOM) {
+  props.children.forEach((item) => {
+    mount(item, parentDOM);
+  });
+}
+
+const ReactDOM = {
+  render
+};
+export default ReactDOM;
+```
 
 
 

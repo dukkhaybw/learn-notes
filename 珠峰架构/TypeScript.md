@@ -675,6 +675,7 @@ x = null;   // 不报错
 - **未赋值时**联合类型上只能访问两个类型共有的属性和方法
 - 类型断言可以将一个联合类型的变量，指定为一个更加具体的类型
 - 不能将联合类型断言为不存在的类型，除非使用双重断言
+- 联合类型可以做到不同对象间的互斥
 
 ```tsx
 // 当 TypeScript 不确定一个联合类型的变量到底是哪个类型的时候，只能访问此联合类型的所有类型里共有的属性或方法
@@ -688,6 +689,20 @@ console.log(myFavoriteNumber.length); // 编译时报错  index.ts(5,30): error 
 
 // | 是交集还是并集？  设置值时是并集 ts中联合类型可以看成并集 取值看成交集
 type IValue = number | string | HTMLElement; // 联合类型只能使用共享的方法，非共享不能使用，当确定类型后 就会根据类型来继续识别
+
+
+type IIi = {
+  a:true,
+  b:string
+}|{
+  a:false,
+  c:string
+}
+
+let a:IIi = {
+  a:true,
+  c:'asd'
+}  // 提示：对象字面量只能指定已知属性，并且“c”不在类型“{ a: true; b: string; }”中。
 ```
 
 
@@ -728,12 +743,93 @@ const enum STATUS {
   c,
 }
 // 枚举对应的值一般都是数字，会根据开头的值来推断下一个的数值，没给具体数值则从零开始
-console.log(STATUS.OK);   // 编译结果：console.log(0 /* OK */);
+console.log(STATUS.OK);   // 编译结果：console.log(0 /* OK */);不再有STATUS对象生成
 ```
 
 
 
 ### never
+
+也是任何类型的子类型。多用于高级类型，不如把某一组类型中的某种类型去掉。
+
+
+
+`never` 类型有多个应用场景。这些场景通常涉及到确保代码的健壮性、类型安全性以及帮助开发者捕获潜在的逻辑错误。以下是几个典型的应用场景：
+
+1. **表示函数永远不会返回值**：
+
+   当一个函数总是**抛出异常或进入无限循环**时，该函数可以声明**返回类型**为 `never`。例如，一个用于抛出错误的辅助函数可以定义为返回 `never` 类型。
+
+   ```ts
+   function throwError(message: string): never {
+     throw new Error(message);
+   }
+   ```
+
+2. **穷举检查（Exhaustive Checks）**：
+
+   在处理联合类型时，使用 `never` 可以确保所有可能的情况都被覆盖。如果某个分支没有被处理，TypeScript 编译器会报错。这有助于避免遗漏某些情况导致的运行时错误。
+
+   ```ts
+   type Method = 'GET' | 'POST';
+   function request(method: Method) {
+     if (method === 'GET') {
+       // 处理 GET 请求
+     } else if (method === 'POST') {
+       // 处理 POST 请求
+     } else {
+       const _exhaustiveCheck: never = method; // 如果有未处理的 case，这里会报错
+     }
+   }
+   
+   type UserStatus = "active" | "inactive" | "banned";
+   function handleUserStatus(status: UserStatus) {
+     switch (status) {
+       case "active":
+         console.log("User is active");
+         break;
+       case "inactive":
+         console.log("User is inactive");
+         break;
+       case "banned":
+         console.log("User is banned");
+         break;
+       default:
+         const exhaustiveCheck: never = status; // 强制类型检查是否已全面覆盖所有情况
+         throw new Error(`Unhandled status: ${status}`);
+     }
+   }
+   ```
+
+3. **类型取反**：
+
+   用条件类型和 `never` 可以实现类型的取反操作，即排除某些特定类型。
+
+   ```ts
+   type ExcludeString<T> = T extends string ? never : T;
+   function myFunction<T>(value: ExcludeString<T>): T {
+     return value;
+   }
+   
+   
+   let union: string | number | boolean | never;  // never会被自动忽略，最后ts提示的union的类型只包含前面三者的联合类型。
+   
+   type union = string | number | boolean;
+   type ExcludeString<T> = T extends string ? never : T;
+   type ISelf = ExcludeString<union>;  // 等价于 type ISelf = number | boolean
+   ```
+
+4. **优化代码检查和类型收窄**：
+
+   - `never` 可以帮助 TypeScript 判断哪些代码路径无法访问，从而优化代码检查和类型收窄。
+
+5. **判断 never 类型**：
+
+   - 在条件类型中，直接判断 `never` 类型可能会遇到一些特殊情况，需要特殊的处理方式来正确识别 `never` 类型。
+
+`never` 类型虽然不是经常被直接使用，但它在保证类型安全性和编写更健壮的代码方面提供了强大的支持。
+
+
 
 ```tsx
 // never 永远不  永远达不到的情况  1）  程序出错了   2） 死循环   3） 走不到的情况
@@ -772,6 +868,8 @@ function getArea(obj: ICircle | ISquare) {
 
 
 ### void
+
+只在函数中使用，表示函数不关心返回值。
 
 ```tsx
 // void 类型  函数不写返回值默认就是void ， 默认不写不是undefined？  undefined 可以兼容void类型
@@ -812,16 +910,65 @@ function create(target: Object) {
 function create(target: any) {
   target.xxx   // 没有错误提示
 } 
-
 ```
 
 
 
-`{}`、`object` 和 `Object` 这三个类型有以下区别：
 
-1. `{}` 类型：表示空对象类型。它表示一个没有任何属性的对象，即空对象。例如，`const obj: {} = {};` 表示 `obj` 是一个空对象。`{}` 类型不允许添加任何属性或方法。
-2. `object` 类型：表示非原始类型的对象。它是 TypeScript 中的顶级类型，包括除了 `null` 和 `undefined` 之外的所有非原始类型。这意味着 `object` 可以是对象、数组、函数等。例如，`const obj: object = {};` 表示 `obj` 是一个空对象。使用 `object` 类型时，属性和方法的结构和类型信息会被忽略，编译器将对象视为任意类型，并无法提供属性和方法的类型检查和代码提示。
-3. `Object` 类型：表示 JavaScript 中的对象类型。它是 JavaScript 内置的构造函数 `Object` 的类型。在 TypeScript 中，`Object` 表示具有任意属性和方法的对象。例如，`const obj: Object = {};` 表示 `obj` 是一个空对象。与 `object` 类型不同的是，使用 `Object` 类型时，编译器会提供属性和方法的类型检查和代码提示。但需要注意的是，`Object` 类型也包括一些 JavaScript 内置对象的属性和方法，如 `toString()`、`hasOwnProperty()` 等，这些属性和方法并不适用于所有对象。
+
+`{}`、`object` 和 `Object` 代表三种不同的类型，它们有着不同的含义和用途。
+
+`{}`
+
+- **定义**：`{}` 表示一个没有任何属性的对象字面量类型，也被称为空对象类型或无约束的对象类型。`{}` 类型不允许添加任何属性或方法。
+
+- **作用**：它可以接受任何非原始类型的值，包括数组、函数等，但不包括 `null` 和 `undefined`。实际上，它是一个非常宽松的类型，几乎可以表示任何东西除了原始类型（如 `string`, `number`, `boolean`, `symbol`, `bigint`, `null`, `undefined`）。
+
+  ```ts
+  const obj: {} = {};
+  obj.a = "asd";   // 提示：类型“{}”上不存在属性“a”。
+  
+  
+  function printObject(obj: {}) {
+    console.log(obj);
+  }
+  printObject({}); // 正确
+  printObject([]); // 正确
+  printObject('hello'); // 正确，尽管这可能不是预期的行为
+  ```
+
+
+
+#### `object`
+
+- **定义**：`object` 用于表示所有非原始类型的集合。
+
+- **作用**：与 `{}` 不同，`object` 类型排除了所有的原始类型（`string`, `number`, `boolean`, `symbol`, `bigint`, `null`, `undefined`），但包括了所有其他类型的对象，比如普通对象、数组、类实例、函数等。属性和方法的结构和类型信息会被忽略，编译器将对象视为任意类型，并无法提供属性和方法的类型检查和代码提示。
+
+  ```ts
+  function printObject(obj: object) {
+    console.log(obj);
+  }
+  printObject({}); // 正确
+  printObject([]); // 正确
+  printObject('hello'); // 错误：不能将类型“'hello'”分配给类型“object”
+  ```
+
+  
+
+#### `Object`
+
+- **定义**：`Object` 是 JavaScript 中的一个全局构造函数，其对应的类型包含了所有继承自 `Object.prototype` 的对象，同时也包括了 `Object.prototype` 自身的方法和属性。
+
+- **作用**：这个类型通常用于描述那些具有标准对象方法的对象，比如 `toString`, `hasOwnProperty` 等。此外，`Object` 类型还可以与 `null` 进行比较，因为它可以表示 JavaScript 中的 `Object` 实例。
+
+  ```ts
+  function getObjectKeys(obj: Object) {
+    return Object.keys(obj);
+  }
+  getObjectKeys({ name: 'John', age: 30 }); // 正确
+  getObjectKeys('hello'); // 错误：不能将类型“'hello'”分配给类型“Object”
+  ```
 
 综上所述，`{}` 类型表示空对象类型，`object` 类型表示非原始类型的对象，而 `Object` 类型表示 JavaScript 中具有任意属性和方法的对象类型。
 
@@ -933,7 +1080,8 @@ interface IArguments {
 数组不限制长度和内部存储的顺序，元组要限制长度和顺序
 
 ```tsx
-let tuple: [string, number, boolean] = ['', 1, true]; // 这里必须要有三个值
+let tuple: [string, number, boolean] = ['', 1, true]; // 这里必须要有三个值，且对应位置上必须是对应类型的值，且不能多不能少
+
 let tuple: [name:string, age:number, male:boolean] = ['', 1, true]; // 这里必须要有三个值
 
 // 元组可以新增已经存在的类型，没有初始被指定的类型是无法添加到数组中的。
@@ -1892,7 +2040,6 @@ age属性装饰器
 
 接口：
 
-- 用来描述复杂数据（对象，类，函数等）的结构、组成
 - 接口没有具体的实现（抽象）
 - 接口可以描述函数，对象和类等，和 type 有一定的类似
 - 把一些类中共有的属性和方法抽象出来,可以用来约束实现此接口的类
@@ -1901,7 +2048,24 @@ age属性装饰器
 
 接口和 type 的区别：
 
-1.  type 可以使用联合类型 interface 不支持联合类型
+- 基本功能方面的区别
+  1. interface主要用来描述复杂数据（对象，类，函数等）的结构、组成
+  2. interface可以被其他接口所继承
+  3. interface可以被类所实现
+  4. **interface** 支持声明合并：多次定义同名接口会自动合并。
+  5. type是自定义的类型别名，可以支持联合类型，交叉类型
+  6. **type** 不支持声明合并：重复定义同名类型会报错。
+  7. type不能通过重名的方式进行扩展，只能借助`&`（交叉类型）来实现类似扩展的能力
+- 语法差异方面的区别
+- 可扩展性方面的区别
+- 实现类的约束方面
+- 实际的使用场景
+- 声明合并
+- 最佳实践
+
+
+
+1.  type 可以使用联合、交叉类型， interface 不支持
 
 ```ts
 interface ISum {
@@ -3826,6 +3990,52 @@ type PartialUser = Partial<User>;
 //   email?: number;
 // }
 ```
+
+
+
+
+
+## 扩展第三方库的类型
+
+在 TypeScript 项目中，如果你需要扩展一个第三方库提供的接口（比如 `IVurRouterRow`），可以使用声明合并（Declaration Merging）的特性。TypeScript 支持多种声明合并机制，包括接口的合并。这意味着可以在代码中重新打开一个接口并添加新的属性或方法，而无需修改原始接口定义。
+
+假设有一个来自第三方库的接口 `IVurRouterRow`，以下是如何扩展它的步骤：
+
+1. **找到或创建类型声明文件**：需要在一个 `.d.ts` 文件中进行类型扩展。如果项目中已经有了一个自定义的类型声明文件（如 `global.d.ts` 或者 `types.d.ts`），可以直接在这个文件中进行操作。如果没有，可以创建一个新的声明文件。
+
+2. **扩展接口**：
+
+   在声明文件中，再次声明 `IVurRouterRow` 接口，并添加需要的新属性或方法。TypeScript 会自动合并这些声明。
+
+   ```ts
+   // 假设这是你的自定义声明文件，例如 customTypes.d.ts
+   import 'third-party-library'; // 引入包含 IVurRouterRow 定义的库
+   
+   declare module 'third-party-library' {
+     interface IVurRouterRow {
+       // 添加你想要的新属性或方法
+       newProperty?: string;
+       newMethod?(): void;
+     }
+   } 
+   ```
+
+3. **确保声明文件被包含在项目中**：检查你的 `tsconfig.json` 配置，确保新创建的 `.d.ts` 文件或者已经存在的包含扩展类型的声明文件路径被正确包含在 `include` 字段中。例如：
+
+   ```ts
+   {
+     "include": ["src/**/*", "customTypes.d.ts"]
+   }
+   ```
+
+### 注意事项
+
+- 确保扩展与原接口的用途兼容，避免添加与现有逻辑冲突的属性或方法。
+- 如果第三方库更新了接口定义，可能会对你的扩展产生影响，请留意库的更新日志和版本管理。
+
+通过这种方式，就可以在不修改第三方库源码的情况下，安全地扩展已有类型以满足项目的特定需求。
+
+
 
 
 

@@ -2362,6 +2362,151 @@ console.log(this);
 
 
 
+### ES Module
+
+在 Node.js 中，使用 ES6 模块化（`import/export`）时，无法直接访问 CommonJS 中的一些全局变量，如 `__filename`、`__dirname`、`require` 等。这是因为 ES6 模块和 CommonJS 模块的运行机制不同。
+
+不过，可以通过以下方式在 ES6 模块中获取类似的功能：
+
+1. 使用 `import.meta.url` 获取当前模块的 URL(推荐)
+
+   在 ES6 模块中，`import.meta.url` 提供了当前模块的 URL。可以通过 `URL` 和 `path` 模块来解析出 `__filename` 和 `__dirname`。
+
+   ```js
+   import { fileURLToPath } from 'url';
+   import { dirname } from 'path';
+   
+   // 获取当前文件的路径 (__filename)
+   const __filename = fileURLToPath(import.meta.url);
+   
+   // 获取当前文件的目录 (__dirname)
+   const __dirname = dirname(__filename);
+   
+   console.log('File path:', __filename);
+   console.log('Directory:', __dirname);
+   
+   
+   // 高版本node直接可以这样使用
+   const __filename = import.meta.filename;
+   const __dirname = import.meta.dirname;
+   ```
+
+2. 使用 `path` 模块手动构造路径
+
+   如果需要动态构造路径，可以使用 `path` 模块的 `resolve` 或 `join` 方法。
+
+   ```js
+   import { resolve } from 'path';
+   
+   // 构造一个绝对路径
+   const filePath = resolve('src', 'app.js');
+   console.log('Resolved path:', filePath);
+   ```
+
+3. 动态导入 CommonJS 模块
+
+   如果需要使用 `require` 动态加载模块，可以使用 `import()` 动态导入。
+
+   ```js
+   // 动态导入 CommonJS 模块
+   const someModule = await import('some-commonjs-module');
+   console.log(someModule);
+   ```
+
+   通过 Node.js 的 `module` 模块和 `createRequire` 方法来模拟实现一个类似 `require` 的功能。
+
+   Node.js 提供了 `module.createRequire` 方法，可以创建一个 `require` 函数，用于加载 CommonJS 模块。
+
+   ```js
+   import { createRequire } from 'module';
+   
+   // 创建一个 require 函数
+   const require = createRequire(import.meta.url);
+   
+   // 使用 require 加载 CommonJS 模块
+   const fs = require('fs');
+   const path = require('path');
+   
+   console.log(fs.readFileSync(path.resolve('example.txt'), 'utf8'));
+   ```
+
+   
+
+   手动实现一个简单的 `require` 方法，可以基于 Node.js 的 `module` 模块和 `vm` 模块来实现。以下是一个简化版的实现：
+
+   ```js
+   import { readFileSync } from 'fs';
+   import { dirname, resolve } from 'path';
+   import { fileURLToPath } from 'url';
+   import { Module } from 'module';
+   import vm from 'vm';
+   
+   // 获取当前文件的路径和目录
+   const __filename = fileURLToPath(import.meta.url);
+   const __dirname = dirname(__filename);
+   
+   // 自定义 require 函数
+   function customRequire(modulePath) {
+     // 解析模块的绝对路径
+     const absolutePath = resolve(__dirname, modulePath);
+   
+     // 读取模块文件内容
+     const code = readFileSync(absolutePath, 'utf8');
+   
+     // 创建一个 Module 实例
+     const customModule = new Module(absolutePath, null);
+   
+     // 定义模块的导出对象
+     customModule.exports = {};
+   
+     // 封装模块代码
+     const wrapper = [
+       '(function (exports, require, module, __filename, __dirname) {',
+       code,
+       '\n});',
+     ].join('');
+   
+     // 编译并执行模块代码
+     const compiledWrapper = vm.runInThisContext(wrapper, {
+       filename: absolutePath,
+     });
+   
+     // 注入模块的上下文
+     compiledWrapper.call(
+       customModule.exports,
+       customModule.exports,
+       customRequire,
+       customModule,
+       absolutePath,
+       dirname(absolutePath)
+     );
+   
+     // 返回模块的导出对象
+     return customModule.exports;
+   }
+   
+   // 使用自定义的 require 函数
+   const exampleModule = customRequire('./example.js');
+   console.log(exampleModule);
+   ```
+
+   
+
+4. 在 `package.json` 中启用实验性特性
+
+   如果希望 Node.js 在 ES6 模块中支持 `__filename` 和 `__dirname`，可以在 `package.json` 中启用实验性特性：
+
+   ```json
+   {
+     "type": "module",
+     "experimentalSpecifierResolution": "node"
+   }
+   ```
+
+   不过，这种方式并不推荐，因为它是实验性的，可能会在未来版本中发生变化。
+
+
+
 ## commonjs
 
 commonjs 规范：
@@ -2659,6 +2804,36 @@ path.basename('a.js', '.js'); // a   path.basename(path,base)
 
 path.dirname(); // 取处路径中的路径部分
 ```
+
+
+
+#### resolve
+
+`resolve` 方法会将传入的路径片段从右到左依次处理，直到构造出一个绝对路径。如果处理完所有路径片段后仍未得到绝对路径，则会使用当前工作目录作为基准。
+
+```js
+import { resolve } from "path";
+
+// 假设当前工作目录是 /home/user/project
+
+console.log(resolve("src", "app.js")); 
+// 输出: /home/user/project/src/app.js
+
+console.log(resolve("/var", "www", "html"));
+// 输出: /var/www/html
+
+console.log(resolve("/foo", "/bar", "baz"));
+// 输出: /bar/baz
+```
+
+### 解析规则
+
+1. **从右到左处理**：`resolve` 从右到左依次处理路径片段。
+2. **绝对路径**：如果某个路径片段是绝对路径，则他左侧的路径片段会被忽略。
+3. **相对路径**：如果路径片段是相对路径，则会基于当前工作目录或之前解析的路径进行拼接。
+4. **最终结果**：如果所有路径片段处理完后仍未得到绝对路径，则会使用当前工作目录作为基准。
+
+
 
 
 
@@ -5502,7 +5677,7 @@ cookie有路径限制。每个cookie都可以设置一个路径属性，指定co
 >    ```http
 >    Set-Cookie: theme=dark; Path=/shop;
 >    Set-Cookie: theme=light; Path=/profile;
->                   
+>                      
 >    Set-Cookie: lang=en-US; Path=/;     该 Cookie 对整个站点有效，包括 /, /docs/, /images/
 >    
 >    

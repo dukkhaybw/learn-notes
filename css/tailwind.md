@@ -51,7 +51,7 @@ tailwindcss 的优势：
     <div class="my-auto p-10">
       <h1 class="text-2xl font-semibold text-gray-800">2023 新年快乐</h1>
       <div class="mt-2 text-base text-gray-400">
-        恭贺新年快乐，牛气冲天，您的创业之路犹如日出东方，旭日初升，美好似金，祝您金牛年
+         恭贺新年快乐
         <span class="text-red-500">财源滚滚</span>
       </div>
     </div>
@@ -83,6 +83,8 @@ tailwindcss 的优势：
    - `mt-2 text-base text-gray-400`：上边距为 `2`，文本尺寸为基础大小，文本颜色为淡灰色。
 
 此代码实现了一个响应式设计，包括图片和文本的布局。在小屏幕上，内容可能会堆叠，而在中等屏幕尺寸及以上，图片和文本将会并排显示，且不会换行。图片和文本区域都会有内边距和边框阴影，形成突出的卡片效果。在过渡效果方面，可能会应用到某些 CSS 属性的变化，使得这些变化在 500 毫秒内平滑过渡。
+
+
 
 什么是 tailwindcss？
 
