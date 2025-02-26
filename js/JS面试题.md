@@ -1,5 +1,106 @@
 # JS 面试题
 
+**统计一个字符串中各个字符出现的次数**
+
+```js
+let str = 'asdjhekwjhslnsadjch'
+
+let result ={}
+for(let i=0;i<str.length;i++){
+  let key = str[i]
+  if(result[key]){
+    result[key]++
+  }else{
+    result[key] = 1
+  }
+}
+
+
+str.split('').reduce((result,key)=>{
+  if(result[key]){
+    result[key]++
+  }else{
+    result[key] = 1
+  }
+  return result
+},{})
+
+str.split('').reduce((result,key)=>(result[key]++||(result[key]=1),result),{})
+```
+
+
+
+
+
+
+
+#### 封装并发请求数
+
+```js
+function concurRequest(urls, maxNum) {
+  const result = []; // 存储所有请求的结果
+  let currentIndex = 0; // 当前处理的 URL 索引
+  let runningCount = 0; // 当前正在运行的请求数量
+
+  return new Promise((resolve, reject) => {
+    // 递归函数，用于发送请求
+    function sendRequest() {
+      // 如果所有 URL 都已处理，且没有正在运行的请求，则返回结果
+      if (currentIndex >= urls.length && runningCount === 0) {
+        resolve(result);
+        return;
+      }
+
+      // 如果当前运行的请求数小于最大并发数，且还有未处理的 URL
+      while (runningCount < maxNum && currentIndex < urls.length) {
+        const url = urls[currentIndex];
+        const index = currentIndex; // 保存当前索引
+        currentIndex++;
+        runningCount++;
+
+        // 发送请求
+        request(url)
+          .then((data) => {
+            result[index] = data; // 将结果存入正确的位置
+          })
+          .catch((err) => {
+            result[index] = err; // 将错误存入正确的位置
+          })
+          .finally(() => {
+            runningCount--; // 请求完成，减少运行计数
+            sendRequest(); // 继续发送下一个请求
+          });
+      }
+    }
+
+    sendRequest(); // 启动请求
+  });
+}
+
+
+const urls = [
+  'https://example.com/api/1',
+  'https://example.com/api/2',
+  'https://example.com/api/3',
+  'https://example.com/api/4',
+];
+
+concurRequest(urls, 2)
+  .then((results) => {
+    console.log('All requests completed:', results);
+  })
+  .catch((err) => {
+    console.error('Error:', err);
+  });
+
+```
+
+
+
+
+
+
+
 ### JS 是什么
 
 1. JavaScript 是一门**脚本语言**。可以在**网页**上实现复杂的功能，包括操作页面中的 DOM 元素、CSS 样式，地图，动画等等。

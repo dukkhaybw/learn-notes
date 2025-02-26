@@ -691,6 +691,18 @@ Fiber架构中，同时存在两颗Fiber Tree，一颗对应当前真实UI的Fib
 
 
 
+## 第三章
+
+render阶段
+
+Reconciler工作阶段在React中称为render阶段。new一个类组件实例并调用该实例的render方法和 调用函数组件本身都在这个阶段执行。
+
+
+
+
+
+
+
 
 
 

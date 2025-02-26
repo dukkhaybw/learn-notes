@@ -1,10 +1,6 @@
 # 前端工程化
 
-- webpack使用、原理和优化
-- rollup使用和手写实现
-- vite3的实现
-
-
+webpack使用、原理和优化
 
 ## Webpack
 
@@ -18,7 +14,7 @@ npm install webpack webpack-cli --save-dev
 ```
 
 - webpack：核心包
-- webpack-cli：命令行工具，主要是在执行 webpack 命令时，解析命令行中设置的一系列参数（一组命令和选项），加载 webpack 配置文件（默认 webpack.config.js），用于配置Webpack的构建过程并调用webpack核心包中的方法进行构建打包。通过webpack-cli，可以在命令行中指定Webpack的配置文件、执行不同的构建模式（如开发模式或生产模式）、观察文件变化并自动重新构建等。
+- webpack-cli：命令行工具，主要是在执行 webpack 命令时，解析命令行中设置的一系列参数（一组命令和选项），加载 webpack 配置文件（默认 webpack.config.js），调用webpack核心包中的方法进行构建打包。通过webpack-cli，可以在命令行中指定Webpack的配置文件、执行不同的构建模式（如开发模式或生产模式）、观察文件变化并自动重新构建等。
 
 在命令行中输入 `webpack` 并附带一些选项时，Webpack CLI会执行以下步骤来处理命令：
 
@@ -33,11 +29,11 @@ npm install webpack webpack-cli --save-dev
 
 
 
-## 浏览器直接使用 ES module
+## 浏览器使用 ES module
 
 ```html
 <script src="./src/index.js" type="module"></script>
-// 这样就可以了，必须指明type为module
+// 必须指明type为module
 ```
 
 ES6 模块化语法：
@@ -73,25 +69,25 @@ export const mul =(num1,num2)=>{
 
 ## entry
 
-- 入口(entry point)告诉 webpack 使用哪个模块，来作为构建其内部依赖图(dependency graph) 的开始。进入入口后，webpack 会找出有哪些模块和库是入口起点（直接和间接）依赖的
+- 入口(entry point)告诉 webpack 使用哪个模块或者哪几个模块，作为构建其内部依赖图(dependency graph) 的开始。进入入口后，webpack 会找出有哪些模块和库是入口起点（直接和间接）依赖的
 
 - 默认值是 `./src/index.js`，但可以通过在 `webpack configuration` 中配置 `entry` 属性，来指定一个（或多个）不同 src 入口起点
 
-- **webpack 的配置文件中的 entry 中配置的相对路径会以脚本命令执行时所在的路径（process.cwd()）作为基准路径。**
+- **entry 中配置的相对路径会以脚本命令执行时所在的路径（process.cwd()）作为基准路径。**
 
   比如：当前项目根目录为test，该目录下有webpack.config.js文件，其中的entry字段值为：'./src/index.js'，如果跳转到test的上级目录下，执行webpack --config  ./test/webpack.config.js，那么将因为找不到入口文件而报错。
 
   报错信息如下： 
 
   ```
-  PS C:\Users\dukkha\Desktop\webpack202208\test> cd ..
-  PS C:\Users\dukkha\Desktop\webpack202208> npx webpack --config .\test\webpack.config.js
+  PS C:\Users\Desktop\webpack202208\test> cd ..
+  PS C:\Users\Desktop\webpack202208> npx webpack --config .\test\webpack.config.js
   Active code page: 65001
   asset index.html 2.62 KiB [emitted]
   asset main.js 99 bytes [emitted] (name: main)
   
   ERROR in main
-  Module not found: Error: Can't resolve './src/index.js' in 'C:\Users\dukkha\Desktop\webpack202208'
+  Module not found: Error: Can't resolve './src/index.js' in 'C:\Users\Desktop\webpack202208'
   resolve './src/index.js' in 'C:\Users\dukkha\Desktop\webpack202208'
     using description file: C:\Users\dukkha\package.json (relative path: ./Desktop/webpack202208)
       Field 'browser' doesn't contain a valid alias configuration
@@ -115,7 +111,6 @@ entry: {
 entry:(context, environment) => {
     console.log('Context:', context);
     console.log('Environment:', environment);
-
     // 根据环境变量动态返回入口文件
     if (environment.production) {
       return './src/index.prod.js';
@@ -126,7 +121,6 @@ entry:(context, environment) => {
   },
       
      
-      
   entry:{
       main:{
           import './src/index.js',
@@ -166,21 +160,21 @@ entry:(context, environment) => {
 
 loader 的几种使用方式：
 
-- import '**style-loader!css-loader!**../css/creatediv.css' （内联式，不推荐）
+- import '**style-loader!css-loader!**../css/creatediv.css' （内联式，不推荐，只正对这个一个文件使用指定的loader）
 
 - CLI 方式（不推荐）
 
   package.json:
 
-  ```
+  ```json
   {
-      "build":"webpack --module-bind 'css=style-loader!css-loader'"
+    "build":"webpack --module-bind 'css=style-loader!css-loader'"
   }
   ```
 
 - webpack 配置文件中写 loader
 
-  对应规则下面的 loader 是从右向左执行的，最右侧的 loader 接收到是对应类型的文件的源码，最左侧的 loader 一定会返回一个 js 模块。
+  对应规则的 loader 是从右向左执行的，最右侧的 loader 接收到是对应类型的文件的源码，最左侧的 loader 一定会返回一个 js 模块。
 
   ```js
   module.exports ={
@@ -191,14 +185,14 @@ loader 的几种使用方式：
           use:['style-loader','css-loader']
         }
       ]
-    }
-    context:process.cwd()   //属性值就是项目打包的上下文（项目打包的相对路径），就是项目的目录路径，该配置项几乎不会去改，用默认值就行
+    },
+    context:process.cwd()   // 属性值就是项目打包的上下文（项目打包的相对路径），就是项目的目录路径，该配置项几乎不会去改，用默认值就行
   }
   ```
 
 
 
-如果有不同类型的文件，并且想针对不同情况执行不同的 loader，可以使用 Webpack 的 `oneOf` 配置。`oneOf` 是 Webpack 4 及以上版本中的一个功能，用来提高性能，确保每个文件只经过其中一个 loader 处理。
+如果有同类型的文件，并且想针对不同情况执行不同的 loader，可以使用 Webpack 的 `oneOf` 配置。`oneOf` 是 Webpack 4 及以上版本中的一个功能，用来提高性能，确保每个文件只经过其中一个 loader 处理。
 
 ```js
 module.exports = {
@@ -467,22 +461,22 @@ module.exports = {
 const CopyWebpackPlugin  = require('copy-webpack-plugin')
 
 plugins:[
-    new CopyWebpackPlugin({
-        patterns:[
-            {
-                from:'src/public',
-                // to: 'public'  取消行代码
-                globOptions:{
-                    ignore:[
-                        "**/index.html",   // 排除public下的index.html
-                        "**/.DS_Store",
-                        ...
-                    ]
-                }
+  new CopyWebpackPlugin({
+    patterns:[
+      {
+        from:'src/public',
+        // to: 'public'  取消行代码
+        globOptions:{
+          ignore:[
+            "**/index.html",   // 排除public下的index.html
+            "**/.DS_Store",
+            ...
+          ]
+            }
             }
         ]
-    })
-]
+      })
+    ]
 ```
 
 打包结果如下：
@@ -497,11 +491,11 @@ plugins:[
 
 ## 模式(mode)
 
-- 一套开发时使用，构建结果用于本地开发调试，不进行代码压缩，打印 debug 信息，需要 sourcemap 文件，热更新
+- 开发构建结果用于本地开发调试，不进行代码压缩，打印 debug 信息，需要 sourcemap 文件，热更新
 
-- 一套构建时使用，生成打包文件直接应用于线上的，即代码都是压缩后，运行时不打印 debug 信息，不包括 sourcemap，可能需要分离 CSS 成单独的文件，以便多个页面共享同一个 CSS 文件
+- 生产构建生成打包文件直接应用于线上的，即代码都是压缩后，运行时不打印 debug 信息，不包括 sourcemap，可能需要分离 CSS 成单独的文件，以便多个页面共享同一个 CSS 文件
 
-- webpack 4.x 版本引入的 [mode](https://webpack.docschina.org/configuration/mode/) 的概念  
+- webpack 4.x 引入的 [mode](https://webpack.docschina.org/configuration/mode/) 
 
 - 当指定使用 production mode 时，默认会启用各种性能优化的功能，包括构建结果优化以及 webpack 运行性能优化
 
@@ -674,7 +668,7 @@ module.exports = function (env, argv) {
 };
 ```
 
-**`--env` 用来设置 webpack 配置文件导出的函数的参数**，并不直接在项目的模块文件中生效。
+**`--env` 用来设置传给 webpack 配置文件导出的函数的参数**，并不直接在项目的模块文件中生效。
 
 在 script 脚本中使用 --env=development 的效果是为 webpack 配置文件默认导出的是函数时，可以在函数的参数中获取到该命令行中设置的参数。例如 script 脚本中：`"build": "webpack --env=development"` 那么下面代码中的 env 就是：`{ WEBPACK_BUNDLE: true, WEBPACK_BUILD: true, development: true }`。argv 的结构则是：`{ env: { WEBPACK_BUNDLE: true, WEBPACK_BUILD: true, development: true } }`，但是因为 mode 默认没有设置时使用的是 production 模式，所以打包出来的源代码中的 process.env.NODE_ENV 变量的取值仍旧是 production 字符串。
 
@@ -790,9 +784,9 @@ plugins: [
 
 
 
-### Windows 系统
+### Windows
 
-#### CMD (Command 或 命令提示符)
+#### CMD 
 
 ```
 # 查看所有环境变量
@@ -840,7 +834,7 @@ del env:NODE_ENV
 
 如果希望设置一直生效（即 本地设置），可通过 `控制面板 -> 系统和安全 -> 系统 -> 高级系统设置 -> 高级 -> 环境变量` 这样进行设置（Windows10、可能需要重启）。
 
-### Mac 系统
+### Mac 
 
 因为只集成一种命令行终端，它设置 Nodejs 环境变量的语法如下：
 
@@ -1244,41 +1238,41 @@ postcss.config.js
 ```js
 let postcssPresetEnv = require('postcss-preset-env');
 module.exports={
-    plugins:[postcssPresetEnv({
-        browsers: 'last 5 version'
-    })]
+  plugins:[postcssPresetEnv({
+    browsers: 'last 5 version'
+  })]
 }
 
 
 module.exports = {
-    plugins:[
-        // require("autoperfixer")  or
-        // require("postcss-preset-env") or
-        "postcss-preset-env"
-    ]
+  plugins:[
+    // require("autoperfixer")  or
+    // require("postcss-preset-env") or
+    "postcss-preset-env"
+  ]
 }
 
 
 
 {
-    test:/\.css/,
-		use:[
-        {loader:'style-loader'},
-        'css-loader',
-        {
-            loader:'postcss-loader',
-            options:{
-               postcssOptions:{
-                    plugins:[
-                        // require("autoprefixer"),//这个插件可以不再写了，因为postcss-preset-env中内置使用了autoprefixer
-                        require("postcss-preset-env")
-                        //or
-                    	// require('pluginName')(传参)
-                    ]
-                }
-                // plugins:["postcss-preset-env"]   这是另一种写法
-            }
-        }    //postcss-loader内部会调用options配置中指定的postcss插件对样式文件加兼容性前缀
+  test:/\.css/,
+    use:[
+      {loader:'style-loader'},
+      'css-loader',
+      {
+        loader:'postcss-loader',
+        options:{
+          postcssOptions:{
+            plugins:[
+              // require("autoprefixer"),//这个插件可以不再写了，因为postcss-preset-env中内置使用了autoprefixer
+              require("postcss-preset-env")
+              //or
+              // require('pluginName')(传参)
+            ]
+          }
+          // plugins:["postcss-preset-env"]   这是另一种写法
+        }
+      }    //postcss-loader内部会调用options配置中指定的postcss插件对样式文件加兼容性前缀
     ]
 }
 ```
@@ -2020,12 +2014,14 @@ module.exports = {
 
 
 - `@babel/preset-typescript` 是 Babel 的一个预设，用于将 TypeScript 代码转换为 JavaScript 代码
+
 - 使用 Babel 进行转译，需要借助 `@babel/preset-typescript` 来支持 TypeScript 语法。
+
 - Babel 只负责语法转换，不进行类型检查，需要额外运行 TypeScript 类型检查工具（例如 `tsc --noEmit` 或 `fork-ts-checker-webpack-plugin`）来捕捉类型错误。
+
 - 适合更高效的转译流程，尤其是在大型项目中。
-- 
 
-
+  
 
 ```diff
       {
@@ -2093,7 +2089,7 @@ module.exports = {
 
 ## eslint
 
-- ESLint是一个流行的JavaScript代码检查工具，旨在帮助前端开发者在编写代码时自动检查代码风格(这个一般交给prettier去做)和语法错误。为了满足不同团队和项目的代码规范需求，ESLint生态中出现了许多基于不同代码规范的规则集合和插件
+- ESLint是JavaScript代码检查工具，在编写代码时自动检查代码风格(这个一般交给prettier去做)和语法错误。为了满足不同团队和项目的代码规范需求，ESLint生态中出现了许多基于不同代码规范的规则集合和插件
 - `eslint-config-airbnb` 是Airbnb提供的代码风格规则集。它的优点在于提供了一套完整的、可自定义的代码规范，旨在帮助开发者编写具有一致性和可读性的代码
 - `eslint-config-standard`遵循Standard.js代码风格规范，提供了最便捷的统一代码风格的方式。使用该规则集可以避免因代码风格不一致而引起的错误和混乱
 - `eslint-plugin-vue`和`eslint-plugin-react`插件来实现对SFC文件和React代码风格的检查
@@ -3264,7 +3260,7 @@ Babel Parser 和 Esprima 是两个独立的 JavaScript 解析器，它们具有�
 
 - Generate(代码生成) 将上一步经过转换过的抽象语法树生成新的代码
 
-<img src="https://img.zhufengpeixun.com/ast-compiler-flow.jpg" alt="ast-compiler-flow.jpg" style="zoom:200%;" />
+<img src="http://img.zhufengpeixun.com/ast-compiler-flow.jpg" alt="ast-compiler-flow.jpg" style="zoom:200%;" />
 
 ### babel 插件
 
@@ -4350,16 +4346,16 @@ babel 和 webpack 的关系是什么？ 执行顺序是？ webpack 在编译的�
 
 ```js
 module: {
-    rules: [
-        {
-            test: /\.txt$/,
-            use: [loader1]   // 在没有主动配置enforce字段的情况下
-        },
-        {
-            test: /\.txt$/,
-            use: [loader2]
-        }
-    ]
+  rules: [
+    {
+      test: /\.txt$/,
+      use: [loader1]   // 在没有主动配置enforce字段的情况下
+    },
+    {
+      test: /\.txt$/,
+      use: [loader2]
+    }
+  ]
 }
 ```
 
@@ -4451,7 +4447,7 @@ module.exports = {
 
 5. **build方法中，根据配置中的`entry`找出入口文件**
 
-6. **从入口文件出发,调用所有配置的`Loader`对模块进行编译，得到各个loader处理后的文件代码，然后通过bable去生成并解析该文件中的代码，目的是收集到该文件依赖的其他依赖文件模块，共给下一步使用**
+6. **从入口文件出发,调用所有配置的`Loader`对模块进行编译，得到各个loader处理后的文件代码，然后通过bable去生成并解析该文件（AST）中的代码，目的是收集到该文件依赖的其他依赖文件模块，共给下一步使用**
 
 7. **在结束本模块的ast语法树分析后，将收集到的本模块依赖的其他模块递归本步骤直到所有入口依赖的文件都经过了本步骤的处理**
 
@@ -4590,7 +4586,7 @@ module.exports = {
       return path.replace(/\\/g, '/');
     }
     
-    class Compilat阿斯顿ion {
+    class Compilation {
       constructor(options, compiler) {
         this.options = options;
         this.compiler = compiler;

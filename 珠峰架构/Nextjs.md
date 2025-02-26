@@ -68,13 +68,13 @@ $ npm install -g ts-node
 src\main.ts
 
 ```js
-// 从 @nestjs/core 模块中导入 NestFactory，用于创建 Nest 应用实例
+//  NestFactory用于创建 Nest 应用实例
 import { NestFactory } from '@nestjs/core';
 // 导入应用的根模块 AppModule
 import { AppModule } from './app.module';
-// 定义一个异步函数 bootstrap，用于启动应用
+// 异步函数 bootstrap，用于启动应用
 async function bootstrap() {
-  // 使用 NestFactory.create 方法创建一个 Nest 应用实例，并传入根模块 AppModule
+  // 创建一个 Nest 应用实例，并传入根模块 AppModule
   const app = await NestFactory.create(AppModule);
   // 让应用监听 3000 端口
   await app.listen(3000);
@@ -94,14 +94,15 @@ src\app.module.ts
 ```js
 // 从 '@nestjs/common' 模块中导入 Module 装饰器
 import { Module } from '@nestjs/common';
-// 从当前目录导入 AppController 控制器
+// AppController 控制器，定义路由
 import { AppController } from './app.controller';
+
 // 使用 @Module 装饰器定义一个模块
 @Module({
   // 在 controllers 属性中指定当前模块包含的控制器
   controllers: [AppController],
 })
-// 定义并导出 AppModule 模块
+// 定义并导出 AppModule 模块，内部有控制器等
 export class AppModule {}
 ```
 
@@ -115,7 +116,7 @@ src\app.controller.ts
 // 导入 Controller 和 Get 装饰器
 import { Controller, Get } from '@nestjs/common';
 // 使用 @Controller 装饰器标记类为控制器
-@Controller()
+@Controller('/')
 export class AppController {
   // 构造函数，目前没有任何参数和逻辑
   constructor() {}
@@ -612,7 +613,9 @@ class MyClass {
 // 实例化 MyClass
 const instance = new MyClass('Hello');
 
-// 1. 定义元数据
+// 给instance对象定义元数据
+Reflect.defineMetadata('key1', 'value1', instance)
+// 1. 给instance对象的myProperty属性定义元数据
 Reflect.defineMetadata('key1', 'value1', instance, 'myProperty');
 
 // 2. 检查是否具有指定的元数据
@@ -1358,3 +1361,4 @@ parameter1Decorator2
 parameter1Decorator1
 ```
 
+ 
