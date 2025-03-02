@@ -8191,19 +8191,19 @@ B: I'm sorry, officer, I guess I didn't notice. I was thinking about my job inte
 
 - Professor Smith is giving a lecture on American literature tomorrow evening.
 
-此时，两者的区别不是很大。因此，表示将来安排好的事情，两种 时态可以换用。
+此时，两者的区别不是很大。因此，表示将来安排好的事情，两种时态可以换用。
 
 - He is taking/will be taking a makeup test next week.
 - He isn't coming/won't be coming to the party.
 
 区别：
 
-1. 现在进行时只表示最近的将来；而将来进行时既可以表示最近 的将来，也可表示较远的将来。
+1. 现在进行时只表示最近的将来；而将来进行时既可以表示最近的将来，也可表示较远的将来。
 
    - I am meeting him tomorrow. 我明天要见他。 
    - I will be meeting him tomorrow/next year. 我明天／明年要见他。
 
-2. 现在进行时表示最近将来的动作时，必须有确定的表示将来的 时间状语；而将来进行时则没有这种限制。
+2. 现在进行时表示最近将来的动作时，必须有确定的表示将来的时间状语；而将来进行时则没有这种限制。
 
    - He's working in this room next Monday. 
    - He'll be working in this room.
