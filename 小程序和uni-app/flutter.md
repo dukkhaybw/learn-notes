@@ -1,9 +1,9 @@
-Flutter 是一个由 Google 开发的开源 UI 软件开发工具包（SDK），用于构建跨平台的移动、Web 和桌面应用程序。
+Flutter 是由 Google 开发的开源 UI 软件开发工具包（SDK），用于构建跨平台的移动、Web 和桌面应用程序。
 
 Flutter 是一个用于构建 **高性能** 应用程序的框架。特点包括：
 
 - **跨平台**：使用一套代码库，可以同时开发 iOS、Android、Web、Windows、macOS 和 Linux 应用程序。
-- **丰富的 UI 组件**：提供了一套丰富的预构建 UI 组件（称为 Widgets），可以轻松创建美观的用户界面。
+- **UI 组件**：提供了一套丰富的预构建 UI 组件（称为 Widgets），可以轻松创建美观的用户界面。
 - **高性能**：Flutter 应用程序直接编译为本地机器代码，避免了性能瓶颈，运行流畅。
 
 - **Dart 编程语言**：Flutter 使用 Dart 语言开发，Dart 是一种面向对象、强类型的语言。
@@ -20,7 +20,7 @@ Flutter 是一个用于构建 **高性能** 应用程序的框架。特点包括
 
 [国内配置镜像和环境变量](https://docs.flutter.cn/community/china/)
 
-如何安装Flutter
+**如何安装Flutter**
 
 参考官网开始流程。
 
@@ -1858,7 +1858,7 @@ class Developer extends Person with CodeSkills implements Employee {
 >     this.name = name;
 >     this.age = age;
 >   }
->   
+>       
 >   // 等同于
 >   Person(this.name, this.age);
 >   ```
@@ -2338,3 +2338,119 @@ class MyApp extends StatelessWidget {
 | **StatelessWidget** | React 函数组件（无状态）              | 不可变的 Widget，类似于 React 的函数组件。                   |
 | **StatefulWidget**  | React 类组件（有状态）                | 可动态更新的 Widget，类似于 React 的类组件。                 |
 | **Material**        | CSS 框架（如 Bootstrap）、Material-UI | Material 是基于 Widget 实现的一套符合 Material Design 规范的组件库。 |
+
+
+
+
+
+
+
+## 水平布局Widget 
+
+
+
+
+
+
+
+
+
+### super.key
+
+```dart
+import 'package:flutter/material.dart';
+
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      // Application name
+      title: 'Flutter Hello World123',
+      // Application theme data, you can set the colors for the application as
+      // you want
+      theme: ThemeData(
+        // useMaterial3: false,
+        primarySwatch: Colors.blue,
+      ),
+      // A widget which will be started on application startup
+      home: MyHomePage(title: 'Flutter Demo Home Page'),
+    );
+  }
+}
+
+class MyHomePage extends StatelessWidget {
+  final String title;
+  const MyHomePage({super.key, required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        // The title text which will be shown on the action bar
+        title: Text(title),
+      ),
+      body: Center(
+        child: Text(
+          'Hello, World!',
+        ),
+      ),
+    );
+  }
+}
+```
+
+`super.key` 是Dart语言中用于将子类的构造函数参数**直接传递给父类构造函数**的语法糖。
+
+1. **继承关系**
+
+- `MyApp` 和 `MyHomePage` 继承自 `StatelessWidget`。
+- `StatelessWidget` 的构造函数需要一个可选参数 `Key? key`。
+
+------
+
+2. **构造函数参数传递**
+
+- **传统写法**：需要显式调用父类构造函数：
+
+  ```dart
+  const MyApp({Key? key}) : super(key: key);
+  ```
+
+- **新语法（Dart 2.17+）**：使用 `super.key` 直接传递：
+
+  ```dart
+  const MyApp({super.key});
+  ```
+
+  这里的 `super.key` 表示将子类构造函数接收到的 `key` 参数自动传递给父类 `StatelessWidget` 的构造函数。
+
+------
+
+3. **Key 的作用**
+
+- **Widget 标识**：`Key` 用于在Widget树中唯一标识一个Widget，帮助Flutter框架在重建时高效更新界面。
+
+- **可选参数**：由于 `key` 是命名可选参数（包裹在 `{}` 中），创建Widget时可以选择是否提供：
+
+  ```dart
+  MyHomePage(title: 'Demo') // 不传递key
+  或
+  MyHomePage(key: someKey, title: 'Demo') // 传递自定义key
+  ```
+
+------
+
+4. **代码简化**
+
+- **减少冗余**：新语法避免了重复书写参数传递逻辑，提高代码可读性。
+- **适用场景**：仅当子类需要将参数直接透传给父类构造函数时使用。
+
+------
+
+**总结**
+
+`super.key` 的作用是将子类构造函数接收到的 `key` 参数直接传递给父类 `StatelessWidget` 的构造函数，确保父类正确初始化。这是Dart 2.17+引入的语法糖，简化了代码，同时遵循Flutter框架使用Key管理Widget生命周期的机制。

@@ -249,15 +249,11 @@ const render = () => ({
 
 ## 对Vue组件化的理解
 
-与组件化相对应的就是模块化。
-
-组件化是针对UI的一个封装，模块化是对业务逻辑的封装。无论组件化和模块化，重点就是为了能复用代码和组合。
+与组件化相对应的就是模块化。组件化是针对UI的一个封装，模块化是对业务逻辑的封装。无论组件化和模块化，重点就是为了能复用代码和组合。
 
 webcomponent是浏览器原生就支持的一种组件化方案，但是兼容性差。
 
-webcomponent中定义了一个组件化的核心组成：模板、属性、事件、插槽、生命周期。
-
-这些组成都被vue所借鉴了。
+webcomponent中定义了一个组件化的核心组成：模板、属性、事件、插槽、生命周期。这些组成都被vue所借鉴了。
 
 
 
@@ -289,9 +285,194 @@ webcomponent中定义了一个组件化的核心组成：模板、属性、事�
 
   
 
+## 组件注册
+
+组件的注册分为 **全局注册** 和 **局部注册**。
+
+### 全局注册
+
+**特点**：全局注册的组件可以在**任何 Vue 实例或组件**中直接使用，无需重复导入。
+**适用场景**：频繁使用的通用组件（如按钮、弹窗、导航栏等）。
+
+```js
+// main.js   vue2
+import Vue from 'vue';
+import GlobalButton from './components/GlobalButton.vue';
+
+// 注册全局组件
+Vue.component('GlobalButton', GlobalButton);
+
+new Vue({
+  render: h => h(App),
+}).$mount('#app');
 
 
-## 既然vue通过数据劫持能够精准的探测数据变化，为什么还需要虚拟DOM和进行diff检查差异？
+
+// ----------------------------
+
+// main.js   vue3
+import { createApp } from 'vue';
+import App from './App.vue';
+import GlobalButton from './components/GlobalButton.vue';
+
+const app = createApp(App);
+
+// 注册全局组件
+app.component('GlobalButton', GlobalButton);
+
+app.mount('#app');
+```
+
+
+
+### 局部注册
+
+**特点**：局部注册的组件仅在**当前组件的作用域内可用**，需手动导入。
+**适用场景**：特定页面或功能专用的组件。
+
+```vue
+<!-- ParentComponent.vue -->   选项式 API (Options API) 写法
+<template>
+  <div>
+    <LocalButton />
+  </div>
+</template>
+
+<script>
+import LocalButton from './LocalButton.vue';
+
+export default {
+  components: {
+    LocalButton // 注册为局部组件
+  }
+}
+</script>
+
+
+
+
+//  -------------------
+<!-- ParentComponent.vue -->    组合式 API (Composition API) 写法
+<template>
+  <div>
+    <LocalButton />
+  </div>
+</template>
+
+<script setup>
+// 直接导入即可使用（无需显式注册）
+import LocalButton from './LocalButton.vue';
+</script>
+```
+
+
+
+### 区别
+
+| **特性**     | **全局注册**                  | **局部注册**                   |
+| :----------- | :---------------------------- | :----------------------------- |
+| **作用域**   | 整个应用                      | 当前组件及其子组件（插槽传递） |
+| **打包体积** | 可能增加体积（未 Tree-shake） | 按需加载，优化体积             |
+| **维护性**   | 集中管理，但容易污染全局命名  | 模块化，避免命名冲突           |
+| **性能影响** | 首次加载时加载所有全局组件    | 按需加载，减少初始资源         |
+
+
+
+重点区分一下对打包结果的影响：
+
+对于整个项目没有拆包的情况下，整个项目的所有模块都打包生成一个资源文件，这时全局注册和局部注册都一样，打包文件的体积都一样。
+
+不拆包的情况下，全局注册：
+
+![image-20250305093359546](D:\learn-notes\vue\images\image-20250305093359546.png)
+
+不拆包的情况下，局部注册：
+
+![image-20250305093503278](D:\learn-notes\vue\images\image-20250305093503278.png)
+
+
+
+对于有拆包的情况，比如路由组件用动态导入，对于全局注册，在主入口导入并全局注册的组件会和主入口一起合并生成一个资源文件，这是首屏加载时需要的文件，所以会影响首屏幕加载的时间。 
+
+拆包的情况下，全局注册：
+
+![image-20250305093638803](D:\learn-notes\vue\images\image-20250305093638803.png)
+
+而在局部注册的情况下，则没有这种情况。
+
+拆包的情况下，局部注册：
+
+![image-20250305093817607](D:\learn-notes\vue\images\image-20250305093817607.png)
+
+
+
+**性能影响**
+全局注册的组件会在应用初始化时全部加载，可能增加首屏资源体积。建议仅对高频通用组件使用全局注册。
+
+**Tree-shaking 失效**
+全局注册的组件无法被构建工具（如 Webpack/Vite）进行 Tree-shaking 优化，即使未使用也会打包到最终代码中。
+
+
+
+## 组件查找机制
+
+全局注册的组件能够被项目中其他组件直接使用，其背后的机制主要依赖于 **Vue 的全局组件注册表** 和 **模板解析流程**。
+
+### **全局组件注册的流程**
+
+1. **注册到全局注册表**
+   当在入口文件（如 `main.js`）中调用 `app.component('GlobalButton', GlobalButton)`（Vue 3）或 `Vue.component('GlobalButton', GlobalButton)`（Vue 2），Vue 会将组件添加到**应用级别的全局组件注册表**中。
+2. **全局注册表的作用范围**
+   全局注册表与 Vue 应用实例（`app`）绑定，所有属于该应用实例的组件（包括根组件和所有子组件）都能访问此注册表。
+
+
+
+### **组件模板解析过程**
+
+当某个组件（如 `Home.vue`）的模板中使用 `<GlobalButton>` 标签时，Vue 会通过以下步骤查找组件定义：
+
+1. **检查局部注册的组件**
+   Vue 首先查找当前组件（如 `Home.vue`）的 `components` 选项中是否有局部注册的 `GlobalButton`。
+2. **查找全局注册表**
+   如果局部未找到，Vue 会向上查找全局组件注册表。由于 `GlobalButton` 已在全局注册，Vue 会直接使用其定义。
+3. **解析为渲染函数**
+   Vue 将模板编译为渲染函数时，会将 `<GlobalButton>` 替换为对应的组件渲染逻辑，最终生成虚拟 DOM。
+
+
+
+### 底层实现原理
+
+1. **全局注册表的存储位置**
+
+   - 在 Vue 3 中，全局组件注册表存储在应用实例（`app`）的 `_context.components` 属性中。
+   - 在 Vue 2 中，全局组件存储在 `Vue.options.components` 中。
+
+2. **组件解析的优先级**
+   Vue 的组件解析遵循优先级：局部注册组件 > 全局注册组件 > 原生 HTML 标签。  如果全局和局部同时注册同名组件，**局部组件会覆盖全局组件**。
+
+3. Vue 在编译模板时，会调用 `resolveAsset` 函数（源码中的核心方法）来查找组件：
+
+   ```js
+   // 简化后的伪代码（Vue 3 源码逻辑）
+   function resolveComponent(name) {
+     // 1. 检查当前组件的局部注册
+     const localComponent = currentInstance.components[name];
+     if (localComponent) return localComponent;
+   
+     // 2. 检查全局注册表
+     const globalComponent = app._context.components[name];
+     if (globalComponent) return globalComponent;
+   
+     // 3. 找不到则报错
+     warn(`Unknown component: ${name}`);
+   }
+   ```
+
+   
+
+   
+
+## vue通过数据劫持能够精准的探测数据变化，为什么还需要虚拟DOM和进行diff检查差异？
 
 1. **数据劫持是感知变化的工具，不负责 DOM 更新**
 
@@ -3837,7 +4018,7 @@ export function mergeOptions(
 >       }
 >     }
 >   };
->                     
+>                       
 >   export default {
 >     mixins: [myMixin],  / 局部混入
 >     created() {
