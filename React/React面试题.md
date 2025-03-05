@@ -495,3 +495,562 @@ Redux和Vuex都是状态管理库，分别用于React和Vue.js框架。虽然它
 - **Redux** 的概念相对抽象，如纯函数、不可变性、中间件等，这可能会使得初学者面对较高的学习曲线。
 - **Vuex** 的学习曲线通常被认为比Redux更平缓，特别是对于已经熟悉Vue.js的开发者来说，因为它更紧密地与Vue.js的设计和模式相结合。
 
+
+
+
+
+
+
+### 为什么不能在循环，条件判断或者嵌套函数中使用hook？
+
+在 React 中，Hook 的调用顺序必须**在每次组件渲染时保持完全一致**，这是 React 内部通过链表结构管理 Hook 状态的核心机制。如果 Hook 出现在循环、条件或嵌套函数中，可能会导致调用顺序变化，从而引发状态错乱。
+
+例如：
+
+- 第一次渲染调用 `useState(1)` → `useEffect(...)` → `useState('a')`
+- 第二次渲染调用 `useEffect(...)` → `useState(1)`（顺序变化）
+  此时 React 会认为第二个 Hook 应该是 `useState(1)`，但实际是 `useEffect`，导致状态错乱。
+
+
+
+#### **场景 1：条件判断中使用 Hook**
+
+```jsx
+function BadComponent({ isLoggedIn }) {
+  if (isLoggedIn) {
+    const [user, setUser] = useState(null); // ❌ 条件内调用 Hook
+  }
+  const [theme, setTheme] = useState('light'); 
+  // 当 isLoggedIn 变化时，Hook 顺序会变化！
+}
+```
+
+**错误原因**：当 `isLoggedIn` 从 `true` 变为 `false` 时，第一个 `useState` 被跳过，导致 `theme` 对应的 Hook 错位到第一个位置，与 React 预期不符。
+
+#### **场景 2：循环中使用 Hook**
+
+```jsx
+function BadListComponent({ items }) {
+  for (let i = 0; i < items.length; i++) {
+    const [itemState, setItemState] = useState(null); // ❌ 循环内调用 Hook
+  }
+  // 循环次数变化时，Hook 数量变化，顺序必然错乱
+}
+```
+
+**错误原因**：循环次数动态变化时，Hook 数量会改变。例如，第一次渲染循环 3 次（3 个 `useState`），第二次循环 2 次，此时 React 期望第三个 Hook 存在，但实际已被移除。
+
+#### **场景 3：嵌套函数中使用 Hook**
+
+```jsx
+function BadNestedComponent() {
+  const handleClick = () => {
+    const [count, setCount] = useState(0); // ❌ 嵌套函数内调用 Hook
+  };
+  // ...
+}
+```
+
+**错误原因**：嵌套函数可能不会在每次渲染时被调用（如事件处理函数），导致 Hook 的调用顺序不稳定。
+
+
+
+#### **正确的做法**
+
+所有 Hook 必须直接声明在**函数组件的顶层作用域**，且无条件、循环、嵌套的干扰：
+
+**正确代码示例**
+
+```jsx
+function GoodComponent({ isLoggedIn }) {
+  // ✅ 所有 Hook 在顶层调用
+  const [theme, setTheme] = useState('light');
+  const [user, setUser] = useState(null); 
+
+  if (isLoggedIn) {
+    // 可以在条件中使用 Hook 返回的值，但不能声明 Hook
+    return <div>Welcome, {user.name}</div>;
+  }
+}
+```
+
+------
+
+#### **4. 如何绕过限制？**
+
+若需要在条件或循环中使用状态，可以通过以下方式：
+
+**方案 1：拆分组件**
+
+```jsx
+function Item({ item }) {
+  const [itemState, setItemState] = useState(null); // ✅ 在子组件中安全使用
+  return <div>{itemState}</div>;
+}
+
+function GoodListComponent({ items }) {
+  return items.map((item) => <Item key={item.id} item={item} />);
+}
+```
+
+**方案 2：使用 Hook 的返回值控制逻辑**
+
+```jsx
+function GoodConditionalComponent({ isLoggedIn }) {
+  const [user, setUser] = useState(null);
+  const [theme, setTheme] = useState('light');
+
+  // 通过变量或 useEffect 控制逻辑，而不是条件中声明 Hook
+  useEffect(() => {
+    if (isLoggedIn) fetchUser().then(setUser);
+  }, [isLoggedIn]);
+}
+```
+
+------
+
+#### **5. 底层原理**
+
+React 通过链表结构按顺序记录 Hook 的状态：
+
+```jsx
+// 伪代码：React 内部记录 Hook 的顺序
+let hooks = [];
+let currentHook = 0;
+
+function useState(initialValue) {
+  hooks[currentHook] = hooks[currentHook] || initialValue;
+  const setState = (newValue) => { /* 更新逻辑 */ };
+  return [hooks[currentHook++], setState];
+}
+
+// 组件渲染时，currentHook 会被重置为 0
+```
+
+如果 Hook 的调用顺序变化（如条件跳过某个 Hook），`currentHook` 的递增顺序会被打乱，导致状态错位。
+
+
+
+因为hook底层是一个单链表，那单链表到底长什么样子？它是如何存储？存储在哪里的？
+
+根据React的实现方式，Hook链表是单链表，每个Hook节点有一个指向下一个Hook的指针，这样在组件渲染时按顺序遍历。且每个函数组件的 Hook 链表与其对应的 Fiber 节点（React 内部用于描述组件树的数据结构）关联。
+
+
+
+### **Hook 链表的具体结构**
+
+#### **链表类型：单链表**
+
+React 使用**单向链表**（单链表）来按顺序存储组件中的所有 Hook。每个 Hook 节点包含以下关键属性：
+
+- **`memoizedState`**：保存该 Hook 的当前状态（如 `useState` 的值、`useEffect` 的依赖等）。
+- **`next`**：指向下一个 Hook 节点的指针。
+- **`queue`**（仅状态类 Hook）：保存更新队列（如 `useState` 的 `setState` 触发的更新）。
+
+```ts
+// 伪代码：Hook 节点的简化结构
+interface Hook {
+  memoizedState: any;      // 当前状态值
+  baseState: any;          // 基础状态（用于计算更新）
+  queue: UpdateQueue<any>; // 更新队列（如 setState 的更新）
+  next: Hook | null;       // 指向下一个 Hook
+}
+```
+
+#### **链表工作原理**
+
+- **首次渲染**：组件第一次调用 Hook 时，React 按调用顺序创建 Hook 节点，并链接成单链表。
+- **后续渲染**：组件再次渲染时，React 按相同顺序遍历链表，复用或更新每个 Hook 节点的状态。
+
+
+
+#### **Hook 链表如何与组件关联？**
+
+React 通过 **Fiber 架构** 管理组件树，每个函数组件对应一个 Fiber 节点。Fiber 节点中有一个 `memoizedState` 字段，专门指向该组件的 Hook 链表。
+
+**关联过程**
+
+1. **组件首次渲染**：
+   - 调用函数组件，执行其中的 Hook（如 `useState`, `useEffect`）。
+   - React 按调用顺序创建 Hook 节点，形成单链表，并将链表头存入 `Fiber.memoizedState`。
+
+```ts
+// 伪代码：首次渲染时构建 Hook 链表
+function renderComponent(Component) {
+  const fiber = createFiber();
+  let hook1 = createHook(initialState1); // 第一个 Hook（如 useState）
+  let hook2 = createHook(initialState2); // 第二个 Hook（如 useEffect）
+  hook1.next = hook2;
+  fiber.memoizedState = hook1; // 链表头
+  return fiber;
+}
+```
+
+2. **组件后续渲染**：
+
+- 重新执行函数组件，按相同顺序调用 Hook。
+- React 从 `Fiber.memoizedState` 取出链表，逐个比对 Hook 节点，更新状态。
+
+```js
+// 伪代码：后续渲染时复用 Hook 链表
+function updateComponent(fiber) {
+  let currentHook = fiber.memoizedState; // 从链表头开始
+  const hook1 = currentHook;
+  updateHookState(hook1); // 处理第一个 Hook
+  currentHook = hook1.next;
+  const hook2 = currentHook;
+  updateHookState(hook2); // 处理第二个 Hook
+  // ...
+}
+```
+
+------
+
+**3. 关键问题：为什么顺序必须一致？**
+
+- **单链表的顺序依赖性**：由于 Hook 链表是单链表，React 只能通过 `next` 指针按顺序访问节点。
+- **状态匹配机制**：若两次渲染的 Hook 调用顺序不同，React 会错误地将第二个 Hook 的状态赋值给第一个 Hook，导致数据错乱。
+
+**错误示例**
+
+```jsx
+function BuggyComponent({ cond }) {
+  if (cond) {
+    const [a, setA] = useState(1); // Hook1
+  }
+  const [b, setB] = useState(2);   // Hook2
+}
+```
+
+- **首次渲染（`cond=true`）**：链表为 `Hook1 → Hook2`。
+- **第二次渲染（`cond=false`）**：Hook1 被跳过，链表应为 `Hook2`，但 React 仍期望链表顺序为 `Hook1 → Hook2`，导致 `Hook2` 错误地复用 `Hook1` 的状态。
+
+
+
+2. 为什么hook出现后，函数组件就可以定义自己的state了，
+
+在hook（在react16.8这个版本）出现之前的react当中
+
+如果说想定义组件状态值，只能用这个类组件，没法用函数组件
+
+但是hook出现之后就可以了，那为什么
+
+useState，useReduce这种API
+
+
+
+
+
+
+
+### React和Vue的diff算法的不同与相同
+
+React 和 Vue 的 Diff 算法在核心目标上一致（高效更新 DOM），但实现策略和优化手段有所不同。
+
+------
+
+#### **相同点**
+
+1. **同层比较（层级差异最小化）**
+   两者都采用分层比较策略，只对比同一层级的节点，避免跨层级遍历，减少复杂度。若节点跨层移动，直接销毁重建，而非复用。
+2. **依赖 `key` 优化列表渲染**
+   使用 `key` 标识节点身份，在列表更新时尽可能复用节点，减少不必要的 DOM 操作。若未提供 `key`，默认按顺序对比，可能导致性能问题。
+3. **基于虚拟 DOM**
+   均通过虚拟 DOM 的差异计算（Diff）生成最小化的 DOM 更新操作，提升渲染效率。
+
+------
+
+#### **不同点**
+
+1. **对比策略**
+
+   - **React（单向双指针）**
+     采用**递归双指针对比**，逐个比较新旧子节点。若节点类型不同（如 `<div>` 变为 `<span>`），直接销毁子树并重建。对于列表，若未用 `key`，顺序变化可能导致大量节点重新创建（如头部插入时性能差）。
+
+   - **Vue（双端四指针）**
+     使用**双端对比算法**，同时从新旧子节点的头部和尾部向中间移动，优先处理相同节点（如首尾相同则直接复用），减少节点移动次数。对列表中间插入或删除的场景更高效。
+
+     React 和 Vue 的 Diff 算法在对比策略上的核心差异源于其设计目标和优化方向的不同。以下是两者对比策略的详细分析，涵盖具体步骤、优化逻辑及场景示例：
+
+     **React 的对比策略（单向递归双指针）**
+
+     **核心机制**
+
+     - **递归逐层对比**：从根节点开始，递归遍历新旧虚拟 DOM 树的每一层。
+     - **双指针顺序比对**：在同一层级内，按顺序逐个比较新旧子节点（旧子节点集合和新子节点集合各有一个指针，从左到右移动）。
+
+     **具体步骤**
+
+     1. **类型不同则销毁重建**：
+
+        - 若新旧节点类型不同（如 `<div>` → `<span>`），直接销毁旧节点及其子树，创建新节点。
+
+     2. **类型相同则更新属性**：
+
+        - 若节点类型相同（如 `<div>` → `<div>`），更新其属性和子节点，递归对比子树。
+
+     3. **列表对比（无 `key`）**：
+
+        - 未使用 `key` 时，默认按索引顺序对比新旧子节点。若顺序变化（如头部插入），会导致后续所有节点被视为不同，触发重建。
+
+        - **示例**：
+
+          ```jsx
+          // 旧列表
+          [<div>A</div>, <div>B</div>, <div>C</div>]  
+          // 新列表（头部插入）
+          [<div>D</div>, <div>A</div>, <div>B</div>, <div>C</div>]  
+          ```
+
+          React 会认为索引 0 的节点从 `A` 变为 `D`，索引 1 的 `B` 变为 `A`，依此类推，导致所有节点被重新创建。
+
+     4. **列表对比（有 `key`）**：
+
+        - 通过 `key` 匹配新旧节点，复用可复用的节点，减少 DOM 操作。
+
+        - **示例**：
+
+          ```jsx
+          // 旧列表（key 为 id）
+          [<div key="1">A</div>, <div key="2">B</div>]  
+          // 新列表（key 为 id，逆序）
+          [<div key="2">B</div>, <div key="1">A</div>]  
+          ```
+
+          React 通过 `key` 识别节点身份，仅移动 DOM 元素位置，无需重新创建。
+
+        #### **性能瓶颈**
+
+        - **头部插入列表**：无 `key` 时性能极差，时间复杂度接近 O(n)。
+        - **跨层级移动节点**：直接销毁重建，无法复用。
+
+   **Vue 的对比策略（双端四指针）**
+
+   **核心机制**
+
+   - **双端对比**：同时从新旧子节点列表的头部和尾部向中间移动，共使用四个指针：
+     - 旧头指针（`oldStartIdx`）和旧尾指针（`oldEndIdx`）。
+     - 新头指针（`newStartIdx`）和新尾指针（`newEndIdx`）。
+   - **优先处理稳定节点**：优先对比头尾相同节点，减少中间节点的移动次数。
+
+   **具体步骤**
+
+   1. **头头对比**：
+      比较新旧头指针指向的节点，若相同则复用，头指针右移。
+   2. **尾尾对比**：
+      比较新旧尾指针指向的节点，若相同则复用，尾指针左移。
+   3. **旧头与新尾对比**：
+      若旧头节点与新尾节点相同，复用节点并移动到旧尾之后，旧头指针右移，新尾指针左移。
+   4. **旧尾与新头对比**：
+      若旧尾节点与新头节点相同，复用节点并插入到旧头之前，旧尾指针左移，新头指针右移。
+   5. **剩余节点处理**：
+      若以上均不匹配，尝试通过 `key` 查找可复用的节点：
+      - 建立新节点 `key` 到索引的映射表。
+      - 查找旧节点中是否存在相同 `key` 的节点，若存在则复用并移动位置。
+      - 若无匹配，创建新节点。
+
+   - **减少 DOM 移动次数**：优先处理头尾稳定节点，避免中间节点频繁移动。
+   - **高效处理列表中间操作**：
+     **示例**：在列表中间插入新元素时，双端对比能快速定位可复用节点，仅插入新增节点。
+
+   
+
+   **关键设计思想差异**
+
+   - **React**：追求算法通用性，通过递归实现简单可靠的对比逻辑，依赖 `key` 和开发者优化提升性能。
+   - **Vue**：针对常见 DOM 操作场景（如列表头尾增删）优化，通过双端对比和编译时标记减少运行时计算量。
+
+   #### **列表反转**
+
+   ```
+   // 旧列表：[A, B, C, D]
+   // 新列表：[D, C, B, A]
+   ```
+
+   - **React（无 key）**：按索引对比，认为 A→D、B→C 不同，全部重新创建。
+   - **React（有 key）**：通过 `key` 匹配，仅移动 DOM 节点位置。
+   - **Vue**：通过头尾对比，快速发现头尾节点相同，仅移动中间节点，性能更优。
+
+2. **编译优化**
+
+   - **Vue**
+     在编译阶段对模板进行静态分析，标记静态节点和动态绑定。Diff 时跳过静态子树对比，直接复用，显著减少计算量。
+     *示例：模板中的静态 `<div>Hello</div>` 会被缓存，避免重复 Diff。*
+   - **React（JSX 动态生成）**
+     无编译时优化，依赖运行时优化（如 `React.memo`、`shouldComponentUpdate`）。灵活性更高，但需开发者手动控制更新。
+
+3. **更新粒度与响应式机制**
+
+   - **Vue**
+     基于响应式系统，数据变化时精准定位依赖组件，触发组件级更新。结合 `key` 和双端对比，减少不必要的子树 Diff。
+   - **React**
+     状态变化默认触发组件及其子树的重新渲染（除非手动优化）。通过 Fiber 架构实现可中断的异步渲染，但 Diff 过程仍可能遍历较大范围。
+
+4. **处理动态内容的策略**
+
+   - **Vue**
+     对动态绑定（如 `v-if`、`v-for`）有更细粒度的编译优化。例如，`v-for` 生成的列表会优先复用相同 `key` 的节点，并高效移动位置。
+   - **React**
+     依赖开发者合理使用 `key` 和状态管理（如 `useMemo`）优化性能。在复杂列表场景中，手动优化成本较高。
+
+------
+
+#### **回答示例**
+
+“React 和 Vue 的 Diff 算法都基于虚拟 DOM 和同层比较，通过 `key` 优化列表渲染。不同点在于：
+
+1. **对比策略**：React 使用单向递归对比，而 Vue 采用双端对比，后者对列表中间操作更高效。
+2. **编译优化**：Vue 在编译阶段标记静态节点，Diff 时跳过它们；React 依赖运行时优化。
+3. **更新粒度**：Vue 的响应式系统精准定位变化，React 默认重新渲染子树，需手动控制。
+4. **列表处理**：Vue 的双端对比减少节点移动次数，React 的顺序对比在无 `key` 时性能较差。”
+
+------
+
+#### **补充：场景举例**
+
+- **列表头部插入**
+  Vue 通过双端对比复用尾部节点，React 若未用 `key` 会重建所有节点。
+- **组件树更新**
+  Vue 跳过静态子树，React 需通过 `React.memo` 避免子组件重复渲染。
+
+通过理解这些差异，开发者能更好地利用框架特性进行性能优化。
+
+
+
+不同的地方在于react它是单向查找
+
+而Vue它是双向查找
+
+听起来双向查找好像更快一些
+
+react为什么不用双向查找
+
+而他选择了单向查找
+
+你说就要实现双向查找行不行
+
+也不是不行
+
+但是这个后面的原因
+
+
+
+在这里先大概解释一下
+
+因为react当中它的VDOM存储
+
+或者就直接叫fiber
+
+它的是一个单列表的结构
+
+带链表的结构
+
+想进行双向查找
+
+这个就很难实现
+
+
+
+但你说那我就要双向
+
+那我存成这个双向链表不可以吗
+
+也行
+
+但是这个成本上又提高
+
+就是在目前的这个测试下
+
+react的这个单向查找
+
+性能也是不错的
+
+所以目前react就没有去实现这个双向查找
+
+
+
+但是Vue的话相对来说它不是链表存储
+
+它是数组
+
+它的子节点就是数组
+
+数组的话
+
+想双向查找很简单
+
+
+
+
+
+第三点优化一些项目
+
+
+
+举一些常见的能够解决快这些事情的例子
+
+比如说合理的去使用一些缓存
+
+然后尽量的去避免一些无效的渲染
+
+
+
+去提升一些这个项目性能
+
+再比如说加上一些这个懒加载
+
+
+
+那具体到背后的API
+
+你比如说我们要保证这个取值的稳定性
+
+就是key的取值的稳定性
+
+review当中我们都有这个key的取值
+
+我们要尽量就是要保证它的这个稳定性
+
+还要适时的去使用一些缓存相关的API
+
+还有这个状态管理该怎么去选择
+
+还有effect我们这个怎么去使用
+
+
+
+这都是react背后的一些问题和
+
+那如果说你对他不了解
+
+可能导致了一些问题
+
+可能自己也不知道
+
+因为有些问题它并不会直接出现bug
+
+就像你的说我这个key值对吧
+
+我直接用一个index行不行
+
+有些情况下是可以的
+
+有些情况下
+
+你比如说呃涉及到这个动态值的改变
+
+那诶那它就好像也没出现bug对吧
+
+但是其实背后这很多的组件
+
+它有没有达到一个复用
+
+就是你的页面看起来就只是慢
+
+但是他又不出错
+
+所以这个时候如果说你不知道背后的原因的话
+
+那就真的是页面慢
+
+但是又不知道为什么
