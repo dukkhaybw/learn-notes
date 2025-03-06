@@ -2,21 +2,23 @@
 
 ## 谈谈对Vue的理解
 
-官方对vue的定义：Vue是一套用于构建用户界面的 **渐进式框架**，vue的核心库部分只关注视图层。响应式的框架，由数据驱动视图。
+官方定义：Vue是一套用于构建用户界面的 **渐进式框架**，vue的核心库部分其实只关注视图层。他是一个响应式的框架，以数据来驱动视图。
 
 vue及其生态组成：
 
 - 响应式系统
 - 组件系统
 - 客户端路由
-- 大规模状态管理
-- 工程化项目构建工具
+- 状态管理
+- 工程化构建工具
 
-特点：
 
-- 声明式编写
 
-- 借鉴了MVVM模式，发源于后端的MVC模式，目的都是进行项目代码的职责划分和分层管理
+**特点**：
+
+- **声明式编写**
+
+- **借鉴了MVVM模式**，该模式发源于后端的MVC模式，目的都是进行项目代码的职责划分和分层管理。
 
   mvc的结构图：egg.js和next.js都是mcv模式
 
@@ -24,7 +26,7 @@ vue及其生态组成：
 
   早期前端的mvc开发模式使用的开源库：backbone+ underscore模板引擎+ jquery
 
-  前端使用MVC模式的不足，每个前端用户逻辑都需要编写一个controller来处理，大量的控制器中和其中的大量的DOMapi方法的使用，使得控制层变得异常复杂，不利于管理和维护。
+  前端使用MVC模式的不足，每个前端用户逻辑都需要编写一个controller来处理，大量的控制器中和其中的大量的DOMapi方法的使用，使得控制层变得复杂，不利于管理和维护。
 
   
 
@@ -32,40 +34,26 @@ vue及其生态组成：
 
   ![image-20241210181959649](D:\learn-notes\vue\images\image-20241210181959649.png)
 
-  将数据交给VM上去代为管理，交由vm去根据view去渲染，同时vm也代为管理页面上的一些用户操作，去操作数据。
+  将数据交给VM去代为管理，交由vm结合数据加view去渲染，同时vm也代为管理页面上的一些用户操作，去操作数据。
 
   完全的MVVM模式中不能跳过VM去让V和M直接打交道的，但是vue中可以通过ref等方式直接操作V或者M层，所以vue并不是严格的MVVM模式。
 
-- 采用虚拟DOM
+- **采用虚拟DOM**
 
   - 虚拟DOM节点远没有真实DOM节点复杂
   - 虚拟DOM可以方便的引入Diff算法，减少更新
   - 虚拟DOM可以很好的实现跨平台方面的应用
 
-- 区分编译时和运行时两部分代码
+- **区分编译时和运行时两部分**
 
-- 组件化
+- **组件化**
 
   - **组件级更新**是指 Vue 在响应式数据变化时，根据组件的依赖关系，仅更新受影响的组件，而不是重新渲染整个页面。这种机制使得 Vue 可以高效地更新视图，避免不必要的 DOM 操作，从而提升性能。
-
-  - **响应式系统：**
-
-    - Vue 通过其响应式数据系统跟踪数据的依赖关系。每个组件会依赖某些响应式数据。
-    - 当响应式数据发生变化时，Vue 会通知依赖该数据的组件重新渲染。
-
-    **组件的独立性：**
-
+  - **组件的独立性：**
     - 每个组件都有自己独立的渲染逻辑和虚拟 DOM。
     - 当组件的依赖数据更新时，仅触发该组件的更新，而不是其兄弟组件或整个父组件树。
-
-    **虚拟 DOM 的局部更新：**
-
-    - Vue 使用虚拟 DOM 进行高效的 DOM 操作。在组件更新时，Vue 会比较更新前后的虚拟 DOM，只更新发生变化的部分，进一步提升性能。
-
-  - 当一个组件的响应式数据发生变化时，Vue 只会触发与该组件相关的虚拟 DOM 树进行更新和比较。
-
-    **虚拟 DOM 的局部比较：**
-
+  
+  - **虚拟 DOM 的局部比较：**
     - 组件会维护自己的一棵虚拟 DOM 子树。
     - 当组件重新渲染时，Vue 会生成新的虚拟 DOM 子树，并与旧的虚拟 DOM 子树进行 **diff** 比较。
     - 只比较这个组件相关的虚拟 DOM 子树，而不会影响其他组件的虚拟 DOM。
@@ -73,28 +61,25 @@ vue及其生态组成：
 
 
 
-
-
 ## 对SPA的理解
 
-**SPA**（Single Page Application，单页应用）是一种**单页面应用程序架构**，指的是一个 Web 应用程序只有一个 HTML 页面，所有的内容和功能通过动态加载的方式在这一页中完成，而不是像传统网站那样切换多个页面。  客户端渲染（CSR）
+**SPA**（Single Page Application）是一种**应用程序架构**，指的是一个 Web 应用程序只有一个 HTML 页面，所有的内容和功能通过动态加载JS后执行得到渲染结果的方式在这一页中完成，而不是像传统网站那样切换多个页面。  客户端渲染（CSR）
 
 **SPA核心特点**
 
 1. **单一 HTML 页面：**
-   - 整个应用程序只有一个入口页面（通常是 `index.html`）。
+   - 整个应用程序一般只有一个入口页面（通常是 `index.html`）。
    - 用户与页面交互时，页面不会刷新或重新加载。
 2. **动态内容加载：**
    - 应用的内容和功能通过 JavaScript 动态加载。
-   - 基于路由的切换和数据的更新通过 API 请求完成，而不是重新加载页面。
 3. **前后端分离：**
    - 前端负责界面的渲染和逻辑处理，后端主要提供数据接口（通常是 RESTful API 或 GraphQL）。
 4. **路由管理：**
-   - 虽然页面不刷新，但 URL 会动态变化，通常使用 JavaScript 路由库（如 Vue Router、React Router 等）管理页面路径。
+   - 页面不刷新，但 URL 会动态变化，通常使用 JavaScript 路由库（如 Vue Router、React Router 等）管理页面路径。
 
 
 
-**MPA**（Multi-Page Application，多页面应用）是一种传统的 Web 应用架构，每个功能页面对应一个独立的 HTML 页面，页面之间通过浏览器的跳转进行导航。每次跳转时，浏览器会重新向服务器请求 HTML 页面和相关资源（CSS、JS 等）。服务端渲染（SSR）
+**MPA**（Multi-Page Application，多页面应用）是一种传统的 Web 应用架构，每个功能页面对应一个独立的 HTML 页面，页面之间通过浏览器的跳转进行导航。每次跳转时，浏览器会重新向服务器请求 HTML 页面和相关资源（CSS、JS 等）。一般对应服务端渲染（SSR）
 
 **MPA 的核心特点**
 
@@ -118,9 +103,9 @@ vue及其生态组成：
 | 特性            | SPA                                                          | MPA                                                       |
 | --------------- | ------------------------------------------------------------ | --------------------------------------------------------- |
 | **页面跳转**    | 单页面，动态加载                                             | 多页面，每次跳转重新加载                                  |
-| **首屏白屏**    | 首次加载需要下载大量的js、CSS 和其他资源，可能会导致页面加载时间较长 | HTML 是服务器直接生成的，页面不需要等待js完全加载后再渲染 |
+| **首屏白屏**    | 首次加载需要下载大量的js、CSS 和其他资源，并执行，白屏时间较长 | HTML 是服务器直接生成的，页面不需要等待js完全加载后再渲染 |
 | **用户体验 **   | 流畅，无页面刷新                                             | 页面刷新可能造成延迟                                      |
-| **SEO**         | 传统 SPA 因为内容是通过js动态加载的，对搜索引擎不友好。不过可以通过 SSR（服务端渲染）或预渲染技术解决 | 原生支持良好                                              |
+| **SEO**         | 传统 SPA 因为内容是通过js动态加载的，对搜索引擎不友好。可以通过 SSR（服务端渲染）或预渲染技术解决 | 原生支持良好                                              |
 | **开发复杂度 ** | 高，需前端框架和工具                                         | 低，适合小型项目                                          |
 | **性能优化**    | 适合需要大量前端交互的场景                                   | 适合以内容展示为主的场景                                  |
 | **可维护性**    | 相对容易                                                     | 相对复杂                                                  |
@@ -134,19 +119,7 @@ vue及其生态组成：
 - 在线聊天工具
 - 数据分析平台
 
-如果网站主要是内容展示型（如博客、新闻站点），传统的多页面应用（MPA）可能更合适。
-
-
-
-**MPA 适合：**
-
-- 以内容展示为主的网站，如博客、新闻门户、企业官网。
-- 不需要复杂前端交互的项目。
-- 需要良好 SEO 的项目。
-
-对于需要大量用户交互的应用（如后台管理系统、社交平台），则更适合使用 SPA 架构。
-
-
+如果网站主要是内容展示型（如博客、新闻站点，企业官网，需要SEO），传统的多页面应用（MPA）可能更合适。
 
 
 
@@ -174,7 +147,7 @@ SPA的缺点的解决方案：
   5. 数据来自异步，不利于 SEO 优化
   6. 前后端项目分离，开发效率高，可维护性好
 
-前后端分离后，前端只处理页面，后端只处理数据提供接口，前后端通过接口实现交互。选择单页面应用的开发最主要的目的是为了让前后端分离，用户体验反而是其次的。
+前后端分离后，前端只处理页面，后端只处理数据提供接口，前后端通过接口实现交互。
 
 
 
@@ -182,18 +155,18 @@ SPA的缺点的解决方案：
 
 **虚拟DOM的本质：**
 
-**以 JavaScript 对象的形式对真实 DOM 进行抽象表示**。它并不是浏览器中的 DOM 节点，而是描述 DOM 结构的轻量级数据结构。
+**一个带有层级结构的JavaScript 对象，用于对真实 DOM 进行抽象表示**。它并不是浏览器中的 DOM 节点，而是描述 DOM 结构的树这种数据结构。
 
-在数据结构方面：虚拟 DOM 是一棵树状结构，其每个节点是一个 JavaScript 对象，用于描述真实 DOM 中的节点属性、子节点等信息。典型的虚拟 DOM 节点结构如下：
+虚拟 DOM 是一棵树状结构，其每个节点是一个 JavaScript 对象，用于描述真实 DOM 中的节点属性、子节点等信息。典型的虚拟 DOM 节点结构如下：
 
 ```javascript
 const vnode = {
-    tag: 'div',               // 节点标签，例如 'div'
-    props: { id: 'app' },     // 属性，例如 id="app"
-    children: [               // 子节点（可以是文本或其他虚拟节点）
-        { tag: 'span', props: {}, children: ['Hello'] },
-        { tag: 'button', props: { onClick: handleClick }, children: ['Click Me'] }
-    ]
+  tag: 'div',               // 节点标签，例如 'div'
+  props: { id: 'app' },     // 属性，例如 id="app"
+  children: [               // 子节点（可以是文本或其他虚拟节点）
+    { tag: 'span', props: {}, children: ['Hello'] },
+    { tag: 'button', props: { onClick: handleClick }, children: ['Click Me'] }
+  ]
 };
 ```
 
@@ -221,10 +194,6 @@ const vnode = {
 
 
 
-
-
-
-
 **vue中虚拟DOM是如何得到的：**
 
 在开发阶段，开发者写的是一个个的.vue类型的文件，这个文件会被会被编译成渲染函数（`render`），该函数在浏览器中执行后会返回一个虚拟 DOM 树对象。
@@ -242,8 +211,6 @@ const render = () => ({
 每次组件状态变化时，`render` 函数都会生成新的虚拟 DOM。
 
 最后在后续的patch过程中将得到的虚拟DOM变为真实DOM并挂在到页面上，同时真实dom节点也会缓存到虚拟DOM的相应属性上，以方便后续更新时能最大化的复用。
-
-
 
 
 
@@ -474,7 +441,7 @@ import LocalButton from './LocalButton.vue';
 
 ## vue通过数据劫持能够精准的探测数据变化，为什么还需要虚拟DOM和进行diff检查差异？
 
-1. **数据劫持是感知变化的工具，不负责 DOM 更新**
+1. **数据劫持是感知变化的，不负责 DOM 更新**
 
    - **数据劫持**：Vue 的响应式系统可以感知数据的变化（例如某个属性被修改了），但它不会直接操作 DOM。
    - **虚拟 DOM**：负责根据数据变化，计算出需要更新的 DOM 节点，从而以最小的代价更新视图。
@@ -562,7 +529,7 @@ Vue 使用以下两种方式实现响应式数据：
 
 vue2的响应式数据实现的不足：
 
-- 在 vue2 的时候使用 defineProperty 来进行数据的劫持,需要对属性进行重写添加getter及setter 性能差。
+- 在 vue2 的时候使用 defineProperty 来进行数据的劫持，需要对属性进行重写添加getter及setter 性能差。
 
 - 当新增属性和删除属性时无法监控变化。需要通过`$set、$delete`实现
 
@@ -572,29 +539,29 @@ vue2的响应式数据实现的不足：
 
   ```js
   function defineReact(target,key,value){
-      observer(value)  //一上来就递归重写
-      Object.defineProperty(target,key,{
-          get(){
-              // 处理依赖收集
-              return value
-          },
-          set(newValue){
-              if(newValue !==value){
-                  value = newValue
-                  // 处理触发更新
-                  observer(newValue)  // 赋值对象则继续劫持
-              }
-          }
-      })
+    observer(value)  //一上来就递归重写
+    Object.defineProperty(target,key,{
+      get(){
+        // 处理依赖收集
+        return value
+      },
+      set(newValue){
+        if(newValue !==value){
+          value = newValue
+          // 处理触发更新
+          observer(newValue)  // 赋值对象则继续劫持
+        }
+      }
+    })
   }
   
   function observer(data){
-      if(typeof data !=='object' || data === null){
-          return data
-      }
-      for(let key in data){
-          defineReact(data,key,data[key])
-      }
+    if(typeof data !=='object' || data === null){
+      return data
+    }
+    for(let key in data){
+      defineReact(data,key,data[key])
+    }
   }
   ```
 
@@ -653,17 +620,19 @@ this.count = sum
 
 
 
+![image-20210318121345123](D:\learn-notes\vue\images\image-20210318121345123.png)
+
+
+
 
 
 ## vue2中如何检测数组变化
 
-在 **Vue 2** 中，数组的响应式处理是通过**重写数组方法**实现的。Vue 2 无法直接拦截数组的索引变化，但通过重写了数组的一些变更方法（如 `push`、`pop` 等），可以检测到数组的变化并触发视图更新。
+在 **Vue 2** 中，数组的响应式处理是通过**重写数组方法**实现的。Vue 2 没有采用直接拦截数组的索引变化，但通过重写了数组的一些变更方法（如 `push`、`pop` 等），可以检测到数组的变化并触发视图更新。
 
 Vue 2 通过重写数组原型方法（`Array.prototype`）中的部分方法来检测数组的变化，包括：
 
-- 能够触发响应的数组方法
-
-  ：
+- 能够触发响应的数组方法：
 
   - 增加：`push`、`unshift`、`splice`
   - 删除：`pop`、`shift`、`splice`
@@ -685,25 +654,35 @@ vm.items[0].name = 'Bob'; // Vue 会检测到并更新视图
 
 本质原理：
 
-```js
+```javascript
 const arrayProto = Array.prototype;
-const arrayMethods = Object.create(arrayProto);
-
-['push', 'pop', 'shift', 'unshift', 'splice', 'sort', 'reverse'].forEach(method => {
-  const original = arrayProto[method];
-  arrayMethods[method] = function (...args) {
-    const result = original.apply(this, args); // 执行原始操作
-    console.log('Array changed:', method, args); // 通知更新
+export const arrayMethods = Object.create(arrayProto);
+const methodsToPatch = ['push', 'pop', 'shift', 'unshift', 'splice', 'sort', 'reverse'];
+methodsToPatch.forEach(function (method) {
+  // 重写原型方法  const original = arrayProto[method]
+  // 调用原数组的方法
+  def(arrayMethods, method, function mutator(...args) {
+    const result = original.apply(this, args);
+    const ob = this.__ob__;
+    let inserted;
+    switch (method) {
+      case 'push':
+      case 'unshift':
+        inserted = args;
+        break;
+      case 'splice':
+        inserted = args.slice(2);
+        break;
+    }
+    if (inserted) ob.observeArray(inserted); // 对新增的数据进行观测，因为它可能是对象类型
+    ob.dep.notify(); // 当调用数组方法后，手动通知视图更新
     return result;
-  };
+  });
 });
-
-// 使用改写后的数组方法
-const arr = [];
-Object.setPrototypeOf(arr, arrayMethods);
-
-arr.push(1); // 控制台打印: Array changed: push [1]
+this.observeArray(value); // 进行深度监控
 ```
+
+![image-20210318122319512](..\typora-user-images\image-20210318122319512.png)
 
 
 
@@ -1076,7 +1055,7 @@ function observe(value) {
 
 **Vue3中进行依赖收集**
 
-在 Vue 3 中，依赖收集的方式相比 Vue 2 做了重要的改进，采用了 `Proxy` 来取代 `Object.defineProperty`，从而简化了依赖收集的机制，并且解决了 Vue 2 中的一些性能问题和局限性。Vue 3 中的响应式系统通过 `Proxy` 进行数据劫持，依赖收集的过程也得到了优化。
+在 Vue 3 中，依赖收集的方式相比 Vue 2 做了重要的改进，采用了 `Proxy` 来取代 `Object.defineProperty`，从而简化了依赖收集的机制，并且解决了 Vue 2 中的一些性能问题和局限性。
 
 Vue 3 使用 `Proxy` 不仅能够劫持对象的属性，还能监听整个对象的访问（包括属性的新增、删除和数组的操作），同时提供更高效的性能。
 
@@ -1098,8 +1077,7 @@ Vue 3 使用 `Proxy` 不仅能够劫持对象的属性，还能监听整个对�
 
 （3）`Tracker` 和 `Dep`
 
-- 在 Vue 3 中，依赖收集是通过 `Proxy` 的 `getter` 和 `setter` 完成的，依赖项存储在一个类似 `Dep` 的容器中，称为 `Tracker`。
-- 这些 `Tracker` 对象会管理数据项与依赖它们的 `effect`。
+
 
 
 
@@ -1335,8 +1313,6 @@ vue3中不再需要set方法。
 
 
 ## v-show 与 v-if 的理解和区别
-
- v-if：创建与删除元素（如用于购物车）
 
 `v-if` 控制元素的 **条件渲染**，在条件为 `true` 时，Vue 会在 DOM 中 **创建** 元素；当条件为 `false` 时，Vue 会 **销毁** 该元素。换句话说，`v-if` 会根据条件决定是否在 DOM 中渲染该元素，只有条件满足时，元素才会存在。
 
@@ -4018,7 +3994,7 @@ export function mergeOptions(
 >       }
 >     }
 >   };
->                       
+>                         
 >   export default {
 >     mixins: [myMixin],  / 局部混入
 >     created() {
@@ -8100,107 +8076,6 @@ Root Block (div)
 
 
 
-### 动态节点的 Block
-
-在 Vue 3 中，**动态节点的 Block** 是模板编译器用来优化动态内容的一种**结构化单位**。一个 **Block** 表示模板中由一个或多个动态节点组成的更新单元，包含了动态节点的属性、内容、事件等相关信息，以及它们的依赖关系。
-
-**动态节点的 Block** 是 Vue 在编译阶段生成的，用于在运行时快速处理动态内容的更新，跳过不需要重新渲染的静态部分。
-
-
-
-### 事件监听器缓存
-
-对于不变的事件监听器函数，Vue 3 会缓存这些函数，避免每次渲染时创建新的函数实例。
-
-优化点：
-
-- 如果绑定的事件监听器是纯静态的，它会被标记为缓存并在渲染函数外创建。
-
-好处：
-
-- 减少重复创建函数导致的性能开销。
-- 降低虚拟 DOM 比对的复杂度。
-
-
-
-
-
-## vue3新特性
-
-https://v3-migration.vuejs.org/
-
-- [Composition API](https://vuejs.org/guide/extras/composition-api-faq.html)*
-
-- [SFC Composition API Syntax Sugar (`<script setup>`)](https://vuejs.org/api/sfc-script-setup.html)*
-
-- [Teleport](https://vuejs.org/guide/built-ins/teleport.html)
-
-- [Fragments](https://v3-migration.vuejs.org/new/fragments)
-
-- [Emits Component Option](https://vuejs.org/api/options-state.html#emits)**
-
-- [`createRenderer` API from `@vue/runtime-core`](https://vuejs.org/api/custom-renderer.html) to create custom renderers
-
-- [SFC State-driven CSS Variables (`v-bind` in `<style>`)](https://vuejs.org/api/sfc-css-features.html#v-bind-in-css)*
-
-  ```vue
-  <script setup>
-  import { ref } from 'vue'
-  const theme = ref({
-      color: 'red',
-  })
-  </script>
-  
-  <template>
-    <p>hello</p>
-  </template>
-  
-  <style scoped>
-  p {
-    color: v-bind('theme.color');
-  }
-  </style>
-  ```
-
-- [SFC `<style scoped>` can now include global rules or rules that target only slotted content](https://github.com/vuejs/rfcs/blob/master/active-rfcs/0023-scoped-styles-changes.md)
-
-  ```vue
-  <style scoped>
-  /* deep selectors */
-  ::v-deep(.foo) {}
-  /* shorthand */
-  :deep(.foo) {}
-  
-  /* targeting slot content */
-  ::v-slotted(.foo) {}
-  /* shorthand */
-  :slotted(.foo) {}
-  
-  /* one-off global rule */
-  ::v-global(.foo) {}
-  /* shorthand */
-  :global(.foo) {}
-  </style>
-  ```
-
-- [Suspense](https://vuejs.org/guide/built-ins/suspense.html) experimental
-
-
-
-### 如何避免 Vuex 中的函数造成全局污染
-
-
-
-
-
-### Vue 动画的生命周期
-
-
-
-### Vue 中使用插件的步骤
-
-
-
 ### Vue 中常见的性能优化
 
 1. 编码优化
@@ -8232,38 +8107,6 @@ https://v3-migration.vuejs.org/
 
 
 
-
-
-### 什么是作用域插槽
-
-作用域插槽 与插槽的区别：作用域不同。
-
-插槽（插槽的作用域为父组件）：
-
-- 创建组件虚拟节点的时候，会将组件的儿子的虚拟DOM保存起来。当初始化组件时，通过插槽属性将儿子进行分类。
-- 渲染组件时，会拿对应的 slot 属性的节点进行替换操作
-- 渲染父组件时，会将组件标签中间的内容渲染为虚拟节点存起来，这个渲染过程在执行父组件（即下面的 app 组件的父组件）渲染时，就已经渲染好了。并不是在 app 组件内部渲染的。渲染完成父组件即插槽内容后，对插槽就插槽名进行分类。{a:[vnode],b:[vnode]}
-
-```vue
-<app>
-  <div slot='a'>xxxx</div>
-  <div slot='b'>xxxxxxxx</div>
-</app>
-```
-
-作用域插槽：
-
-它的渲染流程是在 app 组件内部
-
-```vue
-<app>
-  <div slot-scopr='可以时app组件中的数据'  slot='footer'>{{使用app组件中的数据}}</div>
-  <div v-slot='可以时app组件中的数据'  slot='footer'>{{使用app组件中的数据}}</div>
-</app>
-```
-
-
-
 ### Vue 中 v-for 中为什么要使用 key
 
 key 主要是用来为 DOM diff 的使用的。vue 中的 diff 算法主要是做同级比较，它会比较当前标签上的 key 和当前的标签名，如果 key 和标签名都一样，该算法就会更加高效的区分元素，提高复用已经渲染好的元素。在使用 v-for 的时候，尽量也不要使用索引作为 key 的值。
@@ -8284,79 +8127,169 @@ key 主要是用来为 DOM diff 的使用的。vue 中的 diff 算法主要是�
 
 
 
-### 对比 jQuery，Vue 有什么不同
-
-
-
-### 使用 vuex 只需要执行 Vue.use（Vuex），并在 Vue 的配置中传入一个 store 对象的示例，store 是如何实现注入的
-
 
 
 
 
 ### 父子组件生命周期函数执行顺序
 
-- 加载渲染过程
+**创建与挂载阶段**
 
-  父 beforeCreate->父 created->父 beforeMount->子 beforeCreate->子 created->子 beforeMount->子 mounted->父 mounted
+父组件先进入初始化流程，当解析到子组件时，子组件开始初始化，最后父组件完成挂载。
+
+1. **父组件**：
+   `beforeCreate` → `created` → `beforeMount`
+2. **子组件**：
+   `beforeCreate` → `created` → `beforeMount` → `mounted`
+3. **父组件**：
+   `mounted`
+
+**示例代码输出顺序**：
+
+```
+父 beforeCreate  
+父 created  
+父 beforeMount  
+子 beforeCreate  
+子 created  
+子 beforeMount  
+子 mounted  
+父 mounted
+```
+
+
+
+**更新阶段**
+
+父组件数据变化触发更新流程，父组件先进入更新钩子，子组件随后更新，最后父组件完成更新。
+
+1. **父组件**：
+   `beforeUpdate`
+2. **子组件**：
+   `beforeUpdate` → `updated`
+3. **父组件**：
+   `updated`
+
+**示例代码输出顺序**：
+
+```
+父 beforeUpdate  
+子 beforeUpdate  
+子 updated  
+父 updated
+```
+
+**如果父组件更新的是自身内部的响应式数据且未传递给子组件（未通过 `props`、`$attrs` 或作用域插槽等方式传递），则子组件不会触发更新阶段的生命周期函数**。
+
+- **子组件不依赖父组件数据时**：父组件的数据变更不会触发子组件的更新流程。
+- **子组件依赖父组件数据时**：只有当子组件实际使用了父组件传递的数据（如 `props`、插槽内容等），才会触发子组件更新。
+
+
 
 - 子组件更新过程　　父 beforeUpdate->子 beforeUpdate->子 updated->父 updated
 
 - 父组件更新过程　　父 beforeUpdate->父 updated
 
-- 销毁过程　　父 beforeDestroy->子 beforeDestroy->子 destroyed->父 destroyed
 
 
+**销毁阶段**
 
+父组件销毁时，先触发父组件的销毁钩子，随后递归销毁子组件，最后父组件完成销毁。
 
+1. **父组件**：
+   `beforeDestroy`
+2. **子组件**：
+   `beforeDestroy` → `destroyed`
+3. **父组件**：
+   `destroyed`
 
-### **用 vnode 来描述一个 DOM 结构**
+**示例代码输出顺序**：
 
-虚拟节点就是用一个对象来描述真实的 dom 元素
-
-```javascript
-<div id="container"><p>hello Vue</p></div>
-
-//描述为对象的话是：
-let obj = {
-    tag:'div',
-    attr:{
-        id:'container'
-    }
-    childeren:[{
-    	tag:'p',
-    	attr:{},
-    	children:[{
-            text:'hello Vue'
-        }]
-	}]
-}
-
-//另一种描述方式
-render(){
-    return _c('div',{id:'container'},_c('p',{}))
-}
+```
+父 beforeDestroy  
+子 beforeDestroy  
+子 destroyed  
+父 destroyed
 ```
 
-![img](https://img-blog.csdnimg.cn/20200303232552476.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQxNjQ2MjQ5,size_16,color_FFFFFF,t_70)
-
-template 转为 ast 树，ast 树又通过 codegen 转成 render 函数，render 函数内部调用的就是\_c（$createElement）方法后转为虚拟 DOM。
 
 
 
-### diff 算法的时间复杂度
 
-#### vue 中的 diff 做了哪些优化
+总结：
 
- 两个树的完全的 diff 算法是一个时间复杂度为 O(n3) , Vue 进行了优化·O(n3) 复杂度的问题转换成 O(n) 复杂度的问题(只比较同级不考虑跨级问题) 在前端当中， 你很少会跨越层级地移动 Dom 元素。 所 以 Virtual Dom 只会对同一个层级的元素进行对比。
+```
+创建与挂载阶段:
+父 beforeCreate  
+父 created  
+父 beforeMount  
+  → 子 beforeCreate  
+  → 子 created  
+  → 子 beforeMount  
+  → 子 mounted  
+父 mounted  
 
-#### 简述 Vue 中 diff 算法原理
+更新阶段:
+父 beforeUpdate  
+  → 子 beforeUpdate  
+  → 子 updated  
+父 updated 
+或者
+父 beforeUpdate   
+父 updated 
 
-理解： 1.先同级比较，在比较子节点 2.先判断一方有儿子一方没儿子的情况
+销毁阶段:
+父 beforeDestroy  
+  → 子 beforeDestroy  
+  → 子 destroyed  
+父 destroyed
+```
 
-3.比较都有儿子的情况
 
-4.递归比较子节点
+
+特殊点：
+
+1. **异步组件**：
+   若子组件是异步加载的（如通过 `() => import('./Child.vue')`），子组件的生命周期会在父组件挂载后触发。
+   **输出顺序**：
+
+   ```text
+   父 beforeCreate → 父 created → 父 beforeMount → 父 mounted  
+   → 子 beforeCreate → 子 created → 子 beforeMount → 子 mounted
+   ```
+
+
+
+2. **条件渲染（v-if）**：
+   当子组件通过 `v-if` 动态渲染时，子组件的创建和销毁会跟随条件变化。
+   **示例**：
+
+```html
+<template>
+  <div>
+    <button @click="showChild = !showChild">Toggle Child</button>
+    <Child v-if="showChild" />
+  </div>
+</template>
+```
+
+运行 HTML
+
+- **初次显示子组件**：
+  父 `beforeUpdate` → 子创建挂载 → 父 `updated`
+- **隐藏子组件**：
+  父 `beforeUpdate` → 子销毁 → 父 `updated`
+
+
+
+3. **插槽（Slot）内容**：
+   父组件插槽中的内容属于父作用域，但其生命周期仍按子组件流程触发。
+
+
+
+
+
+
 
 ### Vue 中事件绑定原理
 
@@ -8387,10 +8320,6 @@ template 转为 ast 树，ast 树又通过 codegen 转成 render 函数，render
 vue-loader 中使用的编译模板的包——vue-template-compiler
 
 
-
-
-
-### vue3 解决什么问题
 
 
 
@@ -8426,99 +8355,11 @@ v-model 可以看作 value+input 方法的语法糖。组件的 v-model 就是 v
 
 
 
-### 对 MVVM 的理解
-
-![image-20210318113733467](..\typora-user-images\image-20210318113733467.png)
-
-- 传统架构模型 MVC（从前端到后台统一称为 MVC）,前端叫视图层，后端数据库 M 层。 MVC 指的是用户操作界面获取数据时，会请求服务端路由，路由会调用对应的控制器来处理，控制器会过去数据，将结果返回给前端，页面重新渲染。 这种方向是单项的，而且是针对整个应用架构。
-- 以前都是手动操作后台获取到的数据，将数据渲染到页面上，这就要开发者手动的操作 DOM，非常麻烦而且性能低下。随着前端的页面越来越复杂，不再是以前的只通过后端来渲染页面。对于前端的单页应用，我们又把 MVC 中的 V 层，也就是前端视图层又进行了抽离，抽离出了一个 MVVM。在 MVVM 中，V 指的是 DOM 元素，M 数据就是前端的静态数据或从后台获取的数据。VM 就是中间的调度层。Vue 框架就是一个典型的 MVVM 框架，我们将数据挂载到 Vue 实例上， 通过 vue 渲染视图，避免的调用 API 操作 DOM。同样，视图更改了，vue 实例也会更改 m 数据。
-
-### Vue 的双向数据绑定的原理（vue 响应式原理）
-
-核心点：Object.defineProperty（内部对应一个方法：defineReactive(obj,keys[i])），给数据的获取和设置都增加拦截功能，增加自己的业务逻辑（依赖收集）。
-
-默认 Vue 在初始化数据时，会给 data 中的属性通过遍历方式使用 Object.defineProperty 重新定义所有属性，当页面读取到对应的属性时，会进行依赖收集（收集当前组件的 watcher），如果数据发生变化会通知相关依赖进行更新操作。
-
-![image-20210318121345123](..\typora-user-images\image-20210318121345123.png)
-
-```javascript
-Object.defineProperty(obj, key, {
-  enumerable: true,
-  configurable: true,
-  get: function reactiveGetter() {
-    const value = getter ? getter.call(obj) : val;
-    if (Dep.target) {
-      dep.depend(); // ** 收集依赖 ** /
-      if (childOb) {
-        childOb.dep.depend();
-        if (Array.isArray(value)) {
-          dependArray(value);
-        }
-      }
-    }
-    return value;
-  },
-  set: function reactiveSetter(newVal) {
-    const value = getter ? getter.call(obj) : val;
-    if (newVal === value || (newVal !== newVal && value !== value)) {
-      return;
-    }
-    if (process.env.NODE_ENV !== 'production' && customSetter) {
-      customSetter();
-    }
-    val = newVal;
-    childOb = !shallow && observe(newVal);
-    dep.notify(); /**通知相关依赖进行更新**/
-  }
-});
-```
-
-#### Vue 的双向数据绑定针对数组是怎么处理的（Vue 中是如何检测数组变化? ）
-
-- 数组并没有使用 Object.defineProperty 去重新定义数组的每一项
-- 使用函数劫持的方式，重写了数组的方法
-- Vue 将 data 中的数组，进行了原型链重写。指向了自己定义的数组原型方法，这样当调用数组 api 时，可以通知依赖更新.如果数组中包含着引用类型。会对数组中的引用类型再次进行监控。
-- 对于数组可能存在的对象元素，会遍历数组或深度遍历数组对象，对对象类型数据进行观测
-
-重写的数组方法都是那些能修改原数组的数组方法：push,shift,unshift,pop,splice ,reverse ,sort 。
-
-改写的方法：
-
-```javascript
-const arrayProto = Array.prototype;
-export const arrayMethods = Object.create(arrayProto);
-const methodsToPatch = ['push', 'pop', 'shift', 'unshift', 'splice', 'sort', 'reverse'];
-methodsToPatch.forEach(function (method) {
-  // 重写原型方法  const original = arrayProto[method]
-  // 调用原数组的方法
-  def(arrayMethods, method, function mutator(...args) {
-    const result = original.apply(this, args);
-    const ob = this.__ob__;
-    let inserted;
-    switch (method) {
-      case 'push':
-      case 'unshift':
-        inserted = args;
-        break;
-      case 'splice':
-        inserted = args.slice(2);
-        break;
-    }
-    if (inserted) ob.observeArray(inserted); // 对新增的数据进行观测，因为它可能是对象类型
-    ob.dep.notify(); // 当调用数组方法后，手动通知视图更新
-    return result;
-  });
-});
-this.observeArray(value); // 进行深度监控
-```
-
-![image-20210318122319512](..\typora-user-images\image-20210318122319512.png)
-
 ### Vue 异步渲染
 
 #### 什么是 vue 的异步渲染
 
-触发页面的响应动作数据同步变化的时候，页面订阅的响应操作不会与数据变化完全对应，而是在所有的数据变化操作做完之后，页面才会得到响应，完成页面渲染。（多个数据在一次同步逻辑中被修改了，它们对应的是同一个 watcher，过滤同一个只留下一个 watcher，等数据都改完之后再去更新视图。避免一改数据就更新视图而做的异步更新。）
+触发响应式数据变化的时候，页面订阅的响应操作不会与数据变化完全对应，而是在所有的数据修改操作做完之后，页面才会开始进行渲染。（多个数据在一次同步逻辑中被修改了，它们对应的是同一个 watcher，过滤同一个只留下一个 watcher，等数据都改完之后再去更新视图。避免一改数据就更新视图而做的异步更新。）
 
 ```javascript
 import Vue from 'Vue';
@@ -8540,19 +8381,17 @@ new Vue({
 //在mounted里给val属性进行了两次赋值，如果页面渲染与数据的变化完全同步的话，页面应该是在mounted里有两次渲染。而由于Vue内部的渲染机制，实际上页面只会渲染一次，把第一次的赋值所带来的的响应与第二次的赋值所带来的的响应进行一次合并，将最终的val只做一次页面渲染。而且页面是在执行所有的同步代码执行完后才能得到渲染，在上述例子里的while阻塞代码之后，页面才会得到渲染，就像在熟悉的setTimeout里的回调函数的执行一样，这就是的异步渲染。
 ```
 
-vue 是组件级别的更新，当前组件的数据变了，他就会去单独跟新该组件。一个组件的数据可能非常多，一次业务逻辑处理可能会更新多个组件数据，，如果一更改某个数据就重新渲染组件，那会使得组件多次渲染，性能不高。
-
 
 
 #### 为什么 Vue 采用异步渲染
 
- 因为如果不采用异步更新，那么每次更新数据都会对当前组件进行重新渲染.所以为了性能考虑。 Vue 会在本轮数据更新后，再去异步更新视图。
+如果不采用异步更新，那么每次更新数据都会对当前组件进行重新渲染。所以为了性能考虑， Vue 会在本轮数据更新后，再去异步更新视图。
 
  核心方法：nextTick( )
 
 ![image-20210318125342748](..\typora-user-images\image-20210318125342748.png)
 
- 当数据变化之后，调用 notify 方法，通知 watcher 进行更新，watcher 调用自己的 update 方法进行更新，更新的时候并不是立即让 watcher 去执行，而是把 watcher 放在了一个队列中（queueWatcher），在队列中对 Watcher 进行过滤，相同的 Watcher 只留下一个，最后再异步的刷新 queueWatcher。
+当数据变化之后，调用 notify 方法，通知 watcher 进行更新，watcher 调用自己的 update 方法进行更新，更新的时候并不是立即让 watcher 去执行，而是把 watcher 放在了一个队列中（queueWatcher），在队列中对 Watcher 进行过滤，相同的 Watcher 只留下一个，最后再异步的刷新 queueWatcher。
 
 ```javascript
 update () {    /* istanbul ignore else */    
@@ -8590,110 +8429,9 @@ export function queueWatcher (watcher: Watcher) {  
 }
 ```
 
-#### nextTick 原理
-
-**理解:(宏任务和微任务) 异步方法** nextTick 方法主要是使用了宏任务和微任务(时间循环机制),定义了一个异步方法.多次调用 nextTick 会将方法存入 队列中，通过这个异步方法清空当前队列。 所以这个 nextTick 方法就是异步方法
-
-多次调用 nextTick 方法并传入回调函数，nextTick 内部会维护一个数组，，将这些回调放入，之后再异步的回调数组中的这些回调函数。这样用户就可以在视图更新之后在获取到真实的 DOM 元素。
-
-![image-20210318133746187](..\typora-user-images\image-20210318133746187.png)
-
-```javascript
-let timerFunc; // 会定义一个异步方法
-if (typeof Promise !== 'undefined' && isNative(Promise)) {
-  // promise
-  const p = Promise.resolve();
-  timerFunc = () => {
-    p.then(flushCallbacks);
-    if (isIOS) setTimeout(noop);
-  };
-  isUsingMicroTask = true;
-} else if (
-  !isIE &&
-  typeof MutationObserver !== 'undefined' && // MutationObserver
-  (isNative(MutationObserver) ||
-    MutationObserver.toString() === '[object MutationObserverConstructor]')
-) {
-  let counter = 1;
-  const observer = new MutationObserver(flushCallbacks);
-  const textNode = document.createTextNode(String(counter));
-  observer.observe(textNode, { characterData: true });
-  timerFunc = () => {
-    counter = (counter + 1) % 2;
-    textNode.data = String(counter);
-  };
-  isUsingMicroTask = true;
-} else if (typeof setImmediate !== 'undefined') {
-  // setImmediate
-  timerFunc = () => {
-    setImmediate(flushCallbacks);
-  };
-} else {
-  timerFunc = () => {
-    // setTimeout
-    setTimeout(flushCallbacks, 0);
-  };
-} // nextTick实现
-export function nextTick(cb?: Function, ctx?: Object) {
-  let _resolve;
-  callbacks.push(() => {
-    if (cb) {
-      try {
-        cb.call(ctx);
-      } catch (e) {
-        handleError(e, ctx, 'nextTick');
-      }
-    } else if (_resolve) {
-      _resolve(ctx);
-    }
-  });
-  if (!pending) {
-    pending = true;
-    timerFunc();
-  }
-}
-```
-
-
-
 
 
 ![image-20210318211345868](..\typora-user-images\image-20210318211345868.png)
-
-
-
-### Vue2.0 中响应式数据的理解
-
-首先明确什么是响应式数据，它的作用。 知道基本的问题， 基本源码逻辑，用时的问题。
-
-它可以监控一个数据的获取或操作。针对对象类型的数据使用 Object.defineProperty 方法然后内部递归来实现的。
-
-源码大致流程:this.\_init(options) => initState(vm),初始化状态，包括对 props，methods, data, computed 和 watch 的初始化 => initData(vm) => observe(value) => new Observe(value) => 针对对象和数组进行分流（this.walk(value)和 this.observeArray(value)） => defineReactive(obj,key) ，可以递归。
-
-```js
-var obj = Object.freeze({});
-Object.isExtensible(obj); // false
-```
-
-
-
-由此引出的思考：
-
-1. 在 data 中的数据应该避免对象中数据的嵌套层级过深；
-
-2. 如果数据不需要响应式的能力，则不用要数据放在 data 中；
-
-3. 属性取值时，尽量避免多次取值，比如避免在循环语句中取用 data 中的数据；
-
-4. 如果有些对象属性需要放在 data 中，但是不需要响应式的能力，可以考虑采用 Object.freeze( ) 冻结对象
-
-   
-
-### Vue 中如何检测数组的变化
-
-vue2 中检测数组的变化并没有采用 Object.defineProperty,与因为在实际开发中很少直接通过数组的索引去操作数组。如果直接使用 Object.defineProperty 去给数组的每一项添加 getter 和 setter（数组的 length 属性无法通过 Object.defineProperty 设置 getter 和 setter），会浪费大量性能。为了实现数组的响应式，是通过对 data 中的数组类型的数据依次重写它们的原型来实现响应式的。 同时会循环数组中的每一项，然后尝试对每一项进行进行观测。
-
-所以通过数组的索引或者修改数组长度是无法进行监控的。
 
 
 
@@ -8707,31 +8445,13 @@ vue2 中检测数组的变化并没有采用 Object.defineProperty,与因为在�
 
 
 
-### 模板编译
-
-模板编译是指将用户编写的 template 属性或者 el 指代的标签部分的模板编译为 render 函数。
-
-主要的步骤：
-
-1. 将 template 编译为 ast 语法树
-2. 对语法树进行标记（标记静态节点）进行标记的原因：节点中的某些部分的数据内容是写死的，之后的 diff 算法完全不需要再对该部分进行比较，标记为静态节点的标签及其内部 html 部分都会在 diff 算法时直接跳过，而只需要比较可变得部分。（递归标记且深度优先，先子后父，子节点一旦不为非静态节点，则父节点就不会为静态节点。）
-3. 将 ast 语法树（树结构的对象）生产 render 函数
-
-在模板之后的每次渲染时，可以调用 render 函数返回虚拟节点。
-
-在 Vue 的源码中编译处理交给 compiler 模块。
-
-
-
-### 生命周期函数的实现
-
-生命周期函数的实现就是内部使用了发布订阅模式来实现的，将用户写的生命周期函数维护成一个数组，后续依次调用。主要的调用方法是 callHook。
-
-
-
 ### Vue2 中的生命周期方法
 
-- beforeCreate:该函数执行时，没有实现响应式数据，同时也没有将数据代理到 vue 实例上。在 beforeCeate 执行前处理的任务有：合并构造函数的静态属性 options 和自己的 options，initLifecycle(vm)，initEvents(vm)，initRender(vm)。 initLifecycle（vm）: 初始化生命周期中组件的父子关系 initEvent(vm)：初始化组件的发布订阅事件系统，如$on,$emit,$once,$off 等 initRender(vm)：声明一些变量方法，比如$createElement，$slots，$scopedSlots 等
+- beforeCreate:该函数执行时，没有实现响应式数据，同时也没有将数据代理到 vue 实例上。在 beforeCeate 执行前处理的任务有：合并构造函数的静态属性 options 和自己的 options，initLifecycle(vm)，initEvents(vm)，initRender(vm)。 
+
+  - initLifecycle（vm）: 初始化生命周期中组件的父子关系 
+  - initEvent(vm)：初始化组件的发布订阅事件系统，如$on,$emit,$once,$off 等
+  - initRender(vm)：声明一些变量方法，比如$createElement，$slots，$scopedSlots 等
 
   该生命周期函数在 Vue3.0 中被取消。
 
@@ -8778,79 +8498,9 @@ vue2 中检测数组的变化并没有采用 Object.defineProperty,与因为在�
 
 ### Vue.mixin 的使用场景和原理
 
-该 API 可以用于将公共的逻辑（主要用它混入生命周期函数）或者数据混入每个组件中。在 vue router 和 vuex 中都使用了该 API。该方法虽然实现了逻辑或者数据的复用，但是也存在有问题，问题在于数据来源不明确，同时对于数据，可能存在命名相同的情况导致优先取用组件自身 options 配置对象中的数据（源码中的 mergeOptions 优先采用组件自身的数据）。
+该 API 可以用于将公共的逻辑（混入生命周期函数）或者数据混入每个组件中。在 vue router 和 vuex 中都使用了该 API。
 
-```js
-Vue.mixin({
-  data() {
-    return { xxx: 11 };
-  },
-  beforeCreate() {
-    this.$store = new Store();
-  },
-  beforDestroy() {
-    //...
-  }
-});
-
-Vue.component('my', {
-  data() {
-    return {
-      xxx: 123
-    };
-  },
-  template: '<div>{{xxx}}</div>'
-});
-```
-
-```js
-const request = ()=>{}
-Vue.mixin({
-    beforeCreate(){
-        this.$request = request
-    }
-})
-
-
-Vue.mixin({
-    beforeCreate(){
-        const request = ()=>{}
-        this.$request = request
-    }
-})
-
-//而不用使用Vue.prototype.$request = request这种写法
-
-new Vue({
-    el:'#app',
-    components:{
-        my:{
-            template:"<div @click="handle">请求</div>",
-            methods:{
-            	handle(){
-        			console.log(this.$request)
-    			}
-        	}
-        }
-    }
-})
-
-
-
-
-const  mixin = {
-    created:function(){
-        //先执行....
-    }
-}
-
-let vm = new Vue({
-    created(){
-        //后执行....
-    },
-    mixins:[mixin]
-})
-```
+该方法虽然实现了逻辑或者数据的复用，但是也存在有问题，问题在于数据来源不明确，同时对于数据，可能存在命名相同的情况导致优先取用组件自身 options 配置对象中的数据（源码中的 mergeOptions 优先采用组件自身的数据）。
 
 ```js
 import { mergeOptions } from '../util/index';
@@ -8864,15 +8514,186 @@ export function initMixin(vue) {
 }
 ```
 
-mixin 的核心就是合并属性（内部采用策略模式进行合并），分全局 mixin 和局部 mixin，同时针对不同属性有不同的合并策略。
 
-在 React 中可以采用高阶组件实现对逻辑或者数据的复用，在 Vue3 中采用 compositionAPI 解决逻辑或者数据复用问题。
+
+**使用场景**
+
+**全局功能注入**
+
+- **日志追踪**：统一添加组件生命周期日志。
+
+- **权限校验**：全局验证用户权限。
+
+- **错误捕获**：统一处理组件内错误。
+
+  ```js
+  Vue.mixin({
+    created() {
+      console.log(`组件 ${this.$options.name} 被创建`);
+    },
+    errorCaptured(err) {
+      this.$reportError(err); // 统一上报错误
+    }
+  });
+  ```
+
+  
+
+ **多组件共享逻辑**
+
+- **工具方法**：例如注入全局的格式化函数。
+
+- **数据初始化**：统一设置默认数据。
+
+  ```js
+  Vue.mixin({
+    methods: {
+      formatDate(date) {
+        return dayjs(date).format('YYYY-MM-DD');
+      }
+    },
+    data() {
+      return { baseUrl: 'https://api.example.com' };
+    }
+  });
+  ```
+
+  
+
+**插件开发**
+
+- **插件封装**：在 Vue 插件中通过 `Vue.mixin` 注入功能。
+
+  ```js
+  const MyPlugin = {
+    install(Vue) {
+      Vue.mixin({
+        mounted() {
+          if (this.$options.myOption) {
+            this.initMyFeature();
+          }
+        }
+      });
+    }
+  };
+  
+  Vue.use(MyPlugin);
+  ```
+
+  
+
+
+
+**实现原理**
+
+1. **选项合并策略**
+
+- Vue 在初始化组件时，会将全局 Mixin、局部 Mixin 和组件自身的选项 **递归合并**。
+- **合并优先级**：组件自身选项 > 局部 Mixin > 全局 Mixin。
+- **合并规则**：
+  - **生命周期钩子**（如 `created`）：合并为数组，按顺序执行（全局 Mixin 钩子先执行）。
+  - **对象类型选项**（如 `methods`、`components`）：合并为一个对象，组件自身属性覆盖 Mixin 属性。
+  - **特殊选项**（如 `data`）：合并为函数，返回合并后的数据对象。
+
+2. **源码核心逻辑**
+
+```javascript
+// 简化后的选项合并逻辑
+function mergeOptions(parent, child) {
+  const options = {};
+  // 合并生命周期钩子
+  mergeHooks(options, parent, child, 'created');
+  // 合并 methods、components 等
+  mergeObject(options, parent, child, 'methods');
+  return options;
+}
+
+// 全局 Mixin 存储在 Vue.options 中
+Vue.mixin = function (mixin) {
+  this.options = mergeOptions(this.options, mixin);
+  return this;
+};
+```
+
+------
+
+**三、注意事项**
+
+1. **慎用全局 Mixin**
+
+- **污染风险**：全局 Mixin 会影响 **所有组件**，包括第三方组件。
+- **命名冲突**：混入的属性或方法可能与组件自身选项冲突。
+
+2. **替代方案**
+
+- **局部 Mixin**：使用组件内的 `mixins: [myMixin]`，作用域更可控。
+- **Composition API（Vue3）**：通过 `setup` 函数实现逻辑复用，彻底解决 Mixin 的缺陷。
+- **自定义 Hooks**：将逻辑封装为函数，按需引入。
+
+3. **性能影响**
+
+- 每个组件初始化时需合并全局 Mixin 的选项，可能略微增加初始化耗时。
+
+------
+
+**四、代码示例**
+
+全局 Mixin 定义
+
+```javascript
+// 全局注入版本号
+Vue.mixin({
+  data() {
+    return { appVersion: '1.0.0' };
+  },
+  mounted() {
+    console.log(`当前版本：${this.appVersion}`);
+  }
+});
+
+// 所有组件均可访问 this.appVersion
+```
+
+**局部 Mixin 定义**
+
+```javascript
+// 局部混入（仅在组件内生效）
+const localMixin = {
+  methods: {
+    localMethod() {
+      console.log('来自局部 Mixin 的方法');
+    }
+  }
+};
+
+export default {
+  mixins: [localMixin],
+  created() {
+    this.localMethod(); // 调用混入方法
+  }
+};
+```
+
+------
+
+**五、总结**
+
+- **适用场景**：适合 **全局、低频修改** 的功能注入（如埋点、权限），慎用于高频修改的逻辑。
+- **原理核心**：基于选项合并策略，通过递归合并实现功能混入。
+- **最佳实践**：
+  1. 优先使用局部 Mixin 或 Composition API。
+  2. 全局 Mixin 的属性/方法命名添加前缀（如 `$_global_`），避免冲突。
+  3. 在插件开发或小型项目中合理使用，大型项目慎用。
 
 
 
 ### Vue 组件 data 为什么必须是一个函数
 
-在 Vue.mixin( ) 方法中，要混入 data 时，data 也是一个函数返回一个对象的形式。在定义组件时，Vue.component('comName',{ data(){},.....} 中 data 也是函数返回对象。其实这两个 API 中 data 都采用函数的形式，因为他们的底层源码的逻辑都是一样的，都是用各自的构造函数上的静态属性——options 进行合并。
+在 Vue.mixin( ) 方法中，要混入 data 时，data 也是一个函数返回一个对象的形式。
+
+在定义组件时，Vue.component('comName',{ data(){},.....} 中 data 也是函数返回对象。
+
+其实这两个 API 中 data 都采用函数的形式，因为他们的底层源码的逻辑都是一样的，都是用各自的构造函数上的静态属性——options 进行合并。
 
 每次声明一个组件，源码内部都是调用的 Vue.extend 方法，它会将组件的配置对象方法组件构造函数的静态属性 options 上，之后每次创建同一个组件的不同实例时都是使用同一个静态属性中的 options，如果 options 中的 data 是对象类型，那么每个实例对象都通过同一个引用执行同一个堆内存中的空间，导致各个同一个构造函数的不同组件实例之间都共享同一个引用类型的数据，从而导致彼此相互影响。
 
@@ -8892,6 +8713,8 @@ nextTick(cb)中的回调函数在该方法执行时就放入队列当中了，�
 
 对于组件而言，在每次视图中的多个数据都发生改变时，不是当一个数据一变就立马开始遍历该数据对应的 watcher 去更新视图，而是先将数据收集的 watcher 去重后入队。
 
+![image-20210318133746187](D:\learn-notes\vue\images\image-20210318133746187.png)
+
 ```html
 //面试题
 <div id="app">{{num}}</div>
@@ -8910,27 +8733,246 @@ nextTick(cb)中的回调函数在该方法执行时就放入队列当中了，�
     console.log(vm.$el.innerHTML);
   });
 
-  vm.root = 100;
+  vm.root.data.num2 = 100;
 </script>
 ```
 
 
 
-### computed 与 watch 的区别
+**`nextTick` 的作用**
 
-它们源码中都对应自身的 watcher 实例，不同的是 computed 具备缓存功能，computed 只要当依赖的属性发生变化时才会更新视图。computed 默认不会先执行，只有取值时才会执行，内部会维护一个 dirty 属性来控制依赖的值是否发生过变化，默认计算属性的值是通过执行 getter 函数后返回的，所以只能同步返回结果，异步任务的结果无法返回（有个第三方的包可以让 computed 属性变为异步的）；watch 中默认用户会提供至少一个回调函数，监视的数据变化就会执行该回调函数。
-
-watch 可以监听计算属性
-
-![image-20210318134741962](D:\learn-notes\vue\images\image-20210318134741962.png)
+`nextTick` 用于在 **下一次 DOM 更新循环结束后执行回调函数**。
+因为 Vue 的 DOM 更新是 **异步批量处理** 的，直接操作 DOM 可能无法获取到更新后的结果，通过 `nextTick` 可以确保在 DOM 更新完成后执行代码。
 
 
 
+**场景示例**：
+当修改数据后，需要立即操作更新后的 DOM 元素（如获取元素尺寸、聚焦输入框等）。
+
+```javascript
+this.message = 'Updated';
+this.$nextTick(() => {
+  const el = document.getElementById('msg');
+  console.log(el.textContent); // 正确获取 'Updated'
+});
+```
+
+**解析**：
+直接操作 DOM 时，数据更新还未触发 DOM 渲染，使用 `nextTick` 确保操作发生在 DOM 更新后。
 
 
-### Vue 组件的渲染流程
 
-注册组件（全局或者局部）；内部调用断 Vue.extend 以注册组件时传入的组件的配置对象生成继承了 Vue 构造函数的子类构造函数；调用组件构造函数后进行挂载，产生虚拟节点；做组件初始化，将虚拟节点转化为真实节点。
+Vue2 内部通过 **微任务（Microtask）优先** 的异步队列机制实现：
+
+1. 优先尝试使用 `Promise.then`（现代浏览器）。
+2. 降级到 `MutationObserver`（支持监听 DOM 变化的 API）。
+3. 最后使用 `setTimeout(fn, 0)` 宏任务兜底。
+
+**源码核心逻辑**（简化）：
+
+```js
+const callbacks = [];
+let pending = false;
+
+function flushCallbacks() {
+  pending = false;
+  const copies = callbacks.slice(0);
+  callbacks.length = 0;
+  for (let i = 0; i < copies.length; i++) {
+    copies[i]();
+  }
+}
+
+// 定义异步执行器（优先微任务）
+let timerFunc;
+if (typeof Promise !== 'undefined') {
+  timerFunc = () => {
+    Promise.resolve().then(flushCallbacks);
+  };
+} else if (typeof MutationObserver !== 'undefined') {
+  // 降级处理...
+} else {
+  timerFunc = () => {
+    setTimeout(flushCallbacks, 0);
+  };
+}
+
+function nextTick(cb, ctx) {
+  callbacks.push(() => {
+    cb.call(ctx);
+  });
+  if (!pending) {
+    pending = true;
+    timerFunc();
+  }
+}
+```
 
 
 
+**`nextTick` 和 `setTimeout(fn, 0)` 有什么区别？**
+
+- **执行时机**：
+  `nextTick` 使用微任务（Microtask），会在当前事件循环的末尾执行；
+  `setTimeout` 是宏任务（Macrotask），在下一次事件循环执行。
+- **性能**：
+  微任务优先级更高，能更快触发 DOM 更新后的逻辑，减少页面渲染延迟。
+
+
+
+
+
+**在 `created` 生命周期中直接操作 DOM 为什么无效？如何解决？**
+**原因**：
+`created` 阶段 DOM 尚未渲染，直接操作 DOM 元素会获取不到。
+**解决**：
+将 DOM 操作放在 `nextTick` 回调中
+
+```javascript
+created() {
+  this.$nextTick(() => {
+    // 此时 DOM 已渲染完成
+    this.$refs.input.focus();
+  });
+}
+```
+
+
+
+**多次调用 `this.$nextTick`，回调函数执行顺序是怎样的？**
+
+回调函数会被推入同一个队列，按照调用顺序依次执行。
+Vue 通过队列机制保证多个 `nextTick` 回调按顺序执行，避免重复触发异步任务。
+
+
+
+```js
+this.message = 'Hello';
+this.$nextTick(() => {
+  console.log('nextTick 1');
+});
+Promise.resolve().then(() => {
+  console.log('Promise 1');
+});
+this.$nextTick(() => {
+  console.log('nextTick 2');
+});
+Promise.resolve().then(() => {
+  console.log('Promise 2');
+});
+
+
+nextTick 1  
+nextTick 2  
+Promise 1  
+Promise 2  
+```
+
+
+
+**在 Vue 组件中，以下代码能否正确获取更新后的 DOM？**
+
+```js
+methods: {
+  updateData() {
+    this.list.push('new item');
+    const liElements = this.$el.querySelectorAll('li');
+    console.log(liElements.length); // 是否正确？
+  }
+}
+
+// 不能。数据更新后 DOM 还未渲染，此时获取的是旧 DOM。
+```
+
+
+
+- `this.$nextTick(cb)`：组件实例方法，自动绑定当前上下文（`this`）。
+- `Vue.nextTick(cb)`：全局 API，需手动绑定上下文（如使用 `call` 或箭头函数）。
+
+
+
+
+
+### 在 Vue2 中，如何确保所有子组件的更新都完成后再执行逻辑？
+
+**确保所有子组件更新完成后再执行逻辑**的关键在于理解 Vue 的异步更新机制和合理使用 `nextTick`。
+
+**方法一：连续调用 `$nextTick`**
+
+通过连续两次调用 `$nextTick`，确保父组件和子组件的更新均已完成。
+**原理**：
+
+1. **第一次 `$nextTick`**：等待父组件自身的 DOM 更新完成。
+2. **第二次 `$nextTick`**：等待子组件的 DOM 更新完成（子组件的更新由父组件触发）。
+
+```js
+async updateParentData() {
+  this.parentData = '新数据'; // 触发父组件更新
+  await this.$nextTick();    // 等待父组件 DOM 更新
+  await this.$nextTick();    // 等待子组件 DOM 更新
+  this.doFinalLogic();       // 执行最终逻辑
+}
+```
+
+
+
+**方法二：结合子组件 `updated` 钩子**
+
+通过子组件的 `updated` 生命周期钩子通知父组件更新完成。
+**适用场景**：明确需要知道特定子组件的更新状态。
+
+1. **子组件**：在 `updated` 钩子中触发事件。
+
+   ```js
+   // ChildComponent.vue
+   export default {
+     updated() {
+       this.$emit('child-updated');
+     }
+   }
+   ```
+
+2. **父组件**：监听子组件事件并计数。
+
+   ```js
+   // ParentComponent.vue
+   export default {
+     data() {
+       return {
+         updatedChildCount: 0,
+         totalChildren: 3 // 假设有 3 个子组件
+       };
+     },
+     methods: {
+       handleChildUpdated() {
+         this.updatedChildCount++;
+         if (this.updatedChildCount === this.totalChildren) {
+           this.doFinalLogic();
+         }
+       }
+     }
+   }
+   ```
+
+3. **方法三：使用 `Vue.nextTick` 全局 API**
+
+   结合 `Promise` 链式调用全局 `Vue.nextTick`，确保层级更新完成。
+
+   ```js
+   this.parentData = '新数据';
+   Vue.nextTick()
+     .then(() => Vue.nextTick())
+     .then(() => {
+       this.doFinalLogic();
+     });
+   ```
+
+4. **方法四：强制同步更新（慎用）**
+
+   通过 `this.$forceUpdate()` 强制同步刷新，但会破坏性能优化，仅限极端场景。
+
+   ```javascript
+   this.parentData = '新数据';
+   this.$forceUpdate(); // 强制同步更新父组件和子组件
+   this.doFinalLogic();  // 直接执行逻辑（此时 DOM 已更新）
+   ```
