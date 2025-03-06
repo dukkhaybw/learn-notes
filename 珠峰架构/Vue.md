@@ -292,7 +292,7 @@ Object.defineProperty 也可以对数组的每一项进行数据劫持。如下�
 
 #### $nextTick 的原理
 
-nextTick 并中及涉及同步又涉及异步代码，对于 nextTick 函数接受的回调函数，在 nextTick 函数内部会先将该回调函数放到一个数组队列中（同步），并不是针对每一次的 nextTick 函数的每一个回调函数都开启一个异步任务去执行它。
+nextTick 并中及涉及同步，又涉及异步代码，对于 nextTick 函数接受的回调函数，在 nextTick 函数内部会先将该回调函数放到一个数组队列中（同步），并不是针对每一次的 nextTick 函数的每一个回调函数都开启一个异步任务去执行它。
 
 但是在本轮主执行栈中第一次执行 nextTick 时，会在内部开启一个任务任务，该异步任务会在 promise，mutationobserver，setImmediate，setTimeout 中做优雅降级的选择一个方式开启一个异步任务（异步）。在该异步任务中会依次循环之前推入到数组队列中的回调函数。
 
