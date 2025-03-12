@@ -1,21 +1,42 @@
 # Pinia
 
-一个拥有[组合式 API](https://github.com/vuejs/composition-api) 的 Vue 状态管理库。同时支持 Vue 2 和 Vue 3，并且不强制要求开发者使用组合式 API。
+pnpm create vite
 
-Pinia是强依赖于Vue的，实现跨组件或页面共享状态，可通过插件扩展 Pinia 功能
+一个有[组合式 API](https://github.com/vuejs/composition-api) 的 Vue 状态管理库。同时支持 Vue 2 和 Vue 3，并且不强制要求开发者使用组合式 API。
+
+Pinia是强依赖于Vue的，因为内部用到vue中提供的方法，而且数据的来源都是组件实例上的，实现跨组件或页面共享状态，可通过插件扩展 Pinia 功能
 
 ## Pinia和Vuex的对比区别
 
 - Pinia采用TS编写，对类型有非常好的支持和提示；Vuex在这方面需要开发者自己去编写很多类型配合使用
-- Pinia体积轻量，使用更简单
+
+- Pinia体积轻量，使用简单
+
 - Pinia中不再引入Vuex中才有的mutation概念，且原生支持异步
+
 - Pinia即支持Composition API（避免了this指向问题），又兼容options API
+
 - Vuex有模块嵌套特点，使用module来区分模块，模块嵌套过深的话，使用起来不方便，需要借助Vuex提供的工具方法来一定程度简化数据的操作
+
 - Vuex中的模块会被注册到根模块上，如果根模块上有和子模块名字一样的数据，那么子模块的会覆盖根模块上的这个属性
+
+  ```js
+  new Vuex.Stroe({
+    state:{a:1},
+    module:{
+      a:{
+        state:{}
+      }
+    }
+  })
+  ```
+
 - Vuex中只能有一个store（树结构）
+
 - Pinia支持多个平级的store，且彼此之间可以相互引用，而最大程度的避免了命名冲突问题
 
 - 不再有嵌套结构的**模块**。可以通过导入和使用另一个 Store 来隐含地嵌套 stores 空间。虽然 Pinia 从设计上提供的是一个扁平的结构，但仍然能够在 Store 之间进行交叉组合。**甚至可以让 Stores 有循环依赖关系**。
+
 - 不再有**可命名的模块**。考虑到 Store 的扁平架构，Store 的命名取决于它们的定义方式，甚至可以说所有 Store 都应该命名。
 
 
@@ -34,11 +55,12 @@ Vue中注册插件的方式：
 
 ```js
 const app = createApp(App)
+
 app.use({
   install(app,...options){
     // ...
   }
-}, options)
+}, options)xx
 
 app.use(function (app,...options){
   // ...
@@ -53,7 +75,9 @@ app.use(function (app,...options){
 
 ```js
 import { createApp } from 'vue'
+
 import { createPinia } from 'pinia'
+
 import App from './App.vue'
 
 // 创建一个 pinia 实例 (根 store) 并将其传递给应用
@@ -66,7 +90,9 @@ app.mount('#app')
 
 
 
-实现一个store
+实现一个store：
+
+Options API写法：
 
 ```js
 import {defineStore} from 'pinia'
@@ -76,7 +102,7 @@ export const useCountStore = defineStore('counter',{
     return {count:0}
   },
   getters:{
-    double(){
+    double(stroe){
       return this.count*2
     }
   },
@@ -90,13 +116,14 @@ export const useCountStore = defineStore('counter',{
 
 export const useCountStore = defineStore({
   id:'counter',
-  state:()=>{counter:0}
+  state:()=>{counter:0}，
+  // ...
 })
 ```
 
 
 
-options API写法：
+Composition API写法：
 
 ```js
 export const useCounterStore = defineStore('counter', () => {
@@ -128,7 +155,7 @@ store.$patch({ count: counter.count + 1 })
 </template>
 ```
 
-
+不能结构store中的属性或者计算属性后使用，这样丧失了响应式。可以借助toRefs和pinia内部提供的方法来解决这个问题。
 
 
 
@@ -136,7 +163,7 @@ store.$patch({ count: counter.count + 1 })
 
 #### Store
 
-Store (如 Pinia) 是一个保存状态和业务逻辑的实体，它并不与组件树绑定。**它承载着全局状态**。每个组件都可以读取和写入它。它有**三个概念**，[state](https://pinia.vuejs.org/zh/core-concepts/state.html)、[getter](https://pinia.vuejs.org/zh/core-concepts/getters.html) 和 [action](https://pinia.vuejs.org/zh/core-concepts/actions.html)，可以假设这些概念相当于组件中的 `data`、 `computed` 和 `methods`。
+Store (如 Pinia) 是一个保存状态和业务逻辑的对象，它并不与组件树绑定。**它承载着全局状态**。每个组件都可以读取和写入它。它有**三个概念**，[state](https://pinia.vuejs.org/zh/core-concepts/state.html)、[getter](https://pinia.vuejs.org/zh/core-concepts/getters.html) 和 [action](https://pinia.vuejs.org/zh/core-concepts/actions.html)，这些概念相当于组件中的 `data`、 `computed` 和 `methods`。
 
 Store 是用 `defineStore()` 定义的，它的第一个参数要求是一个 **唯一的标识**：
 
@@ -281,18 +308,18 @@ const doubleValue = computed(() => store.doubleCount)
 </script>
 ```
 
-为了从 store 中提取属性时保持其响应性，你需要使用 `storeToRefs()`。它将为每一个响应式属性创建引用。当你只使用 store 的状态而不调用任何 action 时，它会非常有用。请注意，可以直接从 store 中解构 action，因为它们也被绑定到 store 上：
+为了从 store 中提取属性时保持其响应性，需要使用 `storeToRefs()`。它将为每一个响应式属性创建引用。当你只使用 store 的状态而不调用任何 action 时，它会非常有用。请注意，可以直接从 store 中解构 action，因为它们也被绑定到 store 上：
 
 ```js
 <script setup>
-import { storeToRefs } from 'pinia'
-const store = useCounterStore()
-// `name` 和 `doubleCount` 是响应式的 ref
-// 同时通过插件添加的属性也会被提取为 ref
-// 并且会跳过所有的 action 或非响应式 (不是 ref 或 reactive) 的属性
-const { name, doubleCount } = storeToRefs(store)
-// 作为 action 的 increment 可以直接解构
-const { increment } = store
+  import { storeToRefs } from 'pinia'
+  const store = useCounterStore()
+  // `name` 和 `doubleCount` 是响应式的 ref
+  // 同时通过插件添加的属性也会被提取为 ref
+  // 并且会跳过所有的 action 或非响应式 (不是 ref 或 reactive) 的属性
+  const { name, doubleCount } = storeToRefs(store)
+  // 作为 action 的 increment 可以直接解构
+  const { increment } = store
 </script>
 ```
 
@@ -644,6 +671,10 @@ pinia.use(myPiniaPlugin)
 
 插件只会应用于**在 `pinia` 传递给应用后**创建的 store，否则它们不会生效。
 
+使用插件（如 `pinia-plugin-persistedstate`）或在 Store 的 `hydrate` 生命周期处理。
+
+
+
 
 
 ## 原理实现
@@ -715,7 +746,7 @@ export function defineStore(idOrOptions, setupOptions) {
     options = idOrOptions;
   }
 
-  // 在组件内部被调用的用于返回仓库函数
+  // 在组件内部被调用的，用于返回仓库函数
   function useStore() {
     // 只有该方法是在组件中使用的时候才能获取到到pinia对象
     // 因为provide方法是将数据注入到组件的实例对象上的
@@ -725,6 +756,7 @@ export function defineStore(idOrOptions, setupOptions) {
 
     if (pinia) {
       if (!pinia._s.has(id)) {
+        // 第一次调用，懒创建该store。
         if (typeof setupOptions === "function") {
           // 针对的是composition api的函数
           createSetUpStore(id, options, pinia);

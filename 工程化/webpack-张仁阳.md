@@ -6950,9 +6950,6 @@ module.exports = AsyncQueue;
              })
         ]
    }
-   
-   
-   
 
  IgnorePlugin 的典型使用就是用于忽略 moment 这个包的语言库文件，对于自己需要的语言文件，自己自行单独导入到项目中即可。 
 
@@ -8916,6 +8913,3 @@ common-src_index_js common-src_index_js.js
 //reuseExistingChunk: true
 main main.js
 ```
-
-
-

@@ -1314,24 +1314,15 @@ vue3中不再需要set方法。
 
 ## v-show 与 v-if 的理解和区别
 
-`v-if` 控制元素的 **条件渲染**，在条件为 `true` 时，Vue 会在 DOM 中 **创建** 元素；当条件为 `false` 时，Vue 会 **销毁** 该元素。换句话说，`v-if` 会根据条件决定是否在 DOM 中渲染该元素，只有条件满足时，元素才会存在。
+`v-if`  **条件渲染**，在条件为 `true` 时，Vue 会在 DOM 中 **创建** 元素；当条件为 `false` 时，Vue 会 **销毁** 该元素。涉及 DOM 的创建与销毁。
 
- v-if 会让定义有该自定义属性的 dom 元素在切换的过程中 dom 元素及内部的事件监听器和子组件被销毁和重建。对于初次渲染时 v-if 的条件为假，则什么都不做一直到条件第一次为真的时候，才开始渲染条件块。
-
-**实现原理**：当条件为 `true` 时，Vue 会创建该元素及其子元素并插入 DOM；当条件为 `false` 时，Vue 会销毁该元素及其子元素。
-
-**渲染方式**：`v-if` 会根据条件动态地添加或移除元素，涉及 DOM 的创建与销毁。
-
-**性能**：适用于条件较少变化的场景，因为每次条件变化时，都会进行 DOM 元素的重新渲染和销毁，性能开销较大。
+ v-if 会让有该指令的属性的 dom 元素在切换的过程中 dom 元素及内部的事件监听器和子组件被销毁和重建。
 
 **特点**：
 
-- **优点**：不会占用任何空间，元素仅在需要时才会存在。
 - **缺点**：每次条件变化时都要重新渲染和销毁元素，性能开销较大，尤其是当涉及复杂元素或组件时。
 
 **适用场景**：条件变化不频繁，或需要彻底从 DOM 中移除元素时使用。
-
-
 
 ```vue
 <div v-if="flag">{{ msg }}</div>
@@ -1371,7 +1362,7 @@ export function render(_ctx, _cache, $props, $setup, $data, $options) {
 
 `v-show`
 
-`v-show` 控制元素的 **CSS 显示**，通过改变元素的 `display` 样式来控制其是否可见。`v-show` 只会在元素渲染时被添加到 DOM 中，而不会完全移除。即使元素不可见，它依然占据DOM树中的位置。
+`v-show` 控制元素的 **CSS 显示**，通过改变元素的 `display` 样式来控制其是否可见。
 
 - **实现原理**：当条件为 `true` 时，元素的 `display` 样式被设置为**原来的样式**（通常是 `block` 或 `inline`）；当条件为 `false` 时，元素的 `display` 样式被设置为 `none`，从而使其隐藏。
 - **性能**：适用于频繁切换显示与隐藏的场景，因为它不会重新渲染 DOM 元素，只是简单地切换样式。
@@ -1417,25 +1408,7 @@ export function render(_ctx, _cache, $props, $setup, $data, $options) {
 
 在这个例子中，`v-show` 控制的是元素的显示与隐藏，而 `style="display: none"` 只是元素的初始状态。
 
-当 `isVisible` 为 `false` 时，元素会被隐藏，`display: none` 会起作用；当 `isVisible` 为 `true` 时，Vue 会将 `display` 样式设置为 `block` 或其他合适的值，从而显示该元素。
-
 元素已被 `display: none` 隐藏，`v-show` 仍能控制显示/隐藏。
-
-
-
-
-
-**选择何时使用 `v-show` 或 `v-if`**
-
-- **`v-show`**：
-  - 适用于需要频繁切换元素显示/隐藏的场景。
-  - 比如在用户界面上切换不同的面板、标签页，或动画效果中，元素的显隐变化频繁，使用 `v-show` 会更高效。
-- **`v-if`**：
-  - 适用于元素不需要频繁显示和隐藏，或者仅在某些特定条件下才需要渲染的情况。
-  - 比如一些特定功能的按钮、条件展示的表单等，只有在条件满足时才需要渲染该元素。
-
-- v-if 可以阻断内部代码是否执行，如果条件不成立不会执行内部逻辑
-- 如果页面逻辑在第一次加载的时候已经被确认后续不会频繁更改则采用 v-if
 
 
 
@@ -1546,33 +1519,6 @@ export default {
   }
 }
 ```
-
-
-
-如果一个元素上即有v-if又有v-show：
-
-```vue
-<div v-show="flag" v-if='exit'>{{ msg }}</div>
-```
-
-编译结果：
-
-```js
-function render() {
-  with(this) {
-    return (exit) ? _c('div', {
-      directives: [{
-        name: "show",
-        rawName: "v-show",
-        value: (flag),
-        expression: "flag"
-      }]
-    }, [_v(_s(msg))]) : _e()
-  }
-}
-```
-
-可以看出优先级差异。
 
 
 
@@ -1925,7 +1871,7 @@ this.effect = new ReactiveEffect(getter,()=>{
 
 ## ref和reactive的区别
 
-对基本数据类型进行响应式的拦截。本质是创建并返回一个函数value属性访问器的对象，通过属性访问器去感知对基本数据类型值的获取和设置操作，从而实现依赖的收集和触发工作。
+ref对基本数据类型进行响应式的拦截。本质是创建并返回一个函数value属性访问器的对象，通过属性访问器去感知对基本数据类型值的获取和设置操作，从而实现依赖的收集和触发工作。
 
 任意类型的值都可以传给ref，包括已经被reactive代理过的对象。 如果传的是一个普通对象，底层会对对象调用reactive来代理，并将代理对象保存到ref实例的_value属性上，ref.value的时候就去拿去这个\_value上的值。
 
@@ -2137,7 +2083,7 @@ watchEffect(effect, options?)
 
 ## Vue中如何将template转为render函数
 
-在 Vue 中，将 `template` 转为 `render` 函数称为**模板编译**，主要发生在构建时或运行时。
+
 
 为什么需要将template转为render函数?
 
@@ -2147,8 +2093,6 @@ watchEffect(effect, options?)
 
 
 **如何将 template 转为 render 函数**
-
-Vue 使用一个模板编译器将 `template` 转换为 `render` 函数。这一过程通常发生在编译阶段或运行时。
 
 **编译过程**
 
@@ -2786,23 +2730,6 @@ window.addEventListener('popstate',function(event){})
 
 
 
-## 项目开发流程
-
-1. 项目立项
-2. 需求分析
-3. 服务端
-   - 需求分析
-   - 设计数据库
-   - 接口设计（前端参与）
-   - 接口开发（用于数据处理）
-4. 前端
-   - 需求分析
-   - UI
-   - 写页面和功能
-   - 调取接口与服务端交互
-
-
-
 ## 样式穿透
 
 在 Vue 中，当组件的样式使用 `scoped` 属性时，默认情况下这些样式会被限制在当前组件的范围内，无法直接影响子组件或外部元素的样式。
@@ -2889,7 +2816,7 @@ window.addEventListener('popstate',function(event){})
 
       如果特定样式需要完全不受 `scoped` 限制，可以直接移除 `scoped` 或者将样式写入全局样式文件中。
 
-   5. ### **使用动态类名**
+   5. **使用动态类名**
 
       如果穿透样式需要动态应用，可以通过 Vue 的动态类名来实现。
 
@@ -2936,7 +2863,7 @@ window.addEventListener('popstate',function(event){})
           - 遍历 `newVNode`的属性，与 `oldVNode`对比：
             1. 如果属性值不同，更新该属性。
             2. 如果新节点中没有某个旧属性，移除该属性。
-      - 复用老的虚拟DOM对应的真实DOM节点（如果节点是组件的化，会复用组件对应的实例对象）
+      - 复用老的虚拟DOM对应的真实DOM节点（如果节点是组件的话，会复用组件对应的实例对象）
 
 1. 有子节点则继续递归比较子节点，调用 `updateChildren` 函数，比较两组子节点。
 
@@ -2958,7 +2885,7 @@ window.addEventListener('popstate',function(event){})
    - 老虚拟DOM节点的子节点是数组，新的也是数组，则开启真正的diff比较
 
 2. 针对两个数组子节点的diff比较细节（updateChildren）
-   - 采用了双指针方式对和数组相关的常见操作（头部追加，尾部追加，中间插入，倒序和反转等）进行优化
+   - 采用了双指针方式和数组相关的常见操作（头部追加，尾部追加，中间插入，倒序和反转等）进行优化
    - 头和头比，尾和尾比，头尾交叉比对，还不满足就做一个映射表，用新的 VDOM 中的节点去依次比较映射表中的节点，存在相同的节点则移动老的节点即可，不存在则插入，多余的则删除。
    - `updateChildren(oldChildren, newChildren)` 接收两组子节点数组，使用双指针算法进行高效对比。
 
@@ -3720,12 +3647,10 @@ v-once的不足：一旦标记将无法因为任何数据的改变而更新渲�
 
 参数说明：
 
-- 条件依赖表达式
-
-  ：一个数组，数组中的值用于决定模板是否重新渲染。
+- 条件依赖表达式：一个数组，数组中的值用于决定模板是否重新渲染。
 
   - 如果数组中的所有依赖值都没有变化，`v-memo` 所绑定的模板内容不会重新渲染。
-  - 如果依赖值发生变化，模板会重新渲染。
+- 如果依赖值发生变化，模板会重新渲染。
 
 不要滥用 `v-memo`，仅在性能瓶颈场景下使用，因为它会增加一些判断逻辑，可能带来额外开销。
 
@@ -3994,7 +3919,7 @@ export function mergeOptions(
 >       }
 >     }
 >   };
->                         
+>                               
 >   export default {
 >     mixins: [myMixin],  / 局部混入
 >     created() {
@@ -4259,21 +4184,14 @@ Vue 会在渲染组件时，将父组件传递的内容插入到 `<slot>` 定义
 
 **2. 双向数据绑定的工作原理**
 
-**2.1 双向绑定涉及的两个方向**
-
-1. **Model → View（数据驱动视图）** 数据模型更新后，视图会立即反映出变化。这是通过 Vue 的**响应式系统**实现的。
-2. **View → Model（视图驱动数据）** 当用户在视图中操作（如输入框输入内容）时，数据模型会立即更新。
 
 
-
-**2.2 Vue 中双向绑定的实现机制**
+**2.1 Vue 中双向绑定的实现机制**
 
 双向绑定的核心是：
 
 - **数据监听（响应式）：** Vue 通过 `Object.defineProperty`（Vue 2）或 `Proxy`（Vue 3）对数据进行劫持，监听数据变化，从而通知视图更新。
 - **事件监听：** Vue 会监听 DOM 的事件（如 `input`、`change`），当事件触发时更新绑定的数据。
-
-
 
 
 
@@ -4661,12 +4579,11 @@ export default {
 
 1. **单向数据流**：`.sync` 并未打破 Vue 的单向数据流，只是为父子组件之间的交互提供了便捷写法。
 
-2. 替代双向绑定：
-
+2. **替代双向绑定**：
    - .sync可以被看作是 Vue 2.x 中 v-model的扩展。
-
+   
    - 在 Vue 3 中，`v-model` 本身就支持多个绑定。
-
+   
 3. **语法糖限制**：`.sync` 本质上还是依赖 `props` 和 `$emit` 的机制，它并不适用于其他类型的属性。
 
 
@@ -5059,7 +4976,7 @@ export default {
 
   使用注意
 
-  1. .native 只作用于子组件的 根元素。
+  1. .native 只作用于子组件的根元素。
      - 如果子组件的模板中没有根元素或根元素包含多个节点（如 Vue 3 的多个根元素支持），`.native` 将失效。
   2. Vue 3 中不再推荐使用 `.native`：
      - Vue 3 支持在父组件中直接监听子组件的原生 DOM 事件，无需 `.native`。
@@ -5345,7 +5262,7 @@ Vue.directive('lazyload', {
 权限控制的实现思路
 
 1. **用户权限**：通常由后端返回，存储在 Vuex、Pinia、LocalStorage 或其他状态管理工具中。
-2. 指令逻辑：判断用户是否有对应权限：
+2. **指令逻辑**：判断用户是否有对应权限：
    - 如果没有权限，则移除按钮元素。
    - 或者直接禁用按钮，显示提示。
 3. **动态更新**：权限可能会动态变化，需要在权限更新时重新判断。
@@ -5529,159 +5446,6 @@ export default {
 
 
 ![image-20241214162504071](D:\learn-notes\vue\images\image-20241214162504071.png)
-
-
-
-## vue中nextTick的理解
-
-`nextTick` 是一个常用的方法，用于在 DOM 更新之后执行某些操作。因为 Vue 的响应式系统是异步的，当你更新数据时，DOM 不会立即更新（会生成一个任务放到一个队列中），而是会在下一个事件循环中取出更新任务执行。这时候，如果你需要在 DOM 更新完成后执行某些操作（如操作 DOM 元素），就可以使用 `nextTick`。
-
-vue中视图更新是一个异步的任务，因为如果在某个函数执行栈中，多次对响应式数据进行修改，如果每一次修改都触发一次页面的更新，那么这样会造成性能损耗。  如果用户多次修改数据，先开启一个渲染更新任务入队，等到本轮事件循环结束后，在微任务队列或者下一个事件循环中去除渲染更新任务执行。
-
-vue中渲染更新任务也是依赖于底层的nextTick工具方法的。如果要在DOM元素更新后在做一些有关dom的操作就可以将自己的任务在同一个执行上下文中，通过nextTick方法来向队列尾部追加自己的任务即可。
-
-多次调用nextTick注册的任务并不会针对每一个任务创建一个异步任务，而是会合并这些任务函数。
-
-**使用场景**
-
-1. **获取更新后的 DOM**：当修改数据后，想立即操作 DOM，使用 `nextTick` 确保 DOM 已经完成更新。
-2. **保证任务顺序**：在 Vue 异步更新 DOM 时确保任务按顺序执行。
-3. **插件或复杂逻辑中需要 DOM 状态完成**的场景。
-
-
-
-
-
-当组件的响应式数据发什么变化，会触发底层包装一个渲染更新的函数，然后将这个函数交给nextTick进行注册。nextTick会将这个渲染函数入队到一个自己准备的队列中，然后通过优雅降级的方式，触发一个异步回调，首先是promise或者MutationObserver，如果再不支持就是setImmediate，最后再不支持就是setTimeout。
-
-
-
-源码：
-
-```ts
-/* globals MutationObserver */
-
-import { noop } from 'shared/util'
-import { handleError } from './error'
-import { isIE, isNative } from './env'
-
-export let isUsingMicroTask = false
-
-const callbacks = []
-let pending = false
-
-/ 从这里就可以看出nextTick并不是为每个任务都注册一个异步回调，而是在一个异步任务中，一次去除所有之前注册的任务，依次进行执行。
-function flushCallbacks() {
-  pending = false
-  const copies = callbacks.slice(0)
-  callbacks.length = 0
-  for (let i = 0; i < copies.length; i++) {
-    copies[i]()
-  }
-}
-
-let timerFunc
-// 采用优雅剪辑的方式注册异步回调
-if (typeof Promise !== 'undefined' && isNative(Promise)) {
-  const p = Promise.resolve()
-  timerFunc = () => {
-    p.then(flushCallbacks)  // 尝试通过promise注册一个异步微任务
-  }
-  isUsingMicroTask = true
-} else if (
-  !isIE &&
-  typeof MutationObserver !== 'undefined' &&
-  (isNative(MutationObserver) ||
-    MutationObserver.toString() === '[object MutationObserverConstructor]')
-) {
-
-  let counter = 1
-  const observer = new MutationObserver(flushCallbacks)
-  const textNode = document.createTextNode(String(counter))
-  observer.observe(textNode, {
-    characterData: true
-  })
-    // 尝试通过MutationObserver注册一个异步微任务
-  timerFunc = () => {
-    counter = (counter + 1) % 2
-    textNode.data = String(counter)
-  }
-  isUsingMicroTask = true
-} else if (typeof setImmediate !== 'undefined' && isNative(setImmediate)) {
- // 尝试通过setImmediate注册一个异步宏任务
-  timerFunc = () => {
-    setImmediate(flushCallbacks)
-  }
-} else {
-  // 尝试通过setTimeout注册一个异步宏任务
-  timerFunc = () => {
-    setTimeout(flushCallbacks, 0)
-  }
-}
-
-export function nextTick(): Promise<void>
-export function nextTick<T>(this: T, cb: (this: T, ...args: any[]) => any): void
-export function nextTick<T>(cb: (this: T, ...args: any[]) => any, ctx: T): void
-export function nextTick(cb?: (...args: any[]) => any, ctx?: object) {
-  let _resolve
-  callbacks.push(() => {
-    if (cb) {
-      try {
-        cb.call(ctx)
-      } catch (e: any) {
-        handleError(e, ctx, 'nextTick')
-      }
-    } else if (_resolve) {
-      _resolve(ctx)
-    }
-  })
-  if (!pending) {
-    pending = true
-    timerFunc()  // 这里就会尝试开启一个异步任务
-  }
-  // $flow-disable-line
-  if (!cb && typeof Promise !== 'undefined') {
-    return new Promise(resolve => {
-      _resolve = resolve
-    })
-  }
-}
-```
-
-
-
-nextTick测试代码：
-
-```vue
-<template>
-	<div id='counter'>
-        {{count}}
-    </div>
-</template>
-<script>
-	export default {
-        name:'App',
-        data(){
-            return {count:0}
-        },
-        mounted(){
-             this.$nextTick(()=>{
-                console.log(counter.innerHTML)  / 打印 0
-            })
-            this.count =100
-            this.$nextTick(()=>{
-                console.log(counter.innerHTML)  / 打印100
-            })
-        }
-    }
-</script>
-```
-
-前后打印不同的原因：前面调用nextTick会将那个函数入队，并开启一个异步回调任务。响应式数据修改后，底层会包装一个组件的watcher渲染任务，然后使用nextTick将这个任务函数追加到队列的后面，第二个nextTick调用的使用，会将该注册的回调函数继续入队。
-
-主执行栈的任务执行完毕，开始执行nextTick注册的微任务，微任务就是将上面准备的队列中的一项项的任务按照先后顺序取出执行。所以第一个任务打印时，innerHTML还没有更新，第二个渲染任务是同步阻塞的，执行完后innerHTML就已经更新为100了，所以第三个任务再去访问innerHTML就拿到更新后的100。
-
-
 
 
 
@@ -6328,93 +6092,93 @@ import stroe from '@/stroe'
 import * as Types from '@/store/action-types.js'
 
 class Http {
-    constructor() {
-        // 根据环境变量设置请求的路径
-        this.baseURL = process.env.DEV !=='production' ? 'http://backend-api-01.newbee.ltd/api/v1' : '/'
-        this.timeout = 5000
-        this.queue = {}  // 维护请求队列的映射表
-    }
+  constructor() {
+    // 根据环境变量设置请求的路径
+    this.baseURL = process.env.DEV !=='production' ? 'http://backend-api-01.newbee.ltd/api/v1' : '/'
+    this.timeout = 5000
+    this.queue = {}  // 维护请求队列的映射表
+  }
 
-    setInterceptor(instance，url) {
-        instance.interceptors.request.use(
-            (config) => {
-                if(Object.key(this.queue).length === 0){
-                    // 开启loading
-                }
-                // 携带token来做处理
-                let token = localStorage.getItem('token')
-                if (token) {
-                    config.headers['token'] = token // 每次携带token
-                }
-                let CancelToken = axois.CancelToken
-                config.cancelToken = new CancelToken((c)=>{
-                    store.commit(Types.SET_TOKEN,c)
-                })
-                this.queue[url] = true
-                return config
-            },
-            (err) => {
-                return Promise.reject(err)
-            }
-        )
-        instance.interceptors.response.use(
-            (res) => {
-                delete this.queue[url]
-                if(Object.key(this.queue).length === 0){
-                    // 关闭loading
-                }
-                if (res.data.resultCode == 200) {
-                    // 对返回值的状态码是200的情况统一处理
-                    return res.data.data
-                }
-                if (res.data.resultCode === 500) {
-                    return Promise.reject(res.data)
-                }
-                if (res.data.resultCode === 416) {
-                    localStorage.removeItem('token') // 416 可能是token错误，这个时候清除token，重新刷新
-                    // 刷新后就在此路由的全局钩子，就会走没有token的逻辑
-                    return window.location.reload()
-                    // return Promise.reject(res.data)
-                }
-                return Promise.reject(res.data)
-
-
-            },
-            (err) => {
-                delete this.queue[url]
-                if(Object.key(this.queue).length === 0){
-                    // 关闭loading
-                }
-                return Promise.reject(err)
-            }
-        )
-    }
-    request(options) {
-        // 请求会实现拦截器
-        const instance = axios.create() // 1.每次请求要创建一个新的实例
-        let config = {
-            ...options,
-            baseURL: this.baseURL,
-            timeout: this.timeout
+  setInterceptor(instance，url) {
+    instance.interceptors.request.use(
+      (config) => {
+        if(Object.key(this.queue).length === 0){
+          // 开启loading
         }
-        this.setInterceptor(instance,config.url) // 2.设置拦截器
-        // 发送请求参数
-        return instance(config)
-    }
-    get(url, data={}) {
-        return this.request({
-            method: 'get',
-            url,
-            params: data
+        // 携带token来做处理
+        let token = localStorage.getItem('token')
+        if (token) {
+          config.headers['token'] = token // 每次携带token
+        }
+        let CancelToken = axois.CancelToken
+        config.cancelToken = new CancelToken((c)=>{
+          store.commit(Types.SET_TOKEN,c)
         })
+        this.queue[url] = true
+        return config
+      },
+      (err) => {
+        return Promise.reject(err)
+      }
+    )
+    instance.interceptors.response.use(
+      (res) => {
+        delete this.queue[url]
+        if(Object.key(this.queue).length === 0){
+          // 关闭loading
+        }
+        if (res.data.resultCode == 200) {
+          // 对返回值的状态码是200的情况统一处理
+          return res.data.data
+        }
+        if (res.data.resultCode === 500) {
+          return Promise.reject(res.data)
+        }
+        if (res.data.resultCode === 416) {
+          localStorage.removeItem('token') // 416 可能是token错误，这个时候清除token，重新刷新
+          // 刷新后就在此路由的全局钩子，就会走没有token的逻辑
+          return window.location.reload()
+          // return Promise.reject(res.data)
+        }
+        return Promise.reject(res.data)
+
+
+      },
+      (err) => {
+        delete this.queue[url]
+        if(Object.key(this.queue).length === 0){
+          // 关闭loading
+        }
+        return Promise.reject(err)
+      }
+    )
+  }
+  request(options) {
+    // 请求会实现拦截器
+    const instance = axios.create() // 1.每次请求要创建一个新的实例
+    let config = {
+      ...options,
+      baseURL: this.baseURL,
+      timeout: this.timeout
     }
-    post(url, data={}) {
-        return this.request({
-            method: 'post',
-            url,
-            data
-        })
-    }
+    this.setInterceptor(instance,config.url) // 2.设置拦截器
+    // 发送请求参数
+    return instance(config)
+  }
+  get(url, data={}) {
+    return this.request({
+      method: 'get',
+      url,
+      params: data
+    })
+  }
+  post(url, data={}) {
+    return this.request({
+      method: 'post',
+      url,
+      data
+    })
+  }
 }
 export default new Http()
 ```
@@ -6756,24 +6520,62 @@ Vue Router 中提供了几种路由模式，用于决定 URL 的呈现方式以�
 
 
 
-
-
-
-
 ## vue-router 有几种钩子函数，执行时机
 
-- 导航被触发，触发时机：页面切换， 当前页面的更新。
-- 在即将失活的组件里调用 beforeRouteLeave 守卫。
-- 调用全局的 beforeEach 守卫。
-- 在重用（比如页面导航部分的参数变化导致的）的组件里调用 beforeRouteUpdate 守卫(2.2+)。
-- 在路由配置里调用 beforeEnter。
-- 解析异步路由组件。
-- 在被激活的组件里调用 beforeRouteEnter。
-- 调用全局的 beforeResolve 守卫(2.5+)。
-- 导航被确认。
-- 调用全局的 afterEach 钩子,
-- 触发 DOM 更新。
-- 调用 beforeRouteEnter 守卫中传给 next 的回调函数，创建好的组件实例会作为回调函数的参数传入。
+#### 完整的导航解析流程 
+
+导航被触发时机：页面切换， 当前页面的更新。
+
+当触发路由导航时，钩子函数按以下顺序执行：
+
+1. **在失活的组件中调用 `beforeRouteLeave`**
+   离开当前路由前触发，常用于阻止未保存的修改（如提示用户）。
+
+2. **全局前置守卫 `beforeEach`**
+   依次调用所有注册的全局前置守卫。
+
+   2.1 在重用（比如页面导航部分的参数变化导致的）的组件里调用 beforeRouteUpdate 守卫(2.2+)。
+
+3. **路由独享守卫 `beforeEnter`**
+   在目标路由配置中定义的守卫。
+4. **解析异步路由组件**
+   加载异步组件（如动态导入的组件）。
+5. **在激活的组件中调用 `beforeRouteEnter`**
+   此时组件实例未创建，无法访问 `this`，但可通过 `next(vm => {})` 访问实例。
+6. **全局解析守卫 `beforeResolve` (Vue Router 2.5+)**
+   确认导航前的最后一步，适合处理权限校验等逻辑。
+7. **导航确认**
+   所有守卫通过后，正式切换路由。
+8. **全局后置钩子 `afterEach`**
+   导航完成后触发，无法修改导航。
+9. **触发 DOM 更新**
+   渲染新路由组件。
+10. **执行 `beforeRouteEnter` 中的 `next` 回调**
+    此时组件实例已创建，可通过 `vm` 参数操作数据。
+
+
+
+#### 与组件生命周期的交互顺序
+
+进入新路由时的顺序（以父组件和子组件为例）：
+
+1. **全局前置守卫 `beforeEach`**
+2. **组件内守卫 `beforeRouteEnter`**
+3. **父组件生命周期**
+   `父 beforeCreate` → `父 created` → `父 beforeMount`
+4. **子组件生命周期**
+   `子 beforeCreate` → `子 created` → `子 beforeMount` → `子 mounted`
+5. **父组件 `mounted`**
+6. **全局后置钩子 `afterEach`**
+7. **执行 `beforeRouteEnter` 的 `next` 回调**
+
+离开路由时的顺序：
+
+1. **组件内守卫 `beforeRouteLeave`**
+2. **全局前置守卫 `beforeEach`**
+3. **新路由组件的生命周期与钩子**
+4. **旧组件销毁钩子**
+   `父 beforeDestroy` → `子 beforeDestroy` → `子 destroyed` → `父 destroyed`
 
 
 
@@ -7458,10 +7260,6 @@ export default store;
 | **修改方式** | 直接操作 `state`           | 间接操作 `state`（通过调用 `mutation`）                |
 | **调用方式** | 使用 `commit` 调用         | 使用 `dispatch` 调用                                   |
 | **回调支持** | 不支持回调（因为是同步的） | 支持异步回调                                           |
-
-------
-
-### 
 
 **Mutation 的特点**
 
@@ -8323,7 +8121,7 @@ vue-loader 中使用的编译模板的包——vue-template-compiler
 
 
 
-### v-model 实现原理以及如何自定义 v-model（面试必问）
+### v-model 实现原理以及如何自定义 v-model
 
 v-model 可以看作 value+input 方法的语法糖。组件的 v-model 就是 value+input 方法的语法糖，而 checkout 或者 select 的 v-model 则不一定是 value+input 方法的语法糖。checkout 的 v-model 还可以看作是 checked+change 的语法糖。
 
@@ -8359,7 +8157,7 @@ v-model 可以看作 value+input 方法的语法糖。组件的 v-model 就是 v
 
 #### 什么是 vue 的异步渲染
 
-触发响应式数据变化的时候，页面订阅的响应操作不会与数据变化完全对应，而是在所有的数据修改操作做完之后，页面才会开始进行渲染。（多个数据在一次同步逻辑中被修改了，它们对应的是同一个 watcher，过滤同一个只留下一个 watcher，等数据都改完之后再去更新视图。避免一改数据就更新视图而做的异步更新。）
+触发响应式数据变化的时候，页面真实DOM内容不会与数据变化立即完全对应，而是在所有的数据修改操作做完之后，页面才会开始进行渲染。（多个数据在一次同步逻辑中被修改了，它们对应的是同一个 watcher，过滤同一个只留下一个 watcher，等数据都改完之后再去更新视图。避免一改数据就更新视图而做的异步更新。）
 
 ```javascript
 import Vue from 'Vue';
@@ -8703,9 +8501,9 @@ export default {
 
 ### nextTick
 
-nextTick 内部采用了异步任务进行包装。具体是采用宏任务还是微任务 API，内部是通过一系列的条件判断，以优雅降级的方式进行确定的，首先是检测 Promise，然后 mutationObserver，然后 setImmediate，最后是 setTimeout。 在项目中一旦有响应式数据的变更，都会触发组件的 watcher 的重新渲染。但是组件的渲染是异步执行的，其内部也是通过 nextTick 来实现异步更新视图的。
+nextTick 内部采用了异步任务进行包装。具体是采用宏任务还是微任务 API，内部是通过一系列的条件判断，以优雅降级的方式进行确定的，首先是检测 Promise，然后 mutationObserver，然后 setImmediate，最后是 setTimeout。 在项目中一旦有响应式数据的变更，会触发底层包装一个watcher 的重新渲染，然后将这个函数交给nextTick进行注册来实现异步更新视图的。
 
-在调用 nextTick(cb)函数时，传入的回调函数首先会被维护在一个队列中，同时在开启一个异步异步任务，该异步任务在主线程中的代码执行完毕后再去依次取出队列中的回调进行执行。
+在调用 nextTick(cb)函数时，传入的回调函数首先会被维护在一个队列中，同时在开启一个异步异步任务，该异步任务在主线程中的代码执行完毕后再去依次（循环）取出队列中的回调进行执行。
 
 主要应用场景是异步更新，默认调度的时候将会添加一个 nextTick 任务。用户为了获取最新的渲染结果，需要在内部任务执行之后再执行自己的代码逻辑，这时就需要 nextTick 方法来实现。
 
@@ -8771,39 +8569,91 @@ Vue2 内部通过 **微任务（Microtask）优先** 的异步队列机制实现
 **源码核心逻辑**（简化）：
 
 ```js
-const callbacks = [];
-let pending = false;
+/* globals MutationObserver */
 
+import { noop } from 'shared/util'
+import { handleError } from './error'
+import { isIE, isNative } from './env'
+
+export let isUsingMicroTask = false
+
+const callbacks = []
+let pending = false
+
+// 从这里就可以看出nextTick并不是为每个任务都注册一个异步回调，而是在一个异步任务中，一次去除所有之前注册的任务，依次进行执行。
 function flushCallbacks() {
-  pending = false;
-  const copies = callbacks.slice(0);
-  callbacks.length = 0;
+  pending = false
+  const copies = callbacks.slice(0)
+  callbacks.length = 0
   for (let i = 0; i < copies.length; i++) {
-    copies[i]();
+    copies[i]()
   }
 }
 
-// 定义异步执行器（优先微任务）
-let timerFunc;
-if (typeof Promise !== 'undefined') {
+let timerFunc
+// 采用优雅降级的方式注册异步回调
+if (typeof Promise !== 'undefined' && isNative(Promise)) {
+  const p = Promise.resolve()
   timerFunc = () => {
-    Promise.resolve().then(flushCallbacks);
-  };
-} else if (typeof MutationObserver !== 'undefined') {
-  // 降级处理...
+    p.then(flushCallbacks)  // 尝试通过promise注册一个异步微任务
+  }
+  isUsingMicroTask = true
+} else if (
+  !isIE &&
+  typeof MutationObserver !== 'undefined' &&
+  (isNative(MutationObserver) ||
+    MutationObserver.toString() === '[object MutationObserverConstructor]')
+) {
+
+  let counter = 1
+  const observer = new MutationObserver(flushCallbacks)
+  const textNode = document.createTextNode(String(counter))
+  observer.observe(textNode, {
+    characterData: true
+  })
+    // 尝试通过MutationObserver注册一个异步微任务
+  timerFunc = () => {
+    counter = (counter + 1) % 2
+    textNode.data = String(counter)
+  }
+  isUsingMicroTask = true
+} else if (typeof setImmediate !== 'undefined' && isNative(setImmediate)) {
+ // 尝试通过setImmediate注册一个异步宏任务
+  timerFunc = () => {
+    setImmediate(flushCallbacks)
+  }
 } else {
+  // 尝试通过setTimeout注册一个异步宏任务
   timerFunc = () => {
-    setTimeout(flushCallbacks, 0);
-  };
+    setTimeout(flushCallbacks, 0)
+  }
 }
 
-function nextTick(cb, ctx) {
+export function nextTick(): Promise<void>
+export function nextTick<T>(this: T, cb: (this: T, ...args: any[]) => any): void
+export function nextTick<T>(cb: (this: T, ...args: any[]) => any, ctx: T): void
+export function nextTick(cb?: (...args: any[]) => any, ctx?: object) {
+  let _resolve
   callbacks.push(() => {
-    cb.call(ctx);
-  });
+    if (cb) {
+      try {
+        cb.call(ctx)
+      } catch (e: any) {
+        handleError(e, ctx, 'nextTick')
+      }
+    } else if (_resolve) {
+      _resolve(ctx)
+    }
+  })
   if (!pending) {
-    pending = true;
-    timerFunc();
+    pending = true
+    timerFunc()  // 这里就会尝试开启一个异步任务
+  }
+  // $flow-disable-line
+  if (!cb && typeof Promise !== 'undefined') {
+    return new Promise(resolve => {
+      _resolve = resolve
+    })
   }
 }
 ```
@@ -8891,6 +8741,37 @@ methods: {
 
 
 
+nextTick测试代码：
+
+```vue
+<template>
+	<div id='counter'>
+  	{{count}}
+  </div>
+</template>
+<script>
+  export default {	
+    name:'App',
+    data(){
+      return {count:0}
+    },
+    mounted(){
+      this.$nextTick(()=>{
+        console.log(counter.innerHTML)  / 打印 0
+      })
+      this.count =100
+      this.$nextTick(()=>{
+        console.log(counter.innerHTML)  / 打印100
+      })
+    }
+  }
+</script>
+```
+
+前后打印不同的原因：前面调用nextTick会将那个函数入队，并开启一个异步回调任务。响应式数据修改后，底层会包装一个组件的watcher渲染任务，然后使用nextTick将这个任务函数追加到队列的后面，第二个nextTick调用的使用，会将该注册的回调函数继续入队。
+
+主执行栈的任务执行完毕，开始执行nextTick注册的微任务，微任务就是将上面准备的队列中的一项项的任务按照先后顺序取出执行。所以第一个任务打印时，innerHTML还没有更新，第二个渲染任务是同步阻塞的，执行完后innerHTML就已经更新为100了，所以第三个任务再去访问innerHTML就拿到更新后的100。
+
 
 
 ### 在 Vue2 中，如何确保所有子组件的更新都完成后再执行逻辑？
@@ -8976,3 +8857,6 @@ async updateParentData() {
    this.$forceUpdate(); // 强制同步更新父组件和子组件
    this.doFinalLogic();  // 直接执行逻辑（此时 DOM 已更新）
    ```
+
+
+

@@ -2883,11 +2883,225 @@ url 也可能包含参数或者哈希（比如后缀`?`或`#`）。
 
 
 
+## 拆包
+
+Vite默认使用Rollup进行打包，所以需要配置Rollup的相关选项。拆包主要指的是将代码分割成不同的块（chunks），比如将第三方库和业务代码分开，或者按需加载某些模块。
+
+在Vite配置文件中，有一个build.rollupOptions，这里可以传入Rollup的配置。Rollup的代码分割功能可能需要手动启用，或者通过某些配置来优化。
+
+Rollup中有一个output.manualChunks选项，可以用来控制如何拆分代码。默认情况下，Vite可能已经做了一些自动的拆包，比如把node_modules中的依赖单独打包成一个vendor文件。但有时候这可能不够，特别是当项目中有多个较大的第三方库时，可能需要将它们分开打包，或者根据路由进行动态导入拆分。
+
+比如，如果我的项目用了lodash和react，可能希望将它们分别打包成不同的chunk，而不是全部放在vendor里。这时候可能需要手动配置manualChunks为一个**函数**，根据模块的路径来决定如何拆分。
+
+动态导入（dynamic import）也是一个拆包的方法。在代码中使用import()语法，Vite会自动将这些模块拆分成单独的chunk，实现按需加载。这可能不需要额外配置，但需要确保代码中正确使用了动态导入。
+
+如何防止某些公共模块被重复打包到不同的chunk中。这需要配置Rollup的output.inlineDynamicImports或者确保某些模块被正确识别为公共依赖。不过，Rollup默认应该会处理这些情况，将公共依赖提取到单独的chunk中。
+
+在vite.config.js中的build.rollupOptions.output里设置manualChunks：
+
+```js
+export default defineConfig({
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          lodash: ['lodash'],
+          // 其他第三方库
+        }
+      }
+    }
+  }
+})
+```
+
+这样手动指定每个库可能比较繁琐，特别是当有多个依赖时。有没有更自动化的方法？比如根据node_modules中的包来分组，或者根据大小自动拆分？
+
+Vite默认的策略可能已经将node_modules中的代码打包到vendor中，但可能将所有第三方库合并到一个文件里。如果项目较大，这个vendor文件可能会很大，所以需要拆分成多个。
 
 
 
+另一种方法是让manualChunks成为一个函数，根据模块信息动态返回chunk的名称。例如：
 
-## 另一次课的内容
+```js
+manualChunks(id) {
+  if (id.includes('node_modules')) {
+    if (id.includes('lodash')) {
+      return 'lodash';
+    } else if (id.includes('react')) {
+      return 'react';
+    }
+    return 'vendor';
+  }
+}
+```
+
+
+
+但需要注意，这样的逻辑可能会遗漏某些情况，或者导致过于细碎的拆分，增加请求次数。需要平衡chunk的数量和大小。
+
+另外，可能还需要配置其他选项，比如chunkSizeWarningLimit，调整chunk的大小警告限制，或者minifyChunkSize来指定最小chunk大小。
+
+还有，代码分割后的异步加载可能会影响性能，需要使用预加载（preload/prefetch）策略。Vite是否自动处理这些？或者需要手动配置？
+
+另外，测试配置后的效果，可能需要构建后查看dist目录中的文件结构，或者使用分析工具，如rollup-plugin-visualizer，来可视化chunk的分布，这有助于优化拆包策略。
+
+
+
+在 Vite 中配置拆包（Code Splitting）可以通过以下步骤实现，主要依赖 Rollup 的配置选项。以下是详细的配置方法和说明：
+
+------
+
+**1. 基本配置：手动拆包第三方库**
+
+在 `vite.config.js` 中配置 `build.rollupOptions.output.manualChunks`，将指定的依赖包单独打包：
+
+```javascript
+import { defineConfig } from 'vite';
+
+export default defineConfig({
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // 将 React 相关库打包到 'react-vendor' 中
+          'react-vendor': ['react', 'react-dom'],
+          // 将 Lodash 单独打包
+          'lodash': ['lodash'],
+          // 其他第三方库可以继续分组
+          'utility': ['axios', 'moment'],
+        },
+      },
+    },
+  },
+});
+```
+
+------
+
+**2. 动态导入（自动拆包）**
+
+在代码中使用动态导入语法 `import()`，Vite 会自动将模块拆分为独立 chunk：
+
+```javascript
+// 动态导入组件，点击按钮时加载
+button.addEventListener('click', async () => {
+  const module = await import('./HeavyComponent.vue');
+  const component = module.default;
+  // 使用组件...
+});
+```
+
+------
+
+**3. 自动化拆包第三方库**
+
+通过函数动态拆分 `node_modules` 中的依赖，避免手动维护：
+
+```javascript
+export default defineConfig({
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            // 按包名拆分第三方库
+            const packageName = id.split('node_modules/')[1].split('/')[0];
+            return `vendor-${packageName}`;
+          }
+          // 业务代码拆分为独立文件（可选）
+          if (id.includes('src/')) {
+            return 'app';
+          }
+        },
+      },
+    },
+  },
+});
+```
+
+------
+
+**4. 优化拆包策略**
+
+- **避免过碎拆分**：限制最小 chunk 大小，合并小文件。
+- **配置 chunk 警告阈值**：调整允许的 chunk 大小上限。
+
+```javascript
+export default defineConfig({
+  build: {
+    chunkSizeWarningLimit: 1000, // 默认 500KB，调整为 1000KB
+    rollupOptions: {
+      output: {
+        // 最小 20KB 以下的模块合并到入口 chunk
+        experimentalMinChunkSize: 20000,
+      },
+    },
+  },
+});
+```
+
+------
+
+**5. 使用可视化分析工具**
+
+安装 `rollup-plugin-visualizer` 分析打包结果：
+
+```bash
+npm install rollup-plugin-visualizer --save-dev
+```
+
+配置 `vite.config.js`：
+
+```javascript
+import { defineConfig } from 'vite';
+import visualizer from 'rollup-plugin-visualizer';
+
+export default defineConfig({
+  plugins: [
+    // 放在插件数组末尾
+    visualizer({
+      open: true, // 打包后自动打开报告
+      filename: 'stats.html', // 分析文件生成路径
+    }),
+  ],
+  build: {
+    // 其他配置...
+  },
+});
+```
+
+运行 `npm run build` 后查看 `stats.html`，优化拆包策略。
+
+------
+
+**6. 解决常见问题**
+
+- **重复依赖**：确保公共依赖被提取到共享 chunk（Rollup 默认处理）。
+- **缓存优化**：对频繁更新的业务代码和稳定的第三方库使用不同命名策略（如哈希）。
+
+```javascript
+output: {
+  entryFileNames: 'assets/[name]-[hash].js',
+  chunkFileNames: 'assets/[name]-[hash].js',
+  assetFileNames: 'assets/[name]-[hash][extname]',
+},
+```
+
+------
+
+**总结**
+
+- **手动拆包**：通过 `manualChunks` 明确指定第三方库分组。
+- **动态导入**：利用 `import()` 语法实现按需加载。
+- **自动化拆分**：根据 `node_modules` 路径动态生成 chunk。
+- **分析优化**：使用可视化工具检查体积，调整拆包策略。
+
+通过合理配置，可显著提升应用加载性能，平衡缓存利用与请求数量。
+
+
+
+## 另一次的内容
 
 什么是vite，为什么会有vite，vite原理，它和webpack的关系。
 

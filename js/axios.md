@@ -83,7 +83,7 @@ const xhr =new XMLHttpRequest()
 
 Ajax**实例对象**上的属性或者事件或者方法：
 
-​ 属性
+ 属性
 
 - status: 响应状态码值, 比如 200, 404
 
@@ -1035,3 +1035,238 @@ cancel(); // 找个地方存起来
 收集请求中的接口并判断哪些请求是重复请求：
 
 只要是**请求地址、请求方式、请求参数**一样，那么我们就能认为是一样的。而我们要存储的队列里面的数据结构很明显应该是以键值对的形式来存储，这里面我们选择 `Map` 对象来操作。
+
+
+
+
+
+
+
+## 封装axios
+
+```ts
+// src/utils/request.ts
+import axios, {
+  AxiosInstance,
+  AxiosRequestConfig,
+  AxiosResponse,
+  InternalAxiosRequestConfig,
+  CancelTokenSource
+} from 'axios';
+import { message } from 'antd'; // 按需替换 UI 组件
+
+// 类型声明
+interface IRequestOptions extends AxiosRequestConfig {
+  // 扩展自定义配置
+  ignoreError?: boolean; // 是否全局忽略错误
+  retry?: number; // 重试次数
+  isFormData?: boolean; // 是否 FormData
+  compressImage?: boolean; // 是否压缩图片（默认 true）
+  compressQuality?: number; // 压缩质量 0-1（默认 0.8）
+}
+
+interface IResponseData<T = any> {
+  code: number;
+  data: T;
+  message?: string;
+}
+
+// 请求取消管理器
+const pendingRequests = new Map<string, CancelTokenSource>();
+
+export default class Request {
+  private instance: AxiosInstance;
+  private readonly baseConfig: AxiosRequestConfig;
+
+  constructor(baseConfig: AxiosRequestConfig) {
+    this.baseConfig = baseConfig;
+    this.instance = axios.create(baseConfig);
+    this.initInterceptors();
+  }
+
+  // 初始化拦截器
+  private initInterceptors() {
+    // 请求拦截
+    this.instance.interceptors.request.use(
+      (config: InternalAxiosRequestConfig) => {
+        // 请求标识（用于取消）
+        const requestKey = `${config.url}_${JSON.stringify(config.params)}`;
+        config.cancelToken = this.createCancelToken(requestKey);
+
+        // 动态 Header 注入
+        config.headers = {
+          ...config.headers,
+          'X-Token': localStorage.getItem('token'),
+          'X-Device-Fingerprint': getDeviceFingerprint() // 自定义设备指纹方法
+        };
+
+        // FormData 处理
+        if (config.data instanceof FormData) {
+          config.headers['Content-Type'] = 'multipart/form-data';
+        }
+
+        return config;
+      },
+      (error) => Promise.reject(error)
+    );
+
+    // 响应拦截
+    this.instance.interceptors.response.use(
+      (response: AxiosResponse) => {
+        // 请求完成移除 cancelToken
+        const requestKey = this.getRequestKey(response.config);
+        pendingRequests.delete(requestKey);
+
+        // 业务状态码处理
+        const resData = response.data as IResponseData;
+        if (resData.code !== 200) {
+          return this.handleBusinessError(resData, response.config);
+        }
+        return resData.data;
+      },
+      (error) => {
+        // HTTP 状态码错误处理
+        return this.handleHttpError(error);
+      }
+    );
+  }
+
+  // 创建 CancelToken
+  private createCancelToken(key: string): CancelTokenSource {
+    // 取消重复请求
+    if (pendingRequests.has(key)) {
+      pendingRequests.get(key)?.cancel('重复请求已取消');
+    }
+    const source = axios.CancelToken.source();
+    pendingRequests.set(key, source);
+    return source;
+  }
+
+  // 获取请求唯一标识
+  private getRequestKey(config: AxiosRequestConfig): string {
+    return `${config.url}_${JSON.stringify(config.params)}`;
+  }
+
+  // 处理业务错误
+  private handleBusinessError(resData: IResponseData, config: IRequestOptions) {
+    const errorCodeMap: Record<number, string> = {
+      401: '登录已过期，请重新登录',
+      403: '暂无访问权限',
+      5001: '服务端异常，请联系管理员',
+      // ...其他自定义错误码
+    };
+
+    const errorMessage = resData.message || errorCodeMap[resData.code] || '未知错误';
+
+    // 全局错误提示
+    if (!config.ignoreError) {
+      message.error(errorMessage);
+    }
+
+    // 特定错误码处理
+    switch (resData.code) {
+      case 401:
+        window.location.href = '/login';
+        break;
+      case 403:
+        window.location.href = '/no-permission';
+        break;
+    }
+
+    return Promise.reject(new Error(errorMessage));
+  }
+
+  // 处理 HTTP 错误
+  private handleHttpError(error: any) {
+    if (axios.isCancel(error)) {
+      console.log('请求被取消:', error.message);
+      return Promise.reject(error);
+    }
+
+    const status = error.response?.status;
+    const errorMsgMap: Record<number, string> = {
+      400: '请求参数错误',
+      404: '资源不存在',
+      500: '服务器内部错误',
+      502: '网关错误',
+      504: '网关超时',
+    };
+
+    const errorMessage = errorMsgMap[status] || `连接服务器失败（${status}）`;
+
+    // 统一错误提示
+    if (!error.config?.ignoreError) {
+      message.error(errorMessage);
+    }
+
+    return Promise.reject(error);
+  }
+
+  // 公共请求方法
+  public async request<T = any>(config: IRequestOptions): Promise<T> {
+    try {
+      // 性能监控打点
+      const startTime = Date.now();
+      const res = await this.instance.request<T>(config);
+      const endTime = Date.now();
+
+      // 慢请求统计（超过2秒）
+      if (endTime - startTime > 2000) {
+        this.reportSlowRequest(config, endTime - startTime);
+      }
+
+      return res;
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  // GET 请求简化封装
+  public get<T = any>(url: string, params?: any, config?: IRequestOptions) {
+    return this.request<T>({ method: 'GET', url, params, ...config });
+  }
+
+  // POST 请求简化封装
+  public post<T = any>(url: string, data?: any, config?: IRequestOptions) {
+    return this.request<T>({ method: 'POST', url, data, ...config });
+  }
+
+  // 取消所有进行中的请求
+  public cancelAllRequests() {
+    pendingRequests.forEach((source) => {
+      source.cancel('页面跳转取消请求');
+    });
+    pendingRequests.clear();
+  }
+
+  // 慢请求上报
+  private reportSlowRequest(config: AxiosRequestConfig, duration: number) {
+    const reportData = {
+      url: config.url,
+      method: config.method,
+      params: config.params,
+      duration,
+      timestamp: Date.now()
+    };
+    // 调用监控系统 API
+    console.warn('慢请求警告:', reportData);
+  }
+}
+
+// 初始化实例
+const request = new Request({
+  baseURL: process.env.REACT_APP_API_BASE,
+  timeout: 15000,
+  headers: {
+    'Content-Type': 'application/json;charset=UTF-8'
+  }
+});
+
+// 在路由跳转时调用（需结合具体框架）
+window.addEventListener('beforeunload', () => {
+  request.cancelAllRequests();
+});
+
+export { request };
+```
+

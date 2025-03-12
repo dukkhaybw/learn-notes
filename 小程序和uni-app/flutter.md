@@ -12,6 +12,13 @@ Flutter 是一个用于构建 **高性能** 应用程序的框架。特点包括
 
 
 
+
+
+```
+//https://mirrors.tuna.tsinghua.edu.cn/flutter
+//FLUTTER_STORAGE_BASE_URL
+```
+
 ## 环境搭建
 
 [官网](https://flutter.dev/)
@@ -2328,7 +2335,7 @@ class SuperMain with Runner, Flyer {
 >     this.name = name;
 >     this.age = age;
 >   }
->           
+>                 
 >   // 等同于
 >   Person(this.name, this.age);
 >   ```
@@ -4170,7 +4177,10 @@ class MyApp extends StatelessWidget {
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: AppBar(title: Text('test')), body: HomeContent());
+    return Scaffold(
+      appBar: AppBar(title: Text('test')), 
+      body: HomeContent()
+    );
   }
 }
 
@@ -4193,6 +4203,7 @@ class _HomeContentState extends State<HomeContent> {
           Checkbox(
             value: flag,
             onChanged: (value) {
+              // setState 继承自State
               setState(() {
                 flag = value!;
               });
@@ -4205,4 +4216,189 @@ class _HomeContentState extends State<HomeContent> {
   }
 }
 ```
+
+
+
+如果一个widget是不可变的情况下，在fluuter内部用@immutable进行注解，这个类中的所用成员变量都必须用final。
+
+
+
+
+
+## 生命周期函数
+
+**StatefulWidget** 的生命周期主要由其关联的 **State 类**中的一系列方法控制。以下是生命周期函数的说明，按调用顺序排列：
+
+### 生命周期阶段及方法
+
+各个类的构造函数也能看作一个生命周期函数。
+
+#### 1. **createState()**
+
+- **调用时机**：当 `StatefulWidget` 被插入到 Widget 树时调用。
+- **作用**：创建一个对应的 `State` 对象，与 `StatefulWidget` 关联。
+- **注意**：每个 `StatefulWidget` 必须重写此方法。
+
+```dart
+@override
+MyState createState() => MyState();
+```
+
+------
+
+#### 2. **State 的构造函数**
+
+- **调用时机**：在 `createState()` 后立即调用。
+- **作用**：初始化 `State` 对象的成员变量，但此时无法访问 `BuildContext`。
+
+------
+
+#### 3. **initState()**
+
+- **调用时机**：在 `State` 对象被插入到 Widget 树后调用（仅一次）。
+- **作用**：初始化依赖（如订阅流、初始化变量、访问 `widget` 属性等）。
+- **注意**：
+  - 必须调用 `super.initState()`。
+  - 避免在此处访问 `BuildContext`（可能未完全关联）。
+
+```dart
+@override
+void initState() {
+  super.initState();
+  _controller = AnimationController(vsync: this);
+}
+```
+
+------
+
+#### 4. **didChangeDependencies()**
+
+- **调用时机**：
+  - 在 `initState()` 后立即调用。
+  - 当依赖的 `InheritedWidget`（如 `Theme`、`MediaQuery`）发生变化时调用。
+- **作用**：处理依赖变化（如重新获取数据）。
+
+```dart
+@override
+void didChangeDependencies() {
+  super.didChangeDependencies();
+  _data = DefaultAssetBundle.of(context).loadString('data.json');
+}
+```
+
+------
+
+#### 5. **build()**
+
+- **调用时机**：
+  - 首次渲染时。
+  - 调用 `setState()` 时。
+  - 依赖的 `InheritedWidget` 变化时。
+  - 父 Widget 重建导致当前 Widget 配置变化时。
+- **作用**：构建 UI，必须返回一个 Widget。
+- **注意**：避免在此方法中执行耗时操作。
+
+```dart
+@override
+Widget build(BuildContext context) {
+  return Text('Hello, ${widget.name}');
+}
+```
+
+------
+
+#### 6. **didUpdateWidget(oldWidget)**
+
+- **调用时机**：父 Widget 重建导致当前 `StatefulWidget` 被替换（但 `State` 对象保留）时调用。
+- **作用**：比较新旧 `Widget` 配置，决定是否需要更新状态。
+- **注意**：可在此处根据新旧 `widget` 的属性差异调整状态。
+
+```dart
+@override
+void didUpdateWidget(MyOldWidget oldWidget) {
+  super.didUpdateWidget(oldWidget);
+  if (widget.color != oldWidget.color) {
+    _updateColor(widget.color);
+  }
+}
+```
+
+------
+
+#### 7. **setState()**
+
+- **调用时机**：开发者显式调用以通知框架状态变化。
+- **作用**：触发重建（重新调用 `build()`）。
+- **注意**：仅用于同步更新 UI，不可在异步回调中直接调用。
+
+```dart
+void _incrementCounter() {
+  setState(() {
+    _counter++;
+  });
+}
+```
+
+------
+
+#### 8. **deactivate()**
+
+- **调用时机**：当 `State` 对象从 Widget 树中移除时调用（可能暂时移除，如页面跳转）。
+- **作用**：清理与 `BuildContext` 相关的资源（如移除焦点监听）。
+- **注意**：可能被重新插入到树中（此时 `dispose()` 不会调用）。
+
+------
+
+#### 9. **dispose()**
+
+- **调用时机**：当 `State` 对象被永久移除时调用。
+- **作用**：释放资源（如取消计时器、关闭流、销毁控制器）。
+- **注意**：必须调用 `super.dispose()`。
+
+```dart
+@override
+void dispose() {
+  _controller.dispose();
+  super.dispose();
+}
+```
+
+------
+
+### 生命周期流程图
+
+![image-20250309153821826](D:\learn-notes\小程序和uni-app\images\image-20250309153821826.png)
+
+
+
+------
+
+### 关键注意事项
+
+1. **避免在 `build()` 中修改状态**：可能导致无限循环。
+2. **`dispose()` 必须释放资源**：防止内存泄漏（如 `AnimationController`、`StreamSubscription`）。
+3. **热重载行为**：热重载会触发 `didUpdateWidget()` 和 `build()`，但不会调用 `initState()` 或 `dispose()`。
+4. **`BuildContext` 限制**：在 `initState()` 中无法安全使用 `BuildContext`（需在 `didChangeDependencies()` 或后续方法中使用）。
+
+
+
+
+
+
+
+异步
+
+key的作用与原理
+
+provider状态管理
+
+生命周期函数
+
+不同屏幕适配， rpx
+
+常见第三方库
+
+widget树
+
+state的刷新机制
 

@@ -22,7 +22,7 @@ Comet 是一种用于 web 的推送技术，能使服务器实时地将更新的
 - 轮询是客户端和服务器之间会一直进行连接，每隔一段时间就询问一次
 - 这种方式连接数会很多，一个接受，一个发送。而且每次发送请求都会有 Http 的 Header，会很耗流量，也会消耗 CPU 的利用率
 
-![polling](http://img.zhufengpeixun.cn/polling.jpg)
+![polling](https://img.zhufengpeixun.cn/polling.jpg)
 
 ```js
 const express = require('express');
